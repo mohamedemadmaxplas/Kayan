@@ -17,186 +17,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <style>
-        /* ==================== تحسين التوافق مع الموبايل ==================== */
-@media (max-width: 768px) {
-    /* تحسين بطاقات التكاليف */
-    .task-item {
-        padding: 12px;
-    }
-    .task-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .task-points {
-        align-self: flex-start;
-    }
-    
-    /* تحسين جدول الترتيب */
-    .data-table th, .data-table td {
-        padding: 8px;
-        font-size: 12px;
-    }
-    
-    /* تحسين شاشة الدردشة */
-    .chat-container {
-        height: 400px;
-    }
-    .message {
-        max-width: 90%;
-        font-size: 13px;
-    }
-    .chat-input-area {
-        flex-direction: column;
-    }
-    .chat-input-area input {
-        width: 100%;
-    }
-    .chat-input-area button {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    /* تحسين أزرار الإجراءات */
-    .btn-sm {
-        padding: 4px 8px;
-        font-size: 10px;
-    }
-    
-    /* تحسين بطاقة التكاليف النشطة */
-    .active-task-card {
-        padding: 10px;
-    }
-    .active-task-card > div {
-        flex-direction: column;
-        gap: 8px;
-    }
-    .countdown-timer {
-        font-size: 11px;
-        padding: 3px 8px;
-    }
-    
-    /* تحسين نموذج الإضافة */
-    .modal-content {
-        padding: 15px;
-        width: 95%;
-    }
-    .details-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    /* تحسين الفلاتر */
-    .squad-filter {
-        flex-direction: column;
-    }
-    .squad-filter select, .squad-filter input, .squad-filter button {
-        width: 100%;
-    }
-}
-
-/* لشاشات صغيرة جداً */
-@media (max-width: 480px) {
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-    .stat-card {
-        padding: 12px;
-    }
-    .stat-card i {
-        font-size: 28px;
-    }
-    .stat-card .number {
-        font-size: 22px;
-    }
-    .header {
-        margin-right: 60px;
-        padding: 10px 15px;
-    }
-    .logo h1 {
-        font-size: 16px;
-    }
-    .logo p {
-        font-size: 8px;
-    }
-    .user-info {
-        padding: 5px 10px;
-        gap: 8px;
-    }
-    .user-info span {
-        font-size: 12px;
-    }
-    .logout-btn {
-        padding: 5px 10px;
-        font-size: 12px;
-    }
-}
-        /* عداد تنازلي للتكاليف */
-.countdown-timer {
-    direction: ltr;
-    font-family: monospace;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 20px;
-    display: inline-block;
-    margin-top: 8px;
-}
-.countdown-start {
-    background: #f39c12;
-    color: #fff;
-}
-.countdown-active {
-    background: #2ecc71;
-    color: #fff;
-}
-.countdown-end {
-    background: #e74c3c;
-    color: #fff;
-}
-
-/* بطاقة التكاليف النشطة في لوحة التحكم */
-.active-task-card {
-    background: linear-gradient(135deg, #fff, #f8f9fa);
-    border-right: 4px solid #d4a017;
-    padding: 12px;
-    margin-bottom: 12px;
-    border-radius: 12px;
-    transition: 0.3s;
-}
-.active-task-card:hover {
-    transform: translateX(-5px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-.active-task-title {
-    font-weight: bold;
-    font-size: 15px;
-    color: #1a472a;
-}
-.active-task-squad {
-    font-size: 11px;
-    color: #888;
-}
-        /* إشعارات منزلقة */
-@keyframes slideInRight {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-.notification-item.unread {
-    background: #fff3cd !important;
-    border-right: 3px solid #f39c12;
-}
-
-#notificationBadge {
-    background: #e74c3c;
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 10px;
-    margin-right: 5px;
-}
-        * {
+              * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -656,6 +477,7 @@
         }
         .badge-active { background: #2ecc71; color: white; }
         .badge-inactive { background: #e74c3c; color: white; }
+        .badge-warning { background: #f39c12; color: white; }
 
         .details-grid {
             display: grid;
@@ -715,6 +537,62 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Countdown Timer */
+        .countdown-timer {
+            direction: ltr;
+            font-family: monospace;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+        .countdown-start { background: #f39c12; color: #fff; }
+        .countdown-active { background: #2ecc71; color: #fff; }
+        .countdown-end { background: #e74c3c; color: #fff; }
+
+        /* Active Task Card */
+        .active-task-card {
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-right: 4px solid #d4a017;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+        .active-task-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .active-task-title {
+            font-weight: bold;
+            font-size: 15px;
+            color: #1a472a;
+        }
+        .active-task-squad {
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Notification */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .notification-item.unread {
+            background: #fff3cd !important;
+            border-right: 3px solid #f39c12;
+        }
+        #notificationBadge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            margin-right: 5px;
+        }
+
         @media (max-width: 768px) {
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
             .main-content { margin-right: 15px; margin-left: 15px; padding: 10px; }
@@ -722,6 +600,11 @@
             .hamburger { width: 42px; height: 42px; top: 15px; right: 15px; }
             .details-grid { grid-template-columns: 1fr; }
             .message { max-width: 85%; }
+            .task-header { flex-direction: column; align-items: flex-start; }
+            .squad-filter { flex-direction: column; }
+            .squad-filter select, .squad-filter input, .squad-filter button { width: 100%; }
+            .chat-input-area { flex-direction: column; }
+            .chat-input-area button { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -748,6 +631,7 @@
         // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
         let isAdmin = false;
+        let notifications = [];
         let appData = {
             branches: [],
             squads: [],
@@ -759,7 +643,6 @@
 
         // ==================== FIREBASE OPERATIONS ====================
         
-        // Save all data to Firebase
         async function saveAllDataToFirebase() {
             try {
                 await database.ref('appData').set({
@@ -771,16 +654,13 @@
                     messages: appData.messages,
                     lastUpdated: new Date().toISOString()
                 });
-                console.log('✅ All data saved to Firebase');
                 return true;
             } catch (error) {
-                console.error('❌ Error saving to Firebase:', error);
-                showToast('خطأ في حفظ البيانات', 'error');
+                console.error('Error saving:', error);
                 return false;
             }
         }
 
-        // Load all data from Firebase
         async function loadAllDataFromFirebase() {
             try {
                 const snapshot = await database.ref('appData').once('value');
@@ -792,80 +672,64 @@
                     appData.tasks = data.tasks || [];
                     appData.taskSubmissions = data.taskSubmissions || [];
                     appData.messages = data.messages || [];
-                    console.log('✅ All data loaded from Firebase');
-                    return true;
                 } else {
-                    // Initialize default data if no data exists
                     await initializeDefaultData();
-                    return true;
                 }
+                return true;
             } catch (error) {
-                console.error('❌ Error loading from Firebase:', error);
-                showToast('خطأ في تحميل البيانات', 'error');
+                console.error('Error loading:', error);
                 return false;
             }
         }
 
-        // Initialize default data
         async function initializeDefaultData() {
+            const now = new Date();
+            const startDefault = new Date(now);
+            startDefault.setHours(now.getHours() - 1);
+            const endDefault = new Date(now);
+            endDefault.setDate(now.getDate() + 7);
+            
             appData = {
                 branches: [
-                    { id: 1, name: "منطقة القاهرة", createdAt: new Date().toISOString() },
-                    { id: 2, name: "منطقة الجيزة", createdAt: new Date().toISOString() },
-                    { id: 3, name: "منطقة الإسكندرية", createdAt: new Date().toISOString() }
+                    { id: 1, name: "منطقة القاهرة", createdAt: now.toISOString() },
+                    { id: 2, name: "منطقة الجيزة", createdAt: now.toISOString() },
+                    { id: 3, name: "منطقة الإسكندرية", createdAt: now.toISOString() }
                 ],
                 squads: [
-                    { id: 1, branchId: 1, name: "طليعة النصر", leader: "قائد أحمد", isOpen: true, createdAt: new Date().toISOString() },
-                    { id: 2, branchId: 1, name: "طليعة الفتح", leader: "قائد محمد", isOpen: true, createdAt: new Date().toISOString() },
-                    { id: 3, branchId: 2, name: "طليعة الأمل", leader: "قائد علي", isOpen: true, createdAt: new Date().toISOString() },
-                    { id: 4, branchId: 3, name: "طليعة العزم", leader: "قائد خالد", isOpen: true, createdAt: new Date().toISOString() }
+                    { id: 1, branchId: 1, name: "طليعة النصر", leader: "قائد أحمد", isOpen: true, createdAt: now.toISOString() },
+                    { id: 2, branchId: 1, name: "طليعة الفتح", leader: "قائد محمد", isOpen: true, createdAt: now.toISOString() },
+                    { id: 3, branchId: 2, name: "طليعة الأمل", leader: "قائد علي", isOpen: true, createdAt: now.toISOString() },
+                    { id: 4, branchId: 3, name: "طليعة العزم", leader: "قائد خالد", isOpen: true, createdAt: now.toISOString() }
                 ],
                 members: [
-                    { id: 1, code: "S001", name: "أحمد محمد", username: "ahmed", password: "123456", phone: "01012345678", branchId: 1, squadId: 1, points: 150, rank: "قائد", joinedAt: new Date().toISOString() },
-                    { id: 2, code: "S002", name: "محمود علي", username: "mahmoud", password: "123456", phone: "01087654321", branchId: 1, squadId: 1, points: 120, rank: "نائب قائد", joinedAt: new Date().toISOString() },
-                    { id: 3, code: "S003", name: "كريم حسن", username: "karim", password: "123456", phone: "01122334455", branchId: 1, squadId: 2, points: 90, rank: "عضو", joinedAt: new Date().toISOString() },
-                    { id: 4, code: "S004", name: "يوسف إبراهيم", username: "youssef", password: "123456", phone: "01234567890", branchId: 2, squadId: 3, points: 75, rank: "عضو", joinedAt: new Date().toISOString() },
-                    { id: 5, code: "S005", name: "عمر سعيد", username: "omar", password: "123456", phone: "01555667788", branchId: 3, squadId: 4, points: 60, rank: "عضو", joinedAt: new Date().toISOString() }
+                    { id: 1, code: "S001", name: "أحمد محمد", username: "ahmed", password: "123456", phone: "01012345678", branchId: 1, squadId: 1, points: 150, rank: "قائد", joinedAt: now.toISOString() },
+                    { id: 2, code: "S002", name: "محمود علي", username: "mahmoud", password: "123456", phone: "01087654321", branchId: 1, squadId: 1, points: 120, rank: "نائب قائد", joinedAt: now.toISOString() },
+                    { id: 3, code: "S003", name: "كريم حسن", username: "karim", password: "123456", phone: "01122334455", branchId: 1, squadId: 2, points: 90, rank: "عضو", joinedAt: now.toISOString() },
+                    { id: 4, code: "S004", name: "يوسف إبراهيم", username: "youssef", password: "123456", phone: "01234567890", branchId: 2, squadId: 3, points: 75, rank: "عضو", joinedAt: now.toISOString() },
+                    { id: 5, code: "S005", name: "عمر سعيد", username: "omar", password: "123456", phone: "01555667788", branchId: 3, squadId: 4, points: 60, rank: "عضو", joinedAt: now.toISOString() }
                 ],
                 tasks: [
-                    { id: 1, squadId: 1, title: "حفظ أخلاق الكشاف", description: "حفظ مبادئ وقانون الكشافة", pointsValue: 15, createdAt: new Date().toISOString(), deadline: new Date(Date.now() + 7*24*60*60*1000).toISOString() },
-                    { id: 2, squadId: 1, title: "مهارات التخييم", description: "تعلم كيفية نصب الخيمة وإشعال النار", pointsValue: 20, createdAt: new Date().toISOString(), deadline: new Date(Date.now() + 10*24*60*60*1000).toISOString() },
-                    { id: 3, squadId: 2, title: "الإسعافات الأولية", description: "تعلم أساسيات الإسعافات الأولية", pointsValue: 25, createdAt: new Date().toISOString(), deadline: new Date(Date.now() + 5*24*60*60*1000).toISOString() }
+                    { id: 1, squadId: 1, title: "حفظ أخلاق الكشاف", description: "حفظ مبادئ وقانون الكشافة", pointsValue: 15, createdAt: now.toISOString(), startDateTime: startDefault.toISOString(), endDateTime: endDefault.toISOString(), notifiedStart: false, notifiedEndSoon: false },
+                    { id: 2, squadId: 1, title: "مهارات التخييم", description: "تعلم كيفية نصب الخيمة وإشعال النار", pointsValue: 20, createdAt: now.toISOString(), startDateTime: startDefault.toISOString(), endDateTime: endDefault.toISOString(), notifiedStart: false, notifiedEndSoon: false }
                 ],
-                taskSubmissions: [
-                    { id: 1, taskId: 1, memberId: 1, status: "submitted", submittedAt: new Date().toISOString(), pointsAwarded: null, reviewedBy: null, reviewedAt: null }
-                ],
-                messages: [
-                    { id: 1, squadId: 1, senderId: 1, senderName: "أحمد محمد", text: "مرحباً بكم في طليعة النصر!", timestamp: new Date().toISOString(), isBroadcast: false }
-                ]
+                taskSubmissions: [],
+                messages: []
             };
             await saveAllDataToFirebase();
         }
 
-        // Listen for real-time updates
         function listenForRealTimeUpdates() {
             database.ref('appData').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data && currentUser) {
-                    const oldMembersLength = appData.members.length;
                     appData.branches = data.branches || [];
                     appData.squads = data.squads || [];
                     appData.members = data.members || [];
                     appData.tasks = data.tasks || [];
                     appData.taskSubmissions = data.taskSubmissions || [];
                     appData.messages = data.messages || [];
-                    
-                    // Refresh UI if data changed
-                    if (oldMembersLength !== appData.members.length && document.getElementById('membersTable')) {
-                        renderMembersTable();
-                    }
-                    if (document.getElementById('adminPageContent')) {
-                        refreshCurrentAdminPage();
-                    }
-                    if (document.getElementById('memberPageContent')) {
-                        refreshCurrentMemberPage();
-                    }
-                    showToast('تم تحديث البيانات', 'info');
+                    if (document.getElementById('adminPageContent')) refreshCurrentAdminPage();
+                    if (document.getElementById('memberPageContent')) refreshCurrentMemberPage();
                 }
             });
         }
@@ -886,7 +750,6 @@
             else if (activePage === 'tasks') renderMemberTasks();
         }
 
-        // ==================== HELPER FUNCTIONS ====================
         function showToast(message, type = "success") {
             const toast = document.createElement('div');
             toast.style.cssText = `position:fixed; bottom:20px; right:20px; background:${type === 'success' ? '#2ecc71' : type === 'error' ? '#e74c3c' : '#3498db'}; color:white; padding:12px 24px; border-radius:40px; z-index:3000; animation:slideIn 0.3s ease; box-shadow:0 4px 12px rgba(0,0,0,0.15); font-weight:500;`;
@@ -895,14 +758,10 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        // ==================== SIDEBAR FUNCTIONS ====================
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            const hamburger = document.getElementById('hamburger');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-            hamburger.classList.toggle('open');
+            document.getElementById('sidebar')?.classList.toggle('open');
+            document.getElementById('sidebarOverlay')?.classList.toggle('active');
+            document.getElementById('hamburger')?.classList.toggle('open');
         }
 
         function closeSidebar() {
@@ -911,19 +770,13 @@
             document.getElementById('hamburger')?.classList.remove('open');
         }
 
-        // ==================== RENDER FUNCTIONS ====================
         function render() {
             const app = document.getElementById('app');
-            if (!currentUser) {
-                renderLogin(app);
-            } else if (isAdmin) {
-                renderAdminApp(app);
-            } else {
-                renderMemberApp(app);
-            }
+            if (!currentUser) renderLogin(app);
+            else if (isAdmin) renderAdminApp(app);
+            else renderMemberApp(app);
         }
 
-        // ==================== LOGIN ====================
         function renderLogin(container) {
             container.innerHTML = `
                 <div class="login-container">
@@ -940,9 +793,8 @@
                             </div>
                             <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">تسجيل الدخول</button>
                         </form>
-                       <div style="margin-top: 20px; font-size: 12px; color: #999;">
+                        <div style="margin-top: 20px; font-size: 12px; color: #999;">
                             <i class="fas fa-key"></i> تم التطوير بواسطة ::Tecno Shark Company
-                            <i ></i>01144100018||01126125881
                         </div>
                     </div>
                 </div>
@@ -956,7 +808,9 @@
                     currentUser = { id: 'admin', name: 'القائد العام', isAdmin: true };
                     isAdmin = true;
                     await loadAllDataFromFirebase();
+                    await loadNotifications();
                     listenForRealTimeUpdates();
+                    startNotificationWatcher();
                     showToast('مرحباً أيها القائد!');
                     render();
                 } else {
@@ -965,7 +819,9 @@
                         currentUser = member;
                         isAdmin = false;
                         await loadAllDataFromFirebase();
+                        await loadNotifications();
                         listenForRealTimeUpdates();
+                        startNotificationWatcher();
                         showToast(`مرحباً ${member.name}`);
                         render();
                     } else {
@@ -975,7 +831,6 @@
             });
         }
 
-        // ==================== ADMIN APP ====================
         function renderAdminApp(container) {
             container.innerHTML = `
                 <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
@@ -995,23 +850,22 @@
                         <li data-page="tasks"><a onclick="changeAdminPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
                     </ul>
                 </div>
-
                 <div class="header">
                     <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - سحابة Firebase</p></div></div>
-                   <div class="user-info">
-    <i class="fas fa-user-shield"></i>
-    <span>${currentUser.name}</span>
-    <button class="logout-btn" onclick="showNotificationsModal()" style="background:#3498db; margin-left:5px;">
-        <i class="fas fa-bell"></i> 
-        <span id="notificationBadge">${notifications.filter(n => !n.isRead).length || ''}</span>
-    </button>
-    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
-</div>
-
+                    <div class="user-info">
+                        <i class="fas fa-user-shield"></i>
+                        <span>${currentUser.name}</span>
+                        <button class="logout-btn" onclick="showNotificationsModal()" style="background:#3498db; margin-left:5px;">
+                            <i class="fas fa-bell"></i> 
+                            <span id="notificationBadge">${notifications.filter(n => !n.isRead).length || ''}</span>
+                        </button>
+                        <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+                    </div>
+                </div>
                 <div class="main-content">
                     <div id="adminPageContent"></div>
                 </div>
-                <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
+                <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | متزامن مع Firebase</p></div>
             `;
             renderAdminDashboard();
         }
@@ -1027,213 +881,143 @@
             closeSidebar();
         }
 
-      // ==================== ADMIN DASHBOARD (معدل مع التكاليف النشطة) ====================
-function renderAdminDashboard() {
-    const stats = {
-        members: appData.members.length,
-        squads: appData.squads.length,
-        branches: appData.branches.length,
-        tasks: appData.tasks.length,
-        pendingSubmissions: appData.taskSubmissions.filter(ts => ts.status === 'submitted' && !ts.pointsAwarded).length
-    };
-    
-    // حساب التكاليف النشطة (لم تنتهِ بعد)
-    const now = new Date();
-    const activeTasks = appData.tasks.filter(task => {
-        const endDate = new Date(task.endDateTime);
-        return endDate > now;
-    });
-    
-    const container = document.getElementById('adminPageContent');
-    container.innerHTML = `
-        <div class="stats-grid">
-            <div class="stat-card"><i class="fas fa-users"></i><div class="number">${stats.members}</div><div class="label">الأعضاء</div></div>
-            <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${stats.squads}</div><div class="label">الطلايع</div></div>
-            <div class="stat-card"><i class="fas fa-building"></i><div class="number">${stats.branches}</div><div class="label">المناطق</div></div>
-            <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${stats.tasks}</div><div class="label">التكاليف</div></div>
-            <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${stats.pendingSubmissions}</div><div class="label">تسليمات معلقة</div></div>
-        </div>
-        
-        <!-- بطاقة التكاليف النشطة مع العدادات -->
-        <div class="card">
-            <h3><i class="fas fa-fire" style="color:#e74c3c;"></i> التكاليف النشطة <span class="badge" style="background:#e74c3c;">${activeTasks.length}</span></h3>
-            <div id="activeTasksContainer"></div>
-        </div>
-        
-        <!-- ترتيب الأعضاء حسب النقاط -->
-        <div class="card">
-            <h3><i class="fas fa-trophy"></i> ترتيب الأعضاء حسب النقاط</h3>
-            <div class="squad-filter" style="margin-bottom: 15px;">
-                <select id="leaderboardSquadFilter" onchange="renderLeaderboard()" style="flex: 1;">
-                    <option value="all">📊 الكل (أعلى عضو في الكل)</option>
-                    ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
-                </select>
-            </div>
-            <div id="leaderboardContainer"></div>
-        </div>
-        
-        <div class="card"><h3><i class="fas fa-chart-line"></i> ترتيب الطلايع بالنقاط</h3><div id="squadRanking"></div></div>
-    `;
-    
-    // عرض التكاليف النشطة
-    renderActiveTasksList();
-    
-    // عرض لوحة المتصدرين
-    renderLeaderboard();
-    
-    // ترتيب الطلايع
-    const ranking = appData.squads.map(s => ({ ...s, totalPoints: appData.members.filter(m => m.squadId === s.id).reduce((sum, m) => sum + m.points, 0) })).sort((a,b) => b.totalPoints - a.totalPoints);
-    document.getElementById('squadRanking').innerHTML = ranking.map((s, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${s.name}</div><div><strong>${s.totalPoints}</strong> نقطة</div></div>`).join('');
-    
-    // بدء تحديث العدادات كل ثانية
-    if (window.activeTasksInterval) clearInterval(window.activeTasksInterval);
-    window.activeTasksInterval = setInterval(() => {
-        renderActiveTasksList();
-    }, 1000);
-}
-// ==================== عرض التكاليف النشطة في لوحة التحكم مع عدادات ====================
-function renderActiveTasksList() {
-    const container = document.getElementById('activeTasksContainer');
-    if (!container) return;
-    
-    const now = new Date();
-    const activeTasks = appData.tasks.filter(task => {
-        const endDate = new Date(task.endDateTime);
-        return endDate > now;
-    }).sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
-    
-    if (activeTasks.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:20px;">📭 لا توجد تكاليف نشطة حالياً</p>';
-        return;
-    }
-    
-    container.innerHTML = activeTasks.map(task => {
-        const startDate = new Date(task.startDateTime);
-        const endDate = new Date(task.endDateTime);
-        const squadName = appData.squads.find(s => s.id === task.squadId)?.name || '-';
-        
-        let countdownHtml = '';
-        let countdownClass = '';
-        let statusText = '';
-        
-        if (now < startDate) {
-            // لم يبدأ بعد
-            const diffMs = startDate - now;
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-            countdownHtml = `<span class="countdown-timer countdown-start">⏳ يبدأ بعد: ${diffDays}ي ${diffHours}س ${diffMins}د ${diffSecs}ث</span>`;
-            statusText = 'لم يبدأ';
-        } else if (now >= startDate && now <= endDate) {
-            // نشط حاليًا
-            const diffMs = endDate - now;
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-            countdownHtml = `<span class="countdown-timer countdown-active">⏰ متبقي: ${diffDays}ي ${diffHours}س ${diffMins}د ${diffSecs}ث</span>`;
-            statusText = 'نشط';
-        } else {
-            countdownHtml = `<span class="countdown-timer countdown-end">✅ انتهى</span>`;
-            statusText = 'منتهي';
-        }
-        
-        // أيقونة حسب الحالة
-        let statusIcon = now < startDate ? '🕐' : (now <= endDate ? '🔥' : '✅');
-        
-        return `
-            <div class="active-task-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                    <div>
-                        <span class="active-task-title">${statusIcon} ${task.title}</span>
-                        <div class="active-task-squad"><i class="fas fa-flag"></i> ${squadName} | ${task.pointsValue} نقطة</div>
+        function renderAdminDashboard() {
+            const stats = {
+                members: appData.members.length,
+                squads: appData.squads.length,
+                branches: appData.branches.length,
+                tasks: appData.tasks.length,
+                pendingSubmissions: appData.taskSubmissions.filter(ts => ts.status === 'submitted' && !ts.pointsAwarded).length
+            };
+            
+            const now = new Date();
+            const activeTasks = appData.tasks.filter(task => new Date(task.endDateTime) > now);
+            
+            const container = document.getElementById('adminPageContent');
+            container.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card"><i class="fas fa-users"></i><div class="number">${stats.members}</div><div class="label">الأعضاء</div></div>
+                    <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${stats.squads}</div><div class="label">الطلايع</div></div>
+                    <div class="stat-card"><i class="fas fa-building"></i><div class="number">${stats.branches}</div><div class="label">المناطق</div></div>
+                    <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${stats.tasks}</div><div class="label">التكاليف</div></div>
+                    <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${stats.pendingSubmissions}</div><div class="label">تسليمات معلقة</div></div>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-fire" style="color:#e74c3c;"></i> التكاليف النشطة <span class="badge" style="background:#e74c3c;">${activeTasks.length}</span></h3>
+                    <div id="activeTasksContainer"></div>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-trophy"></i> ترتيب الأعضاء حسب النقاط</h3>
+                    <div class="squad-filter" style="margin-bottom: 15px;">
+                        <select id="leaderboardSquadFilter" onchange="renderLeaderboard()" style="flex: 1;">
+                            <option value="all">📊 الكل (أعلى عضو في الكل)</option>
+                            ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+                        </select>
                     </div>
-                    <span class="badge ${now < startDate ? 'badge-warning' : (now <= endDate ? 'badge-active' : 'badge-inactive')}" style="background:${now < startDate ? '#f39c12' : (now <= endDate ? '#2ecc71' : '#e74c3c')};">${statusText}</span>
+                    <div id="leaderboardContainer"></div>
                 </div>
-                <div style="margin-top: 8px;">
-                    <small><i class="fas fa-calendar-alt"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} → ${new Date(task.endDateTime).toLocaleString('ar-EG')}</small>
-                </div>
-                ${countdownHtml}
-            </div>
-        `;
-    }).join('');
-}
+                
+                <div class="card"><h3><i class="fas fa-chart-line"></i> ترتيب الطلايع بالنقاط</h3><div id="squadRanking"></div></div>
+            `;
+            
+            renderActiveTasksList();
+            renderLeaderboard();
+            
+            const ranking = appData.squads.map(s => ({ ...s, totalPoints: appData.members.filter(m => m.squadId === s.id).reduce((sum, m) => sum + m.points, 0) })).sort((a,b) => b.totalPoints - a.totalPoints);
+            document.getElementById('squadRanking').innerHTML = ranking.map((s, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${s.name}</div><div><strong>${s.totalPoints}</strong> نقطة</div></div>`).join('');
+            
+            if (window.activeTasksInterval) clearInterval(window.activeTasksInterval);
+            window.activeTasksInterval = setInterval(() => renderActiveTasksList(), 1000);
+        }
 
-// ==================== دالة عرض الترتيب مع الفلتر ====================
-function renderLeaderboard() {
-    const filterValue = document.getElementById('leaderboardSquadFilter')?.value || 'all';
-    let filteredMembers = [];
-    
-    if (filterValue === 'all') {
-        // عرض جميع الأعضاء مرتبين تنازلياً مع إظهار أعلى عضو في الكل
-        filteredMembers = [...appData.members].sort((a, b) => b.points - a.points);
-    } else {
-        // عرض أعضاء طليعة محددة فقط
-        const squadId = parseInt(filterValue);
-        filteredMembers = appData.members.filter(m => m.squadId === squadId).sort((a, b) => b.points - a.points);
-    }
-    
-    const container = document.getElementById('leaderboardContainer');
-    if (!container) return;
-    
-    if (filteredMembers.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:20px;">لا يوجد أعضاء في هذه الطليعة</p>';
-        return;
-    }
-    
-    // إظهار أعلى عضو بشكل مميز إذا كان الفلتر "الكل"
-    const showHighlight = (filterValue === 'all');
-    const topMember = showHighlight ? filteredMembers[0] : null;
-    
-    let html = `
-        <div style="overflow-x:auto;">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>الاسم</th>
-                        <th>الكود</th>
-                        <th>الطليعة</th>
-                        <th>النقاط</th>
-                        <th>الرتبة</th>
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-    
-    filteredMembers.forEach((member, index) => {
-        const squadName = appData.squads.find(s => s.id === member.squadId)?.name || '-';
-        const isTop = showHighlight && index === 0;
-        const highlightStyle = isTop ? 'background: linear-gradient(90deg, #fff3cd, #ffeeba); border-right: 4px solid #d4a017;' : '';
-        
-        html += `
-            <tr style="${highlightStyle}">
-                <td><strong>${index + 1}</strong> ${isTop ? '<i class="fas fa-crown" style="color:#d4a017;"></i>' : ''}</td>
-                <td>${member.name}</td>
-                <td>${member.code}</td>
-                <td>${squadName}</td>
-                <td><span style="font-weight:bold; color:#1a472a;">${member.points}</span></td>
-                <td>${member.rank}</td>
-            </tr>
-        `;
-    });
-    
-    html += `</tbody></table></div>`;
-    
-    if (showHighlight && topMember) {
-        html = `<div style="background: linear-gradient(135deg, #1a472a, #0d2818); color: white; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center;">
-                    <i class="fas fa-crown" style="font-size: 28px; color: #d4a017;"></i>
-                    <h3 style="margin: 5px 0;">أعلى عضو في النظام</h3>
-                    <p style="font-size: 18px; font-weight: bold;">${topMember.name} (${topMember.code})</p>
-                    <p><strong>${topMember.points}</strong> نقطة - ${topMember.rank}</p>
-                </div>` + html;
-    }
-    
-    container.innerHTML = html;
-}
+        function renderActiveTasksList() {
+            const container = document.getElementById('activeTasksContainer');
+            if (!container) return;
+            
+            const now = new Date();
+            const activeTasks = appData.tasks.filter(task => new Date(task.endDateTime) > now).sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+            
+            if (activeTasks.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:20px;">📭 لا توجد تكاليف نشطة حالياً</p>';
+                return;
+            }
+            
+            container.innerHTML = activeTasks.map(task => {
+                const startDate = new Date(task.startDateTime);
+                const endDate = new Date(task.endDateTime);
+                const squadName = appData.squads.find(s => s.id === task.squadId)?.name || '-';
+                
+                let countdownHtml = '', statusText = '';
+                if (now < startDate) {
+                    const diff = startDate - now;
+                    const days = Math.floor(diff / (1000*60*60*24));
+                    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+                    const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+                    const secs = Math.floor((diff % (1000*60)) / 1000);
+                    countdownHtml = `<span class="countdown-timer countdown-start">⏳ يبدأ بعد: ${days}ي ${hours}س ${mins}د ${secs}ث</span>`;
+                    statusText = 'لم يبدأ';
+                } else if (now <= endDate) {
+                    const diff = endDate - now;
+                    const days = Math.floor(diff / (1000*60*60*24));
+                    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+                    const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+                    const secs = Math.floor((diff % (1000*60)) / 1000);
+                    countdownHtml = `<span class="countdown-timer countdown-active">⏰ متبقي: ${days}ي ${hours}س ${mins}د ${secs}ث</span>`;
+                    statusText = 'نشط';
+                } else {
+                    countdownHtml = `<span class="countdown-timer countdown-end">✅ انتهى</span>`;
+                    statusText = 'منتهي';
+                }
+                
+                return `
+                    <div class="active-task-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                            <div>
+                                <span class="active-task-title">📋 ${task.title}</span>
+                                <div class="active-task-squad"><i class="fas fa-flag"></i> ${squadName} | ${task.pointsValue} نقطة</div>
+                            </div>
+                            <span class="badge" style="background:${now < startDate ? '#f39c12' : (now <= endDate ? '#2ecc71' : '#e74c3c')};">${statusText}</span>
+                        </div>
+                        <div style="margin-top: 8px;">
+                            <small><i class="fas fa-calendar-alt"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} → ${new Date(task.endDateTime).toLocaleString('ar-EG')}</small>
+                        </div>
+                        ${countdownHtml}
+                    </div>
+                `;
+            }).join('');
+        }
 
-        // ==================== ADMIN MEMBERS ====================
+        function renderLeaderboard() {
+            const filterValue = document.getElementById('leaderboardSquadFilter')?.value || 'all';
+            let filteredMembers = filterValue === 'all' ? [...appData.members].sort((a,b) => b.points - a.points) : appData.members.filter(m => m.squadId == filterValue).sort((a,b) => b.points - a.points);
+            
+            const container = document.getElementById('leaderboardContainer');
+            if (!container) return;
+            if (filteredMembers.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px;">لا يوجد أعضاء</p>'; return; }
+            
+            const showHighlight = filterValue === 'all';
+            const topMember = showHighlight ? filteredMembers[0] : null;
+            
+            let html = `<div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>#</th><th>الاسم</th><th>الكود</th><th>الطليعة</th><th>النقاط</th><th>الرتبة</th></tr></thead><tbody>`;
+            filteredMembers.forEach((member, index) => {
+                const squadName = appData.squads.find(s => s.id === member.squadId)?.name || '-';
+                const isTop = showHighlight && index === 0;
+                html += `<tr style="${isTop ? 'background: #fff3cd;' : ''}"><td><strong>${index+1}</strong> ${isTop ? '👑' : ''}</td><td>${member.name}</td><td>${member.code}</td><td>${squadName}</td><td><strong>${member.points}</strong></td><td>${member.rank}</td></tr>`;
+            });
+            html += `</tbody></table></div>`;
+            if (showHighlight && topMember) {
+                html = `<div style="background: linear-gradient(135deg, #1a472a, #0d2818); color: white; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center;">
+                            <i class="fas fa-crown" style="font-size: 28px; color: #d4a017;"></i>
+                            <h3>أعلى عضو في النظام</h3>
+                            <p style="font-size: 18px; font-weight: bold;">${topMember.name} (${topMember.code})</p>
+                            <p>${topMember.points} نقطة - ${topMember.rank}</p>
+                        </div>` + html;
+            }
+            container.innerHTML = html;
+        }
+
         function renderAdminMembers() {
             const container = document.getElementById('adminPageContent');
             container.innerHTML = `
@@ -1256,27 +1040,20 @@ function renderLeaderboard() {
             const branchFilter = document.getElementById('branchFilter')?.value || '';
             const squadFilter = document.getElementById('squadFilter')?.value || '';
             let filtered = appData.members.filter(m => 
-                (m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm) || m.username.toLowerCase().includes(searchTerm)) &&
+                (m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm)) &&
                 (branchFilter === '' || m.branchId == branchFilter) &&
                 (squadFilter === '' || m.squadId == squadFilter)
             );
             const container = document.getElementById('membersTable');
+            if (!container) return;
             container.innerHTML = `
                 <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>الكود</th><th>الاسم</th><th>اسم المستخدم</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الإجراءات</th></tr></thead><tbody>
-                ${filtered.map(m => `<tr>
-                    <td>${m.code}</td>
-                    <td>${m.name}</td>
-                    <td>${m.username}</td>
-                    <td>${m.phone}</td>
-                    <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
-                    <td>${m.points}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
-                        <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteMember(${m.id})"><i class="fas fa-trash"></i></button>
-                                        </tr>
-                `).join('')}
+                ${filtered.map(m => `<tr><td>${m.code}</td><td>${m.name}</td><td>${m.username}</td><td>${m.phone}</td><td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td><td>${m.points}</td><td>
+                    <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteMember(${m.id})"><i class="fas fa-trash"></i></button>
+                </td></tr>`).join('')}
                 ${filtered.length === 0 ? '<tr><td colspan="7" style="text-align:center;">لا توجد بيانات</td></tr>' : ''}
                 </tbody></table></div>
             `;
@@ -1284,12 +1061,9 @@ function renderLeaderboard() {
 
         function filterMembersTable() { renderMembersTable(); }
 
-        // ==================== MEMBER MODALS ====================
         function showMemberDetails(id) {
             const m = appData.members.find(m => m.id === id);
             if (!m) return;
-            const squad = appData.squads.find(s => s.id === m.squadId);
-            const branch = appData.branches.find(b => b.id === m.branchId);
             const modal = document.createElement('div');
             modal.className = 'modal';
             modal.style.display = 'flex';
@@ -1300,15 +1074,12 @@ function renderLeaderboard() {
                         <div class="detail-item"><div class="detail-label">الكود</div><div class="detail-value">${m.code}</div></div>
                         <div class="detail-item"><div class="detail-label">الاسم</div><div class="detail-value">${m.name}</div></div>
                         <div class="detail-item"><div class="detail-label">اسم المستخدم</div><div class="detail-value">${m.username}</div></div>
-                        <div class="detail-item"><div class="detail-label">كلمة المرور</div><div class="detail-value">••••••</div></div>
                         <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${m.phone}</div></div>
-                        <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
-                        <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${squad?.name || '-'}</div></div>
-                        <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${m.rank}</div></div>
+                        <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</div></div>
                         <div class="detail-item"><div class="detail-label">النقاط</div><div class="detail-value">${m.points}</div></div>
-                        <div class="detail-item"><div class="detail-label">تاريخ الانضمام</div><div class="detail-value">${new Date(m.joinedAt).toLocaleDateString('ar-EG')}</div></div>
+                        <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${m.rank}</div></div>
                     </div>
-                    <div style="text-align:center;"><button class="btn btn-primary" onclick="this.closest('.modal').remove()">إغلاق</button></div>
+                    <button class="btn btn-primary" onclick="this.closest('.modal').remove()" style="width:100%;">إغلاق</button>
                 </div>
             `;
             document.body.appendChild(modal);
@@ -1324,8 +1095,8 @@ function renderLeaderboard() {
                     <form id="addMemberForm">
                         <div class="input-group"><label>الاسم الكامل</label><input type="text" id="memberName" required></div>
                         <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="memberPhone" required></div>
-                        <div class="input-group"><label>كود العضو</label><div class="code-generator"><input type="text" id="memberCode" required><button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCode()">توليد</button></div></div>
-                        <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="memberUsername" required></div>
+                        <div class="input-group"><label>كود العضو</label><input type="text" id="memberCode" placeholder="مثال: KS001" required></div>
+                        <div class="input-group"><label>اسم المستخدم</label><input type="text" id="memberUsername" required></div>
                         <div class="input-group"><label>كلمة المرور</label><input type="password" id="memberPassword" required></div>
                         <div class="input-group"><label>المنطقة</label><select id="memberBranch">${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select></div>
                         <div class="input-group"><label>الطليعة</label><select id="memberSquad">${appData.squads.filter(s => s.isOpen).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select></div>
@@ -1338,7 +1109,7 @@ function renderLeaderboard() {
                 e.preventDefault();
                 const newUsername = document.getElementById('memberUsername').value;
                 if (appData.members.some(m => m.username === newUsername)) {
-                    showToast('اسم المستخدم موجود مسبقاً', 'error');
+                    showToast('اسم المستخدم موجود', 'error');
                     return;
                 }
                 const newMember = {
@@ -1356,7 +1127,7 @@ function renderLeaderboard() {
                 };
                 appData.members.push(newMember);
                 await saveAllDataToFirebase();
-                showToast('تم إضافة العضو بنجاح');
+                showToast('تم إضافة العضو');
                 modal.remove();
                 renderMembersTable();
                 renderAdminDashboard();
@@ -1371,39 +1142,33 @@ function renderLeaderboard() {
             modal.style.display = 'flex';
             modal.innerHTML = `
                 <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-edit"></i> تعديل بيانات العضو: ${member.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <div class="modal-header"><h3><i class="fas fa-edit"></i> تعديل العضو: ${member.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
                     <form id="editMemberForm">
                         <div class="input-group"><label>الاسم الكامل</label><input type="text" id="editName" value="${member.name}" required></div>
                         <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="editPhone" value="${member.phone}" required></div>
                         <div class="input-group"><label>كود العضو</label><input type="text" id="editCode" value="${member.code}" required></div>
                         <div class="input-group"><label>اسم المستخدم</label><input type="text" id="editUsername" value="${member.username}" required></div>
-                        <div class="input-group"><label>كلمة المرور</label><input type="password" id="editPassword" placeholder="اتركه فارغاً للحفاظ على نفس كلمة المرور"></div>
+                        <div class="input-group"><label>كلمة المرور</label><input type="password" id="editPassword" placeholder="اتركه فارغاً"></div>
                         <div class="input-group"><label>المنطقة</label><select id="editBranch">${appData.branches.map(b => `<option value="${b.id}" ${b.id === member.branchId ? 'selected' : ''}>${b.name}</option>`).join('')}</select></div>
                         <div class="input-group"><label>الطليعة</label><select id="editSquad">${appData.squads.map(s => `<option value="${s.id}" ${s.id === member.squadId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;">حفظ التعديلات</button>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">حفظ</button>
                     </form>
                 </div>
             `;
             document.body.appendChild(modal);
             document.getElementById('editMemberForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const newUsername = document.getElementById('editUsername').value;
-                if (newUsername !== member.username && appData.members.some(m => m.username === newUsername)) {
-                    showToast('اسم المستخدم موجود مسبقاً', 'error');
-                    return;
-                }
                 member.name = document.getElementById('editName').value;
                 member.phone = document.getElementById('editPhone').value;
                 member.code = document.getElementById('editCode').value;
-                member.username = newUsername;
+                member.username = document.getElementById('editUsername').value;
                 if (document.getElementById('editPassword').value) member.password = document.getElementById('editPassword').value;
                 member.branchId = parseInt(document.getElementById('editBranch').value);
                 member.squadId = parseInt(document.getElementById('editSquad').value);
                 await saveAllDataToFirebase();
-                showToast('تم تحديث بيانات العضو');
+                showToast('تم التحديث');
                 modal.remove();
                 renderMembersTable();
-                renderAdminDashboard();
             });
         }
 
@@ -1415,13 +1180,12 @@ function renderLeaderboard() {
             modal.style.display = 'flex';
             modal.innerHTML = `
                 <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-star"></i> تعديل نقاط العضو: ${member.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <div class="modal-header"><h3><i class="fas fa-star"></i> تعديل نقاط ${member.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
                     <div style="text-align:center; margin-bottom:20px;"><div style="font-size:48px; font-weight:bold; color:#d4a017;">${member.points}</div><div>النقاط الحالية</div></div>
                     <form id="adjustPointsForm">
                         <div class="input-group"><label>إضافة نقاط (+)</label><input type="number" id="addPoints" value="0" min="0"></div>
                         <div class="input-group"><label>خصم نقاط (-)</label><input type="number" id="subtractPoints" value="0" min="0"></div>
-                        <div class="input-group"><label>سبب التعديل (اختياري)</label><input type="text" id="pointsReason" placeholder="مثلاً: إنجاز مهمة، مخالفة..."></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;">تطبيق التعديل</button>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">تطبيق</button>
                     </form>
                 </div>
             `;
@@ -1446,38 +1210,15 @@ function renderLeaderboard() {
         }
 
         function deleteMember(id) {
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content" style="max-width:400px;">
-                    <div class="modal-header"><h3><i class="fas fa-trash-alt"></i> تأكيد الحذف</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <p style="text-align:center; margin:20px 0;">هل أنت متأكد من حذف هذا العضو؟</p>
-                    <div style="display:flex; gap:10px; justify-content:center;">
-                        <button class="btn btn-danger" onclick="confirmDeleteMember(${id}); this.closest('.modal').remove();">نعم، احذف</button>
-                        <button class="btn btn-primary" onclick="this.closest('.modal').remove()">إلغاء</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
+            if (confirm('هل أنت متأكد من حذف هذا العضو؟')) {
+                appData.members = appData.members.filter(m => m.id !== id);
+                saveAllDataToFirebase();
+                renderMembersTable();
+                renderAdminDashboard();
+                showToast('تم حذف العضو');
+            }
         }
 
-        async function confirmDeleteMember(id) {
-            appData.members = appData.members.filter(m => m.id !== id);
-            await saveAllDataToFirebase();
-            renderMembersTable();
-            renderAdminDashboard();
-            showToast('تم حذف العضو');
-        }
-
-        function generateMemberCode() {
-            const prefix = 'KS';
-            const num = String(appData.members.length + 1).padStart(3, '0');
-            const codeInput = document.getElementById('memberCode');
-            if (codeInput) codeInput.value = `${prefix}${num}`;
-        }
-
-        // ==================== ADMIN SQUADS ====================
         function renderAdminSquads() {
             const container = document.getElementById('adminPageContent');
             container.innerHTML = `
@@ -1489,6 +1230,7 @@ function renderLeaderboard() {
 
         function renderSquadsList() {
             const container = document.getElementById('squadsList');
+            if (!container) return;
             container.innerHTML = appData.squads.map(s => {
                 const branchName = appData.branches.find(b => b.id === s.branchId)?.name;
                 const memberCount = appData.members.filter(m => m.squadId === s.id).length;
@@ -1511,15 +1253,14 @@ function renderLeaderboard() {
             modal.style.display = 'flex';
             modal.innerHTML = `
                 <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-building"></i> إضافة منطقة جديدة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <div class="modal-header"><h3><i class="fas fa-building"></i> إضافة منطقة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
                     <form id="addBranchForm"><div class="input-group"><label>اسم المنطقة</label><input type="text" id="branchName" required></div><button type="submit" class="btn btn-primary" style="width:100%;">إضافة</button></form>
                 </div>
             `;
             document.body.appendChild(modal);
             document.getElementById('addBranchForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const newBranch = { id: Date.now(), name: document.getElementById('branchName').value, createdAt: new Date().toISOString() };
-                appData.branches.push(newBranch);
+                appData.branches.push({ id: Date.now(), name: document.getElementById('branchName').value, createdAt: new Date().toISOString() });
                 await saveAllDataToFirebase();
                 showToast('تم إضافة المنطقة');
                 modal.remove();
@@ -1533,9 +1274,9 @@ function renderLeaderboard() {
             modal.style.display = 'flex';
             modal.innerHTML = `
                 <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-flag"></i> إضافة طليعة جديدة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <div class="modal-header"><h3><i class="fas fa-flag"></i> إضافة طليعة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
                     <form id="addSquadForm">
-                        <div class="input-group"><label>اختر المنطقة</label><select id="squadBranch">${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select></div>
+                        <div class="input-group"><label>المنطقة</label><select id="squadBranch">${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select></div>
                         <div class="input-group"><label>اسم الطليعة</label><input type="text" id="squadName" required></div>
                         <div class="input-group"><label>اسم القائد</label><input type="text" id="squadLeader" required></div>
                         <button type="submit" class="btn btn-primary" style="width:100%;">إضافة</button>
@@ -1545,15 +1286,14 @@ function renderLeaderboard() {
             document.body.appendChild(modal);
             document.getElementById('addSquadForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const newSquad = {
+                appData.squads.push({
                     id: Date.now(),
                     branchId: parseInt(document.getElementById('squadBranch').value),
                     name: document.getElementById('squadName').value,
                     leader: document.getElementById('squadLeader').value,
                     isOpen: true,
                     createdAt: new Date().toISOString()
-                };
-                appData.squads.push(newSquad);
+                });
                 await saveAllDataToFirebase();
                 showToast('تم إضافة الطليعة');
                 modal.remove();
@@ -1570,89 +1310,56 @@ function renderLeaderboard() {
         }
 
         function deleteSquad(id) {
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content" style="max-width:400px;">
-                    <div class="modal-header"><h3><i class="fas fa-trash-alt"></i> تأكيد الحذف</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <p style="text-align:center; margin:20px 0;">هل أنت متأكد من حذف هذه الطليعة؟</p>
-                    <div style="display:flex; gap:10px; justify-content:center;">
-                        <button class="btn btn-danger" onclick="confirmDeleteSquad(${id}); this.closest('.modal').remove();">نعم، احذف</button>
-                        <button class="btn btn-primary" onclick="this.closest('.modal').remove()">إلغاء</button>
+            if (confirm('هل أنت متأكد من حذف هذه الطليعة؟')) {
+                appData.squads = appData.squads.filter(s => s.id !== id);
+                appData.tasks = appData.tasks.filter(t => t.squadId !== id);
+                saveAllDataToFirebase();
+                renderAdminSquads();
+                renderAdminDashboard();
+                showToast('تم حذف الطليعة');
+            }
+        }
+
+        function renderAdminCommunity() {
+            const container = document.getElementById('adminPageContent');
+            container.innerHTML = `
+                <div class="card">
+                    <h3><i class="fas fa-comments"></i> الكميونيتي - الدردشات</h3>
+                    <div class="squad-filter">
+                        <select id="adminChatFilter" onchange="loadAdminMessages()">
+                            <option value="all">📢 جميع الطلايع (بث عام)</option>
+                            ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+                        </select>
+                        <button class="broadcast-btn" onclick="showBroadcastModal()"><i class="fas fa-bullhorn"></i> إرسال للجميع</button>
+                    </div>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="adminChatMessages"></div>
+                        <div class="chat-input-area">
+                            <input type="text" id="adminMessageInput" placeholder="اكتب رسالتك...">
+                            <button onclick="sendAdminMessage()"><i class="fas fa-paper-plane"></i> إرسال</button>
+                        </div>
                     </div>
                 </div>
             `;
-            document.body.appendChild(modal);
+            loadAdminMessages();
         }
 
-        async function confirmDeleteSquad(id) {
-            const otherSquad = appData.squads.find(s => s.id !== id);
-            if (otherSquad) {
-                appData.members.forEach(m => { if (m.squadId === id) m.squadId = otherSquad.id; });
-            }
-            appData.squads = appData.squads.filter(s => s.id !== id);
-            appData.tasks = appData.tasks.filter(t => t.squadId !== id);
-            await saveAllDataToFirebase();
-            renderAdminSquads();
-            renderAdminDashboard();
-            showToast('تم حذف الطليعة');
-        }
-
-       // ==================== صفحة الكميونيتي (متجاوبة) ====================
-function renderAdminCommunity() {
-    const container = document.getElementById('adminPageContent');
-    container.innerHTML = `
-        <div class="card" style="padding: 15px;">
-            <h3 style="font-size: 16px; margin-bottom: 15px;"><i class="fas fa-comments"></i> الكميونيتي - الدردشات</h3>
-            <div class="squad-filter" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
-                <select id="adminChatFilter" onchange="loadAdminMessages()" style="flex: 2; min-width: 150px; padding: 8px 12px; border-radius: 25px;">
-                    <option value="all">📢 جميع الطلايع (بث عام)</option>
-                    ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
-                </select>
-                <button class="broadcast-btn" onclick="showBroadcastModal()" style="padding: 8px 15px; font-size: 13px; white-space: nowrap;">
-                    <i class="fas fa-bullhorn"></i> بث عام
-                </button>
-            </div>
-            <div class="chat-container" style="height: 450px; display: flex; flex-direction: column; background: #fff; border-radius: 15px; overflow: hidden;">
-                <div class="chat-messages" id="adminChatMessages" style="flex: 1; overflow-y: auto; padding: 15px; background: #f8f9fa;"></div>
-                <div class="chat-input-area" style="display: flex; gap: 10px; padding: 12px; background: white; border-top: 1px solid #eee; flex-wrap: wrap;">
-                    <input type="text" id="adminMessageInput" placeholder="اكتب رسالتك..." style="flex: 3; min-width: 150px; padding: 10px 15px; border-radius: 30px; border: 2px solid #e0e0e0;">
-                    <button onclick="sendAdminMessage()" style="flex: 1; min-width: 80px; padding: 10px; background: #d4a017; color: white; border: none; border-radius: 30px; cursor: pointer;">
-                        <i class="fas fa-paper-plane"></i> إرسال
-                    </button>
+        function loadAdminMessages() {
+            const filter = document.getElementById('adminChatFilter')?.value || 'all';
+            let messages = filter === 'all' ? appData.messages.filter(m => m.isBroadcast === true) : appData.messages.filter(m => m.squadId == filter && !m.isBroadcast);
+            messages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+            const container = document.getElementById('adminChatMessages');
+            if (!container) return;
+            if (messages.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px;">💬 لا توجد رسائل</p>'; return; }
+            container.innerHTML = messages.map(m => `
+                <div class="message sent">
+                    <div class="sender"><i class="fas fa-user"></i> ${m.senderName} ${m.isBroadcast ? '<span style="background:#e74c3c; padding:2px 6px; border-radius:10px; font-size:10px;">بث عام</span>' : ''}</div>
+                    <div class="text">${escapeHtml(m.text)}</div>
+                    <div class="time">${new Date(m.timestamp).toLocaleString('ar-EG')}</div>
                 </div>
-            </div>
-        </div>
-    `;
-    loadAdminMessages();
-}
-
-        // ==================== تحميل رسائل الأدمن مع تحسين العرض ====================
-function loadAdminMessages() {
-    const filter = document.getElementById('adminChatFilter')?.value || 'all';
-    let messages = filter === 'all' ? appData.messages.filter(m => m.isBroadcast === true) : appData.messages.filter(m => m.squadId == filter && !m.isBroadcast);
-    messages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
-    const container = document.getElementById('adminChatMessages');
-    if (!container) return;
-    
-    if (messages.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">💬 لا توجد رسائل بعد، ابدأ المحادثة!</p>';
-        return;
-    }
-    
-    container.innerHTML = messages.map(m => `
-        <div class="message sent" style="max-width: 85%; padding: 10px 15px; border-radius: 18px; background: linear-gradient(135deg, #d4a017, #b8860b); color: white; align-self: flex-start; margin-bottom: 10px;">
-            <div class="sender" style="font-size: 11px; opacity: 0.8; display: flex; justify-content: space-between; flex-wrap: wrap;">
-                <span><i class="fas fa-user"></i> ${m.senderName}</span>
-                ${m.isBroadcast ? '<span style="background:#e74c3c; padding:2px 8px; border-radius:10px; font-size:10px;">📢 بث عام</span>' : ''}
-            </div>
-            <div class="text" style="font-size: 14px; margin: 5px 0;">${escapeHtml(m.text)}</div>
-            <div class="time" style="font-size: 9px; text-align: left; opacity: 0.6;">${new Date(m.timestamp).toLocaleString('ar-EG')}</div>
-        </div>
-    `).join('');
-    container.scrollTop = container.scrollHeight;
-}
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
 
         async function sendAdminMessage() {
             const input = document.getElementById('adminMessageInput');
@@ -1681,9 +1388,9 @@ function loadAdminMessages() {
             modal.style.display = 'flex';
             modal.innerHTML = `
                 <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-bullhorn"></i> إرسال رسالة للجميع</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <textarea id="broadcastText" rows="4" placeholder="أدخل نص الرسالة..." style="width:100%; padding:12px; border-radius:12px; border:2px solid #e0e0e0; margin-bottom:15px; font-family:'Cairo';"></textarea>
-                    <button class="btn btn-primary" onclick="sendBroadcastMessage(); this.closest('.modal').remove();" style="width:100%;">إرسال للجميع</button>
+                    <div class="modal-header"><h3><i class="fas fa-bullhorn"></i> إرسال للجميع</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <textarea id="broadcastText" rows="4" placeholder="نص الرسالة..." style="width:100%; padding:12px; border-radius:12px; border:2px solid #e0e0e0; margin-bottom:15px;"></textarea>
+                    <button class="btn btn-primary" onclick="sendBroadcastMessage(); this.closest('.modal').remove();" style="width:100%;">إرسال</button>
                 </div>
             `;
             document.body.appendChild(modal);
@@ -1703,11 +1410,10 @@ function loadAdminMessages() {
             };
             appData.messages.push(newMessage);
             await saveAllDataToFirebase();
-            showToast('تم إرسال البث للجميع');
+            showToast('تم إرسال البث');
             if (document.getElementById('adminChatFilter')) loadAdminMessages();
         }
 
-        // ==================== ADMIN TASKS ====================
         function renderAdminTasks() {
             const container = document.getElementById('adminPageContent');
             container.innerHTML = `
@@ -1717,172 +1423,105 @@ function loadAdminMessages() {
             renderTasksListAdmin();
         }
 
-       // ==================== إضافة تكليف جديد مع وقت بدء وانتهاء ====================
-function showAddTaskModal() {
-    const squadId = document.getElementById('taskSquadSelect')?.value;
-    if (!squadId) { showToast('الرجاء اختيار الطليعة أولاً', 'error'); return; }
-    
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.style.display = 'flex';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-            <form id="addTaskForm">
-                <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
-                <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
-                <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" required min="1"></div>
-                
-                <div class="input-group"><label>📅 تاريخ ووقت البدء</label>
-                    <input type="datetime-local" id="taskStartDateTime" required>
-                    <small style="color:#666;">سيظهر التكليف قبل البدء بساعة</small>
+        function showAddTaskModal() {
+            const squadId = document.getElementById('taskSquadSelect')?.value;
+            if (!squadId) { showToast('اختر الطليعة أولاً', 'error'); return; }
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <form id="addTaskForm">
+                        <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
+                        <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
+                        <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" min="1" required></div>
+                        <div class="input-group"><label>📅 تاريخ ووقت البدء</label><input type="datetime-local" id="taskStartDateTime" required></div>
+                        <div class="input-group"><label>⏰ تاريخ ووقت الانتهاء</label><input type="datetime-local" id="taskEndDateTime" required></div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
+                    </form>
                 </div>
+            `;
+            document.body.appendChild(modal);
+            
+            const now = new Date();
+            const startDefault = new Date(now);
+            startDefault.setHours(now.getHours() + 1);
+            const endDefault = new Date(startDefault);
+            endDefault.setDate(startDefault.getDate() + 7);
+            document.getElementById('taskStartDateTime').value = startDefault.toISOString().slice(0,16);
+            document.getElementById('taskEndDateTime').value = endDefault.toISOString().slice(0,16);
+            
+            document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const startDateTime = new Date(document.getElementById('taskStartDateTime').value);
+                const endDateTime = new Date(document.getElementById('taskEndDateTime').value);
+                if (startDateTime >= endDateTime) { showToast('البدء قبل الانتهاء', 'error'); return; }
                 
-                <div class="input-group"><label>⏰ تاريخ ووقت الانتهاء</label>
-                    <input type="datetime-local" id="taskEndDateTime" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
-            </form>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    
-    // تعيين التواريخ الافتراضية
-    const now = new Date();
-    const startDefault = new Date(now);
-    startDefault.setHours(now.getHours() + 1);
-    startDefault.setMinutes(0);
-    
-    const endDefault = new Date(startDefault);
-    endDefault.setDate(startDefault.getDate() + 7);
-    endDefault.setHours(23, 59);
-    
-    document.getElementById('taskStartDateTime').value = startDefault.toISOString().slice(0, 16);
-    document.getElementById('taskEndDateTime').value = endDefault.toISOString().slice(0, 16);
-    
-    document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const startDateTime = new Date(document.getElementById('taskStartDateTime').value);
-        const endDateTime = new Date(document.getElementById('taskEndDateTime').value);
-        const nowDate = new Date();
-        
-        if (startDateTime >= endDateTime) {
-            showToast('تاريخ البدء يجب أن يكون قبل تاريخ الانتهاء', 'error');
-            return;
+                const newTask = {
+                    id: Date.now(),
+                    squadId: parseInt(squadId),
+                    title: document.getElementById('taskTitle').value,
+                    description: document.getElementById('taskDesc').value,
+                    pointsValue: parseInt(document.getElementById('taskPoints').value),
+                    createdAt: new Date().toISOString(),
+                    startDateTime: startDateTime.toISOString(),
+                    endDateTime: endDateTime.toISOString(),
+                    notifiedStart: false,
+                    notifiedEndSoon: false
+                };
+                appData.tasks.push(newTask);
+                await saveAllDataToFirebase();
+                await addNotification('new_task', `تم إضافة تكليف جديد: ${newTask.title}`, newTask.squadId);
+                showToast('تم إضافة التكليف');
+                modal.remove();
+                renderTasksListAdmin();
+                renderAdminDashboard();
+            });
         }
-        
-        if (endDateTime <= nowDate) {
-            showToast('تاريخ الانتهاء يجب أن يكون بعد الوقت الحالي', 'error');
-            return;
-        }
-        
-        const newTask = {
-            id: Date.now(),
-            squadId: parseInt(squadId),
-            title: document.getElementById('taskTitle').value,
-            description: document.getElementById('taskDesc').value,
-            pointsValue: parseInt(document.getElementById('taskPoints').value),
-            createdAt: new Date().toISOString(),
-            startDateTime: startDateTime.toISOString(),
-            endDateTime: endDateTime.toISOString(),
-            isActive: true,
-            notifiedStart: false,
-            notifiedEndSoon: false
-        };
-        appData.tasks.push(newTask);
-        await saveAllDataToFirebase();
-        
-        // إضافة إشعار للتكليف الجديد
-        await addNotification('new_task', `تم إضافة تكليف جديد: ${newTask.title}`, newTask.squadId);
-        
-        showToast('تم إضافة التكليف بنجاح');
-        modal.remove();
-        renderTasksListAdmin();
-        if (document.getElementById('adminPageContent')) renderAdminDashboard();
-    });
-}
 
-     // ==================== عرض التكاليف في لوحة الأدمن مع تحسين التوافق ====================
-function renderTasksListAdmin() {
-    const container = document.getElementById('tasksListAdmin');
-    if (!container) return;
-    
-    const now = new Date();
-    
-    if (appData.tasks.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:20px;">📭 لا توجد تكاليف حالياً</p>';
-        return;
-    }
-    
-    container.innerHTML = appData.tasks.map(task => {
-        const squadName = appData.squads.find(s => s.id === task.squadId)?.name;
-        const submissions = appData.taskSubmissions.filter(ts => ts.taskId === task.id);
-        const startDate = new Date(task.startDateTime);
-        const endDate = new Date(task.endDateTime);
-        
-        let statusBadge = '';
-        let statusText = '';
-        
-        if (now < startDate) {
-            statusBadge = 'badge-warning';
-            statusText = '⌛ لم يبدأ';
-        } else if (now > endDate) {
-            statusBadge = 'badge-inactive';
-            statusText = '❌ منتهي';
-        } else {
-            statusBadge = 'badge-active';
-            statusText = '✓ نشط';
-        }
-        
-        let countdownHtml = '';
-        if (now < startDate) {
-            const diffMs = startDate - now;
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-            countdownHtml = `<div class="task-meta" style="color:#f39c12; font-size:12px; margin-top:8px;"><i class="fas fa-hourglass-half"></i> ⏳ يبدأ بعد: ${diffDays}ي ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
-        } else if (now < endDate) {
-            const diffMs = endDate - now;
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-            countdownHtml = `<div class="task-meta" style="color:#2ecc71; font-size:12px; margin-top:8px;"><i class="fas fa-clock"></i> ⏰ متبقي: ${diffDays}ي ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
-        } else {
-            countdownHtml = `<div class="task-meta" style="color:#e74c3c; font-size:12px; margin-top:8px;"><i class="fas fa-ban"></i> ❌ انتهى التكليف</div>`;
-        }
-        
-        return `
-            <div class="task-item" style="margin-bottom: 15px;">
-                <div class="task-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                    <span class="task-title" style="font-size: 15px;">📋 ${task.title}</span>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <span class="task-points" style="background: #d4a017; padding: 3px 10px; border-radius: 20px; font-size: 11px;">${task.pointsValue} نقطة</span>
-                        <span class="badge ${statusBadge}" style="font-size: 11px;">${statusText}</span>
+        function renderTasksListAdmin() {
+            const container = document.getElementById('tasksListAdmin');
+            if (!container) return;
+            const now = new Date();
+            if (appData.tasks.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px;">لا توجد تكاليف</p>'; return; }
+            
+            container.innerHTML = appData.tasks.map(task => {
+                const squadName = appData.squads.find(s => s.id === task.squadId)?.name;
+                const submissions = appData.taskSubmissions.filter(ts => ts.taskId === task.id);
+                const startDate = new Date(task.startDateTime);
+                const endDate = new Date(task.endDateTime);
+                
+                let statusBadge = '', statusText = '';
+                if (now < startDate) { statusBadge = 'badge-warning'; statusText = '⌛ لم يبدأ'; }
+                else if (now > endDate) { statusBadge = 'badge-inactive'; statusText = '❌ منتهي'; }
+                else { statusBadge = 'badge-active'; statusText = '✓ نشط'; }
+                
+                let countdownHtml = '';
+                if (now < startDate) {
+                    const diff = startDate - now;
+                    const days = Math.floor(diff/(1000*60*60*24)), hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60)), mins = Math.floor((diff%(1000*60*60))/(1000*60)), secs = Math.floor((diff%(1000*60))/1000);
+                    countdownHtml = `<div class="task-meta" style="color:#f39c12;">⏳ يبدأ بعد: ${days}ي ${hours}س ${mins}د ${secs}ث</div>`;
+                } else if (now < endDate) {
+                    const diff = endDate - now;
+                    const days = Math.floor(diff/(1000*60*60*24)), hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60)), mins = Math.floor((diff%(1000*60*60))/(1000*60)), secs = Math.floor((diff%(1000*60))/1000);
+                    countdownHtml = `<div class="task-meta" style="color:#2ecc71;">⏰ متبقي: ${days}ي ${hours}س ${mins}د ${secs}ث</div>`;
+                } else {
+                    countdownHtml = `<div class="task-meta" style="color:#e74c3c;">❌ انتهى التكليف</div>`;
+                }
+                
+                return `
+                    <div class="task-item">
+                        <div class="task-header"><span class="task-title">${task.title}</span><span class="task-points">${task.pointsValue} نقطة</span><span class="badge ${statusBadge}">${statusText}</span></div>
+                        <div class="task-description">${task.description}</div>
+                        <div class="task-meta"><i class="fas fa-flag"></i> ${squadName} | <i class="fas fa-play-circle"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} | <i class="fas fa-stop-circle"></i> ${new Date(task.endDateTime).toLocaleString('ar-EG')}</div>
+                        ${countdownHtml}
+                        <div style="margin-top:10px;"><button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})"><i class="fas fa-check-circle"></i> إدارة التسليمات (${submissions.filter(s => s.status === 'submitted').length})</button><button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button></div>
                     </div>
-                </div>
-                <div class="task-description" style="font-size: 13px; color: #666; margin: 8px 0;">${task.description}</div>
-                <div class="task-meta" style="font-size: 11px; color: #888;">
-                    <i class="fas fa-flag"></i> ${squadName} | 
-                    <i class="fas fa-play-circle"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} | 
-                    <i class="fas fa-stop-circle"></i> ${new Date(task.endDateTime).toLocaleString('ar-EG')}
-                </div>
-                ${countdownHtml}
-                <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})" style="font-size: 12px; padding: 5px 12px;">
-                        <i class="fas fa-check-circle"></i> التسليمات (${submissions.filter(s => s.status === 'submitted').length})
-                    </button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})" style="font-size: 12px; padding: 5px 12px;">
-                        <i class="fas fa-trash"></i> حذف
-                    </button>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
+                `;
+            }).join('');
+        }
 
         function manageTaskSubmissions(taskId) {
             const task = appData.tasks.find(t => t.id === taskId);
@@ -1893,17 +1532,17 @@ function renderTasksListAdmin() {
             modal.style.display = 'flex';
             modal.innerHTML = `
                 <div class="modal-content" style="max-width:600px;">
-                    <div class="modal-header"><h3><i class="fas fa-clipboard-list"></i> تسليمات تكليف: ${task.title}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <div class="modal-header"><h3><i class="fas fa-clipboard-list"></i> تسليمات: ${task.title}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
                     <div style="max-height:400px; overflow-y:auto;">
                         ${squadMembers.map(member => {
                             const submission = submissions.find(s => s.memberId === member.id);
                             return `
                                 <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:10px;">
                                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
-                                        <div><strong>${member.name}</strong> (${member.code}) - <span class="badge" style="background:${submission ? '#2ecc71' : '#e74c3c'};">${submission ? (submission.pointsAwarded ? 'تم التقييم' : 'تم التسليم') : 'لم يسلم بعد'}</span></div>
+                                        <div><strong>${member.name}</strong> (${member.code}) - <span class="badge" style="background:${submission ? '#2ecc71' : '#e74c3c'};">${submission ? (submission.pointsAwarded ? 'تم التقييم' : 'تم التسليم') : 'لم يسلم'}</span></div>
                                         ${submission && submission.status === 'submitted' && !submission.pointsAwarded ? 
-                                            `<div><input type="number" id="points_${member.id}" placeholder="النقاط" value="${task.pointsValue}" style="width:80px; padding:5px;"> <button class="btn btn-sm btn-success" onclick="awardPoints(${taskId}, ${member.id})"><i class="fas fa-star"></i> منح النقاط</button></div>` : 
-                                            submission && submission.pointsAwarded ? `<span class="badge" style="background:#2ecc71;">حصل على ${submission.pointsAwarded} نقطة</span>` : ''
+                                            `<div><input type="number" id="points_${member.id}" value="${task.pointsValue}" style="width:80px; padding:5px;"> <button class="btn btn-sm btn-success" onclick="awardPoints(${taskId}, ${member.id})"><i class="fas fa-star"></i> منح</button></div>` : 
+                                            submission && submission.pointsAwarded ? `<span class="badge" style="background:#2ecc71;">${submission.pointsAwarded} نقطة</span>` : ''
                                         }
                                     </div>
                                 </div>
@@ -1916,21 +1555,20 @@ function renderTasksListAdmin() {
         }
 
         async function awardPoints(taskId, memberId) {
-            const pointsInput = document.getElementById(`points_${memberId}`);
-            const points = parseInt(pointsInput?.value) || 0;
+            const points = parseInt(document.getElementById(`points_${memberId}`)?.value) || 0;
             const submission = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === memberId);
             if (submission) {
                 submission.pointsAwarded = points;
                 submission.status = 'completed';
                 submission.reviewedAt = new Date().toISOString();
-                submission.reviewedBy = 'admin';
                 const member = appData.members.find(m => m.id === memberId);
                 member.points += points;
                 if (member.points >= 200) member.rank = "قائد متميز";
                 else if (member.points >= 100) member.rank = "قائد";
                 else if (member.points >= 50) member.rank = "نائب قائد";
                 await saveAllDataToFirebase();
-                showToast(`تم منح ${points} نقطة للعضو ${member.name}`);
+                await addNotification('task_reviewed', `تم منح ${points} نقطة للعضو ${member.name} عن تكليف`, member.squadId);
+                showToast(`تم منح ${points} نقطة`);
                 manageTaskSubmissions(taskId);
                 renderTasksListAdmin();
                 renderAdminDashboard();
@@ -1938,32 +1576,16 @@ function renderTasksListAdmin() {
         }
 
         function deleteTask(id) {
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content" style="max-width:400px;">
-                    <div class="modal-header"><h3><i class="fas fa-trash-alt"></i> تأكيد الحذف</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <p style="text-align:center; margin:20px 0;">هل أنت متأكد من حذف هذا التكليف؟</p>
-                    <div style="display:flex; gap:10px; justify-content:center;">
-                        <button class="btn btn-danger" onclick="confirmDeleteTask(${id}); this.closest('.modal').remove();">نعم، احذف</button>
-                        <button class="btn btn-primary" onclick="this.closest('.modal').remove()">إلغاء</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
+            if (confirm('هل أنت متأكد من حذف هذا التكليف؟')) {
+                appData.tasks = appData.tasks.filter(t => t.id !== id);
+                appData.taskSubmissions = appData.taskSubmissions.filter(ts => ts.taskId !== id);
+                saveAllDataToFirebase();
+                renderTasksListAdmin();
+                renderAdminDashboard();
+                showToast('تم حذف التكليف');
+            }
         }
 
-        async function confirmDeleteTask(id) {
-            appData.tasks = appData.tasks.filter(t => t.id !== id);
-            appData.taskSubmissions = appData.taskSubmissions.filter(ts => ts.taskId !== id);
-            await saveAllDataToFirebase();
-            renderTasksListAdmin();
-            renderAdminDashboard();
-            showToast('تم حذف التكليف');
-        }
-
-        // ==================== MEMBER APP ====================
         function renderMemberApp(container) {
             const squad = appData.squads.find(s => s.id === currentUser.squadId);
             container.innerHTML = `
@@ -1982,16 +1604,12 @@ function renderTasksListAdmin() {
                         <li data-page="tasks"><a onclick="changeMemberPage('tasks')"><i class="fas fa-tasks"></i> التكاليف</a></li>
                     </ul>
                 </div>
-
                 <div class="header">
                     <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>مرحباً ${currentUser.name}</p></div></div>
                     <div class="user-info"><i class="fas fa-user-circle"></i><span>${currentUser.name}</span><span class="badge" style="background:#d4a017;">${currentUser.points} نقطة</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
                 </div>
-
-                <div class="main-content">
-                    <div id="memberPageContent"></div>
-                </div>
-                <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
+                <div class="main-content"><div id="memberPageContent"></div></div>
+                <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | متزامن مع Firebase</p></div>
             `;
             renderMemberDashboard();
         }
@@ -2013,39 +1631,38 @@ function renderTasksListAdmin() {
             container.innerHTML = `
                 <div class="stats-grid">
                     <div class="stat-card"><i class="fas fa-star"></i><div class="number">${currentUser.points}</div><div class="label">نقاطي</div></div>
-                    <div class="stat-card"><i class="fas fa-chart-line"></i><div class="number">#${squadMembers.findIndex(m => m.id === currentUser.id) + 1}</div><div class="label">ترتيبي في الطليعة</div></div>
-                    <div class="stat-card"><i class="fas fa-check-circle"></i><div class="number">${completedTasks.length}</div><div class="label">مهام منجزة</div></div>
-                    <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${pendingTasks.length}</div><div class="label">مهام جديدة</div></div>
+                    <div class="stat-card"><i class="fas fa-chart-line"></i><div class="number">#${squadMembers.findIndex(m => m.id === currentUser.id) + 1}</div><div class="label">ترتيبي</div></div>
+                    <div class="stat-card"><i class="fas fa-check-circle"></i><div class="number">${completedTasks.length}</div><div class="label">منجزات</div></div>
+                    <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${pendingTasks.length}</div><div class="label">جديدة</div></div>
                 </div>
-                <div class="card"><h3><i class="fas fa-id-card"></i> معلوماتي الشخصية</h3><div style="text-align:center;"><i class="fas fa-user-circle" style="font-size:60px; color:#d4a017;"></i><h4>${currentUser.name}</h4><p><i class="fas fa-tag"></i> ${currentUser.rank}</p><p><i class="fas fa-code"></i> الكود: ${currentUser.code}</p><p><i class="fas fa-user"></i> اسم المستخدم: ${currentUser.username}</p><p><i class="fas fa-phone"></i> ${currentUser.phone}</p></div></div>
-                <div class="card"><h3><i class="fas fa-chart-line"></i> ليدربورد طليعتي</h3>${squadMembers.map((m, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${m.name} ${m.id === currentUser.id ? '<span class="badge" style="background:#d4a017;">أنت</span>' : ''}</div><div><strong>${m.points}</strong> نقطة</div></div>`).join('')}</div>
+                <div class="card"><h3><i class="fas fa-id-card"></i> معلوماتي</h3><div style="text-align:center;"><i class="fas fa-user-circle" style="font-size:60px; color:#d4a017;"></i><h4>${currentUser.name}</h4><p><i class="fas fa-tag"></i> ${currentUser.rank}</p><p><i class="fas fa-code"></i> ${currentUser.code}</p><p><i class="fas fa-phone"></i> ${currentUser.phone}</p></div></div>
+                <div class="card"><h3><i class="fas fa-chart-line"></i> ترتيب طليعتي</h3>${squadMembers.map((m, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${m.name} ${m.id === currentUser.id ? '<span class="badge" style="background:#d4a017;">أنت</span>' : ''}</div><div><strong>${m.points}</strong></div></div>`).join('')}</div>
             `;
         }
-// ==================== صفحة الكميونيتي للعضو (متجاوبة) ====================
-function renderMemberCommunity() {
-    const container = document.getElementById('memberPageContent');
-    container.innerHTML = `
-        <div class="card" style="padding: 15px;">
-            <h3 style="font-size: 16px; margin-bottom: 15px;"><i class="fas fa-comments"></i> الكميونيتي - دردشة الطليعة</h3>
-            <div class="chat-container" style="height: 450px; display: flex; flex-direction: column; background: #fff; border-radius: 15px; overflow: hidden;">
-                <div class="chat-messages" id="memberChatMessages" style="flex: 1; overflow-y: auto; padding: 15px; background: #f8f9fa;"></div>
-                <div class="chat-input-area" style="display: flex; gap: 10px; padding: 12px; background: white; border-top: 1px solid #eee; flex-wrap: wrap;">
-                    <input type="text" id="memberMessageInput" placeholder="اكتب رسالتك..." style="flex: 3; min-width: 150px; padding: 10px 15px; border-radius: 30px; border: 2px solid #e0e0e0;">
-                    <button onclick="sendMemberMessage()" style="flex: 1; min-width: 80px; padding: 10px; background: #d4a017; color: white; border: none; border-radius: 30px; cursor: pointer;">
-                        <i class="fas fa-paper-plane"></i> إرسال
-                    </button>
+
+        function renderMemberCommunity() {
+            const container = document.getElementById('memberPageContent');
+            container.innerHTML = `
+                <div class="card">
+                    <h3><i class="fas fa-comments"></i> دردشة الطليعة</h3>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="memberChatMessages"></div>
+                        <div class="chat-input-area">
+                            <input type="text" id="memberMessageInput" placeholder="اكتب رسالتك...">
+                            <button onclick="sendMemberMessage()"><i class="fas fa-paper-plane"></i> إرسال</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    `;
-    loadMemberMessages();
-}
+            `;
+            loadMemberMessages();
+        }
 
         function loadMemberMessages() {
             const squadMessages = appData.messages.filter(m => m.squadId === currentUser.squadId || m.isBroadcast === true);
             squadMessages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
             const container = document.getElementById('memberChatMessages');
             if (!container) return;
+            if (squadMessages.length === 0) { container.innerHTML = '<p style="text-align:center; padding:20px;">💬 لا توجد رسائل</p>'; return; }
             container.innerHTML = squadMessages.map(m => `
                 <div class="message ${m.senderId === currentUser.id ? 'sent' : 'received'}">
                     <div class="sender"><i class="fas fa-user"></i> ${m.senderName} ${m.isBroadcast ? '<span style="background:#e74c3c; padding:2px 6px; border-radius:10px; font-size:10px;">بث عام</span>' : ''}</div>
@@ -2073,345 +1690,170 @@ function renderMemberCommunity() {
             await saveAllDataToFirebase();
             input.value = '';
             loadMemberMessages();
-            showToast('تم إرسال الرسالة');
+            showToast('تم الإرسال');
         }
 
-       // ==================== عرض التكاليف للعضو مع منع التسليم بعد الانتهاء ====================
-function renderMemberTasks() {
-    const container = document.getElementById('memberPageContent');
-    const now = new Date();
-    
-    // التكاليف النشطة (لم تنتهِ بعد + بدأت بالفعل أو لم تبدأ)
-    const availableTasks = appData.tasks.filter(t => 
-        t.squadId === currentUser.squadId && 
-        !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id)
-    );
-    
-    // تقسيم التكاليف
-    const upcomingTasks = availableTasks.filter(t => new Date(t.startDateTime) > now);
-    const activeTasks = availableTasks.filter(t => new Date(t.startDateTime) <= now && new Date(t.endDateTime) > now);
-    const expiredTasks = availableTasks.filter(t => new Date(t.endDateTime) <= now);
-    
-    const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
-    
-    container.innerHTML = `
-        <div class="card">
-            <h3><i class="fas fa-hourglass-start"></i> التكاليف القادمة (ستبدأ قريباً)</h3>
-            ${upcomingTasks.map(t => renderTaskCard(t, 'upcoming', now)).join('')}
-            ${upcomingTasks.length === 0 ? '<p style="text-align:center;">✨ لا توجد تكاليف قادمة</p>' : ''}
-        </div>
-        
-        <div class="card">
-            <h3><i class="fas fa-play-circle"></i> التكاليف النشطة</h3>
-            ${activeTasks.map(t => renderTaskCard(t, 'active', now)).join('')}
-            ${activeTasks.length === 0 ? '<p style="text-align:center;">🎯 لا توجد تكاليف نشطة حالياً</p>' : ''}
-        </div>
-        
-        <div class="card">
-            <h3><i class="fas fa-check-circle"></i> التكاليف المكتملة</h3>
-            ${completedTasks.map(ct => {
-                const task = appData.tasks.find(t => t.id === ct.taskId);
-                return `<div class="task-item task-completed">
-                    <div class="task-header"><span class="task-title">${task?.title}</span><span class="task-points">${ct.pointsAwarded || 'بانتظار التقييم'} نقطة</span></div>
-                    <div class="task-description">${task?.description}</div>
-                    <div class="task-meta"><i class="fas fa-check-circle"></i> تم التسليم: ${new Date(ct.submittedAt).toLocaleString('ar-EG')}</div>
-                </div>`;
-            }).join('')}
-            ${completedTasks.length === 0 ? '<p>لا توجد تكاليف مكتملة بعد</p>' : ''}
-        </div>
-    `;
-}
-
-// دالة مساعدة لعرض بطاقة التكليف
-function renderTaskCard(task, type, now) {
-    const startDate = new Date(task.startDateTime);
-    const endDate = new Date(task.endDateTime);
-    let countdownHtml = '';
-    let canSubmit = false;
-    let buttonHtml = '';
-    
-    if (type === 'upcoming') {
-        const diffMs = startDate - now;
-        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-        const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        countdownHtml = `<div class="task-meta" style="color:#f39c12;"><i class="fas fa-hourglass-half"></i> يبدأ بعد: ${diffHours}س ${diffMins}د</div>`;
-        buttonHtml = `<button class="btn btn-sm btn-secondary" disabled style="background:#ccc;"><i class="fas fa-clock"></i> لم يبدأ بعد</button>`;
-    } else if (type === 'active') {
-        const diffMs = endDate - now;
-        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-        const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        countdownHtml = `<div class="task-meta" style="color:#2ecc71;"><i class="fas fa-hourglass-half"></i> متبقي: ${diffHours}س ${diffMins}د</div>`;
-        canSubmit = true;
-        buttonHtml = `<button class="complete-task-btn" onclick="submitTaskRequest(${task.id})"><i class="fas fa-paper-plane"></i> تقديم تسليم</button>`;
-    }
-    
-    return `
-        <div class="task-item task-${type}">
-            <div class="task-header">
-                <span class="task-title">${task.title}</span>
-                <span class="task-points">${task.pointsValue} نقطة</span>
-            </div>
-            <div class="task-description">${task.description}</div>
-            <div class="task-meta">
-                <i class="fas fa-calendar-alt"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} - ${new Date(task.endDateTime).toLocaleString('ar-EG')}
-            </div>
-            ${countdownHtml}
-            <div style="margin-top:10px;">${buttonHtml}</div>
-        </div>
-    `;
-}
-
-        // ==================== تقديم طلب تسليم مع التحقق من الوقت ====================
-async function submitTaskRequest(taskId) {
-    const task = appData.tasks.find(t => t.id === taskId);
-    if (!task) {
-        showToast('التكليف غير موجود', 'error');
-        return;
-    }
-    
-    const now = new Date();
-    const startDate = new Date(task.startDateTime);
-    const endDate = new Date(task.endDateTime);
-    
-    // التحقق من أن الوقت الحالي بين وقت البدء ووقت الانتهاء
-    if (now < startDate) {
-        showToast('❌ لم يحن وقت بدء هذا التكليف بعد!', 'error');
-        return;
-    }
-    
-    if (now > endDate) {
-        showToast('❌ انتهى وقت هذا التكليف، لا يمكنك تسليمه الآن!', 'error');
-        return;
-    }
-    
-    const existing = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === currentUser.id);
-    if (existing) {
-        showToast('لقد قمت بالفعل بتسليم هذا التكليف', 'error');
-        return;
-    }
-    
-    const submission = {
-        id: Date.now(),
-        taskId: taskId,
-        memberId: currentUser.id,
-        status: 'submitted',
-        submittedAt: new Date().toISOString(),
-        pointsAwarded: null,
-        reviewedBy: null,
-        reviewedAt: null
-    };
-    appData.taskSubmissions.push(submission);
-    await saveAllDataToFirebase();
-    
-    // إضافة إشعار بتسليم جديد
-    await addNotification('task_submitted', `${currentUser.name} قام بتسليم تكليف: ${task.title}`, task.squadId);
-    
-    showToast('✅ تم تقديم طلب تسليم التكليف، بانتظار موافقة القائد');
-    renderMemberTasks();
-}
-// ==================== نظام الإشعارات ====================
-
-// هيكل الإشعارات
-let notifications = [];
-
-// تحميل الإشعارات من Firebase
-async function loadNotifications() {
-    try {
-        const snapshot = await database.ref('notifications').once('value');
-        const data = snapshot.val();
-        if (data) {
-            notifications = Object.values(data);
-        } else {
-            notifications = [];
+        function renderMemberTasks() {
+            const container = document.getElementById('memberPageContent');
+            const now = new Date();
+            const availableTasks = appData.tasks.filter(t => t.squadId === currentUser.squadId && !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id));
+            const upcomingTasks = availableTasks.filter(t => new Date(t.startDateTime) > now);
+            const activeTasks = availableTasks.filter(t => new Date(t.startDateTime) <= now && new Date(t.endDateTime) > now);
+            const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
+            
+            container.innerHTML = `
+                <div class="card"><h3><i class="fas fa-hourglass-start"></i> القادمة</h3>${upcomingTasks.map(t => renderTaskCard(t, 'upcoming', now)).join('') || '<p style="text-align:center;">✨ لا توجد</p>'}</div>
+                <div class="card"><h3><i class="fas fa-play-circle"></i> النشطة</h3>${activeTasks.map(t => renderTaskCard(t, 'active', now)).join('') || '<p style="text-align:center;">🎯 لا توجد</p>'}</div>
+                <div class="card"><h3><i class="fas fa-check-circle"></i> المكتملة</h3>${completedTasks.map(ct => {
+                    const task = appData.tasks.find(t => t.id === ct.taskId);
+                    return `<div class="task-item task-completed"><div class="task-header"><span class="task-title">${task?.title}</span><span class="task-points">${ct.pointsAwarded || 'بانتظار التقييم'} نقطة</span></div><div class="task-description">${task?.description}</div><div class="task-meta">✅ تم التسليم: ${new Date(ct.submittedAt).toLocaleString('ar-EG')}</div></div>`;
+                }).join('') || '<p>لا توجد</p>'}</div>
+            `;
         }
-        console.log('✅ تم تحميل الإشعارات');
-    } catch (error) {
-        console.error('❌ خطأ في تحميل الإشعارات:', error);
-        notifications = [];
-    }
-}
 
-// حفظ الإشعارات في Firebase
-async function saveNotifications() {
-    try {
-        await database.ref('notifications').set(notifications);
-        console.log('✅ تم حفظ الإشعارات');
-    } catch (error) {
-        console.error('❌ خطأ في حفظ الإشعارات:', error);
-    }
-}
-
-// إضافة إشعار جديد
-async function addNotification(type, message, squadId = null) {
-    const newNotification = {
-        id: Date.now(),
-        type: type, // 'new_task', 'task_starting', 'task_ending', 'task_submitted', 'task_reviewed'
-        message: message,
-        squadId: squadId,
-        createdAt: new Date().toISOString(),
-        isRead: false,
-        forAdmin: true
-    };
-    notifications.unshift(newNotification);
-    // الاحتفاظ بآخر 50 إشعار فقط
-    if (notifications.length > 50) notifications.pop();
-    await saveNotifications();
-    
-    // عرض إشعار فوري للمستخدم الحالي
-    if (currentUser && ((isAdmin && newNotification.forAdmin) || (!isAdmin && squadId === currentUser.squadId))) {
-        showToastNotification(message, type);
-    }
-}
-
-// عرض إشعار منبثق
-function showToastNotification(message, type) {
-    const toast = document.createElement('div');
-    let icon = '📢';
-    let bgColor = '#3498db';
-    
-    switch(type) {
-        case 'new_task':
-            icon = '📋';
-            bgColor = '#2ecc71';
-            break;
-        case 'task_starting':
-            icon = '⏰';
-            bgColor = '#f39c12';
-            break;
-        case 'task_ending':
-            icon = '⚠️';
-            bgColor = '#e74c3c';
-            break;
-        case 'task_submitted':
-            icon = '📝';
-            bgColor = '#9b59b6';
-            break;
-        case 'task_reviewed':
-            icon = '⭐';
-            bgColor = '#1abc9c';
-            break;
-        default:
-            icon = '🔔';
-    }
-    
-    toast.style.cssText = `position:fixed; top:20px; left:20px; background:${bgColor}; color:white; padding:12px 20px; border-radius:12px; z-index:10000; animation:slideInRight 0.3s ease; box-shadow:0 4px 15px rgba(0,0,0,0.2); font-weight:500; direction:rtl;`;
-    toast.innerHTML = `<i class="fas ${icon === '📋' ? 'fa-clipboard-list' : icon === '⏰' ? 'fa-hourglass-half' : icon === '⚠️' ? 'fa-exclamation-triangle' : 'fa-bell'}"></i> ${message}`;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 5000);
-}
-
-// عرض لوحة الإشعارات في لوحة التحكم
-function renderNotificationsPanel() {
-    const panel = document.getElementById('notificationsPanel');
-    if (!panel) return;
-    
-    const unreadCount = notifications.filter(n => !n.isRead).length;
-    
-    panel.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <h4><i class="fas fa-bell"></i> الإشعارات <span class="badge" style="background:#e74c3c;">${unreadCount}</span></h4>
-            <button class="btn btn-sm btn-primary" onclick="markAllNotificationsRead()"><i class="fas fa-check-double"></i> تحديد الكل كمقروء</button>
-        </div>
-        <div id="notificationsList" style="max-height:300px; overflow-y:auto;">
-            ${notifications.length === 0 ? '<p style="text-align:center;">لا توجد إشعارات</p>' : 
-                notifications.slice(0, 20).map(n => `
-                    <div class="notification-item ${n.isRead ? '' : 'unread'}" style="padding:10px; border-bottom:1px solid #eee; background:${n.isRead ? 'transparent' : '#fff3cd'}; margin-bottom:5px; border-radius:8px;">
-                        <div style="display:flex; justify-content:space-between;">
-                            <small style="color:#999;">${new Date(n.createdAt).toLocaleString('ar-EG')}</small>
-                            ${!n.isRead ? '<span class="badge" style="background:#e74c3c; font-size:10px;">جديد</span>' : ''}
-                        </div>
-                        <div>${n.message}</div>
-                    </div>
-                `).join('')
+        function renderTaskCard(task, type, now) {
+            const startDate = new Date(task.startDateTime);
+            const endDate = new Date(task.endDateTime);
+            let countdownHtml = '', buttonHtml = '';
+            if (type === 'upcoming') {
+                const diff = startDate - now;
+                const hours = Math.floor(diff/(1000*60*60)), mins = Math.floor((diff%(1000*60*60))/(1000*60));
+                countdownHtml = `<div class="task-meta" style="color:#f39c12;">⏳ يبدأ بعد: ${hours}س ${mins}د</div>`;
+                buttonHtml = `<button class="btn btn-sm btn-secondary" disabled style="background:#ccc;">⌛ لم يبدأ</button>`;
+            } else {
+                const diff = endDate - now;
+                const hours = Math.floor(diff/(1000*60*60)), mins = Math.floor((diff%(1000*60*60))/(1000*60));
+                countdownHtml = `<div class="task-meta" style="color:#2ecc71;">⏰ متبقي: ${hours}س ${mins}د</div>`;
+                buttonHtml = `<button class="complete-task-btn" onclick="submitTaskRequest(${task.id})"><i class="fas fa-paper-plane"></i> تقديم تسليم</button>`;
             }
-        </div>
-    `;
-}
+            return `
+                <div class="task-item task-${type}">
+                    <div class="task-header"><span class="task-title">${task.title}</span><span class="task-points">${task.pointsValue} نقطة</span></div>
+                    <div class="task-description">${task.description}</div>
+                    <div class="task-meta"><i class="fas fa-calendar-alt"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} - ${new Date(task.endDateTime).toLocaleString('ar-EG')}</div>
+                    ${countdownHtml}
+                    <div style="margin-top:10px;">${buttonHtml}</div>
+                </div>
+            `;
+        }
 
-// تحديد جميع الإشعارات كمقروءة
-async function markAllNotificationsRead() {
-    notifications.forEach(n => n.isRead = true);
-    await saveNotifications();
-    renderNotificationsPanel();
-}
+        async function submitTaskRequest(taskId) {
+            const task = appData.tasks.find(t => t.id === taskId);
+            const now = new Date();
+            if (now < new Date(task.startDateTime)) { showToast('❌ لم يبدأ التكليف بعد', 'error'); return; }
+            if (now > new Date(task.endDateTime)) { showToast('❌ انتهى وقت التكليف', 'error'); return; }
+            if (appData.taskSubmissions.some(ts => ts.taskId === taskId && ts.memberId === currentUser.id)) { showToast('قمت بالتسليم مسبقاً', 'error'); return; }
+            
+            appData.taskSubmissions.push({
+                id: Date.now(),
+                taskId: taskId,
+                memberId: currentUser.id,
+                status: 'submitted',
+                submittedAt: new Date().toISOString(),
+                pointsAwarded: null,
+                reviewedBy: null,
+                reviewedAt: null
+            });
+            await saveAllDataToFirebase();
+            await addNotification('task_submitted', `${currentUser.name} سلم تكليف: ${task.title}`, task.squadId);
+            showToast('✅ تم تقديم التسليم');
+            renderMemberTasks();
+        }
 
-// فتح لوحة الإشعارات في الأدمن
-function showNotificationsModal() {
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.style.display = 'flex';
-    modal.innerHTML = `
-        <div class="modal-content" style="max-width:500px;">
-            <div class="modal-header">
-                <h3><i class="fas fa-bell"></i> مركز الإشعارات</h3>
-                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
-            </div>
-            <div id="notificationsModalContent"></div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    
-    const unreadCount = notifications.filter(n => !n.isRead).length;
-    document.getElementById('notificationsModalContent').innerHTML = `
-        <div style="margin-bottom:15px;">
-            <button class="btn btn-sm btn-primary" onclick="markAllNotificationsRead(); document.getElementById('notificationsModalContent').innerHTML = this.outerHTML;">تحديد الكل كمقروء</button>
-        </div>
-        <div style="max-height:400px; overflow-y:auto;">
-            ${notifications.length === 0 ? '<p style="text-align:center;">لا توجد إشعارات</p>' : 
-                notifications.map(n => `
-                    <div style="padding:12px; border-bottom:1px solid #eee; background:${n.isRead ? 'transparent' : '#fff3cd'}; margin-bottom:8px; border-radius:10px;">
-                        <div style="display:flex; justify-content:space-between;">
-                            <small style="color:#999;">${new Date(n.createdAt).toLocaleString('ar-EG')}</small>
-                            ${!n.isRead ? '<span class="badge" style="background:#e74c3c;">جديد</span>' : ''}
-                        </div>
-                        <div style="margin-top:5px;">${n.message}</div>
-                    </div>
-                `).join('')
+        // ==================== NOTIFICATIONS SYSTEM ====================
+        async function loadNotifications() {
+            try {
+                const snapshot = await database.ref('notifications').once('value');
+                const data = snapshot.val();
+                notifications = data ? Object.values(data) : [];
+            } catch (error) { notifications = []; }
+        }
+
+        async function saveNotifications() {
+            try { await database.ref('notifications').set(notifications); } catch (error) {}
+        }
+
+        async function addNotification(type, message, squadId = null) {
+            const newNotification = {
+                id: Date.now(),
+                type: type,
+                message: message,
+                squadId: squadId,
+                createdAt: new Date().toISOString(),
+                isRead: false,
+                forAdmin: true
+            };
+            notifications.unshift(newNotification);
+            if (notifications.length > 50) notifications.pop();
+            await saveNotifications();
+            if (currentUser && ((isAdmin && newNotification.forAdmin) || (!isAdmin && squadId === currentUser.squadId))) {
+                showToastNotification(message, type);
             }
-        </div>
-    `;
-}
-
-// التحقق من التكاليف وإرسال إشعارات تلقائية (يتم تشغيلها كل دقيقة)
-async function checkTasksForNotifications() {
-    const now = new Date();
-    
-    for (const task of appData.tasks) {
-        const startDate = new Date(task.startDateTime);
-        const endDate = new Date(task.endDateTime);
-        const oneHourBeforeStart = new Date(startDate.getTime() - 60 * 60 * 1000);
-        const oneHourBeforeEnd = new Date(endDate.getTime() - 60 * 60 * 1000);
-        
-        // إشعار قبل البدء بساعة
-        if (now >= oneHourBeforeStart && now < startDate && !task.notifiedStart) {
-            await addNotification('task_starting', `⏰ التكليف "${task.title}" سيبدأ بعد ساعة!`, task.squadId);
-            task.notifiedStart = true;
-            await saveAllDataToFirebase();
         }
-        
-        // إشعار قبل الانتهاء بساعة
-        if (now >= oneHourBeforeEnd && now < endDate && !task.notifiedEndSoon) {
-            await addNotification('task_ending', `⚠️ تبقت ساعة على انتهاء التكليف "${task.title}"`, task.squadId);
-            task.notifiedEndSoon = true;
-            await saveAllDataToFirebase();
+
+        function showToastNotification(message, type) {
+            const toast = document.createElement('div');
+            const colors = { new_task: '#2ecc71', task_starting: '#f39c12', task_ending: '#e74c3c', task_submitted: '#9b59b6', task_reviewed: '#1abc9c' };
+            toast.style.cssText = `position:fixed; top:20px; left:20px; background:${colors[type] || '#3498db'}; color:white; padding:12px 20px; border-radius:12px; z-index:10000; animation:slideInRight 0.3s ease; box-shadow:0 4px 15px rgba(0,0,0,0.2);`;
+            toast.innerHTML = `<i class="fas fa-bell"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 5000);
         }
-    }
-}
 
-// بدء المراقبة التلقائية للإشعارات
-function startNotificationWatcher() {
-    // فحص كل دقيقة
-    setInterval(async () => {
-        await checkTasksForNotifications();
-    }, 60000);
-    
-    // فحص فوري عند التحميل
-    setTimeout(async () => {
-        await checkTasksForNotifications();
-    }, 5000);
-}
+        function showNotificationsModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width:500px;">
+                    <div class="modal-header"><h3><i class="fas fa-bell"></i> الإشعارات</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <div style="max-height:400px; overflow-y:auto;">
+                        ${notifications.length === 0 ? '<p style="text-align:center;">لا توجد إشعارات</p>' : notifications.map(n => `
+                            <div style="padding:12px; border-bottom:1px solid #eee; background:${n.isRead ? 'transparent' : '#fff3cd'}; margin-bottom:8px; border-radius:10px;">
+                                <small style="color:#999;">${new Date(n.createdAt).toLocaleString('ar-EG')}</small>
+                                <div>${n.message}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="btn btn-primary" onclick="markAllNotificationsRead(); this.closest('.modal').remove();" style="width:100%; margin-top:15px;">تحديد الكل كمقروء</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
 
-        // ==================== HELPER FUNCTIONS ====================
+        async function markAllNotificationsRead() {
+            notifications.forEach(n => n.isRead = true);
+            await saveNotifications();
+            if (document.getElementById('notificationBadge')) document.getElementById('notificationBadge').innerText = '';
+            showToast('تم تحديد الكل كمقروء');
+        }
+
+        async function checkTasksForNotifications() {
+            const now = new Date();
+            for (const task of appData.tasks) {
+                const startDate = new Date(task.startDateTime);
+                const endDate = new Date(task.endDateTime);
+                const oneHourBeforeStart = new Date(startDate.getTime() - 60*60*1000);
+                const oneHourBeforeEnd = new Date(endDate.getTime() - 60*60*1000);
+                
+                if (now >= oneHourBeforeStart && now < startDate && !task.notifiedStart) {
+                    await addNotification('task_starting', `⏰ "${task.title}" سيبدأ بعد ساعة`, task.squadId);
+                    task.notifiedStart = true;
+                    await saveAllDataToFirebase();
+                }
+                if (now >= oneHourBeforeEnd && now < endDate && !task.notifiedEndSoon) {
+                    await addNotification('task_ending', `⚠️ "${task.title}" ينتهي بعد ساعة`, task.squadId);
+                    task.notifiedEndSoon = true;
+                    await saveAllDataToFirebase();
+                }
+            }
+        }
+
+        function startNotificationWatcher() {
+            setInterval(async () => { await checkTasksForNotifications(); }, 60000);
+            setTimeout(async () => { await checkTasksForNotifications(); }, 5000);
+        }
+
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
@@ -2421,6 +1863,7 @@ function startNotificationWatcher() {
         async function logout() {
             currentUser = null;
             isAdmin = false;
+            if (window.activeTasksInterval) clearInterval(window.activeTasksInterval);
             showToast('تم تسجيل الخروج');
             render();
         }
@@ -2452,8 +1895,11 @@ function startNotificationWatcher() {
         window.sendMemberMessage = sendMemberMessage;
         window.submitTaskRequest = submitTaskRequest;
         window.logout = logout;
-window.renderLeaderboard = renderLeaderboard;
-window.renderActiveTasksList = renderActiveTasksList;
+        window.renderLeaderboard = renderLeaderboard;
+        window.renderActiveTasksList = renderActiveTasksList;
+        window.showNotificationsModal = showNotificationsModal;
+        window.markAllNotificationsRead = markAllNotificationsRead;
+
         // Start the app
         (async function start() {
             await loadAllDataFromFirebase();
