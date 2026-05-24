@@ -17,6 +17,52 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <style>
+        /* عداد تنازلي للتكاليف */
+.countdown-timer {
+    direction: ltr;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 8px;
+}
+.countdown-start {
+    background: #f39c12;
+    color: #fff;
+}
+.countdown-active {
+    background: #2ecc71;
+    color: #fff;
+}
+.countdown-end {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* بطاقة التكاليف النشطة في لوحة التحكم */
+.active-task-card {
+    background: linear-gradient(135deg, #fff, #f8f9fa);
+    border-right: 4px solid #d4a017;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+.active-task-card:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.active-task-title {
+    font-weight: bold;
+    font-size: 15px;
+    color: #1a472a;
+}
+.active-task-squad {
+    font-size: 11px;
+    color: #888;
+}
         /* إشعارات منزلقة */
 @keyframes slideInRight {
     from { transform: translateX(100%); opacity: 0; }
@@ -867,7 +913,7 @@
             closeSidebar();
         }
 
-       // ==================== ADMIN DASHBOARD (معدل) ====================
+      // ==================== ADMIN DASHBOARD (معدل مع التكاليف النشطة) ====================
 function renderAdminDashboard() {
     const stats = {
         members: appData.members.length,
@@ -876,6 +922,14 @@ function renderAdminDashboard() {
         tasks: appData.tasks.length,
         pendingSubmissions: appData.taskSubmissions.filter(ts => ts.status === 'submitted' && !ts.pointsAwarded).length
     };
+    
+    // حساب التكاليف النشطة (لم تنتهِ بعد)
+    const now = new Date();
+    const activeTasks = appData.tasks.filter(task => {
+        const endDate = new Date(task.endDateTime);
+        return endDate > now;
+    });
+    
     const container = document.getElementById('adminPageContent');
     container.innerHTML = `
         <div class="stats-grid">
@@ -886,7 +940,13 @@ function renderAdminDashboard() {
             <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${stats.pendingSubmissions}</div><div class="label">تسليمات معلقة</div></div>
         </div>
         
-        <!-- البطاقة الجديدة: ترتيب الأعضاء حسب النقاط مع فلتر الطلائع -->
+        <!-- بطاقة التكاليف النشطة مع العدادات -->
+        <div class="card">
+            <h3><i class="fas fa-fire" style="color:#e74c3c;"></i> التكاليف النشطة <span class="badge" style="background:#e74c3c;">${activeTasks.length}</span></h3>
+            <div id="activeTasksContainer"></div>
+        </div>
+        
+        <!-- ترتيب الأعضاء حسب النقاط -->
         <div class="card">
             <h3><i class="fas fa-trophy"></i> ترتيب الأعضاء حسب النقاط</h3>
             <div class="squad-filter" style="margin-bottom: 15px;">
@@ -898,15 +958,92 @@ function renderAdminDashboard() {
             <div id="leaderboardContainer"></div>
         </div>
         
-        <div class="card"><h3><i class="fas fa-trophy"></i> ترتيب الطلايع بالنقاط</h3><div id="squadRanking"></div></div>
+        <div class="card"><h3><i class="fas fa-chart-line"></i> ترتيب الطلايع بالنقاط</h3><div id="squadRanking"></div></div>
     `;
     
-    // عرض لوحة المتصدرين لأول مرة
+    // عرض التكاليف النشطة
+    renderActiveTasksList();
+    
+    // عرض لوحة المتصدرين
     renderLeaderboard();
     
-    // ترتيب الطلايع (كما هو)
+    // ترتيب الطلايع
     const ranking = appData.squads.map(s => ({ ...s, totalPoints: appData.members.filter(m => m.squadId === s.id).reduce((sum, m) => sum + m.points, 0) })).sort((a,b) => b.totalPoints - a.totalPoints);
     document.getElementById('squadRanking').innerHTML = ranking.map((s, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${s.name}</div><div><strong>${s.totalPoints}</strong> نقطة</div></div>`).join('');
+    
+    // بدء تحديث العدادات كل ثانية
+    if (window.activeTasksInterval) clearInterval(window.activeTasksInterval);
+    window.activeTasksInterval = setInterval(() => {
+        renderActiveTasksList();
+    }, 1000);
+}
+// ==================== عرض التكاليف النشطة في لوحة التحكم مع عدادات ====================
+function renderActiveTasksList() {
+    const container = document.getElementById('activeTasksContainer');
+    if (!container) return;
+    
+    const now = new Date();
+    const activeTasks = appData.tasks.filter(task => {
+        const endDate = new Date(task.endDateTime);
+        return endDate > now;
+    }).sort((a, b) => new Date(a.startDateTime) - new Date(b.startDateTime));
+    
+    if (activeTasks.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px;">📭 لا توجد تكاليف نشطة حالياً</p>';
+        return;
+    }
+    
+    container.innerHTML = activeTasks.map(task => {
+        const startDate = new Date(task.startDateTime);
+        const endDate = new Date(task.endDateTime);
+        const squadName = appData.squads.find(s => s.id === task.squadId)?.name || '-';
+        
+        let countdownHtml = '';
+        let countdownClass = '';
+        let statusText = '';
+        
+        if (now < startDate) {
+            // لم يبدأ بعد
+            const diffMs = startDate - now;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
+            countdownHtml = `<span class="countdown-timer countdown-start">⏳ يبدأ بعد: ${diffDays}ي ${diffHours}س ${diffMins}د ${diffSecs}ث</span>`;
+            statusText = 'لم يبدأ';
+        } else if (now >= startDate && now <= endDate) {
+            // نشط حاليًا
+            const diffMs = endDate - now;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
+            countdownHtml = `<span class="countdown-timer countdown-active">⏰ متبقي: ${diffDays}ي ${diffHours}س ${diffMins}د ${diffSecs}ث</span>`;
+            statusText = 'نشط';
+        } else {
+            countdownHtml = `<span class="countdown-timer countdown-end">✅ انتهى</span>`;
+            statusText = 'منتهي';
+        }
+        
+        // أيقونة حسب الحالة
+        let statusIcon = now < startDate ? '🕐' : (now <= endDate ? '🔥' : '✅');
+        
+        return `
+            <div class="active-task-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div>
+                        <span class="active-task-title">${statusIcon} ${task.title}</span>
+                        <div class="active-task-squad"><i class="fas fa-flag"></i> ${squadName} | ${task.pointsValue} نقطة</div>
+                    </div>
+                    <span class="badge ${now < startDate ? 'badge-warning' : (now <= endDate ? 'badge-active' : 'badge-inactive')}" style="background:${now < startDate ? '#f39c12' : (now <= endDate ? '#2ecc71' : '#e74c3c')};">${statusText}</span>
+                </div>
+                <div style="margin-top: 8px;">
+                    <small><i class="fas fa-calendar-alt"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} → ${new Date(task.endDateTime).toLocaleString('ar-EG')}</small>
+                </div>
+                ${countdownHtml}
+            </div>
+        `;
+    }).join('');
 }
 
 // ==================== دالة عرض الترتيب مع الفلتر ====================
@@ -1555,43 +1692,40 @@ function renderTasksListAdmin() {
         // تحديد حالة التكليف
         let statusBadge = '';
         let statusText = '';
-        let canSubmit = true;
         
         if (now < startDate) {
             statusBadge = 'badge-warning';
             statusText = '⌛ لم يبدأ بعد';
-            canSubmit = false;
         } else if (now > endDate) {
             statusBadge = 'badge-inactive';
             statusText = '❌ منتهي';
-            canSubmit = false;
         } else {
             statusBadge = 'badge-active';
             statusText = '✓ نشط';
-            canSubmit = true;
         }
         
-        // حساب الوقت المتبقي أو المتبقي للبدء
+        // حساب العداد التنازلي
         let countdownHtml = '';
         if (now < startDate) {
             const diffMs = startDate - now;
-            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-            countdownHtml = `<div class="task-meta" style="color:#f39c12;"><i class="fas fa-hourglass-half"></i> يبدأ بعد: ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
+            countdownHtml = `<div class="task-meta" style="color:#f39c12; font-size:13px; margin-top:8px;"><i class="fas fa-hourglass-half"></i> ⏳ يبدأ بعد: ${diffDays}يوم ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
         } else if (now < endDate) {
             const diffMs = endDate - now;
             const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-            countdownHtml = `<div class="task-meta" style="color:#2ecc71;"><i class="fas fa-clock"></i> متبقي: ${diffDays}يوم ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
+            countdownHtml = `<div class="task-meta" style="color:#2ecc71; font-size:13px; margin-top:8px;"><i class="fas fa-clock"></i> ⏰ متبقي: ${diffDays}يوم ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
         } else {
-            countdownHtml = `<div class="task-meta" style="color:#e74c3c;"><i class="fas fa-ban"></i> انتهى التكليف</div>`;
+            countdownHtml = `<div class="task-meta" style="color:#e74c3c; font-size:13px; margin-top:8px;"><i class="fas fa-ban"></i> ❌ انتهى التكليف</div>`;
         }
         
         return `
-            <div class="task-item" data-task-id="${task.id}" data-end="${task.endDateTime}" data-start="${task.startDateTime}">
+            <div class="task-item" data-task-id="${task.id}">
                 <div class="task-header">
                     <span class="task-title">${task.title}</span>
                     <span class="task-points">${task.pointsValue} نقطة</span>
@@ -2185,7 +2319,8 @@ function startNotificationWatcher() {
         window.sendMemberMessage = sendMemberMessage;
         window.submitTaskRequest = submitTaskRequest;
         window.logout = logout;
-
+window.renderLeaderboard = renderLeaderboard;
+window.renderActiveTasksList = renderActiveTasksList;
         // Start the app
         (async function start() {
             await loadAllDataFromFirebase();
