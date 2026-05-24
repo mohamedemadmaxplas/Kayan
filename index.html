@@ -17,6 +17,25 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <style>
+        /* إشعارات منزلقة */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.notification-item.unread {
+    background: #fff3cd !important;
+    border-right: 3px solid #f39c12;
+}
+
+#notificationBadge {
+    background: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    margin-right: 5px;
+}
         * {
             margin: 0;
             padding: 0;
@@ -819,8 +838,15 @@
 
                 <div class="header">
                     <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - سحابة Firebase</p></div></div>
-                    <div class="user-info"><i class="fas fa-user-shield"></i><span>${currentUser.name}</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
-                </div>
+                   <div class="user-info">
+    <i class="fas fa-user-shield"></i>
+    <span>${currentUser.name}</span>
+    <button class="logout-btn" onclick="showNotificationsModal()" style="background:#3498db; margin-left:5px;">
+        <i class="fas fa-bell"></i> 
+        <span id="notificationBadge">${notifications.filter(n => !n.isRead).length || ''}</span>
+    </button>
+    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+</div>
 
                 <div class="main-content">
                     <div id="adminPageContent"></div>
@@ -1426,60 +1452,172 @@ function renderLeaderboard() {
             renderTasksListAdmin();
         }
 
-        function showAddTaskModal() {
-            const squadId = document.getElementById('taskSquadSelect')?.value;
-            if (!squadId) { showToast('الرجاء اختيار الطليعة أولاً', 'error'); return; }
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <form id="addTaskForm">
-                        <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
-                        <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
-                        <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" required></div>
-                        <div class="input-group"><label>الموعد النهائي</label><input type="date" id="taskDeadline" required></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
-                    </form>
+       // ==================== إضافة تكليف جديد مع وقت بدء وانتهاء ====================
+function showAddTaskModal() {
+    const squadId = document.getElementById('taskSquadSelect')?.value;
+    if (!squadId) { showToast('الرجاء اختيار الطليعة أولاً', 'error'); return; }
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <form id="addTaskForm">
+                <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
+                <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
+                <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" required min="1"></div>
+                
+                <div class="input-group"><label>📅 تاريخ ووقت البدء</label>
+                    <input type="datetime-local" id="taskStartDateTime" required>
+                    <small style="color:#666;">سيظهر التكليف قبل البدء بساعة</small>
                 </div>
-            `;
-            document.body.appendChild(modal);
-            document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const newTask = {
-                    id: Date.now(),
-                    squadId: parseInt(squadId),
-                    title: document.getElementById('taskTitle').value,
-                    description: document.getElementById('taskDesc').value,
-                    pointsValue: parseInt(document.getElementById('taskPoints').value),
-                    createdAt: new Date().toISOString(),
-                    deadline: new Date(document.getElementById('taskDeadline').value).toISOString()
-                };
-                appData.tasks.push(newTask);
-                await saveAllDataToFirebase();
-                showToast('تم إضافة التكليف');
-                modal.remove();
-                renderTasksListAdmin();
-            });
+                
+                <div class="input-group"><label>⏰ تاريخ ووقت الانتهاء</label>
+                    <input type="datetime-local" id="taskEndDateTime" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // تعيين التواريخ الافتراضية
+    const now = new Date();
+    const startDefault = new Date(now);
+    startDefault.setHours(now.getHours() + 1);
+    startDefault.setMinutes(0);
+    
+    const endDefault = new Date(startDefault);
+    endDefault.setDate(startDefault.getDate() + 7);
+    endDefault.setHours(23, 59);
+    
+    document.getElementById('taskStartDateTime').value = startDefault.toISOString().slice(0, 16);
+    document.getElementById('taskEndDateTime').value = endDefault.toISOString().slice(0, 16);
+    
+    document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const startDateTime = new Date(document.getElementById('taskStartDateTime').value);
+        const endDateTime = new Date(document.getElementById('taskEndDateTime').value);
+        const nowDate = new Date();
+        
+        if (startDateTime >= endDateTime) {
+            showToast('تاريخ البدء يجب أن يكون قبل تاريخ الانتهاء', 'error');
+            return;
         }
+        
+        if (endDateTime <= nowDate) {
+            showToast('تاريخ الانتهاء يجب أن يكون بعد الوقت الحالي', 'error');
+            return;
+        }
+        
+        const newTask = {
+            id: Date.now(),
+            squadId: parseInt(squadId),
+            title: document.getElementById('taskTitle').value,
+            description: document.getElementById('taskDesc').value,
+            pointsValue: parseInt(document.getElementById('taskPoints').value),
+            createdAt: new Date().toISOString(),
+            startDateTime: startDateTime.toISOString(),
+            endDateTime: endDateTime.toISOString(),
+            isActive: true,
+            notifiedStart: false,
+            notifiedEndSoon: false
+        };
+        appData.tasks.push(newTask);
+        await saveAllDataToFirebase();
+        
+        // إضافة إشعار للتكليف الجديد
+        await addNotification('new_task', `تم إضافة تكليف جديد: ${newTask.title}`, newTask.squadId);
+        
+        showToast('تم إضافة التكليف بنجاح');
+        modal.remove();
+        renderTasksListAdmin();
+        if (document.getElementById('adminPageContent')) renderAdminDashboard();
+    });
+}
 
-        function renderTasksListAdmin() {
-            const container = document.getElementById('tasksListAdmin');
-            if (!container) return;
-            container.innerHTML = appData.tasks.map(task => {
-                const squadName = appData.squads.find(s => s.id === task.squadId)?.name;
-                const submissions = appData.taskSubmissions.filter(ts => ts.taskId === task.id);
-                return `
-                    <div class="task-item">
-                        <div class="task-header"><span class="task-title">${task.title}</span><span class="task-points">${task.pointsValue} نقطة</span></div>
-                        <div class="task-description">${task.description}</div>
-                        <div class="task-meta"><i class="fas fa-flag"></i> ${squadName} | <i class="fas fa-calendar"></i> ${new Date(task.deadline).toLocaleDateString('ar-EG')}</div>
-                        <div style="margin-top:10px;"><button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})"><i class="fas fa-check-circle"></i> إدارة التسليمات (${submissions.filter(s => s.status === 'submitted').length})</button><button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button></div>
-                    </div>
-                `;
-            }).join('');
+      // ==================== عرض التكاليف في لوحة الأدمن مع العدادات ====================
+function renderTasksListAdmin() {
+    const container = document.getElementById('tasksListAdmin');
+    if (!container) return;
+    
+    const now = new Date();
+    
+    container.innerHTML = appData.tasks.map(task => {
+        const squadName = appData.squads.find(s => s.id === task.squadId)?.name;
+        const submissions = appData.taskSubmissions.filter(ts => ts.taskId === task.id);
+        const startDate = new Date(task.startDateTime);
+        const endDate = new Date(task.endDateTime);
+        
+        // تحديد حالة التكليف
+        let statusBadge = '';
+        let statusText = '';
+        let canSubmit = true;
+        
+        if (now < startDate) {
+            statusBadge = 'badge-warning';
+            statusText = '⌛ لم يبدأ بعد';
+            canSubmit = false;
+        } else if (now > endDate) {
+            statusBadge = 'badge-inactive';
+            statusText = '❌ منتهي';
+            canSubmit = false;
+        } else {
+            statusBadge = 'badge-active';
+            statusText = '✓ نشط';
+            canSubmit = true;
         }
+        
+        // حساب الوقت المتبقي أو المتبقي للبدء
+        let countdownHtml = '';
+        if (now < startDate) {
+            const diffMs = startDate - now;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
+            countdownHtml = `<div class="task-meta" style="color:#f39c12;"><i class="fas fa-hourglass-half"></i> يبدأ بعد: ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
+        } else if (now < endDate) {
+            const diffMs = endDate - now;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
+            countdownHtml = `<div class="task-meta" style="color:#2ecc71;"><i class="fas fa-clock"></i> متبقي: ${diffDays}يوم ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
+        } else {
+            countdownHtml = `<div class="task-meta" style="color:#e74c3c;"><i class="fas fa-ban"></i> انتهى التكليف</div>`;
+        }
+        
+        return `
+            <div class="task-item" data-task-id="${task.id}" data-end="${task.endDateTime}" data-start="${task.startDateTime}">
+                <div class="task-header">
+                    <span class="task-title">${task.title}</span>
+                    <span class="task-points">${task.pointsValue} نقطة</span>
+                    <span class="badge ${statusBadge}">${statusText}</span>
+                </div>
+                <div class="task-description">${task.description}</div>
+                <div class="task-meta">
+                    <i class="fas fa-flag"></i> ${squadName} | 
+                    <i class="fas fa-play-circle"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} | 
+                    <i class="fas fa-stop-circle"></i> ${new Date(task.endDateTime).toLocaleString('ar-EG')}
+                </div>
+                ${countdownHtml}
+                <div style="margin-top:10px;">
+                    <button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})">
+                        <i class="fas fa-check-circle"></i> إدارة التسليمات (${submissions.filter(s => s.status === 'submitted').length})
+                    </button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    if (appData.tasks.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px;">لا توجد تكاليف حالياً</p>';
+    }
+}
 
         function manageTaskSubmissions(taskId) {
             const task = appData.tasks.find(t => t.id === taskId);
@@ -1671,44 +1809,340 @@ function renderLeaderboard() {
             showToast('تم إرسال الرسالة');
         }
 
-        function renderMemberTasks() {
-            const container = document.getElementById('memberPageContent');
-            const pendingTasks = appData.tasks.filter(t => t.squadId === currentUser.squadId && !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id));
-            const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
-            container.innerHTML = `
-                <div class="card"><h3><i class="fas fa-clock"></i> المهام الجديدة</h3>${pendingTasks.map(t => `
-                    <div class="task-item task-pending">
-                        <div class="task-header"><span class="task-title">${t.title}</span><span class="task-points">${t.pointsValue} نقطة</span></div>
-                        <div class="task-description">${t.description}</div>
-                        <div class="task-meta"><i class="fas fa-calendar"></i> الموعد: ${new Date(t.deadline).toLocaleDateString('ar-EG')}</div>
-                        <button class="complete-task-btn" onclick="submitTaskRequest(${t.id})"><i class="fas fa-paper-plane"></i> تقديم تسليم</button>
-                    </div>
-                `).join('')}${pendingTasks.length === 0 ? '<p style="text-align:center;">🎉 لا توجد مهام جديدة</p>' : ''}</div>
-                <div class="card"><h3><i class="fas fa-check-circle"></i> المهام المكتملة</h3>${completedTasks.map(ct => {
-                    const task = appData.tasks.find(t => t.id === ct.taskId);
-                    return `<div class="task-item task-completed"><div class="task-header"><span class="task-title">${task?.title}</span><span class="task-points">${ct.pointsAwarded || 'بانتظار التقييم'} نقطة</span></div><div class="task-description">${task?.description}</div><div class="task-meta"><i class="fas fa-check-circle"></i> تم التسليم: ${new Date(ct.submittedAt).toLocaleDateString('ar-EG')}</div></div>`;
-                }).join('')}${completedTasks.length === 0 ? '<p>لا توجد مهام مكتملة بعد</p>' : ''}</div>
-            `;
-        }
+       // ==================== عرض التكاليف للعضو مع منع التسليم بعد الانتهاء ====================
+function renderMemberTasks() {
+    const container = document.getElementById('memberPageContent');
+    const now = new Date();
+    
+    // التكاليف النشطة (لم تنتهِ بعد + بدأت بالفعل أو لم تبدأ)
+    const availableTasks = appData.tasks.filter(t => 
+        t.squadId === currentUser.squadId && 
+        !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id)
+    );
+    
+    // تقسيم التكاليف
+    const upcomingTasks = availableTasks.filter(t => new Date(t.startDateTime) > now);
+    const activeTasks = availableTasks.filter(t => new Date(t.startDateTime) <= now && new Date(t.endDateTime) > now);
+    const expiredTasks = availableTasks.filter(t => new Date(t.endDateTime) <= now);
+    
+    const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
+    
+    container.innerHTML = `
+        <div class="card">
+            <h3><i class="fas fa-hourglass-start"></i> التكاليف القادمة (ستبدأ قريباً)</h3>
+            ${upcomingTasks.map(t => renderTaskCard(t, 'upcoming', now)).join('')}
+            ${upcomingTasks.length === 0 ? '<p style="text-align:center;">✨ لا توجد تكاليف قادمة</p>' : ''}
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-play-circle"></i> التكاليف النشطة</h3>
+            ${activeTasks.map(t => renderTaskCard(t, 'active', now)).join('')}
+            ${activeTasks.length === 0 ? '<p style="text-align:center;">🎯 لا توجد تكاليف نشطة حالياً</p>' : ''}
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-check-circle"></i> التكاليف المكتملة</h3>
+            ${completedTasks.map(ct => {
+                const task = appData.tasks.find(t => t.id === ct.taskId);
+                return `<div class="task-item task-completed">
+                    <div class="task-header"><span class="task-title">${task?.title}</span><span class="task-points">${ct.pointsAwarded || 'بانتظار التقييم'} نقطة</span></div>
+                    <div class="task-description">${task?.description}</div>
+                    <div class="task-meta"><i class="fas fa-check-circle"></i> تم التسليم: ${new Date(ct.submittedAt).toLocaleString('ar-EG')}</div>
+                </div>`;
+            }).join('')}
+            ${completedTasks.length === 0 ? '<p>لا توجد تكاليف مكتملة بعد</p>' : ''}
+        </div>
+    `;
+}
 
-        async function submitTaskRequest(taskId) {
-            const existing = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === currentUser.id);
-            if (existing) { showToast('لقد قمت بالفعل بتسليم هذا التكليف', 'error'); return; }
-            const submission = {
-                id: Date.now(),
-                taskId: taskId,
-                memberId: currentUser.id,
-                status: 'submitted',
-                submittedAt: new Date().toISOString(),
-                pointsAwarded: null,
-                reviewedBy: null,
-                reviewedAt: null
-            };
-            appData.taskSubmissions.push(submission);
-            await saveAllDataToFirebase();
-            showToast('تم تقديم طلب تسليم التكليف، بانتظار موافقة القائد');
-            renderMemberTasks();
+// دالة مساعدة لعرض بطاقة التكليف
+function renderTaskCard(task, type, now) {
+    const startDate = new Date(task.startDateTime);
+    const endDate = new Date(task.endDateTime);
+    let countdownHtml = '';
+    let canSubmit = false;
+    let buttonHtml = '';
+    
+    if (type === 'upcoming') {
+        const diffMs = startDate - now;
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        countdownHtml = `<div class="task-meta" style="color:#f39c12;"><i class="fas fa-hourglass-half"></i> يبدأ بعد: ${diffHours}س ${diffMins}د</div>`;
+        buttonHtml = `<button class="btn btn-sm btn-secondary" disabled style="background:#ccc;"><i class="fas fa-clock"></i> لم يبدأ بعد</button>`;
+    } else if (type === 'active') {
+        const diffMs = endDate - now;
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        countdownHtml = `<div class="task-meta" style="color:#2ecc71;"><i class="fas fa-hourglass-half"></i> متبقي: ${diffHours}س ${diffMins}د</div>`;
+        canSubmit = true;
+        buttonHtml = `<button class="complete-task-btn" onclick="submitTaskRequest(${task.id})"><i class="fas fa-paper-plane"></i> تقديم تسليم</button>`;
+    }
+    
+    return `
+        <div class="task-item task-${type}">
+            <div class="task-header">
+                <span class="task-title">${task.title}</span>
+                <span class="task-points">${task.pointsValue} نقطة</span>
+            </div>
+            <div class="task-description">${task.description}</div>
+            <div class="task-meta">
+                <i class="fas fa-calendar-alt"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} - ${new Date(task.endDateTime).toLocaleString('ar-EG')}
+            </div>
+            ${countdownHtml}
+            <div style="margin-top:10px;">${buttonHtml}</div>
+        </div>
+    `;
+}
+
+        // ==================== تقديم طلب تسليم مع التحقق من الوقت ====================
+async function submitTaskRequest(taskId) {
+    const task = appData.tasks.find(t => t.id === taskId);
+    if (!task) {
+        showToast('التكليف غير موجود', 'error');
+        return;
+    }
+    
+    const now = new Date();
+    const startDate = new Date(task.startDateTime);
+    const endDate = new Date(task.endDateTime);
+    
+    // التحقق من أن الوقت الحالي بين وقت البدء ووقت الانتهاء
+    if (now < startDate) {
+        showToast('❌ لم يحن وقت بدء هذا التكليف بعد!', 'error');
+        return;
+    }
+    
+    if (now > endDate) {
+        showToast('❌ انتهى وقت هذا التكليف، لا يمكنك تسليمه الآن!', 'error');
+        return;
+    }
+    
+    const existing = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === currentUser.id);
+    if (existing) {
+        showToast('لقد قمت بالفعل بتسليم هذا التكليف', 'error');
+        return;
+    }
+    
+    const submission = {
+        id: Date.now(),
+        taskId: taskId,
+        memberId: currentUser.id,
+        status: 'submitted',
+        submittedAt: new Date().toISOString(),
+        pointsAwarded: null,
+        reviewedBy: null,
+        reviewedAt: null
+    };
+    appData.taskSubmissions.push(submission);
+    await saveAllDataToFirebase();
+    
+    // إضافة إشعار بتسليم جديد
+    await addNotification('task_submitted', `${currentUser.name} قام بتسليم تكليف: ${task.title}`, task.squadId);
+    
+    showToast('✅ تم تقديم طلب تسليم التكليف، بانتظار موافقة القائد');
+    renderMemberTasks();
+}
+// ==================== نظام الإشعارات ====================
+
+// هيكل الإشعارات
+let notifications = [];
+
+// تحميل الإشعارات من Firebase
+async function loadNotifications() {
+    try {
+        const snapshot = await database.ref('notifications').once('value');
+        const data = snapshot.val();
+        if (data) {
+            notifications = Object.values(data);
+        } else {
+            notifications = [];
         }
+        console.log('✅ تم تحميل الإشعارات');
+    } catch (error) {
+        console.error('❌ خطأ في تحميل الإشعارات:', error);
+        notifications = [];
+    }
+}
+
+// حفظ الإشعارات في Firebase
+async function saveNotifications() {
+    try {
+        await database.ref('notifications').set(notifications);
+        console.log('✅ تم حفظ الإشعارات');
+    } catch (error) {
+        console.error('❌ خطأ في حفظ الإشعارات:', error);
+    }
+}
+
+// إضافة إشعار جديد
+async function addNotification(type, message, squadId = null) {
+    const newNotification = {
+        id: Date.now(),
+        type: type, // 'new_task', 'task_starting', 'task_ending', 'task_submitted', 'task_reviewed'
+        message: message,
+        squadId: squadId,
+        createdAt: new Date().toISOString(),
+        isRead: false,
+        forAdmin: true
+    };
+    notifications.unshift(newNotification);
+    // الاحتفاظ بآخر 50 إشعار فقط
+    if (notifications.length > 50) notifications.pop();
+    await saveNotifications();
+    
+    // عرض إشعار فوري للمستخدم الحالي
+    if (currentUser && ((isAdmin && newNotification.forAdmin) || (!isAdmin && squadId === currentUser.squadId))) {
+        showToastNotification(message, type);
+    }
+}
+
+// عرض إشعار منبثق
+function showToastNotification(message, type) {
+    const toast = document.createElement('div');
+    let icon = '📢';
+    let bgColor = '#3498db';
+    
+    switch(type) {
+        case 'new_task':
+            icon = '📋';
+            bgColor = '#2ecc71';
+            break;
+        case 'task_starting':
+            icon = '⏰';
+            bgColor = '#f39c12';
+            break;
+        case 'task_ending':
+            icon = '⚠️';
+            bgColor = '#e74c3c';
+            break;
+        case 'task_submitted':
+            icon = '📝';
+            bgColor = '#9b59b6';
+            break;
+        case 'task_reviewed':
+            icon = '⭐';
+            bgColor = '#1abc9c';
+            break;
+        default:
+            icon = '🔔';
+    }
+    
+    toast.style.cssText = `position:fixed; top:20px; left:20px; background:${bgColor}; color:white; padding:12px 20px; border-radius:12px; z-index:10000; animation:slideInRight 0.3s ease; box-shadow:0 4px 15px rgba(0,0,0,0.2); font-weight:500; direction:rtl;`;
+    toast.innerHTML = `<i class="fas ${icon === '📋' ? 'fa-clipboard-list' : icon === '⏰' ? 'fa-hourglass-half' : icon === '⚠️' ? 'fa-exclamation-triangle' : 'fa-bell'}"></i> ${message}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
+}
+
+// عرض لوحة الإشعارات في لوحة التحكم
+function renderNotificationsPanel() {
+    const panel = document.getElementById('notificationsPanel');
+    if (!panel) return;
+    
+    const unreadCount = notifications.filter(n => !n.isRead).length;
+    
+    panel.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h4><i class="fas fa-bell"></i> الإشعارات <span class="badge" style="background:#e74c3c;">${unreadCount}</span></h4>
+            <button class="btn btn-sm btn-primary" onclick="markAllNotificationsRead()"><i class="fas fa-check-double"></i> تحديد الكل كمقروء</button>
+        </div>
+        <div id="notificationsList" style="max-height:300px; overflow-y:auto;">
+            ${notifications.length === 0 ? '<p style="text-align:center;">لا توجد إشعارات</p>' : 
+                notifications.slice(0, 20).map(n => `
+                    <div class="notification-item ${n.isRead ? '' : 'unread'}" style="padding:10px; border-bottom:1px solid #eee; background:${n.isRead ? 'transparent' : '#fff3cd'}; margin-bottom:5px; border-radius:8px;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <small style="color:#999;">${new Date(n.createdAt).toLocaleString('ar-EG')}</small>
+                            ${!n.isRead ? '<span class="badge" style="background:#e74c3c; font-size:10px;">جديد</span>' : ''}
+                        </div>
+                        <div>${n.message}</div>
+                    </div>
+                `).join('')
+            }
+        </div>
+    `;
+}
+
+// تحديد جميع الإشعارات كمقروءة
+async function markAllNotificationsRead() {
+    notifications.forEach(n => n.isRead = true);
+    await saveNotifications();
+    renderNotificationsPanel();
+}
+
+// فتح لوحة الإشعارات في الأدمن
+function showNotificationsModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-bell"></i> مركز الإشعارات</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
+            <div id="notificationsModalContent"></div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    const unreadCount = notifications.filter(n => !n.isRead).length;
+    document.getElementById('notificationsModalContent').innerHTML = `
+        <div style="margin-bottom:15px;">
+            <button class="btn btn-sm btn-primary" onclick="markAllNotificationsRead(); document.getElementById('notificationsModalContent').innerHTML = this.outerHTML;">تحديد الكل كمقروء</button>
+        </div>
+        <div style="max-height:400px; overflow-y:auto;">
+            ${notifications.length === 0 ? '<p style="text-align:center;">لا توجد إشعارات</p>' : 
+                notifications.map(n => `
+                    <div style="padding:12px; border-bottom:1px solid #eee; background:${n.isRead ? 'transparent' : '#fff3cd'}; margin-bottom:8px; border-radius:10px;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <small style="color:#999;">${new Date(n.createdAt).toLocaleString('ar-EG')}</small>
+                            ${!n.isRead ? '<span class="badge" style="background:#e74c3c;">جديد</span>' : ''}
+                        </div>
+                        <div style="margin-top:5px;">${n.message}</div>
+                    </div>
+                `).join('')
+            }
+        </div>
+    `;
+}
+
+// التحقق من التكاليف وإرسال إشعارات تلقائية (يتم تشغيلها كل دقيقة)
+async function checkTasksForNotifications() {
+    const now = new Date();
+    
+    for (const task of appData.tasks) {
+        const startDate = new Date(task.startDateTime);
+        const endDate = new Date(task.endDateTime);
+        const oneHourBeforeStart = new Date(startDate.getTime() - 60 * 60 * 1000);
+        const oneHourBeforeEnd = new Date(endDate.getTime() - 60 * 60 * 1000);
+        
+        // إشعار قبل البدء بساعة
+        if (now >= oneHourBeforeStart && now < startDate && !task.notifiedStart) {
+            await addNotification('task_starting', `⏰ التكليف "${task.title}" سيبدأ بعد ساعة!`, task.squadId);
+            task.notifiedStart = true;
+            await saveAllDataToFirebase();
+        }
+        
+        // إشعار قبل الانتهاء بساعة
+        if (now >= oneHourBeforeEnd && now < endDate && !task.notifiedEndSoon) {
+            await addNotification('task_ending', `⚠️ تبقت ساعة على انتهاء التكليف "${task.title}"`, task.squadId);
+            task.notifiedEndSoon = true;
+            await saveAllDataToFirebase();
+        }
+    }
+}
+
+// بدء المراقبة التلقائية للإشعارات
+function startNotificationWatcher() {
+    // فحص كل دقيقة
+    setInterval(async () => {
+        await checkTasksForNotifications();
+    }, 60000);
+    
+    // فحص فوري عند التحميل
+    setTimeout(async () => {
+        await checkTasksForNotifications();
+    }, 5000);
+}
 
         // ==================== HELPER FUNCTIONS ====================
         function escapeHtml(text) {
@@ -1755,7 +2189,9 @@ function renderLeaderboard() {
         // Start the app
         (async function start() {
             await loadAllDataFromFirebase();
+            await loadNotifications();
             listenForRealTimeUpdates();
+            startNotificationWatcher();
             render();
         })();
     </script>
