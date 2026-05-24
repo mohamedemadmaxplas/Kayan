@@ -17,6 +17,120 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <style>
+        /* ==================== تحسين التوافق مع الموبايل ==================== */
+@media (max-width: 768px) {
+    /* تحسين بطاقات التكاليف */
+    .task-item {
+        padding: 12px;
+    }
+    .task-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .task-points {
+        align-self: flex-start;
+    }
+    
+    /* تحسين جدول الترتيب */
+    .data-table th, .data-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    /* تحسين شاشة الدردشة */
+    .chat-container {
+        height: 400px;
+    }
+    .message {
+        max-width: 90%;
+        font-size: 13px;
+    }
+    .chat-input-area {
+        flex-direction: column;
+    }
+    .chat-input-area input {
+        width: 100%;
+    }
+    .chat-input-area button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* تحسين أزرار الإجراءات */
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+    
+    /* تحسين بطاقة التكاليف النشطة */
+    .active-task-card {
+        padding: 10px;
+    }
+    .active-task-card > div {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .countdown-timer {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+    
+    /* تحسين نموذج الإضافة */
+    .modal-content {
+        padding: 15px;
+        width: 95%;
+    }
+    .details-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    /* تحسين الفلاتر */
+    .squad-filter {
+        flex-direction: column;
+    }
+    .squad-filter select, .squad-filter input, .squad-filter button {
+        width: 100%;
+    }
+}
+
+/* لشاشات صغيرة جداً */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .stat-card {
+        padding: 12px;
+    }
+    .stat-card i {
+        font-size: 28px;
+    }
+    .stat-card .number {
+        font-size: 22px;
+    }
+    .header {
+        margin-right: 60px;
+        padding: 10px 15px;
+    }
+    .logo h1 {
+        font-size: 16px;
+    }
+    .logo p {
+        font-size: 8px;
+    }
+    .user-info {
+        padding: 5px 10px;
+        gap: 8px;
+    }
+    .user-info span {
+        font-size: 12px;
+    }
+    .logout-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+}
         /* عداد تنازلي للتكاليف */
 .countdown-timer {
     direction: ltr;
@@ -1485,46 +1599,60 @@ function renderLeaderboard() {
             showToast('تم حذف الطليعة');
         }
 
-        // ==================== ADMIN COMMUNITY ====================
-        function renderAdminCommunity() {
-            const container = document.getElementById('adminPageContent');
-            container.innerHTML = `
-                <div class="card">
-                    <h3><i class="fas fa-comments"></i> الكميونيتي - الدردشات</h3>
-                    <div class="squad-filter">
-                        <select id="adminChatFilter" onchange="loadAdminMessages()">
-                            <option value="all">📢 جميع الطلايع (بث عام)</option>
-                            ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
-                        </select>
-                        <button class="broadcast-btn" onclick="showBroadcastModal()"><i class="fas fa-bullhorn"></i> إرسال للجميع</button>
-                    </div>
-                    <div class="chat-container">
-                        <div class="chat-messages" id="adminChatMessages"></div>
-                        <div class="chat-input-area">
-                            <input type="text" id="adminMessageInput" placeholder="اكتب رسالتك...">
-                            <button onclick="sendAdminMessage()"><i class="fas fa-paper-plane"></i> إرسال</button>
-                        </div>
-                    </div>
+       // ==================== صفحة الكميونيتي (متجاوبة) ====================
+function renderAdminCommunity() {
+    const container = document.getElementById('adminPageContent');
+    container.innerHTML = `
+        <div class="card" style="padding: 15px;">
+            <h3 style="font-size: 16px; margin-bottom: 15px;"><i class="fas fa-comments"></i> الكميونيتي - الدردشات</h3>
+            <div class="squad-filter" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                <select id="adminChatFilter" onchange="loadAdminMessages()" style="flex: 2; min-width: 150px; padding: 8px 12px; border-radius: 25px;">
+                    <option value="all">📢 جميع الطلايع (بث عام)</option>
+                    ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+                </select>
+                <button class="broadcast-btn" onclick="showBroadcastModal()" style="padding: 8px 15px; font-size: 13px; white-space: nowrap;">
+                    <i class="fas fa-bullhorn"></i> بث عام
+                </button>
+            </div>
+            <div class="chat-container" style="height: 450px; display: flex; flex-direction: column; background: #fff; border-radius: 15px; overflow: hidden;">
+                <div class="chat-messages" id="adminChatMessages" style="flex: 1; overflow-y: auto; padding: 15px; background: #f8f9fa;"></div>
+                <div class="chat-input-area" style="display: flex; gap: 10px; padding: 12px; background: white; border-top: 1px solid #eee; flex-wrap: wrap;">
+                    <input type="text" id="adminMessageInput" placeholder="اكتب رسالتك..." style="flex: 3; min-width: 150px; padding: 10px 15px; border-radius: 30px; border: 2px solid #e0e0e0;">
+                    <button onclick="sendAdminMessage()" style="flex: 1; min-width: 80px; padding: 10px; background: #d4a017; color: white; border: none; border-radius: 30px; cursor: pointer;">
+                        <i class="fas fa-paper-plane"></i> إرسال
+                    </button>
                 </div>
-            `;
-            loadAdminMessages();
-        }
+            </div>
+        </div>
+    `;
+    loadAdminMessages();
+}
 
-        function loadAdminMessages() {
-            const filter = document.getElementById('adminChatFilter')?.value || 'all';
-            let messages = filter === 'all' ? appData.messages.filter(m => m.isBroadcast === true) : appData.messages.filter(m => m.squadId == filter && !m.isBroadcast);
-            messages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
-            const container = document.getElementById('adminChatMessages');
-            if (!container) return;
-            container.innerHTML = messages.map(m => `
-                <div class="message sent">
-                    <div class="sender"><i class="fas fa-user"></i> ${m.senderName} ${m.isBroadcast ? '<span style="background:#e74c3c; padding:2px 6px; border-radius:10px; font-size:10px;">بث عام</span>' : ''}</div>
-                    <div class="text">${escapeHtml(m.text)}</div>
-                    <div class="time">${new Date(m.timestamp).toLocaleString('ar-EG')}</div>
-                </div>
-            `).join('');
-            container.scrollTop = container.scrollHeight;
-        }
+        // ==================== تحميل رسائل الأدمن مع تحسين العرض ====================
+function loadAdminMessages() {
+    const filter = document.getElementById('adminChatFilter')?.value || 'all';
+    let messages = filter === 'all' ? appData.messages.filter(m => m.isBroadcast === true) : appData.messages.filter(m => m.squadId == filter && !m.isBroadcast);
+    messages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+    const container = document.getElementById('adminChatMessages');
+    if (!container) return;
+    
+    if (messages.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px; color:#888;">💬 لا توجد رسائل بعد، ابدأ المحادثة!</p>';
+        return;
+    }
+    
+    container.innerHTML = messages.map(m => `
+        <div class="message sent" style="max-width: 85%; padding: 10px 15px; border-radius: 18px; background: linear-gradient(135deg, #d4a017, #b8860b); color: white; align-self: flex-start; margin-bottom: 10px;">
+            <div class="sender" style="font-size: 11px; opacity: 0.8; display: flex; justify-content: space-between; flex-wrap: wrap;">
+                <span><i class="fas fa-user"></i> ${m.senderName}</span>
+                ${m.isBroadcast ? '<span style="background:#e74c3c; padding:2px 8px; border-radius:10px; font-size:10px;">📢 بث عام</span>' : ''}
+            </div>
+            <div class="text" style="font-size: 14px; margin: 5px 0;">${escapeHtml(m.text)}</div>
+            <div class="time" style="font-size: 9px; text-align: left; opacity: 0.6;">${new Date(m.timestamp).toLocaleString('ar-EG')}</div>
+        </div>
+    `).join('');
+    container.scrollTop = container.scrollHeight;
+}
 
         async function sendAdminMessage() {
             const input = document.getElementById('adminMessageInput');
@@ -1676,12 +1804,17 @@ function showAddTaskModal() {
     });
 }
 
-      // ==================== عرض التكاليف في لوحة الأدمن مع العدادات ====================
+     // ==================== عرض التكاليف في لوحة الأدمن مع تحسين التوافق ====================
 function renderTasksListAdmin() {
     const container = document.getElementById('tasksListAdmin');
     if (!container) return;
     
     const now = new Date();
+    
+    if (appData.tasks.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px;">📭 لا توجد تكاليف حالياً</p>';
+        return;
+    }
     
     container.innerHTML = appData.tasks.map(task => {
         const squadName = appData.squads.find(s => s.id === task.squadId)?.name;
@@ -1689,13 +1822,12 @@ function renderTasksListAdmin() {
         const startDate = new Date(task.startDateTime);
         const endDate = new Date(task.endDateTime);
         
-        // تحديد حالة التكليف
         let statusBadge = '';
         let statusText = '';
         
         if (now < startDate) {
             statusBadge = 'badge-warning';
-            statusText = '⌛ لم يبدأ بعد';
+            statusText = '⌛ لم يبدأ';
         } else if (now > endDate) {
             statusBadge = 'badge-inactive';
             statusText = '❌ منتهي';
@@ -1704,7 +1836,6 @@ function renderTasksListAdmin() {
             statusText = '✓ نشط';
         }
         
-        // حساب العداد التنازلي
         let countdownHtml = '';
         if (now < startDate) {
             const diffMs = startDate - now;
@@ -1712,45 +1843,45 @@ function renderTasksListAdmin() {
             const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-            countdownHtml = `<div class="task-meta" style="color:#f39c12; font-size:13px; margin-top:8px;"><i class="fas fa-hourglass-half"></i> ⏳ يبدأ بعد: ${diffDays}يوم ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
+            countdownHtml = `<div class="task-meta" style="color:#f39c12; font-size:12px; margin-top:8px;"><i class="fas fa-hourglass-half"></i> ⏳ يبدأ بعد: ${diffDays}ي ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
         } else if (now < endDate) {
             const diffMs = endDate - now;
             const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
             const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             const diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-            countdownHtml = `<div class="task-meta" style="color:#2ecc71; font-size:13px; margin-top:8px;"><i class="fas fa-clock"></i> ⏰ متبقي: ${diffDays}يوم ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
+            countdownHtml = `<div class="task-meta" style="color:#2ecc71; font-size:12px; margin-top:8px;"><i class="fas fa-clock"></i> ⏰ متبقي: ${diffDays}ي ${diffHours}س ${diffMins}د ${diffSecs}ث</div>`;
         } else {
-            countdownHtml = `<div class="task-meta" style="color:#e74c3c; font-size:13px; margin-top:8px;"><i class="fas fa-ban"></i> ❌ انتهى التكليف</div>`;
+            countdownHtml = `<div class="task-meta" style="color:#e74c3c; font-size:12px; margin-top:8px;"><i class="fas fa-ban"></i> ❌ انتهى التكليف</div>`;
         }
         
         return `
-            <div class="task-item" data-task-id="${task.id}">
-                <div class="task-header">
-                    <span class="task-title">${task.title}</span>
-                    <span class="task-points">${task.pointsValue} نقطة</span>
-                    <span class="badge ${statusBadge}">${statusText}</span>
+            <div class="task-item" style="margin-bottom: 15px;">
+                <div class="task-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <span class="task-title" style="font-size: 15px;">📋 ${task.title}</span>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span class="task-points" style="background: #d4a017; padding: 3px 10px; border-radius: 20px; font-size: 11px;">${task.pointsValue} نقطة</span>
+                        <span class="badge ${statusBadge}" style="font-size: 11px;">${statusText}</span>
+                    </div>
                 </div>
-                <div class="task-description">${task.description}</div>
-                <div class="task-meta">
+                <div class="task-description" style="font-size: 13px; color: #666; margin: 8px 0;">${task.description}</div>
+                <div class="task-meta" style="font-size: 11px; color: #888;">
                     <i class="fas fa-flag"></i> ${squadName} | 
                     <i class="fas fa-play-circle"></i> ${new Date(task.startDateTime).toLocaleString('ar-EG')} | 
                     <i class="fas fa-stop-circle"></i> ${new Date(task.endDateTime).toLocaleString('ar-EG')}
                 </div>
                 ${countdownHtml}
-                <div style="margin-top:10px;">
-                    <button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})">
-                        <i class="fas fa-check-circle"></i> إدارة التسليمات (${submissions.filter(s => s.status === 'submitted').length})
+                <div style="margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})" style="font-size: 12px; padding: 5px 12px;">
+                        <i class="fas fa-check-circle"></i> التسليمات (${submissions.filter(s => s.status === 'submitted').length})
                     </button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})" style="font-size: 12px; padding: 5px 12px;">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
                 </div>
             </div>
         `;
     }).join('');
-    
-    if (appData.tasks.length === 0) {
-        container.innerHTML = '<p style="text-align:center; padding:20px;">لا توجد تكاليف حالياً</p>';
-    }
 }
 
         function manageTaskSubmissions(taskId) {
@@ -1890,23 +2021,25 @@ function renderTasksListAdmin() {
                 <div class="card"><h3><i class="fas fa-chart-line"></i> ليدربورد طليعتي</h3>${squadMembers.map((m, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${m.name} ${m.id === currentUser.id ? '<span class="badge" style="background:#d4a017;">أنت</span>' : ''}</div><div><strong>${m.points}</strong> نقطة</div></div>`).join('')}</div>
             `;
         }
-
-        function renderMemberCommunity() {
-            const container = document.getElementById('memberPageContent');
-            container.innerHTML = `
-                <div class="card">
-                    <h3><i class="fas fa-comments"></i> الكميونيتي - دردشة الطليعة</h3>
-                    <div class="chat-container">
-                        <div class="chat-messages" id="memberChatMessages"></div>
-                        <div class="chat-input-area">
-                            <input type="text" id="memberMessageInput" placeholder="اكتب رسالتك...">
-                            <button onclick="sendMemberMessage()"><i class="fas fa-paper-plane"></i> إرسال</button>
-                        </div>
-                    </div>
+// ==================== صفحة الكميونيتي للعضو (متجاوبة) ====================
+function renderMemberCommunity() {
+    const container = document.getElementById('memberPageContent');
+    container.innerHTML = `
+        <div class="card" style="padding: 15px;">
+            <h3 style="font-size: 16px; margin-bottom: 15px;"><i class="fas fa-comments"></i> الكميونيتي - دردشة الطليعة</h3>
+            <div class="chat-container" style="height: 450px; display: flex; flex-direction: column; background: #fff; border-radius: 15px; overflow: hidden;">
+                <div class="chat-messages" id="memberChatMessages" style="flex: 1; overflow-y: auto; padding: 15px; background: #f8f9fa;"></div>
+                <div class="chat-input-area" style="display: flex; gap: 10px; padding: 12px; background: white; border-top: 1px solid #eee; flex-wrap: wrap;">
+                    <input type="text" id="memberMessageInput" placeholder="اكتب رسالتك..." style="flex: 3; min-width: 150px; padding: 10px 15px; border-radius: 30px; border: 2px solid #e0e0e0;">
+                    <button onclick="sendMemberMessage()" style="flex: 1; min-width: 80px; padding: 10px; background: #d4a017; color: white; border: none; border-radius: 30px; cursor: pointer;">
+                        <i class="fas fa-paper-plane"></i> إرسال
+                    </button>
                 </div>
-            `;
-            loadMemberMessages();
-        }
+            </div>
+        </div>
+    `;
+    loadMemberMessages();
+}
 
         function loadMemberMessages() {
             const squadMessages = appData.messages.filter(m => m.squadId === currentUser.squadId || m.isBroadcast === true);
