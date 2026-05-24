@@ -841,32 +841,120 @@
             closeSidebar();
         }
 
-        function renderAdminDashboard() {
-            const stats = {
-                members: appData.members.length,
-                squads: appData.squads.length,
-                branches: appData.branches.length,
-                tasks: appData.tasks.length,
-                pendingSubmissions: appData.taskSubmissions.filter(ts => ts.status === 'submitted' && !ts.pointsAwarded).length
-            };
-            const container = document.getElementById('adminPageContent');
-            container.innerHTML = `
-                <div class="stats-grid">
-                    <div class="stat-card"><i class="fas fa-users"></i><div class="number">${stats.members}</div><div class="label">الأعضاء</div></div>
-                    <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${stats.squads}</div><div class="label">الطلايع</div></div>
-                    <div class="stat-card"><i class="fas fa-building"></i><div class="number">${stats.branches}</div><div class="label">المناطق</div></div>
-                    <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${stats.tasks}</div><div class="label">التكاليف</div></div>
-                    <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${stats.pendingSubmissions}</div><div class="label">تسليمات معلقة</div></div>
-                </div>
-                <div class="card"><h3><i class="fas fa-chart-bar"></i> آخر الأعضاء المنضمين</h3><div id="recentMembers"></div></div>
-                <div class="card"><h3><i class="fas fa-trophy"></i> ترتيب الطلايع بالنقاط</h3><div id="squadRanking"></div></div>
-            `;
-            const recent = [...appData.members].sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt)).slice(0, 5);
-            document.getElementById('recentMembers').innerHTML = recent.map(m => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div><strong>${m.name}</strong> (${m.code})</div><div><span class="badge" style="background:#d4a017; color:white;">${m.points} نقطة</span></div></div>`).join('');
-            
-            const ranking = appData.squads.map(s => ({ ...s, totalPoints: appData.members.filter(m => m.squadId === s.id).reduce((sum, m) => sum + m.points, 0) })).sort((a,b) => b.totalPoints - a.totalPoints);
-            document.getElementById('squadRanking').innerHTML = ranking.map((s, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${s.name}</div><div><strong>${s.totalPoints}</strong> نقطة</div></div>`).join('');
-        }
+       // ==================== ADMIN DASHBOARD (معدل) ====================
+function renderAdminDashboard() {
+    const stats = {
+        members: appData.members.length,
+        squads: appData.squads.length,
+        branches: appData.branches.length,
+        tasks: appData.tasks.length,
+        pendingSubmissions: appData.taskSubmissions.filter(ts => ts.status === 'submitted' && !ts.pointsAwarded).length
+    };
+    const container = document.getElementById('adminPageContent');
+    container.innerHTML = `
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-users"></i><div class="number">${stats.members}</div><div class="label">الأعضاء</div></div>
+            <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${stats.squads}</div><div class="label">الطلايع</div></div>
+            <div class="stat-card"><i class="fas fa-building"></i><div class="number">${stats.branches}</div><div class="label">المناطق</div></div>
+            <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${stats.tasks}</div><div class="label">التكاليف</div></div>
+            <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${stats.pendingSubmissions}</div><div class="label">تسليمات معلقة</div></div>
+        </div>
+        
+        <!-- البطاقة الجديدة: ترتيب الأعضاء حسب النقاط مع فلتر الطلائع -->
+        <div class="card">
+            <h3><i class="fas fa-trophy"></i> ترتيب الأعضاء حسب النقاط</h3>
+            <div class="squad-filter" style="margin-bottom: 15px;">
+                <select id="leaderboardSquadFilter" onchange="renderLeaderboard()" style="flex: 1;">
+                    <option value="all">📊 الكل (أعلى عضو في الكل)</option>
+                    ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+                </select>
+            </div>
+            <div id="leaderboardContainer"></div>
+        </div>
+        
+        <div class="card"><h3><i class="fas fa-trophy"></i> ترتيب الطلايع بالنقاط</h3><div id="squadRanking"></div></div>
+    `;
+    
+    // عرض لوحة المتصدرين لأول مرة
+    renderLeaderboard();
+    
+    // ترتيب الطلايع (كما هو)
+    const ranking = appData.squads.map(s => ({ ...s, totalPoints: appData.members.filter(m => m.squadId === s.id).reduce((sum, m) => sum + m.points, 0) })).sort((a,b) => b.totalPoints - a.totalPoints);
+    document.getElementById('squadRanking').innerHTML = ranking.map((s, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${s.name}</div><div><strong>${s.totalPoints}</strong> نقطة</div></div>`).join('');
+}
+
+// ==================== دالة عرض الترتيب مع الفلتر ====================
+function renderLeaderboard() {
+    const filterValue = document.getElementById('leaderboardSquadFilter')?.value || 'all';
+    let filteredMembers = [];
+    
+    if (filterValue === 'all') {
+        // عرض جميع الأعضاء مرتبين تنازلياً مع إظهار أعلى عضو في الكل
+        filteredMembers = [...appData.members].sort((a, b) => b.points - a.points);
+    } else {
+        // عرض أعضاء طليعة محددة فقط
+        const squadId = parseInt(filterValue);
+        filteredMembers = appData.members.filter(m => m.squadId === squadId).sort((a, b) => b.points - a.points);
+    }
+    
+    const container = document.getElementById('leaderboardContainer');
+    if (!container) return;
+    
+    if (filteredMembers.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding:20px;">لا يوجد أعضاء في هذه الطليعة</p>';
+        return;
+    }
+    
+    // إظهار أعلى عضو بشكل مميز إذا كان الفلتر "الكل"
+    const showHighlight = (filterValue === 'all');
+    const topMember = showHighlight ? filteredMembers[0] : null;
+    
+    let html = `
+        <div style="overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>الاسم</th>
+                        <th>الكود</th>
+                        <th>الطليعة</th>
+                        <th>النقاط</th>
+                        <th>الرتبة</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    filteredMembers.forEach((member, index) => {
+        const squadName = appData.squads.find(s => s.id === member.squadId)?.name || '-';
+        const isTop = showHighlight && index === 0;
+        const highlightStyle = isTop ? 'background: linear-gradient(90deg, #fff3cd, #ffeeba); border-right: 4px solid #d4a017;' : '';
+        
+        html += `
+            <tr style="${highlightStyle}">
+                <td><strong>${index + 1}</strong> ${isTop ? '<i class="fas fa-crown" style="color:#d4a017;"></i>' : ''}</td>
+                <td>${member.name}</td>
+                <td>${member.code}</td>
+                <td>${squadName}</td>
+                <td><span style="font-weight:bold; color:#1a472a;">${member.points}</span></td>
+                <td>${member.rank}</td>
+            </tr>
+        `;
+    });
+    
+    html += `</tbody></table></div>`;
+    
+    if (showHighlight && topMember) {
+        html = `<div style="background: linear-gradient(135deg, #1a472a, #0d2818); color: white; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center;">
+                    <i class="fas fa-crown" style="font-size: 28px; color: #d4a017;"></i>
+                    <h3 style="margin: 5px 0;">أعلى عضو في النظام</h3>
+                    <p style="font-size: 18px; font-weight: bold;">${topMember.name} (${topMember.code})</p>
+                    <p><strong>${topMember.points}</strong> نقطة - ${topMember.rank}</p>
+                </div>` + html;
+    }
+    
+    container.innerHTML = html;
+}
 
         // ==================== ADMIN MEMBERS ====================
         function renderAdminMembers() {
