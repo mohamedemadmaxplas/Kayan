@@ -627,41 +627,44 @@
             }
         }
 
-        // Initialize default data
         async function initializeDefaultData() {
-            appData = {
-                branches: [
-                    { id: 1, name: "منطقة القاهرة", createdAt: new Date().toISOString() },
-                    { id: 2, name: "منطقة الجيزة", createdAt: new Date().toISOString() },
-                    { id: 3, name: "منطقة الإسكندرية", createdAt: new Date().toISOString() }
-                ],
-                squads: [
-                    { id: 1, branchId: 1, name: "طليعة النصر", leader: "قائد أحمد", isOpen: true, createdAt: new Date().toISOString() },
-                    { id: 2, branchId: 1, name: "طليعة الفتح", leader: "قائد محمد", isOpen: true, createdAt: new Date().toISOString() },
-                    { id: 3, branchId: 2, name: "طليعة الأمل", leader: "قائد علي", isOpen: true, createdAt: new Date().toISOString() },
-                    { id: 4, branchId: 3, name: "طليعة العزم", leader: "قائد خالد", isOpen: true, createdAt: new Date().toISOString() }
-                ],
-                members: [
-                    { id: 1, code: "S001", name: "أحمد محمد", username: "ahmed", password: "123456", phone: "01012345678", branchId: 1, squadId: 1, points: 150, rank: "قائد", joinedAt: new Date().toISOString() },
-                    { id: 2, code: "S002", name: "محمود علي", username: "mahmoud", password: "123456", phone: "01087654321", branchId: 1, squadId: 1, points: 120, rank: "نائب قائد", joinedAt: new Date().toISOString() },
-                    { id: 3, code: "S003", name: "كريم حسن", username: "karim", password: "123456", phone: "01122334455", branchId: 1, squadId: 2, points: 90, rank: "عضو", joinedAt: new Date().toISOString() },
-                    { id: 4, code: "S004", name: "يوسف إبراهيم", username: "youssef", password: "123456", phone: "01234567890", branchId: 2, squadId: 3, points: 75, rank: "عضو", joinedAt: new Date().toISOString() },
-                    { id: 5, code: "S005", name: "عمر سعيد", username: "omar", password: "123456", phone: "01555667788", branchId: 3, squadId: 4, points: 60, rank: "عضو", joinedAt: new Date().toISOString() }
-                ],
-                tasks: [
-                    { id: 1, squadId: 1, title: "حفظ أخلاق الكشاف", description: "حفظ مبادئ وقانون الكشافة", pointsValue: 15, createdAt: new Date().toISOString(), deadline: new Date(Date.now() + 7*24*60*60*1000).toISOString() },
-                    { id: 2, squadId: 1, title: "مهارات التخييم", description: "تعلم كيفية نصب الخيمة وإشعال النار", pointsValue: 20, createdAt: new Date().toISOString(), deadline: new Date(Date.now() + 10*24*60*60*1000).toISOString() },
-                    { id: 3, squadId: 2, title: "الإسعافات الأولية", description: "تعلم أساسيات الإسعافات الأولية", pointsValue: 25, createdAt: new Date().toISOString(), deadline: new Date(Date.now() + 5*24*60*60*1000).toISOString() }
-                ],
-                taskSubmissions: [
-                    { id: 1, taskId: 1, memberId: 1, status: "submitted", submittedAt: new Date().toISOString(), pointsAwarded: null, reviewedBy: null, reviewedAt: null }
-                ],
-                messages: [
-                    { id: 1, squadId: 1, senderId: 1, senderName: "أحمد محمد", text: "مرحباً بكم في طليعة النصر!", timestamp: new Date().toISOString(), isBroadcast: false }
-                ]
-            };
-            await saveAllDataToFirebase();
-        }
+    const now = new Date();
+    const defaultStartDate = now.toISOString();
+    const defaultEndDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    
+    appData = {
+        branches: [
+            { id: 1, name: "منطقة القاهرة", createdAt: new Date().toISOString() },
+            { id: 2, name: "منطقة الجيزة", createdAt: new Date().toISOString() },
+            { id: 3, name: "منطقة الإسكندرية", createdAt: new Date().toISOString() }
+        ],
+        squads: [
+            { id: 1, branchId: 1, name: "طليعة النصر", leader: "قائد أحمد", isOpen: true, createdAt: new Date().toISOString() },
+            { id: 2, branchId: 1, name: "طليعة الفتح", leader: "قائد محمد", isOpen: true, createdAt: new Date().toISOString() },
+            { id: 3, branchId: 2, name: "طليعة الأمل", leader: "قائد علي", isOpen: true, createdAt: new Date().toISOString() },
+            { id: 4, branchId: 3, name: "طليعة العزم", leader: "قائد خالد", isOpen: true, createdAt: new Date().toISOString() }
+        ],
+        members: [
+            { id: 1, code: "S001", name: "أحمد محمد", age: 16, username: "ahmed", password: "123456", phone: "01012345678", branchId: 1, squadId: 1, points: 150, rank: "قائد", joinedAt: new Date().toISOString() },
+            { id: 2, code: "S002", name: "محمود علي", age: 15, username: "mahmoud", password: "123456", phone: "01087654321", branchId: 1, squadId: 1, points: 120, rank: "نائب قائد", joinedAt: new Date().toISOString() },
+            { id: 3, code: "S003", name: "كريم حسن", age: 14, username: "karim", password: "123456", phone: "01122334455", branchId: 1, squadId: 2, points: 90, rank: "عضو", joinedAt: new Date().toISOString() },
+            { id: 4, code: "S004", name: "يوسف إبراهيم", age: 17, username: "youssef", password: "123456", phone: "01234567890", branchId: 2, squadId: 3, points: 75, rank: "عضو", joinedAt: new Date().toISOString() },
+            { id: 5, code: "S005", name: "عمر سعيد", age: 13, username: "omar", password: "123456", phone: "01555667788", branchId: 3, squadId: 4, points: 60, rank: "عضو", joinedAt: new Date().toISOString() }
+        ],
+        tasks: [
+            { id: 1, squadId: 1, title: "حفظ أخلاق الكشاف", description: "حفظ مبادئ وقانون الكشافة", pointsValue: 15, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: defaultEndDate },
+            { id: 2, squadId: 1, title: "مهارات التخييم", description: "تعلم كيفية نصب الخيمة وإشعال النار", pointsValue: 20, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: new Date(now.getTime() + 10*24*60*60*1000).toISOString() },
+            { id: 3, squadId: 2, title: "الإسعافات الأولية", description: "تعلم أساسيات الإسعافات الأولية", pointsValue: 25, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: new Date(now.getTime() + 5*24*60*60*1000).toISOString() }
+        ],
+        taskSubmissions: [
+            { id: 1, taskId: 1, memberId: 1, status: "submitted", submittedAt: new Date().toISOString(), pointsAwarded: null, reviewedBy: null, reviewedAt: null }
+        ],
+        messages: [
+            { id: 1, squadId: 1, senderId: 1, senderName: "أحمد محمد", text: "مرحباً بكم في طليعة النصر!", timestamp: new Date().toISOString(), isBroadcast: false }
+        ]
+    };
+    await saveAllDataToFirebase();
+}
 
         // Listen for real-time updates
         function listenForRealTimeUpdates() {
@@ -841,32 +844,38 @@
             closeSidebar();
         }
 
-        function renderAdminDashboard() {
-            const stats = {
-                members: appData.members.length,
-                squads: appData.squads.length,
-                branches: appData.branches.length,
-                tasks: appData.tasks.length,
-                pendingSubmissions: appData.taskSubmissions.filter(ts => ts.status === 'submitted' && !ts.pointsAwarded).length
-            };
-            const container = document.getElementById('adminPageContent');
-            container.innerHTML = `
-                <div class="stats-grid">
-                    <div class="stat-card"><i class="fas fa-users"></i><div class="number">${stats.members}</div><div class="label">الأعضاء</div></div>
-                    <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${stats.squads}</div><div class="label">الطلايع</div></div>
-                    <div class="stat-card"><i class="fas fa-building"></i><div class="number">${stats.branches}</div><div class="label">المناطق</div></div>
-                    <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${stats.tasks}</div><div class="label">التكاليف</div></div>
-                    <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${stats.pendingSubmissions}</div><div class="label">تسليمات معلقة</div></div>
-                </div>
-                <div class="card"><h3><i class="fas fa-chart-bar"></i> آخر الأعضاء المنضمين</h3><div id="recentMembers"></div></div>
-                <div class="card"><h3><i class="fas fa-trophy"></i> ترتيب الطلايع بالنقاط</h3><div id="squadRanking"></div></div>
-            `;
-            const recent = [...appData.members].sort((a,b) => new Date(b.joinedAt) - new Date(a.joinedAt)).slice(0, 5);
-            document.getElementById('recentMembers').innerHTML = recent.map(m => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div><strong>${m.name}</strong> (${m.code})</div><div><span class="badge" style="background:#d4a017; color:white;">${m.points} نقطة</span></div></div>`).join('');
-            
-            const ranking = appData.squads.map(s => ({ ...s, totalPoints: appData.members.filter(m => m.squadId === s.id).reduce((sum, m) => sum + m.points, 0) })).sort((a,b) => b.totalPoints - a.totalPoints);
-            document.getElementById('squadRanking').innerHTML = ranking.map((s, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${s.name}</div><div><strong>${s.totalPoints}</strong> نقطة</div></div>`).join('');
-        }
+       function renderAdminDashboard() {
+    const stats = {
+        members: appData.members.length,
+        squads: appData.squads.length,
+        branches: appData.branches.length,
+        tasks: appData.tasks.length,
+        pendingSubmissions: appData.taskSubmissions.filter(ts => ts.status === 'submitted' && !ts.pointsAwarded).length
+    };
+    const container = document.getElementById('adminPageContent');
+    container.innerHTML = `
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-users"></i><div class="number">${stats.members}</div><div class="label">الأعضاء</div></div>
+            <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${stats.squads}</div><div class="label">الطلايع</div></div>
+            <div class="stat-card"><i class="fas fa-building"></i><div class="number">${stats.branches}</div><div class="label">المناطق</div></div>
+            <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${stats.tasks}</div><div class="label">التكاليف</div></div>
+            <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${stats.pendingSubmissions}</div><div class="label">تسليمات معلقة</div></div>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-trophy"></i> ترتيب الطلايع بالنقاط</h3>
+            <div id="squadRankingContainer"></div>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-tasks"></i> التكاليف النشطة <i class="fas fa-hourglass-half" style="color: #d4a017;"></i></h3>
+            <div id="activeTasksContainer"></div>
+        </div>
+    `;
+    
+    // استدعاء الدوال الجديدة
+    renderSquadRankingCard();
+    renderActiveTasksCard();
+    startCountdownUpdater();
+}
 
         // ==================== ADMIN MEMBERS ====================
         function renderAdminMembers() {
@@ -919,84 +928,87 @@
 
         function filterMembersTable() { renderMembersTable(); }
 
-        // ==================== MEMBER MODALS ====================
         function showMemberDetails(id) {
-            const m = appData.members.find(m => m.id === id);
-            if (!m) return;
-            const squad = appData.squads.find(s => s.id === m.squadId);
-            const branch = appData.branches.find(b => b.id === m.branchId);
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-id-card"></i> بيانات العضو: ${m.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <div class="details-grid">
-                        <div class="detail-item"><div class="detail-label">الكود</div><div class="detail-value">${m.code}</div></div>
-                        <div class="detail-item"><div class="detail-label">الاسم</div><div class="detail-value">${m.name}</div></div>
-                        <div class="detail-item"><div class="detail-label">اسم المستخدم</div><div class="detail-value">${m.username}</div></div>
-                        <div class="detail-item"><div class="detail-label">كلمة المرور</div><div class="detail-value">••••••</div></div>
-                        <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${m.phone}</div></div>
-                        <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
-                        <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${squad?.name || '-'}</div></div>
-                        <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${m.rank}</div></div>
-                        <div class="detail-item"><div class="detail-label">النقاط</div><div class="detail-value">${m.points}</div></div>
-                        <div class="detail-item"><div class="detail-label">تاريخ الانضمام</div><div class="detail-value">${new Date(m.joinedAt).toLocaleDateString('ar-EG')}</div></div>
-                    </div>
-                    <div style="text-align:center;"><button class="btn btn-primary" onclick="this.closest('.modal').remove()">إغلاق</button></div>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
+    const m = appData.members.find(m => m.id === id);
+    if (!m) return;
+    const squad = appData.squads.find(s => s.id === m.squadId);
+    const branch = appData.branches.find(b => b.id === m.branchId);
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-id-card"></i> بيانات العضو: ${m.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <div class="details-grid">
+                <div class="detail-item"><div class="detail-label">الكود</div><div class="detail-value">${m.code}</div></div>
+                <div class="detail-item"><div class="detail-label">الاسم</div><div class="detail-value">${m.name}</div></div>
+                <div class="detail-item"><div class="detail-label">السن</div><div class="detail-value">${m.age || 'غير محدد'}</div></div>
+                <div class="detail-item"><div class="detail-label">اسم المستخدم</div><div class="detail-value">${m.username}</div></div>
+                <div class="detail-item"><div class="detail-label">كلمة المرور</div><div class="detail-value">••••••</div></div>
+                <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${m.phone}</div></div>
+                <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
+                <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${squad?.name || '-'}</div></div>
+                <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${m.rank}</div></div>
+                <div class="detail-item"><div class="detail-label">النقاط</div><div class="detail-value">${m.points}</div></div>
+                <div class="detail-item"><div class="detail-label">تاريخ الانضمام</div><div class="detail-value">${new Date(m.joinedAt).toLocaleDateString('ar-EG')}</div></div>
+            </div>
+            <div style="text-align:center;"><button class="btn btn-primary" onclick="this.closest('.modal').remove()">إغلاق</button></div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
 
-        function showAddMemberModal() {
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-user-plus"></i> إضافة عضو جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <form id="addMemberForm">
-                        <div class="input-group"><label>الاسم الكامل</label><input type="text" id="memberName" required></div>
-                        <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="memberPhone" required></div>
-                        <div class="input-group"><label>كود العضو</label><div class="code-generator"><input type="text" id="memberCode" required><button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCode()">توليد</button></div></div>
-                        <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="memberUsername" required></div>
-                        <div class="input-group"><label>كلمة المرور</label><input type="password" id="memberPassword" required></div>
-                        <div class="input-group"><label>المنطقة</label><select id="memberBranch">${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select></div>
-                        <div class="input-group"><label>الطليعة</label><select id="memberSquad">${appData.squads.filter(s => s.isOpen).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;">إضافة العضو</button>
-                    </form>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            document.getElementById('addMemberForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const newUsername = document.getElementById('memberUsername').value;
-                if (appData.members.some(m => m.username === newUsername)) {
-                    showToast('اسم المستخدم موجود مسبقاً', 'error');
-                    return;
-                }
-                const newMember = {
-                    id: Date.now(),
-                    code: document.getElementById('memberCode').value,
-                    name: document.getElementById('memberName').value,
-                    username: newUsername,
-                    password: document.getElementById('memberPassword').value,
-                    phone: document.getElementById('memberPhone').value,
-                    branchId: parseInt(document.getElementById('memberBranch').value),
-                    squadId: parseInt(document.getElementById('memberSquad').value),
-                    points: 0,
-                    rank: "عضو جديد",
-                    joinedAt: new Date().toISOString()
-                };
-                appData.members.push(newMember);
-                await saveAllDataToFirebase();
-                showToast('تم إضافة العضو بنجاح');
-                modal.remove();
-                renderMembersTable();
-                renderAdminDashboard();
-            });
+       function showAddMemberModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-user-plus"></i> إضافة عضو جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <form id="addMemberForm">
+                <div class="input-group"><label>الاسم الكامل</label><input type="text" id="memberName" required></div>
+                <div class="input-group"><label>السن</label><input type="number" id="memberAge" min="6" max="30" placeholder="أدخل السن" required></div>
+                <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="memberPhone" required></div>
+                <div class="input-group"><label>كود العضو</label><div class="code-generator"><input type="text" id="memberCode" required><button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCode()">توليد</button></div></div>
+                <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="memberUsername" required></div>
+                <div class="input-group"><label>كلمة المرور</label><input type="password" id="memberPassword" required></div>
+                <div class="input-group"><label>المنطقة</label><select id="memberBranch">${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select></div>
+                <div class="input-group"><label>الطليعة</label><select id="memberSquad">${appData.squads.filter(s => s.isOpen).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة العضو</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('addMemberForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newUsername = document.getElementById('memberUsername').value;
+        if (appData.members.some(m => m.username === newUsername)) {
+            showToast('اسم المستخدم موجود مسبقاً', 'error');
+            return;
         }
+        const newMember = {
+            id: Date.now(),
+            code: document.getElementById('memberCode').value,
+            name: document.getElementById('memberName').value,
+            age: parseInt(document.getElementById('memberAge').value),
+            username: newUsername,
+            password: document.getElementById('memberPassword').value,
+            phone: document.getElementById('memberPhone').value,
+            branchId: parseInt(document.getElementById('memberBranch').value),
+            squadId: parseInt(document.getElementById('memberSquad').value),
+            points: 0,
+            rank: "عضو جديد",
+            joinedAt: new Date().toISOString()
+        };
+        appData.members.push(newMember);
+        await saveAllDataToFirebase();
+        showToast('تم إضافة العضو بنجاح');
+        modal.remove();
+        renderMembersTable();
+        renderAdminDashboard();
+    });
+}
 
         function showEditMemberModal(id) {
             const member = appData.members.find(m => m.id === id);
@@ -1338,43 +1350,61 @@
             renderTasksListAdmin();
         }
 
-        function showAddTaskModal() {
-            const squadId = document.getElementById('taskSquadSelect')?.value;
-            if (!squadId) { showToast('الرجاء اختيار الطليعة أولاً', 'error'); return; }
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <form id="addTaskForm">
-                        <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
-                        <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
-                        <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" required></div>
-                        <div class="input-group"><label>الموعد النهائي</label><input type="date" id="taskDeadline" required></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
-                    </form>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const newTask = {
-                    id: Date.now(),
-                    squadId: parseInt(squadId),
-                    title: document.getElementById('taskTitle').value,
-                    description: document.getElementById('taskDesc').value,
-                    pointsValue: parseInt(document.getElementById('taskPoints').value),
-                    createdAt: new Date().toISOString(),
-                    deadline: new Date(document.getElementById('taskDeadline').value).toISOString()
-                };
-                appData.tasks.push(newTask);
-                await saveAllDataToFirebase();
-                showToast('تم إضافة التكليف');
-                modal.remove();
-                renderTasksListAdmin();
-            });
+       function showAddTaskModal() {
+    const squadId = document.getElementById('taskSquadSelect')?.value;
+    if (!squadId) { showToast('الرجاء اختيار الطليعة أولاً', 'error'); return; }
+    
+    // تعيين التاريخ والوقت الحالي كقيم افتراضية
+    const now = new Date();
+    const defaultStartDate = now.toISOString().slice(0, 16);
+    const defaultEndDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <form id="addTaskForm">
+                <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
+                <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
+                <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" required></div>
+                <div class="input-group"><label>تاريخ ووقت البدء</label><input type="datetime-local" id="taskStartDate" value="${defaultStartDate}" required></div>
+                <div class="input-group"><label>تاريخ ووقت الانتهاء</label><input type="datetime-local" id="taskEndDate" value="${defaultEndDate}" required></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const startDate = new Date(document.getElementById('taskStartDate').value);
+        const endDate = new Date(document.getElementById('taskEndDate').value);
+        
+        if (endDate <= startDate) {
+            showToast('تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء', 'error');
+            return;
         }
+        
+        const newTask = {
+            id: Date.now(),
+            squadId: parseInt(squadId),
+            title: document.getElementById('taskTitle').value,
+            description: document.getElementById('taskDesc').value,
+            pointsValue: parseInt(document.getElementById('taskPoints').value),
+            createdAt: new Date().toISOString(),
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString()
+        };
+        appData.tasks.push(newTask);
+        await saveAllDataToFirebase();
+        showToast('تم إضافة التكليف');
+        modal.remove();
+        renderTasksListAdmin();
+        renderAdminDashboard();
+    });
+}
 
         function renderTasksListAdmin() {
             const container = document.getElementById('tasksListAdmin');
@@ -1584,43 +1614,93 @@
         }
 
         function renderMemberTasks() {
-            const container = document.getElementById('memberPageContent');
-            const pendingTasks = appData.tasks.filter(t => t.squadId === currentUser.squadId && !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id));
-            const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
-            container.innerHTML = `
-                <div class="card"><h3><i class="fas fa-clock"></i> المهام الجديدة</h3>${pendingTasks.map(t => `
+    const container = document.getElementById('memberPageContent');
+    
+    // تصفية المهام حسب الصلاحية (لم تنتهِ بعد)
+    const pendingTasks = appData.tasks.filter(t => 
+        t.squadId === currentUser.squadId && 
+        !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id) &&
+        canSubmitTask(t.id)  // التحقق من أن الوقت لم ينتهِ
+    );
+    
+    const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
+    
+    // المهام المنتهية ولكن لم يتم تسليمها
+    const expiredTasks = appData.tasks.filter(t => 
+        t.squadId === currentUser.squadId && 
+        !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id) &&
+        !canSubmitTask(t.id)
+    );
+    
+    container.innerHTML = `
+        <div class="card"><h3><i class="fas fa-clock"></i> المهام الجديدة</h3>
+            ${pendingTasks.map(t => {
+                const endDate = new Date(t.endDate);
+                return `
                     <div class="task-item task-pending">
-                        <div class="task-header"><span class="task-title">${t.title}</span><span class="task-points">${t.pointsValue} نقطة</span></div>
-                        <div class="task-description">${t.description}</div>
-                        <div class="task-meta"><i class="fas fa-calendar"></i> الموعد: ${new Date(t.deadline).toLocaleDateString('ar-EG')}</div>
+                        <div class="task-header"><span class="task-title">${escapeHtml(t.title)}</span><span class="task-points">${t.pointsValue} نقطة</span></div>
+                        <div class="task-description">${escapeHtml(t.description)}</div>
+                        <div class="task-meta"><i class="fas fa-calendar-alt"></i> بدأ: ${new Date(t.startDate).toLocaleString('ar-EG')}<br>
+                        <i class="fas fa-calendar-times"></i> ينتهي: ${endDate.toLocaleString('ar-EG')}</div>
                         <button class="complete-task-btn" onclick="submitTaskRequest(${t.id})"><i class="fas fa-paper-plane"></i> تقديم تسليم</button>
                     </div>
-                `).join('')}${pendingTasks.length === 0 ? '<p style="text-align:center;">🎉 لا توجد مهام جديدة</p>' : ''}</div>
-                <div class="card"><h3><i class="fas fa-check-circle"></i> المهام المكتملة</h3>${completedTasks.map(ct => {
-                    const task = appData.tasks.find(t => t.id === ct.taskId);
-                    return `<div class="task-item task-completed"><div class="task-header"><span class="task-title">${task?.title}</span><span class="task-points">${ct.pointsAwarded || 'بانتظار التقييم'} نقطة</span></div><div class="task-description">${task?.description}</div><div class="task-meta"><i class="fas fa-check-circle"></i> تم التسليم: ${new Date(ct.submittedAt).toLocaleDateString('ar-EG')}</div></div>`;
-                }).join('')}${completedTasks.length === 0 ? '<p>لا توجد مهام مكتملة بعد</p>' : ''}</div>
-            `;
-        }
+                `;
+            }).join('')}
+            ${pendingTasks.length === 0 ? '<p style="text-align:center;">🎉 لا توجد مهام جديدة متاحة</p>' : ''}
+        </div>
+        
+        ${expiredTasks.length > 0 ? `
+        <div class="card"><h3><i class="fas fa-hourglass-end"></i> مهام انتهى وقتها (غير قابلة للتسليم)</h3>
+            ${expiredTasks.map(t => `
+                <div class="task-item" style="background: #f0f0f0; opacity: 0.7;">
+                    <div class="task-header"><span class="task-title">${escapeHtml(t.title)}</span><span class="task-points">${t.pointsValue} نقطة</span></div>
+                    <div class="task-description">${escapeHtml(t.description)}</div>
+                    <div class="task-meta"><i class="fas fa-calendar-times"></i> انتهى في: ${new Date(t.endDate).toLocaleString('ar-EG')}</div>
+                    <button class="btn btn-sm" disabled style="background: #ccc; cursor: not-allowed;"><i class="fas fa-ban"></i> انتهى الوقت</button>
+                </div>
+            `).join('')}
+        </div>
+        ` : ''}
+        
+        <div class="card"><h3><i class="fas fa-check-circle"></i> المهام المكتملة</h3>
+            ${completedTasks.map(ct => {
+                const task = appData.tasks.find(t => t.id === ct.taskId);
+                return `<div class="task-item task-completed"><div class="task-header"><span class="task-title">${task?.title || 'تم حذف المهمة'}</span><span class="task-points">${ct.pointsAwarded || 'بانتظار التقييم'} نقطة</span></div><div class="task-description">${task?.description || ''}</div><div class="task-meta"><i class="fas fa-check-circle"></i> تم التسليم: ${new Date(ct.submittedAt).toLocaleString('ar-EG')}</div></div>`;
+            }).join('')}
+            ${completedTasks.length === 0 ? '<p>لا توجد مهام مكتملة بعد</p>' : ''}
+        </div>
+    `;
+}
+        
 
-        async function submitTaskRequest(taskId) {
-            const existing = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === currentUser.id);
-            if (existing) { showToast('لقد قمت بالفعل بتسليم هذا التكليف', 'error'); return; }
-            const submission = {
-                id: Date.now(),
-                taskId: taskId,
-                memberId: currentUser.id,
-                status: 'submitted',
-                submittedAt: new Date().toISOString(),
-                pointsAwarded: null,
-                reviewedBy: null,
-                reviewedAt: null
-            };
-            appData.taskSubmissions.push(submission);
-            await saveAllDataToFirebase();
-            showToast('تم تقديم طلب تسليم التكليف، بانتظار موافقة القائد');
-            renderMemberTasks();
-        }
+       async function submitTaskRequest(taskId) {
+    // التحقق من صلاحية التسليم
+    if (!canSubmitTask(taskId)) {
+        showToast('عذراً، انتهى الموعد النهائي لتسليم هذا التكليف', 'error');
+        return;
+    }
+    
+    const existing = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === currentUser.id);
+    if (existing) { 
+        showToast('لقد قمت بالفعل بتسليم هذا التكليف', 'error'); 
+        return; 
+    }
+    
+    const submission = {
+        id: Date.now(),
+        taskId: taskId,
+        memberId: currentUser.id,
+        status: 'submitted',
+        submittedAt: new Date().toISOString(),
+        pointsAwarded: null,
+        reviewedBy: null,
+        reviewedAt: null
+    };
+    appData.taskSubmissions.push(submission);
+    await saveAllDataToFirebase();
+    showToast('تم تقديم طلب تسليم التكليف، بانتظار موافقة القائد');
+    renderMemberTasks();
+}
 
         // ==================== HELPER FUNCTIONS ====================
         function escapeHtml(text) {
@@ -1635,7 +1715,166 @@
             showToast('تم تسجيل الخروج');
             render();
         }
+// ==================== الدوال الجديدة ====================
 
+// دالة عرض بطاقة ترتيب الطلايع مع الفلتر
+function renderSquadRankingCard() {
+    const container = document.getElementById('squadRankingContainer');
+    if (!container) return;
+    
+    const filterHtml = `
+        <div style="margin-bottom: 20px;">
+            <select id="squadRankingFilter" class="form-select" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #e0e0e0;" onchange="renderSquadRankingCard()">
+                <option value="all">🏆 جميع الطلايع (أفضل عضو من كل طليعة)</option>
+                ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+            </select>
+        </div>
+        <div id="squadRankingList"></div>
+    `;
+    
+    const selectedSquadId = document.getElementById('squadRankingFilter')?.value;
+    
+    if (selectedSquadId === 'all') {
+        // عرض أفضل عضو من كل طليعة
+        const bestMembers = appData.squads.map(squad => {
+            const squadMembers = appData.members.filter(m => m.squadId === squad.id);
+            if (squadMembers.length === 0) return null;
+            const best = squadMembers.reduce((prev, current) => (prev.points > current.points) ? prev : current);
+            return { squad, best };
+        }).filter(item => item !== null);
+        
+        bestMembers.sort((a, b) => b.best.points - a.best.points);
+        
+        const listHtml = bestMembers.map((item, idx) => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background: #d4a017; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${idx + 1}</span>
+                    <div>
+                        <strong>${item.squad.name}</strong><br>
+                        <small style="color: #666;">🏅 ${item.best.name}</small>
+                    </div>
+                </div>
+                <div><strong style="color: #1a472a;">${item.best.points}</strong> نقطة</div>
+            </div>
+        `).join('');
+        
+        document.getElementById('squadRankingList').innerHTML = listHtml || '<p style="text-align:center;">لا توجد بيانات</p>';
+    } else {
+        // عرض ترتيب أعضاء طليعة محددة
+        const squadMembers = appData.members.filter(m => m.squadId == selectedSquadId);
+        squadMembers.sort((a, b) => b.points - a.points);
+        
+        const squad = appData.squads.find(s => s.id == selectedSquadId);
+        const listHtml = squadMembers.map((member, idx) => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background: ${idx === 0 ? '#d4a017' : '#666'}; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${idx + 1}</span>
+                    <div>
+                        <strong>${member.name}</strong><br>
+                        <small style="color: #666;">${member.rank}</small>
+                    </div>
+                </div>
+                <div><strong style="color: #1a472a;">${member.points}</strong> نقطة</div>
+            </div>
+        `).join('');
+        
+        document.getElementById('squadRankingList').innerHTML = `
+            <div style="margin-bottom: 15px; text-align: center;">
+                <h4 style="color: #1a472a;">🏴 ${squad?.name || ''}</h4>
+                <span class="badge badge-active">إجمالي الأعضاء: ${squadMembers.length}</span>
+            </div>
+            ${listHtml || '<p style="text-align:center;">لا يوجد أعضاء في هذه الطليعة</p>'}
+        `;
+    }
+    
+    container.innerHTML = filterHtml;
+}
+
+// دالة عرض التكاليف النشطة مع عداد تنازلي
+function renderActiveTasksCard() {
+    const container = document.getElementById('activeTasksContainer');
+    if (!container) return;
+    
+    const now = new Date();
+    const activeTasks = appData.tasks.filter(task => new Date(task.endDate) > now);
+    
+    if (activeTasks.length === 0) {
+        container.innerHTML = '<p style="text-align:center;">🎉 لا توجد تكاليف نشطة حالياً</p>';
+        return;
+    }
+    
+    const tasksHtml = activeTasks.map(task => {
+        const squad = appData.squads.find(s => s.id === task.squadId);
+        const endDate = new Date(task.endDate);
+        const timeRemaining = endDate - now;
+        
+        let countdownText = '';
+        if (timeRemaining > 0) {
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (86400000)) / (3600000));
+            const minutes = Math.floor((timeRemaining % 3600000) / 60000);
+            countdownText = `${days} يوم ${hours} ساعة ${minutes} دقيقة`;
+        } else {
+            countdownText = 'انتهى الوقت';
+        }
+        
+        const isExpired = timeRemaining <= 0;
+        
+        return `
+            <div class="task-item ${isExpired ? 'task-expired' : ''}" style="${isExpired ? 'opacity: 0.6; background: #f0f0f0;' : ''}">
+                <div class="task-header">
+                    <span class="task-title">${escapeHtml(task.title)}</span>
+                    <span class="task-points">${task.pointsValue} نقطة</span>
+                </div>
+                <div class="task-description">${escapeHtml(task.description)}</div>
+                <div class="task-meta">
+                    <i class="fas fa-flag"></i> ${squad?.name || '-'} | 
+                    <i class="fas fa-calendar-alt"></i> بدأ: ${new Date(task.startDate).toLocaleString('ar-EG')} | 
+                    <i class="fas fa-calendar-times"></i> ينتهي: ${endDate.toLocaleString('ar-EG')}
+                </div>
+                <div class="task-countdown" style="margin-top: 10px; padding: 8px; background: ${isExpired ? '#e74c3c20' : '#d4a01720'}; border-radius: 10px;">
+                    <i class="fas ${isExpired ? 'fa-hourglass-end' : 'fa-hourglass-half'}"></i>
+                    <strong>${isExpired ? '⏰ انتهى الموعد النهائي' : '⏳ الوقت المتبقي: ' + countdownText}</strong>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = `
+        <div style="margin-bottom: 15px;">
+            <span class="badge badge-active"><i class="fas fa-play-circle"></i> التكاليف النشطة: ${activeTasks.length}</span>
+        </div>
+        ${tasksHtml}
+    `;
+}
+
+// تحديث العدادات كل دقيقة
+let countdownInterval = null;
+function startCountdownUpdater() {
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+        if (document.getElementById('activeTasksContainer')) {
+            renderActiveTasksCard();
+        }
+    }, 60000); // تحديث كل دقيقة
+}
+
+// إيقاف تحديث العدادات
+function stopCountdownUpdater() {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+}
+
+// التحقق من صلاحية تسليم التكليف
+function canSubmitTask(taskId) {
+    const task = appData.tasks.find(t => t.id === taskId);
+    if (!task) return false;
+    const now = new Date();
+    const endDate = new Date(task.endDate);
+    return now <= endDate;
+}
         // Make global functions
         window.toggleSidebar = toggleSidebar;
         window.closeSidebar = closeSidebar;
