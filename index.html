@@ -568,6 +568,7 @@
 
         // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
+        let countdownInterval = null;
         let isAdmin = false;
         let appData = {
             branches: [],
@@ -876,28 +877,124 @@
     renderActiveTasksCard();
     startCountdownUpdater();
 }
-// دالة عرض ترتيب الطلايع - تعرض أفضل 5 أعضاء على مستوى الكل أو ترتيب طليعة محددة
+// ==================== دوال ترتيب الطلايع (نسخة مبسطة وعملية) ====================
+
+// دالة عرض بطاقة ترتيب الطلايع
 function renderSquadRankingCard() {
     const container = document.getElementById('squadRankingContainer');
     if (!container) return;
     
-    // حفظ القيمة المختارة حالياً (إن وجدت)
-    const currentFilter = document.getElementById('squadRankingFilter')?.value || 'all';
+    // الحصول على القيمة المختارة من localStorage أو استخدام 'all'
+    let selectedSquad = localStorage.getItem('selectedSquad') || 'all';
     
-    const filterHtml = `
-        <div style="margin-bottom: 20px;">
-            <select id="squadRankingFilter" class="form-select" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #e0e0e0;" onchange="onSquadFilterChange()">
-                <option value="all" ${currentFilter === 'all' ? 'selected' : ''}>🏆 جميع الطلايع (أفضل 5 أعضاء)</option>
-                ${appData.squads.map(s => `<option value="${s.id}" ${currentFilter == s.id ? 'selected' : ''}>🏴 ${s.name}</option>`).join('')}
-            </select>
-        </div>
-        <div id="squadRankingList"></div>
-    `;
+    // بناء واجهة الفلتر
+    let buttonsHtml = '<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">';
+    buttonsHtml += `<button id="filter_all" class="btn ${selectedSquad === 'all' ? 'btn-primary' : 'btn-secondary'}" style="${selectedSquad === 'all' ? 'background:#d4a017;' : 'background:#555;'} color:white; padding:8px 16px; border-radius:30px; cursor:pointer;">🏆 جميع الطلايع (أفضل 5)</button>`;
     
-    container.innerHTML = filterHtml;
-    updateSquadRankingList(currentFilter);
+    appData.squads.forEach(squad => {
+        buttonsHtml += `<button id="filter_${squad.id}" class="btn ${selectedSquad == squad.id ? 'btn-primary' : 'btn-secondary'}" style="${selectedSquad == squad.id ? 'background:#d4a017;' : 'background:#555;'} color:white; padding:8px 16px; border-radius:30px; cursor:pointer;">🏴 ${squad.name}</button>`;
+    });
+    buttonsHtml += '</div>';
+    buttonsHtml += '<div id="squadRankingList"></div>';
+    
+    container.innerHTML = buttonsHtml;
+    
+    // إضافة مستمعات الأحداث لكل زر
+    document.getElementById('filter_all')?.addEventListener('click', () => {
+        localStorage.setItem('selectedSquad', 'all');
+        renderSquadRankingCard();
+    });
+    
+    appData.squads.forEach(squad => {
+        document.getElementById(`filter_${squad.id}`)?.addEventListener('click', () => {
+            localStorage.setItem('selectedSquad', squad.id.toString());
+            renderSquadRankingCard();
+        });
+    });
+    
+    // عرض القائمة بناءً على الاختيار
+    displayRankingList(selectedSquad);
 }
-
+// دالة عرض قائمة الترتيب
+function displayRankingList(selectedSquadId) {
+    const listContainer = document.getElementById('squadRankingList');
+    if (!listContainer) return;
+    
+    if (selectedSquadId === 'all') {
+        // أفضل 5 أعضاء من كل الطلايع
+        const allMembers = [...appData.members];
+        allMembers.sort((a, b) => b.points - a.points);
+        const topMembers = allMembers.slice(0, 5);
+        
+        if (topMembers.length === 0) {
+            listContainer.innerHTML = '<p style="text-align:center;">لا يوجد أعضاء حالياً</p>';
+            return;
+        }
+        
+        let html = '<div style="margin-bottom:15px; text-align:center;"><span class="badge badge-active">🏆 أفضل 5 أعضاء على مستوى الكشافة</span></div>';
+        
+        topMembers.forEach((member, idx) => {
+            const squad = appData.squads.find(s => s.id === member.squadId);
+            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '📌';
+            html += `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:20px;">${medal}</span>
+                        <div>
+                            <strong>${escapeHtml(member.name)}</strong><br>
+                            <small style="color:#666;">🏴 ${squad?.name || '-'} | ${member.rank}</small>
+                        </div>
+                    </div>
+                    <div><strong style="color:#1a472a; font-size:18px;">${member.points}</strong> نقطة</div>
+                </div>
+            `;
+        });
+        listContainer.innerHTML = html;
+    } else {
+        // أعضاء طليعة محددة - أفضل 5
+        const squadMembers = appData.members.filter(m => m.squadId == selectedSquadId);
+        squadMembers.sort((a, b) => b.points - a.points);
+        const topMembers = squadMembers.slice(0, 5);
+        const squad = appData.squads.find(s => s.id == selectedSquadId);
+        
+        if (topMembers.length === 0) {
+            listContainer.innerHTML = '<p style="text-align:center;">لا يوجد أعضاء في هذه الطليعة</p>';
+            return;
+        }
+        
+        let html = `
+            <div style="margin-bottom:15px; text-align:center;">
+                <h4 style="color:#1a472a;">🏴 ${squad?.name || ''}</h4>
+                <span class="badge badge-active">إجمالي الأعضاء: ${squadMembers.length}</span>
+                <span class="badge" style="background:#d4a017; margin-right:10px;">🏆 أفضل 5 أعضاء</span>
+            </div>
+        `;
+        
+        topMembers.forEach((member, idx) => {
+            const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '📌';
+            html += `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:20px;">${medal}</span>
+                        <div>
+                            <strong>${escapeHtml(member.name)}</strong><br>
+                            <small style="color:#666;">${member.rank} | ${member.points} نقطة</small>
+                        </div>
+                    </div>
+                    <div><strong style="color:#1a472a;">${member.points}</strong> نقطة</div>
+                </div>
+            `;
+        });
+        
+        if (squadMembers.length > 5) {
+            html += `<div style="text-align:center; margin-top:10px; padding:8px; background:#f0f0f0; border-radius:10px;">
+                        <i class="fas fa-info-circle"></i> يوجد ${squadMembers.length - 5} أعضاء آخرين
+                    </div>`;
+        }
+        
+        listContainer.innerHTML = html;
+    }
+}
 // دالة منفصلة لتحديث القائمة فقط دون إعادة رسم الفلتر
 function updateSquadRankingList(selectedSquadId) {
     const listContainer = document.getElementById('squadRankingList');
@@ -1035,17 +1132,16 @@ function renderActiveTasksCard() {
 
 
 // تحديث العدادات كل ثانية
-let countdownInterval = null;
+
 function startCountdownUpdater() {
     if (countdownInterval) clearInterval(countdownInterval);
     countdownInterval = setInterval(() => {
         if (document.getElementById('activeTasksContainer')) {
             renderActiveTasksCard();
         }
-        if (document.getElementById('squadRankingFilter')) {
-            const selectedSquadId = document.getElementById('squadRankingFilter').value;
-            updateSquadRankingList(selectedSquadId);
-        }
+        // فقط نحدث الأرقام دون إعادة رسم الأزرار
+        const selectedSquad = localStorage.getItem('selectedSquad') || 'all';
+        displayRankingList(selectedSquad);
     }, 1000);
 }
 
