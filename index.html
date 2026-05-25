@@ -660,9 +660,15 @@
         taskSubmissions: [
             { id: 1, taskId: 1, memberId: 1, status: "submitted", submittedAt: new Date().toISOString(), pointsAwarded: null, reviewedBy: null, reviewedAt: null }
         ],
-        messages: [
-            { id: 1, squadId: 1, senderId: 1, senderName: "أحمد محمد", text: "مرحباً بكم في طليعة النصر!", timestamp: new Date().toISOString(), isBroadcast: false }
-        ]
+      
+members: [
+    { id: 1, code: "S001", name: "أحمد محمد", age: 16, rank: "عريف اول", username: "ahmed", password: "123456", phone: "01012345678", branchId: 1, squadId: 1, points: 150, joinedAt: new Date().toISOString() },
+    { id: 2, code: "S002", name: "محمود علي", age: 15, rank: "عريف", username: "mahmoud", password: "123456", phone: "01087654321", branchId: 1, squadId: 1, points: 120, joinedAt: new Date().toISOString() },
+    { id: 3, code: "S003", name: "كريم حسن", age: 14, rank: "سكرتير", username: "karim", password: "123456", phone: "01122334455", branchId: 1, squadId: 2, points: 90, joinedAt: new Date().toISOString() },
+    { id: 4, code: "S004", name: "يوسف إبراهيم", age: 17, rank: "امين صندوق", username: "youssef", password: "123456", phone: "01234567890", branchId: 2, squadId: 3, points: 75, joinedAt: new Date().toISOString() },
+    { id: 5, code: "S005", name: "عمر سعيد", age: 13, rank: "مساعد عريف", username: "omar", password: "123456", phone: "01555667788", branchId: 3, squadId: 4, points: 60, joinedAt: new Date().toISOString() }
+],
+        
     };
     await saveAllDataToFirebase();
 }
@@ -1175,39 +1181,40 @@ function canSubmitTask(taskId) {
         }
 
         function renderMembersTable() {
-            const searchTerm = document.getElementById('memberSearch')?.value?.toLowerCase() || '';
-            const branchFilter = document.getElementById('branchFilter')?.value || '';
-            const squadFilter = document.getElementById('squadFilter')?.value || '';
-            let filtered = appData.members.filter(m => 
-                (m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm) || m.username.toLowerCase().includes(searchTerm)) &&
-                (branchFilter === '' || m.branchId == branchFilter) &&
-                (squadFilter === '' || m.squadId == squadFilter)
-            );
-            const container = document.getElementById('membersTable');
-            container.innerHTML = `
-                <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>الكود</th><th>الاسم</th><th>اسم المستخدم</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الإجراءات</th></tr></thead><tbody>
-                ${filtered.map(m => `<tr>
-                    <td>${m.code}</td>
-                    <td>${m.name}</td>
-                    <td>${m.username}</td>
-                    <td>${m.phone}</td>
-                    <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
-                    <td>${m.points}</td>
-                    <td>
-                        <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
-                        <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteMember(${m.id})"><i class="fas fa-trash"></i></button>
-                                        </tr>
-                `).join('')}
-                ${filtered.length === 0 ? '<tr><td colspan="7" style="text-align:center;">لا توجد بيانات</td></tr>' : ''}
-                </tbody></table></div>
-            `;
-        }
+    const searchTerm = document.getElementById('memberSearch')?.value?.toLowerCase() || '';
+    const branchFilter = document.getElementById('branchFilter')?.value || '';
+    const squadFilter = document.getElementById('squadFilter')?.value || '';
+    let filtered = appData.members.filter(m => 
+        (m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm) || m.username.toLowerCase().includes(searchTerm)) &&
+        (branchFilter === '' || m.branchId == branchFilter) &&
+        (squadFilter === '' || m.squadId == squadFilter)
+    );
+    const container = document.getElementById('membersTable');
+    container.innerHTML = `
+        <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>الكود</th><th>الاسم</th><th>الرتبة</th><th>اسم المستخدم</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الإجراءات</th></tr></thead><tbody>
+        ${filtered.map(m => `<tr>
+            <td>${m.code}</td>
+            <td>${m.name}${m.id === currentUser?.id ? ' <span class="badge" style="background:#d4a017;">أنت</span>' : ''}</td>
+            <td><span class="badge" style="background:#d4a017;">${m.rank || 'عضو'}</span></td>
+            <td>${m.username}</td>
+            <td>${m.phone}</td>
+            <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
+            <td>${m.points}</td>
+            <td>
+                <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="deleteMember(${m.id})"><i class="fas fa-trash"></i></button>
+                            </td>
+        `).join('')}
+        ${filtered.length === 0 ? '<tr><td colspan="8" style="text-align:center;">لا توجد بيانات</td></tr>' : ''}
+        </tbody></table></div>
+    `;
+}
 
         function filterMembersTable() { renderMembersTable(); }
 
-        function showMemberDetails(id) {
+      function showMemberDetails(id) {
     const m = appData.members.find(m => m.id === id);
     if (!m) return;
     const squad = appData.squads.find(s => s.id === m.squadId);
@@ -1217,17 +1224,17 @@ function canSubmitTask(taskId) {
     modal.style.display = 'flex';
     modal.innerHTML = `
         <div class="modal-content">
-            <div class="modal-header"><h3><i class="fas fa-id-card"></i> بيانات العضو: ${m.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <div class="modal-header"><h3><i class="fas fa-id-card"></i> بيانات العضو: ${m.name} <span class="badge" style="background:#d4a017;">${m.rank}</span></h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
             <div class="details-grid">
                 <div class="detail-item"><div class="detail-label">الكود</div><div class="detail-value">${m.code}</div></div>
                 <div class="detail-item"><div class="detail-label">الاسم</div><div class="detail-value">${m.name}</div></div>
+                <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${m.rank}</div></div>
                 <div class="detail-item"><div class="detail-label">السن</div><div class="detail-value">${m.age || 'غير محدد'}</div></div>
                 <div class="detail-item"><div class="detail-label">اسم المستخدم</div><div class="detail-value">${m.username}</div></div>
                 <div class="detail-item"><div class="detail-label">كلمة المرور</div><div class="detail-value">••••••</div></div>
                 <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${m.phone}</div></div>
                 <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
                 <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${squad?.name || '-'}</div></div>
-                <div class="detail-item"><div class="detail-label">الرتبة</div><div class="detail-value">${m.rank}</div></div>
                 <div class="detail-item"><div class="detail-label">النقاط</div><div class="detail-value">${m.points}</div></div>
                 <div class="detail-item"><div class="detail-label">تاريخ الانضمام</div><div class="detail-value">${new Date(m.joinedAt).toLocaleDateString('ar-EG')}</div></div>
             </div>
@@ -1237,7 +1244,7 @@ function canSubmitTask(taskId) {
     document.body.appendChild(modal);
 }
 
-       function showAddMemberModal() {
+      function showAddMemberModal() {
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.display = 'flex';
@@ -1248,6 +1255,17 @@ function canSubmitTask(taskId) {
                 <div class="input-group"><label>الاسم الكامل</label><input type="text" id="memberName" required></div>
                 <div class="input-group"><label>السن</label><input type="number" id="memberAge" min="6" max="30" placeholder="أدخل السن" required></div>
                 <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="memberPhone" required></div>
+                <div class="input-group"><label>الرتبة</label>
+                    <select id="memberRank" required>
+                        <option value="">اختر الرتبة</option>
+                        <option value="عريف اول">عريف اول</option>
+                        <option value="عريف">عريف</option>
+                        <option value="سكرتير">سكرتير</option>
+                        <option value="امين صندوق">امين صندوق</option>
+                        <option value="مساعد عريف اول">مساعد عريف اول</option>
+                        <option value="مساعد عريف">مساعد عريف</option>
+                    </select>
+                </div>
                 <div class="input-group"><label>كود العضو</label><div class="code-generator"><input type="text" id="memberCode" required><button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCode()">توليد</button></div></div>
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="memberUsername" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="memberPassword" required></div>
@@ -1271,13 +1289,13 @@ function canSubmitTask(taskId) {
             code: document.getElementById('memberCode').value,
             name: document.getElementById('memberName').value,
             age: parseInt(document.getElementById('memberAge').value),
+            rank: document.getElementById('memberRank').value,
             username: newUsername,
             password: document.getElementById('memberPassword').value,
             phone: document.getElementById('memberPhone').value,
             branchId: parseInt(document.getElementById('memberBranch').value),
             squadId: parseInt(document.getElementById('memberSquad').value),
             points: 0,
-            rank: "عضو جديد",
             joinedAt: new Date().toISOString()
         };
         appData.members.push(newMember);
@@ -1289,49 +1307,62 @@ function canSubmitTask(taskId) {
     });
 }
 
-        function showEditMemberModal(id) {
-            const member = appData.members.find(m => m.id === id);
-            if (!member) return;
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-edit"></i> تعديل بيانات العضو: ${member.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <form id="editMemberForm">
-                        <div class="input-group"><label>الاسم الكامل</label><input type="text" id="editName" value="${member.name}" required></div>
-                        <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="editPhone" value="${member.phone}" required></div>
-                        <div class="input-group"><label>كود العضو</label><input type="text" id="editCode" value="${member.code}" required></div>
-                        <div class="input-group"><label>اسم المستخدم</label><input type="text" id="editUsername" value="${member.username}" required></div>
-                        <div class="input-group"><label>كلمة المرور</label><input type="password" id="editPassword" placeholder="اتركه فارغاً للحفاظ على نفس كلمة المرور"></div>
-                        <div class="input-group"><label>المنطقة</label><select id="editBranch">${appData.branches.map(b => `<option value="${b.id}" ${b.id === member.branchId ? 'selected' : ''}>${b.name}</option>`).join('')}</select></div>
-                        <div class="input-group"><label>الطليعة</label><select id="editSquad">${appData.squads.map(s => `<option value="${s.id}" ${s.id === member.squadId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;">حفظ التعديلات</button>
-                    </form>
+       function showEditMemberModal(id) {
+    const member = appData.members.find(m => m.id === id);
+    if (!member) return;
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-edit"></i> تعديل بيانات العضو: ${member.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <form id="editMemberForm">
+                <div class="input-group"><label>الاسم الكامل</label><input type="text" id="editName" value="${member.name}" required></div>
+                <div class="input-group"><label>السن</label><input type="number" id="editAge" value="${member.age || ''}" min="6" max="30" required></div>
+                <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="editPhone" value="${member.phone}" required></div>
+                <div class="input-group"><label>الرتبة</label>
+                    <select id="editRank" required>
+                        <option value="عريف اول" ${member.rank === 'عريف اول' ? 'selected' : ''}>عريف اول</option>
+                        <option value="عريف" ${member.rank === 'عريف' ? 'selected' : ''}>عريف</option>
+                        <option value="سكرتير" ${member.rank === 'سكرتير' ? 'selected' : ''}>سكرتير</option>
+                        <option value="امين صندوق" ${member.rank === 'امين صندوق' ? 'selected' : ''}>امين صندوق</option>
+                        <option value="مساعد عريف اول" ${member.rank === 'مساعد عريف اول' ? 'selected' : ''}>مساعد عريف اول</option>
+                        <option value="مساعد عريف" ${member.rank === 'مساعد عريف' ? 'selected' : ''}>مساعد عريف</option>
+                    </select>
                 </div>
-            `;
-            document.body.appendChild(modal);
-            document.getElementById('editMemberForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const newUsername = document.getElementById('editUsername').value;
-                if (newUsername !== member.username && appData.members.some(m => m.username === newUsername)) {
-                    showToast('اسم المستخدم موجود مسبقاً', 'error');
-                    return;
-                }
-                member.name = document.getElementById('editName').value;
-                member.phone = document.getElementById('editPhone').value;
-                member.code = document.getElementById('editCode').value;
-                member.username = newUsername;
-                if (document.getElementById('editPassword').value) member.password = document.getElementById('editPassword').value;
-                member.branchId = parseInt(document.getElementById('editBranch').value);
-                member.squadId = parseInt(document.getElementById('editSquad').value);
-                await saveAllDataToFirebase();
-                showToast('تم تحديث بيانات العضو');
-                modal.remove();
-                renderMembersTable();
-                renderAdminDashboard();
-            });
+                <div class="input-group"><label>كود العضو</label><input type="text" id="editCode" value="${member.code}" required></div>
+                <div class="input-group"><label>اسم المستخدم</label><input type="text" id="editUsername" value="${member.username}" required></div>
+                <div class="input-group"><label>كلمة المرور</label><input type="password" id="editPassword" placeholder="اتركه فارغاً للحفاظ على نفس كلمة المرور"></div>
+                <div class="input-group"><label>المنطقة</label><select id="editBranch">${appData.branches.map(b => `<option value="${b.id}" ${b.id === member.branchId ? 'selected' : ''}>${b.name}</option>`).join('')}</select></div>
+                <div class="input-group"><label>الطليعة</label><select id="editSquad">${appData.squads.map(s => `<option value="${s.id}" ${s.id === member.squadId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">حفظ التعديلات</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById('editMemberForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newUsername = document.getElementById('editUsername').value;
+        if (newUsername !== member.username && appData.members.some(m => m.username === newUsername)) {
+            showToast('اسم المستخدم موجود مسبقاً', 'error');
+            return;
         }
+        member.name = document.getElementById('editName').value;
+        member.age = parseInt(document.getElementById('editAge').value);
+        member.phone = document.getElementById('editPhone').value;
+        member.rank = document.getElementById('editRank').value;
+        member.code = document.getElementById('editCode').value;
+        member.username = newUsername;
+        if (document.getElementById('editPassword').value) member.password = document.getElementById('editPassword').value;
+        member.branchId = parseInt(document.getElementById('editBranch').value);
+        member.squadId = parseInt(document.getElementById('editSquad').value);
+        await saveAllDataToFirebase();
+        showToast('تم تحديث بيانات العضو');
+        modal.remove();
+        renderMembersTable();
+        renderAdminDashboard();
+    });
+}
 
         function showAdjustPointsModal(id) {
             const member = appData.members.find(m => m.id === id);
@@ -1414,23 +1445,60 @@ function canSubmitTask(taskId) {
         }
 
         function renderSquadsList() {
-            const container = document.getElementById('squadsList');
-            container.innerHTML = appData.squads.map(s => {
-                const branchName = appData.branches.find(b => b.id === s.branchId)?.name;
-                const memberCount = appData.members.filter(m => m.squadId === s.id).length;
-                return `
-                    <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:12px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
-                            <div><i class="fas fa-flag"></i> <strong>${s.name}</strong><br><small>${branchName} | القائد: ${s.leader} | الأعضاء: ${memberCount}</small></div>
-                            <div><span class="badge ${s.isOpen ? 'badge-active' : 'badge-inactive'}">${s.isOpen ? 'مفتوحة' : 'مغلقة'}</span>
-                            <button class="btn btn-sm btn-warning" onclick="toggleSquadStatus(${s.id})"><i class="fas fa-lock"></i></button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteSquad(${s.id})"><i class="fas fa-trash"></i></button></div>
-                        </div>
+    const container = document.getElementById('squadsList');
+    if (!container) return;
+    
+    // ترتيب الرتب حسب الأهمية
+    const rankOrder = {
+        'عريف اول': 1,
+        'عريف': 2,
+        'سكرتير': 3,
+        'امين صندوق': 4,
+        'مساعد عريف اول': 5,
+        'مساعد عريف': 6
+    };
+    
+    container.innerHTML = appData.squads.map(squad => {
+        const branchName = appData.branches.find(b => b.id === squad.branchId)?.name;
+        let squadMembers = appData.members.filter(m => m.squadId === squad.id);
+        
+        // ترتيب الأعضاء حسب الرتبة
+        squadMembers.sort((a, b) => {
+            const orderA = rankOrder[a.rank] || 999;
+            const orderB = rankOrder[b.rank] || 999;
+            return orderA - orderB;
+        });
+        
+        const memberCount = squadMembers.length;
+        
+        const membersHtml = squadMembers.map(member => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #eee; background: ${member.rank === 'عريف اول' ? '#fff8e1' : 'transparent'}">
+                <div>
+                    <strong>${escapeHtml(member.name)}</strong>
+                    <span class="badge" style="background: #d4a017; margin-right: 8px;">${member.rank}</span>
+                </div>
+                <div><strong>${member.points}</strong> نقطة</div>
+            </div>
+        `).join('');
+        
+        return `
+            <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
+                    <div><i class="fas fa-flag"></i> <strong>${squad.name}</strong><br><small>${branchName} | القائد: ${squad.leader} | الأعضاء: ${memberCount}</small></div>
+                    <div><span class="badge ${squad.isOpen ? 'badge-active' : 'badge-inactive'}">${squad.isOpen ? 'مفتوحة' : 'مغلقة'}</span>
+                    <button class="btn btn-sm btn-warning" onclick="toggleSquadStatus(${squad.id})"><i class="fas fa-lock"></i></button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteSquad(${squad.id})"><i class="fas fa-trash"></i></button></div>
+                </div>
+                <div style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
+                    <strong>أعضاء الطليعة (مرتبين حسب الرتبة):</strong>
+                    <div style="margin-top: 8px;">
+                        ${membersHtml || '<p style="color:#999; text-align:center;">لا يوجد أعضاء في هذه الطليعة</p>'}
                     </div>
-                `;
-            }).join('');
-        }
-
+                </div>
+            </div>
+        `;
+    }).join('');
+}
         function showAddBranchModal() {
             const modal = document.createElement('div');
             modal.className = 'modal';
