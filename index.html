@@ -1761,11 +1761,19 @@ function canSubmitTask(taskId) {
             pointsValue: parseInt(document.getElementById('taskPoints').value),
             createdAt: new Date().toISOString(),
             startDate: startDate.toISOString(),
-            endDate: endDate.toISOString()
+            endDate: endDate.toISOString(),
+            seenByMembers: []  // مصفوفة لتخزين IDs الأعضاء الذين شاهدوا التكليف
         };
         appData.tasks.push(newTask);
         await saveAllDataToFirebase();
-        showToast('تم إضافة التكليف');
+        
+        // إعادة تعيين إشعارات الأعضاء في هذه الطليعة
+        const squadMembers = appData.members.filter(m => m.squadId == squadId);
+        squadMembers.forEach(member => {
+            sessionStorage.removeItem('notificationShown_' + member.id);
+        });
+        
+        showToast('تم إضافة التكليف وسيظهر إشعار للأعضاء');
         modal.remove();
         renderTasksListAdmin();
         renderAdminDashboard();
@@ -1773,21 +1781,27 @@ function canSubmitTask(taskId) {
 }
 
         function renderTasksListAdmin() {
-            const container = document.getElementById('tasksListAdmin');
-            if (!container) return;
-            container.innerHTML = appData.tasks.map(task => {
-                const squadName = appData.squads.find(s => s.id === task.squadId)?.name;
-                const submissions = appData.taskSubmissions.filter(ts => ts.taskId === task.id);
-                return `
-                    <div class="task-item">
-                        <div class="task-header"><span class="task-title">${task.title}</span><span class="task-points">${task.pointsValue} نقطة</span></div>
-                        <div class="task-description">${task.description}</div>
-                        <div class="task-meta"><i class="fas fa-flag"></i> ${squadName} | <i class="fas fa-calendar"></i> ${new Date(task.deadline).toLocaleDateString('ar-EG')}</div>
-                        <div style="margin-top:10px;"><button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})"><i class="fas fa-check-circle"></i> إدارة التسليمات (${submissions.filter(s => s.status === 'submitted').length})</button><button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button></div>
-                    </div>
-                `;
-            }).join('');
-        }
+    const container = document.getElementById('tasksListAdmin');
+    if (!container) return;
+    container.innerHTML = appData.tasks.map(task => {
+        const squadName = appData.squads.find(s => s.id === task.squadId)?.name;
+        const submissions = appData.taskSubmissions.filter(ts => ts.taskId === task.id);
+        const viewers = task.seenByMembers || [];
+        return `
+            <div class="task-item">
+                <div class="task-header"><span class="task-title">${task.title}</span><span class="task-points">${task.pointsValue} نقطة</span></div>
+                <div class="task-description">${task.description}</div>
+                <div class="task-meta"><i class="fas fa-flag"></i> ${squadName} | <i class="fas fa-calendar"></i> ${new Date(task.endDate).toLocaleDateString('ar-EG')}</div>
+                <div class="task-meta"><i class="fas fa-eye"></i> شاهد التكليف: ${viewers.length} / ${appData.members.filter(m => m.squadId === task.squadId).length} عضو</div>
+                <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+                    <button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})"><i class="fas fa-check-circle"></i> إدارة التسليمات (${submissions.filter(s => s.status === 'submitted').length})</button>
+                    <button class="btn btn-sm btn-info" onclick="showTaskViewers(${task.id})"><i class="fas fa-eye"></i> من شاهد (${viewers.length})</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
 
         function manageTaskSubmissions(taskId) {
             const task = appData.tasks.find(t => t.id === taskId);
@@ -1911,21 +1925,94 @@ function canSubmitTask(taskId) {
         }
 
         function renderMemberDashboard() {
-            const squadMembers = appData.members.filter(m => m.squadId === currentUser.squadId).sort((a,b) => b.points - a.points);
-            const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
-            const pendingTasks = appData.tasks.filter(t => t.squadId === currentUser.squadId && !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id));
-            const container = document.getElementById('memberPageContent');
-            container.innerHTML = `
-                <div class="stats-grid">
-                    <div class="stat-card"><i class="fas fa-star"></i><div class="number">${currentUser.points}</div><div class="label">نقاطي</div></div>
-                    <div class="stat-card"><i class="fas fa-chart-line"></i><div class="number">#${squadMembers.findIndex(m => m.id === currentUser.id) + 1}</div><div class="label">ترتيبي في الطليعة</div></div>
-                    <div class="stat-card"><i class="fas fa-check-circle"></i><div class="number">${completedTasks.length}</div><div class="label">مهام منجزة</div></div>
-                    <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${pendingTasks.length}</div><div class="label">مهام جديدة</div></div>
-                </div>
-                <div class="card"><h3><i class="fas fa-id-card"></i> معلوماتي الشخصية</h3><div style="text-align:center;"><i class="fas fa-user-circle" style="font-size:60px; color:#d4a017;"></i><h4>${currentUser.name}</h4><p><i class="fas fa-tag"></i> ${currentUser.rank}</p><p><i class="fas fa-code"></i> الكود: ${currentUser.code}</p><p><i class="fas fa-user"></i> اسم المستخدم: ${currentUser.username}</p><p><i class="fas fa-phone"></i> ${currentUser.phone}</p></div></div>
-                <div class="card"><h3><i class="fas fa-chart-line"></i> ليدربورد طليعتي</h3>${squadMembers.map((m, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${m.name} ${m.id === currentUser.id ? '<span class="badge" style="background:#d4a017;">أنت</span>' : ''}</div><div><strong>${m.points}</strong> نقطة</div></div>`).join('')}</div>
-            `;
-        }
+    const squadMembers = appData.members.filter(m => m.squadId === currentUser.squadId).sort((a,b) => b.points - a.points);
+    const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
+    const pendingTasks = appData.tasks.filter(t => t.squadId === currentUser.squadId && !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id));
+    
+    // التحقق من وجود تكاليف جديدة لم يشاهدها العضو بعد
+    const newTasks = pendingTasks.filter(t => !t.seenByMembers || !t.seenByMembers.includes(currentUser.id));
+    
+    const container = document.getElementById('memberPageContent');
+    container.innerHTML = `
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-star"></i><div class="number">${currentUser.points}</div><div class="label">نقاطي</div></div>
+            <div class="stat-card"><i class="fas fa-chart-line"></i><div class="number">#${squadMembers.findIndex(m => m.id === currentUser.id) + 1}</div><div class="label">ترتيبي في الطليعة</div></div>
+            <div class="stat-card"><i class="fas fa-check-circle"></i><div class="number">${completedTasks.length}</div><div class="label">مهام منجزة</div></div>
+            <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${pendingTasks.length}</div><div class="label">مهام جديدة</div></div>
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-id-card"></i> معلوماتي الشخصية</h3>
+            <div style="text-align:center;">
+                <i class="fas fa-user-circle" style="font-size:60px; color:#d4a017;"></i>
+                <h4>${currentUser.name}</h4>
+                <p><i class="fas fa-tag"></i> الرتبة: <strong>${currentUser.rank}</strong></p>
+                <p><i class="fas fa-code"></i> الكود: ${currentUser.code}</p>
+                <p><i class="fas fa-user"></i> اسم المستخدم: ${currentUser.username}</p>
+                <p><i class="fas fa-phone"></i> ${currentUser.phone}</p>
+                <p><i class="fas fa-calendar"></i> تاريخ الانضمام: ${new Date(currentUser.joinedAt).toLocaleDateString('ar-EG')}</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-chart-line"></i> ليدربورد طليعتي</h3>
+            ${squadMembers.map((m, i) => `<div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;"><div>${i+1}. ${m.name} ${m.id === currentUser.id ? '<span class="badge" style="background:#d4a017;">أنت</span>' : ''}</div><div><strong>${m.points}</strong> نقطة</div></div>`).join('')}
+        </div>
+        
+        <div class="card">
+            <h3><i class="fas fa-chart-simple"></i> إحصائياتي</h3>
+            <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="stat-card"><div class="number">${completedTasks.reduce((sum, t) => sum + (t.pointsAwarded || 0), 0)}</div><div class="label">إجمالي النقاط من المهام</div></div>
+                <div class="stat-card"><div class="number">${pendingTasks.length}</div><div class="label">مهام بانتظار التسليم</div></div>
+            </div>
+        </div>
+    `;
+    
+    // عرض إشعار التكليف الجديد إذا وجد
+    if (newTasks.length > 0 && !sessionStorage.getItem('notificationShown_' + currentUser.id)) {
+        showTaskNotification(newTasks);
+        sessionStorage.setItem('notificationShown_' + currentUser.id, 'true');
+    }
+}
+
+// دالة عرض إشعار التكليف الجديد
+function showTaskNotification(newTasks) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.style.zIndex = '3000';
+    
+    const tasksList = newTasks.map(t => `
+        <div style="background:#f8f9fa; padding:12px; border-radius:12px; margin-bottom:10px; border-right:3px solid #d4a017;">
+            <strong>📌 ${escapeHtml(t.title)}</strong><br>
+            <small>${escapeHtml(t.description.substring(0, 100))}${t.description.length > 100 ? '...' : ''}</small><br>
+            <small>🎯 ${t.pointsValue} نقطة | ⏰ ينتهي: ${new Date(t.endDate).toLocaleString('ar-EG')}</small>
+        </div>
+    `).join('');
+    
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:500px; text-align:center;">
+            <div style="font-size:50px; margin-bottom:15px;">📢</div>
+            <h3 style="color:#1a472a; margin-bottom:10px;">✅ تم إضافة تكليف جديد!</h3>
+            <p style="color:#666; margin-bottom:20px;">تم إضافة تكليف جديد إلى طليعتك. اضغط على الزر أدناه لعرض التفاصيل</p>
+            <div style="max-height:300px; overflow-y:auto; margin-bottom:20px; text-align:right;">
+                ${tasksList}
+            </div>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button class="btn btn-primary" onclick="viewNewTasks(); this.closest('.modal').remove();" style="background:#d4a017;">
+                    <i class="fas fa-eye"></i> انتقال إلى التكاليف
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+// دالة الانتقال إلى صفحة التكاليف
+function viewNewTasks() {
+    changeMemberPage('tasks');
+    showToast('تم الانتقال إلى صفحة التكاليف', 'info');
+}
 
         function renderMemberCommunity() {
             const container = document.getElementById('memberPageContent');
@@ -1982,16 +2069,26 @@ function canSubmitTask(taskId) {
         function renderMemberTasks() {
     const container = document.getElementById('memberPageContent');
     
+    // تسجيل أن العضو قد شاهد التكاليف الحالية
+    appData.tasks.forEach(task => {
+        if (task.squadId === currentUser.squadId) {
+            if (!task.seenByMembers) task.seenByMembers = [];
+            if (!task.seenByMembers.includes(currentUser.id)) {
+                task.seenByMembers.push(currentUser.id);
+            }
+        }
+    });
+    saveAllDataToFirebase();
+    
     // تصفية المهام حسب الصلاحية (لم تنتهِ بعد)
     const pendingTasks = appData.tasks.filter(t => 
         t.squadId === currentUser.squadId && 
         !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id) &&
-        canSubmitTask(t.id)  // التحقق من أن الوقت لم ينتهِ
+        canSubmitTask(t.id)
     );
     
     const completedTasks = appData.taskSubmissions.filter(ts => ts.memberId === currentUser.id && ts.status === 'completed');
     
-    // المهام المنتهية ولكن لم يتم تسليمها
     const expiredTasks = appData.tasks.filter(t => 
         t.squadId === currentUser.squadId && 
         !appData.taskSubmissions.some(ts => ts.taskId === t.id && ts.memberId === currentUser.id) &&
@@ -2002,9 +2099,13 @@ function canSubmitTask(taskId) {
         <div class="card"><h3><i class="fas fa-clock"></i> المهام الجديدة</h3>
             ${pendingTasks.map(t => {
                 const endDate = new Date(t.endDate);
+                const isNew = !t.seenByMembers || !t.seenByMembers.includes(currentUser.id);
                 return `
-                    <div class="task-item task-pending">
-                        <div class="task-header"><span class="task-title">${escapeHtml(t.title)}</span><span class="task-points">${t.pointsValue} نقطة</span></div>
+                    <div class="task-item task-pending" style="${isNew ? 'border-right-color: #e74c3c; border-right-width: 6px;' : ''}">
+                        <div class="task-header">
+                            <span class="task-title">${escapeHtml(t.title)} ${isNew ? '<span class="badge" style="background:#e74c3c;">جديد</span>' : ''}</span>
+                            <span class="task-points">${t.pointsValue} نقطة</span>
+                        </div>
                         <div class="task-description">${escapeHtml(t.description)}</div>
                         <div class="task-meta"><i class="fas fa-calendar-alt"></i> بدأ: ${new Date(t.startDate).toLocaleString('ar-EG')}<br>
                         <i class="fas fa-calendar-times"></i> ينتهي: ${endDate.toLocaleString('ar-EG')}</div>
@@ -2038,7 +2139,45 @@ function canSubmitTask(taskId) {
     `;
 }
         
-
+// دالة عرض من شاهد التكليف
+function showTaskViewers(taskId) {
+    const task = appData.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    
+    const squadMembers = appData.members.filter(m => m.squadId === task.squadId);
+    const viewers = task.seenByMembers || [];
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header"><h3><i class="fas fa-eye"></i> من شاهد التكليف: ${task.title}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <div style="max-height:400px; overflow-y:auto;">
+                ${squadMembers.map(member => {
+                    const hasSeen = viewers.includes(member.id);
+                    const hasSubmitted = appData.taskSubmissions.some(ts => ts.taskId === taskId && ts.memberId === member.id);
+                    return `
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee; background: ${hasSubmitted ? '#e8f5e9' : 'transparent'};">
+                            <div>
+                                <strong>${escapeHtml(member.name)}</strong><br>
+                                <small>${member.rank}</small>
+                            </div>
+                            <div>
+                                ${hasSubmitted ? '<span class="badge" style="background:#2ecc71;">✅ سلم</span>' : ''}
+                                ${hasSeen ? '<span class="badge" style="background:#3498db;">👁️ شاهد</span>' : '<span class="badge" style="background:#e74c3c;">❌ لم يشاهد</span>'}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+            <div style="text-align:center; margin-top:15px;">
+                <button class="btn btn-primary" onclick="this.closest('.modal').remove()">إغلاق</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
        async function submitTaskRequest(taskId) {
     // التحقق من صلاحية التسليم
     if (!canSubmitTask(taskId)) {
@@ -2108,6 +2247,8 @@ function canSubmitTask(taskId) {
         window.loadMemberMessages = loadMemberMessages;
         window.sendMemberMessage = sendMemberMessage;
         window.submitTaskRequest = submitTaskRequest;
+        window.viewNewTasks = viewNewTasks;
+        window.showTaskViewers = showTaskViewers;
         window.onSquadFilterChange = onSquadFilterChange;
         window.renderSquadRankingCard = renderSquadRankingCard;
         window.logout = logout;
