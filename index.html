@@ -1184,18 +1184,37 @@ function canSubmitTask(taskId) {
     const searchTerm = document.getElementById('memberSearch')?.value?.toLowerCase() || '';
     const branchFilter = document.getElementById('branchFilter')?.value || '';
     const squadFilter = document.getElementById('squadFilter')?.value || '';
+    
+    // ترتيب الرتب حسب الأهمية
+    const rankOrder = {
+        'عريف اول': 1,
+        'عريف': 2,
+        'سكرتير': 3,
+        'امين صندوق': 4,
+        'مساعد عريف اول': 5,
+        'مساعد عريف': 6
+    };
+    
     let filtered = appData.members.filter(m => 
         (m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm) || m.username.toLowerCase().includes(searchTerm)) &&
         (branchFilter === '' || m.branchId == branchFilter) &&
         (squadFilter === '' || m.squadId == squadFilter)
     );
+    
+    // ترتيب الأعضاء حسب الرتبة (الأعلى أولاً)
+    filtered.sort((a, b) => {
+        const orderA = rankOrder[a.rank] || 999;
+        const orderB = rankOrder[b.rank] || 999;
+        return orderA - orderB;
+    });
+    
     const container = document.getElementById('membersTable');
     container.innerHTML = `
         <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>الكود</th><th>الاسم</th><th>الرتبة</th><th>اسم المستخدم</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الإجراءات</th></tr></thead><tbody>
         ${filtered.map(m => `<tr>
             <td>${m.code}</td>
             <td>${m.name}${m.id === currentUser?.id ? ' <span class="badge" style="background:#d4a017;">أنت</span>' : ''}</td>
-            <td><span class="badge" style="background:#d4a017;">${m.rank || 'عضو'}</span></td>
+            <td><span class="badge" style="background:${m.rank === 'عريف اول' ? '#d4a017' : '#666'};">${m.rank || 'عضو'}</span></td>
             <td>${m.username}</td>
             <td>${m.phone}</td>
             <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
