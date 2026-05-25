@@ -887,29 +887,24 @@ function renderSquadRankingCard() {
     // الحصول على القيمة المختارة من localStorage أو استخدام 'all'
     let selectedSquad = localStorage.getItem('selectedSquad') || 'all';
     
-    // بناء واجهة الفلتر
-    let buttonsHtml = '<div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">';
-    buttonsHtml += `<button id="filter_all" class="btn ${selectedSquad === 'all' ? 'btn-primary' : 'btn-secondary'}" style="${selectedSquad === 'all' ? 'background:#d4a017;' : 'background:#555;'} color:white; padding:8px 16px; border-radius:30px; cursor:pointer;">🏆 جميع الطلايع (أفضل 5)</button>`;
+    // بناء واجهة الفلتر باستخدام select
+    let filterHtml = `
+        <div style="margin-bottom: 20px;">
+            <select id="squadRankingSelect" style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #d4a017; background: white; font-family: 'Cairo', sans-serif; font-size: 14px;">
+                <option value="all" ${selectedSquad === 'all' ? 'selected' : ''}>🏆 جميع الطلايع (أفضل 5 أعضاء)</option>
+                ${appData.squads.map(s => `<option value="${s.id}" ${selectedSquad == s.id ? 'selected' : ''}>🏴 ${s.name}</option>`).join('')}
+            </select>
+        </div>
+        <div id="squadRankingList"></div>
+    `;
     
-    appData.squads.forEach(squad => {
-        buttonsHtml += `<button id="filter_${squad.id}" class="btn ${selectedSquad == squad.id ? 'btn-primary' : 'btn-secondary'}" style="${selectedSquad == squad.id ? 'background:#d4a017;' : 'background:#555;'} color:white; padding:8px 16px; border-radius:30px; cursor:pointer;">🏴 ${squad.name}</button>`;
-    });
-    buttonsHtml += '</div>';
-    buttonsHtml += '<div id="squadRankingList"></div>';
+    container.innerHTML = filterHtml;
     
-    container.innerHTML = buttonsHtml;
-    
-    // إضافة مستمعات الأحداث لكل زر
-    document.getElementById('filter_all')?.addEventListener('click', () => {
-        localStorage.setItem('selectedSquad', 'all');
-        renderSquadRankingCard();
-    });
-    
-    appData.squads.forEach(squad => {
-        document.getElementById(`filter_${squad.id}`)?.addEventListener('click', () => {
-            localStorage.setItem('selectedSquad', squad.id.toString());
-            renderSquadRankingCard();
-        });
+    // إضافة مستمع الحدث للقائمة المنسدلة
+    document.getElementById('squadRankingSelect')?.addEventListener('change', function(e) {
+        const newValue = e.target.value;
+        localStorage.setItem('selectedSquad', newValue);
+        displayRankingList(newValue);
     });
     
     // عرض القائمة بناءً على الاختيار
@@ -2027,6 +2022,7 @@ function canSubmitTask(taskId) {
         window.sendMemberMessage = sendMemberMessage;
         window.submitTaskRequest = submitTaskRequest;
         window.onSquadFilterChange = onSquadFilterChange;
+        window.renderSquadRankingCard = renderSquadRankingCard;
         window.logout = logout;
 
         // Start the app
