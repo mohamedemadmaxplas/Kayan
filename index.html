@@ -876,7 +876,168 @@
     renderActiveTasksCard();
     startCountdownUpdater();
 }
+// ==================== الدوال الجديدة (توضع بعد renderAdminDashboard مباشرة) ====================
 
+// دالة عرض بطاقة ترتيب الطلايع مع الفلتر
+function renderSquadRankingCard() {
+    const container = document.getElementById('squadRankingContainer');
+    if (!container) return;
+    
+    const filterHtml = `
+        <div style="margin-bottom: 20px;">
+            <select id="squadRankingFilter" class="form-select" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #e0e0e0;" onchange="renderSquadRankingCard()">
+                <option value="all">🏆 جميع الطلايع (أفضل عضو من كل طليعة)</option>
+                ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+            </select>
+        </div>
+        <div id="squadRankingList"></div>
+    `;
+    
+    container.innerHTML = filterHtml;
+    
+    const selectedSquadId = document.getElementById('squadRankingFilter')?.value;
+    
+    if (selectedSquadId === 'all') {
+        const bestMembers = appData.squads.map(squad => {
+            const squadMembers = appData.members.filter(m => m.squadId === squad.id);
+            if (squadMembers.length === 0) return null;
+            const best = squadMembers.reduce((prev, current) => (prev.points > current.points) ? prev : current);
+            return { squad, best };
+        }).filter(item => item !== null);
+        
+        bestMembers.sort((a, b) => b.best.points - a.best.points);
+        
+        const listHtml = bestMembers.map((item, idx) => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background: #d4a017; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${idx + 1}</span>
+                    <div>
+                        <strong>${escapeHtml(item.squad.name)}</strong><br>
+                        <small style="color: #666;">🏅 ${escapeHtml(item.best.name)}</small>
+                    </div>
+                </div>
+                <div><strong style="color: #1a472a;">${item.best.points}</strong> نقطة</div>
+            </div>
+        `).join('');
+        
+        document.getElementById('squadRankingList').innerHTML = listHtml || '<p style="text-align:center;">لا توجد بيانات</p>';
+    } else {
+        const squadMembers = appData.members.filter(m => m.squadId == selectedSquadId);
+        squadMembers.sort((a, b) => b.points - a.points);
+        const squad = appData.squads.find(s => s.id == selectedSquadId);
+        
+        const listHtml = squadMembers.map((member, idx) => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background: ${idx === 0 ? '#d4a017' : '#666'}; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${idx + 1}</span>
+                    <div>
+                        <strong>${escapeHtml(member.name)}</strong><br>
+                        <small style="color: #666;">${member.rank}</small>
+                    </div>
+                </div>
+                <div><strong style="color: #1a472a;">${member.points}</strong> نقطة</div>
+            </div>
+        `).join('');
+        
+        document.getElementById('squadRankingList').innerHTML = `
+            <div style="margin-bottom: 15px; text-align: center;">
+                <h4 style="color: #1a472a;">🏴 ${squad?.name || ''}</h4>
+                <span class="badge badge-active">إجمالي الأعضاء: ${squadMembers.length}</span>
+            </div>
+            ${listHtml || '<p style="text-align:center;">لا يوجد أعضاء في هذه الطليعة</p>'}
+        `;
+    }
+}
+
+// دالة عرض التكاليف النشطة مع عداد تنازلي
+function renderActiveTasksCard() {
+    const container = document.getElementById('activeTasksContainer');
+    if (!container) return;
+    
+    const now = new Date();
+    const activeTasks = appData.tasks.filter(task => {
+        if (!task.endDate) return false;
+        return new Date(task.endDate) > now;
+    });
+    
+    if (activeTasks.length === 0) {
+        container.innerHTML = '<p style="text-align:center;">🎉 لا توجد تكاليف نشطة حالياً</p>';
+        return;
+    }
+    
+    const tasksHtml = activeTasks.map(task => {
+        const squad = appData.squads.find(s => s.id === task.squadId);
+        const endDate = new Date(task.endDate);
+        const timeRemaining = endDate - now;
+        
+        let countdownText = '';
+        if (timeRemaining > 0) {
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (86400000)) / (3600000));
+            const minutes = Math.floor((timeRemaining % 3600000) / 60000);
+            countdownText = `${days} يوم ${hours} ساعة ${minutes} دقيقة`;
+        } else {
+            countdownText = 'انتهى الوقت';
+        }
+        
+        return `
+            <div class="task-item">
+                <div class="task-header">
+                    <span class="task-title">${escapeHtml(task.title)}</span>
+                    <span class="task-points">${task.pointsValue} نقطة</span>
+                </div>
+                <div class="task-description">${escapeHtml(task.description)}</div>
+                <div class="task-meta">
+                    <i class="fas fa-flag"></i> ${squad?.name || '-'} | 
+                    <i class="fas fa-calendar-alt"></i> بدأ: ${new Date(task.startDate).toLocaleString('ar-EG')} | 
+                    <i class="fas fa-calendar-times"></i> ينتهي: ${endDate.toLocaleString('ar-EG')}
+                </div>
+                <div class="task-countdown" style="margin-top: 10px; padding: 8px; background: #d4a01720; border-radius: 10px;">
+                    <i class="fas fa-hourglass-half"></i>
+                    <strong>⏳ الوقت المتبقي: ${countdownText}</strong>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = `
+        <div style="margin-bottom: 15px;">
+            <span class="badge badge-active"><i class="fas fa-play-circle"></i> التكاليف النشطة: ${activeTasks.length}</span>
+        </div>
+        ${tasksHtml}
+    `;
+}
+
+// تحديث العدادات كل دقيقة
+let countdownInterval = null;
+function startCountdownUpdater() {
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+        if (document.getElementById('activeTasksContainer')) {
+            renderActiveTasksCard();
+        }
+        if (document.getElementById('squadRankingContainer')) {
+            renderSquadRankingCard();
+        }
+    }, 60000);
+}
+
+// إيقاف تحديث العدادات
+function stopCountdownUpdater() {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+}
+
+// التحقق من صلاحية تسليم التكليف
+function canSubmitTask(taskId) {
+    const task = appData.tasks.find(t => t.id === taskId);
+    if (!task) return false;
+    const now = new Date();
+    const endDate = new Date(task.endDate);
+    return now <= endDate;
+}
         // ==================== ADMIN MEMBERS ====================
         function renderAdminMembers() {
             const container = document.getElementById('adminPageContent');
@@ -1715,166 +1876,7 @@
             showToast('تم تسجيل الخروج');
             render();
         }
-// ==================== الدوال الجديدة ====================
 
-// دالة عرض بطاقة ترتيب الطلايع مع الفلتر
-function renderSquadRankingCard() {
-    const container = document.getElementById('squadRankingContainer');
-    if (!container) return;
-    
-    const filterHtml = `
-        <div style="margin-bottom: 20px;">
-            <select id="squadRankingFilter" class="form-select" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #e0e0e0;" onchange="renderSquadRankingCard()">
-                <option value="all">🏆 جميع الطلايع (أفضل عضو من كل طليعة)</option>
-                ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
-            </select>
-        </div>
-        <div id="squadRankingList"></div>
-    `;
-    
-    const selectedSquadId = document.getElementById('squadRankingFilter')?.value;
-    
-    if (selectedSquadId === 'all') {
-        // عرض أفضل عضو من كل طليعة
-        const bestMembers = appData.squads.map(squad => {
-            const squadMembers = appData.members.filter(m => m.squadId === squad.id);
-            if (squadMembers.length === 0) return null;
-            const best = squadMembers.reduce((prev, current) => (prev.points > current.points) ? prev : current);
-            return { squad, best };
-        }).filter(item => item !== null);
-        
-        bestMembers.sort((a, b) => b.best.points - a.best.points);
-        
-        const listHtml = bestMembers.map((item, idx) => `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="background: #d4a017; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${idx + 1}</span>
-                    <div>
-                        <strong>${item.squad.name}</strong><br>
-                        <small style="color: #666;">🏅 ${item.best.name}</small>
-                    </div>
-                </div>
-                <div><strong style="color: #1a472a;">${item.best.points}</strong> نقطة</div>
-            </div>
-        `).join('');
-        
-        document.getElementById('squadRankingList').innerHTML = listHtml || '<p style="text-align:center;">لا توجد بيانات</p>';
-    } else {
-        // عرض ترتيب أعضاء طليعة محددة
-        const squadMembers = appData.members.filter(m => m.squadId == selectedSquadId);
-        squadMembers.sort((a, b) => b.points - a.points);
-        
-        const squad = appData.squads.find(s => s.id == selectedSquadId);
-        const listHtml = squadMembers.map((member, idx) => `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="background: ${idx === 0 ? '#d4a017' : '#666'}; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${idx + 1}</span>
-                    <div>
-                        <strong>${member.name}</strong><br>
-                        <small style="color: #666;">${member.rank}</small>
-                    </div>
-                </div>
-                <div><strong style="color: #1a472a;">${member.points}</strong> نقطة</div>
-            </div>
-        `).join('');
-        
-        document.getElementById('squadRankingList').innerHTML = `
-            <div style="margin-bottom: 15px; text-align: center;">
-                <h4 style="color: #1a472a;">🏴 ${squad?.name || ''}</h4>
-                <span class="badge badge-active">إجمالي الأعضاء: ${squadMembers.length}</span>
-            </div>
-            ${listHtml || '<p style="text-align:center;">لا يوجد أعضاء في هذه الطليعة</p>'}
-        `;
-    }
-    
-    container.innerHTML = filterHtml;
-}
-
-// دالة عرض التكاليف النشطة مع عداد تنازلي
-function renderActiveTasksCard() {
-    const container = document.getElementById('activeTasksContainer');
-    if (!container) return;
-    
-    const now = new Date();
-    const activeTasks = appData.tasks.filter(task => new Date(task.endDate) > now);
-    
-    if (activeTasks.length === 0) {
-        container.innerHTML = '<p style="text-align:center;">🎉 لا توجد تكاليف نشطة حالياً</p>';
-        return;
-    }
-    
-    const tasksHtml = activeTasks.map(task => {
-        const squad = appData.squads.find(s => s.id === task.squadId);
-        const endDate = new Date(task.endDate);
-        const timeRemaining = endDate - now;
-        
-        let countdownText = '';
-        if (timeRemaining > 0) {
-            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeRemaining % (86400000)) / (3600000));
-            const minutes = Math.floor((timeRemaining % 3600000) / 60000);
-            countdownText = `${days} يوم ${hours} ساعة ${minutes} دقيقة`;
-        } else {
-            countdownText = 'انتهى الوقت';
-        }
-        
-        const isExpired = timeRemaining <= 0;
-        
-        return `
-            <div class="task-item ${isExpired ? 'task-expired' : ''}" style="${isExpired ? 'opacity: 0.6; background: #f0f0f0;' : ''}">
-                <div class="task-header">
-                    <span class="task-title">${escapeHtml(task.title)}</span>
-                    <span class="task-points">${task.pointsValue} نقطة</span>
-                </div>
-                <div class="task-description">${escapeHtml(task.description)}</div>
-                <div class="task-meta">
-                    <i class="fas fa-flag"></i> ${squad?.name || '-'} | 
-                    <i class="fas fa-calendar-alt"></i> بدأ: ${new Date(task.startDate).toLocaleString('ar-EG')} | 
-                    <i class="fas fa-calendar-times"></i> ينتهي: ${endDate.toLocaleString('ar-EG')}
-                </div>
-                <div class="task-countdown" style="margin-top: 10px; padding: 8px; background: ${isExpired ? '#e74c3c20' : '#d4a01720'}; border-radius: 10px;">
-                    <i class="fas ${isExpired ? 'fa-hourglass-end' : 'fa-hourglass-half'}"></i>
-                    <strong>${isExpired ? '⏰ انتهى الموعد النهائي' : '⏳ الوقت المتبقي: ' + countdownText}</strong>
-                </div>
-            </div>
-        `;
-    }).join('');
-    
-    container.innerHTML = `
-        <div style="margin-bottom: 15px;">
-            <span class="badge badge-active"><i class="fas fa-play-circle"></i> التكاليف النشطة: ${activeTasks.length}</span>
-        </div>
-        ${tasksHtml}
-    `;
-}
-
-// تحديث العدادات كل دقيقة
-let countdownInterval = null;
-function startCountdownUpdater() {
-    if (countdownInterval) clearInterval(countdownInterval);
-    countdownInterval = setInterval(() => {
-        if (document.getElementById('activeTasksContainer')) {
-            renderActiveTasksCard();
-        }
-    }, 60000); // تحديث كل دقيقة
-}
-
-// إيقاف تحديث العدادات
-function stopCountdownUpdater() {
-    if (countdownInterval) {
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-    }
-}
-
-// التحقق من صلاحية تسليم التكليف
-function canSubmitTask(taskId) {
-    const task = appData.tasks.find(t => t.id === taskId);
-    if (!task) return false;
-    const now = new Date();
-    const endDate = new Date(task.endDate);
-    return now <= endDate;
-}
         // Make global functions
         window.toggleSidebar = toggleSidebar;
         window.closeSidebar = closeSidebar;
