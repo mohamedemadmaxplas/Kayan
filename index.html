@@ -876,26 +876,32 @@
     renderActiveTasksCard();
     startCountdownUpdater();
 }
-// ==================== الدوال الجديدة (توضع بعد renderAdminDashboard مباشرة) ====================
-
 // دالة عرض ترتيب الطلايع - تعرض أفضل 5 أعضاء على مستوى الكل أو ترتيب طليعة محددة
 function renderSquadRankingCard() {
     const container = document.getElementById('squadRankingContainer');
     if (!container) return;
     
+    // حفظ القيمة المختارة حالياً (إن وجدت)
+    const currentFilter = document.getElementById('squadRankingFilter')?.value || 'all';
+    
     const filterHtml = `
         <div style="margin-bottom: 20px;">
-            <select id="squadRankingFilter" class="form-select" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #e0e0e0;" onchange="renderSquadRankingCard()">
-                <option value="all">🏆 جميع الطلايع (أفضل 5 أعضاء)</option>
-                ${appData.squads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+            <select id="squadRankingFilter" class="form-select" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #e0e0e0;" onchange="onSquadFilterChange()">
+                <option value="all" ${currentFilter === 'all' ? 'selected' : ''}>🏆 جميع الطلايع (أفضل 5 أعضاء)</option>
+                ${appData.squads.map(s => `<option value="${s.id}" ${currentFilter == s.id ? 'selected' : ''}>🏴 ${s.name}</option>`).join('')}
             </select>
         </div>
         <div id="squadRankingList"></div>
     `;
     
     container.innerHTML = filterHtml;
-    
-    const selectedSquadId = document.getElementById('squadRankingFilter')?.value;
+    updateSquadRankingList(currentFilter);
+}
+
+// دالة منفصلة لتحديث القائمة فقط دون إعادة رسم الفلتر
+function updateSquadRankingList(selectedSquadId) {
+    const listContainer = document.getElementById('squadRankingList');
+    if (!listContainer) return;
     
     if (selectedSquadId === 'all') {
         // عرض أفضل 5 أعضاء على مستوى جميع الطلايع
@@ -919,7 +925,7 @@ function renderSquadRankingCard() {
             `;
         }).join('');
         
-        document.getElementById('squadRankingList').innerHTML = `
+        listContainer.innerHTML = `
             <div style="margin-bottom: 15px; text-align: center;">
                 <span class="badge badge-active"><i class="fas fa-trophy"></i> أفضل 5 أعضاء على مستوى الكشافة</span>
             </div>
@@ -944,7 +950,7 @@ function renderSquadRankingCard() {
             </div>
         `).join('');
         
-        document.getElementById('squadRankingList').innerHTML = `
+        listContainer.innerHTML = `
             <div style="margin-bottom: 15px; text-align: center;">
                 <h4 style="color: #1a472a;">🏴 ${squad?.name || ''}</h4>
                 <span class="badge badge-active">إجمالي الأعضاء: ${squadMembers.length}</span>
@@ -953,6 +959,12 @@ function renderSquadRankingCard() {
             ${listHtml || '<p style="text-align:center;">لا يوجد أعضاء في هذه الطليعة</p>'}
         `;
     }
+}
+
+// دالة معالجة تغيير الفلتر
+function onSquadFilterChange() {
+    const selectedValue = document.getElementById('squadRankingFilter').value;
+    updateSquadRankingList(selectedValue);
 }
 
 // دالة عرض التكاليف النشطة مع عداد تنازلي (بالأيام والساعات والدقائق والثواني)
@@ -1018,6 +1030,7 @@ function renderActiveTasksCard() {
     `;
 }
 
+
 // تحديث العدادات كل ثانية
 let countdownInterval = null;
 function startCountdownUpdater() {
@@ -1026,64 +1039,11 @@ function startCountdownUpdater() {
         if (document.getElementById('activeTasksContainer')) {
             renderActiveTasksCard();
         }
-        if (document.getElementById('squadRankingContainer')) {
-            // فقط نحدث العداد، لا نعيد رسم الفلتر بالكامل
-            const selectedSquadId = document.getElementById('squadRankingFilter')?.value;
-            if (selectedSquadId) {
-                const container = document.getElementById('squadRankingList');
-                if (container && selectedSquadId === 'all') {
-                    const allMembers = [...appData.members];
-                    allMembers.sort((a, b) => b.points - a.points);
-                    const topMembers = allMembers.slice(0, 5);
-                    const listHtml = topMembers.map((member, idx) => {
-                        const squad = appData.squads.find(s => s.id === member.squadId);
-                        return `
-                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee;">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <span style="background: ${idx === 0 ? '#d4a017' : idx === 1 ? '#c0c0c0' : idx === 2 ? '#cd7f32' : '#666'}; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${idx + 1}</span>
-                                    <div>
-                                        <strong>${escapeHtml(member.name)}</strong><br>
-                                        <small style="color: #666;">🏴 ${squad?.name || '-'} | ${member.rank}</small>
-                                    </div>
-                                </div>
-                                <div><strong style="color: #1a472a; font-size: 18px;">${member.points}</strong> نقطة</div>
-                            </div>
-                        `;
-                    }).join('');
-                    container.innerHTML = `
-                        <div style="margin-bottom: 15px; text-align: center;">
-                            <span class="badge badge-active"><i class="fas fa-trophy"></i> أفضل 5 أعضاء على مستوى الكشافة</span>
-                        </div>
-                        ${listHtml || '<p style="text-align:center;">لا توجد بيانات</p>'}
-                    `;
-                } else if (container && selectedSquadId !== 'all') {
-                    const squadMembers = appData.members.filter(m => m.squadId == selectedSquadId);
-                    squadMembers.sort((a, b) => b.points - a.points);
-                    const squad = appData.squads.find(s => s.id == selectedSquadId);
-                    const listHtml = squadMembers.map((member, idx) => `
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <span style="background: ${idx === 0 ? '#d4a017' : '#666'}; color: white; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;">${idx + 1}</span>
-                                <div>
-                                    <strong>${escapeHtml(member.name)}</strong><br>
-                                    <small style="color: #666;">${member.rank}</small>
-                                </div>
-                            </div>
-                            <div><strong style="color: #1a472a;">${member.points}</strong> نقطة</div>
-                        </div>
-                    `).join('');
-                    container.innerHTML = `
-                        <div style="margin-bottom: 15px; text-align: center;">
-                            <h4 style="color: #1a472a;">🏴 ${squad?.name || ''}</h4>
-                            <span class="badge badge-active">إجمالي الأعضاء: ${squadMembers.length}</span>
-                            ${squadMembers.length > 0 ? `<div class="badge" style="background: #d4a017; margin-right: 10px;">🥇 الأول: ${squadMembers[0].name} (${squadMembers[0].points} نقطة)</div>` : ''}
-                        </div>
-                        ${listHtml || '<p style="text-align:center;">لا يوجد أعضاء في هذه الطليعة</p>'}
-                    `;
-                }
-            }
+        if (document.getElementById('squadRankingFilter')) {
+            const selectedSquadId = document.getElementById('squadRankingFilter').value;
+            updateSquadRankingList(selectedSquadId);
         }
-    }, 1000); // تحديث كل ثانية
+    }, 1000);
 }
 
 // إيقاف تحديث العدادات
