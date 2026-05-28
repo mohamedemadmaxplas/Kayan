@@ -825,6 +825,151 @@ body {
         100% { font-size: 45px; }
     }
 }
+/* ==================== هيدر صفحة الهبوط الجديد ==================== */
+.landing-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 30px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+.landing-header-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.landing-header-logo img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4a017;
+}
+
+.landing-header-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.landing-header-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1a472a;
+}
+
+.landing-header-subtitle {
+    font-size: 11px;
+    color: #666;
+}
+
+.landing-header-login-btn {
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.landing-header-login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
+}
+
+/* ==================== النص المركزي الجديد ==================== */
+.hero-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px 60px;
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 40px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(212, 160, 23, 0.3);
+    animation: fadeInUp 0.8s ease;
+    backdrop-filter: blur(5px);
+}
+
+.organization-name i {
+    font-size: 60px;
+    color: #d4a017;
+    margin-bottom: 15px;
+}
+
+.organization-name h2 {
+    font-size: 28px;
+    color: #1a472a;
+    margin-bottom: 8px;
+}
+
+.organization-name p {
+    font-size: 16px;
+    color: #666;
+    letter-spacing: 1px;
+}
+
+/* ==================== تعديل موقع الخيمة والنار ==================== */
+.tent-animation-area {
+    position: fixed;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+}
+
+.flame-animation-area {
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 100;
+}
+
+/* خلفية الصفحة مع الصورة */
+.landing-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(232, 244, 248, 0.9), rgba(180, 216, 232, 0.9)), url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+    overflow-x: hidden;
+}
     </style>
 </head>
 <body>
@@ -1020,24 +1165,7 @@ function closeSidebar() {
     document.getElementById('sidebarOverlay')?.classList.remove('active');
     document.getElementById('hamburger')?.classList.remove('open');
 }
-        // دالة إضافة شعار الكشافة في أعلى الصفحة (مع الصورة)
-function addScoutLogoToPage() {
-    if (document.querySelector('.scout-logo-header')) return;
-    
-    const logoHTML = `
-        <div class="scout-logo-header" onclick="goToLandingPage()">
-            <div class="logo-circle">
-                <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار الكشافة" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.src='https://via.placeholder.com/45x45/d4a017/ffffff?text=Scout'">
-            </div>
-            <div class="logo-text">
-                <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
-                <span class="logo-subtitle">Sea Scout Organization</span>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('afterbegin', logoHTML);
-}
+        
 // دالة تشغيل حركات الخيمة والنار
 function startAnimations() {
     const tent = document.querySelector('.floating-tent');
@@ -2685,6 +2813,21 @@ function renderLandingPage() {
     const app = document.getElementById('app');
     app.innerHTML = `
         <div class="landing-container">
+            <!-- الهيدر الجديد مع الصورة وزر تسجيل الدخول -->
+            <div class="landing-header">
+                <div class="landing-header-logo">
+                    <img src="https://i.ibb.co/d9sKxjZ/In-Shot-20260528-143153172.jpg" alt="شعار النظام" onerror="this.src='https://via.placeholder.com/50x50?text=Logo'">
+                    <div class="landing-header-text">
+                        <span class="landing-header-title">نظام الكشاف المتكامل</span>
+                        <span class="landing-header-subtitle">نظام إدارة الطلايع والكشافة - متزامن مع Firebase Cloud</span>
+                    </div>
+                </div>
+                <button class="landing-header-login-btn" onclick="goToLoginPage()">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+            </div>
+            
+            <!-- الخيمة الدوارة والصورة الأولى -->
             <div class="tent-animation-area">
                 <div class="floating-tent">
                     <i class="fas fa-campground"></i>
@@ -2694,6 +2837,7 @@ function renderLandingPage() {
                 </div>
             </div>
             
+            <!-- النار والصورة الثانية -->
             <div class="flame-animation-area">
                 <div class="flame-icon">
                     <i class="fas fa-fire"></i>
@@ -2703,17 +2847,14 @@ function renderLandingPage() {
                 </div>
             </div>
             
+            <!-- المحتوى المركزي (النص الجديد) -->
             <div class="hero-section">
                 <div class="hero-content">
-                    <div class="logo-large">
-                        <i class="fas fa-campground"></i>
-                        <h1>نظام الكشاف المتكامل</h1>
-                        <p>نظام إدارة الطلايع والكشافة - متزامن مع Firebase Cloud</p>
+                    <div class="organization-name">
+                        <i class="fas fa-ship"></i>
+                        <h2>مجموعة كيان الكشفية البحرية</h2>
+                        <p>Sea Scout Organization</p>
                     </div>
-                    <button class="login-landing-btn" onclick="goToLoginPage()">
-                        <i class="fas fa-sign-in-alt"></i>
-                        تسجيل الدخول
-                    </button>
                 </div>
             </div>
             
@@ -2725,9 +2866,48 @@ function renderLandingPage() {
     `;
     
     addScoutLogoToPage();
+    
+    // تشغيل الحركات التلقائية
     setTimeout(() => {
         startAnimations();
+        // تشغيل النار تلقائياً بعد ثانيتين
+        setTimeout(() => {
+            autoFlameAnimation();
+        }, 2000);
     }, 100);
+}
+// دالة تشغيل النار تلقائياً (تكبر مرتين ثم تختفي وتظهر الصورة)
+function autoFlameAnimation() {
+    const flameIcon = document.querySelector('.flame-icon');
+    const flameImage = document.querySelector('.flame-image');
+    
+    if (flameIcon && flameImage) {
+        let growCount = 0;
+        
+        // التكبيرة الأولى
+        setTimeout(() => {
+            flameIcon.classList.add('growing');
+            setTimeout(() => {
+                flameIcon.classList.remove('growing');
+            }, 800);
+            growCount++;
+        }, 500);
+        
+        // التكبيرة الثانية
+        setTimeout(() => {
+            flameIcon.classList.add('growing');
+            setTimeout(() => {
+                flameIcon.classList.remove('growing');
+            }, 800);
+            growCount++;
+            
+            // إظهار الصورة وإخفاء النار بعد التكبيرة الثانية
+            setTimeout(() => {
+                flameImage.classList.add('show');
+                flameIcon.classList.add('hide');
+            }, 400);
+        }, 1800);
+    }
 }
 // دالة الانتقال إلى صفحة تسجيل الدخول
 function goToLoginPage() {
