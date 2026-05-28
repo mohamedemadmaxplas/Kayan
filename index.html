@@ -1241,17 +1241,19 @@ body {
 
         // ==================== FIREBASE OPERATIONS ====================
         
-        // Save all data to Firebase
+      // Save all data to Firebase
 async function saveAllDataToFirebase() {
     try {
         await database.ref('appData').set({
             branches: appData.branches,
+            subBranches: appData.subBranches,  // <-- أضف هذا السطر (كان مفقوداً)
             squads: appData.squads,
             members: appData.members,
+            leaders: appData.leaders,          // <-- أضف هذا السطر
             tasks: appData.tasks,
             taskSubmissions: appData.taskSubmissions,
             messages: appData.messages,
-            joinRequests: appData.joinRequests,  // <-- أضف هذا السطر
+            joinRequests: appData.joinRequests,
             lastUpdated: new Date().toISOString()
         });
         console.log('✅ All data saved to Firebase');
@@ -1336,23 +1338,33 @@ function changeLeaderPage(page) {
     else if (page === 'community') renderLeaderCommunity();
     closeSidebar();
 }
-        async function loadAllDataFromFirebase() {
+       async function loadAllDataFromFirebase() {
     try {
         const snapshot = await database.ref('appData').once('value');
         const data = snapshot.val();
         if (data) {
             appData.branches = data.branches || [];
-            appData.subBranches = data.subBranches || [];  // <-- أضف هذا
+            appData.subBranches = data.subBranches || [];
             appData.squads = data.squads || [];
             appData.members = data.members || [];
-            appData.leaders = data.leaders || [];          // <-- أضف هذا
+            appData.leaders = data.leaders || [];
             appData.tasks = data.tasks || [];
             appData.taskSubmissions = data.taskSubmissions || [];
             appData.messages = data.messages || [];
             appData.joinRequests = data.joinRequests || [];
             console.log('✅ All data loaded from Firebase');
+            console.log('📊 البيانات المحملة:', {
+                branches: appData.branches.length,
+                subBranches: appData.subBranches.length,
+                squads: appData.squads.length,
+                members: appData.members.length,
+                leaders: appData.leaders.length,
+                tasks: appData.tasks.length,
+                joinRequests: appData.joinRequests.length
+            });
             return true;
         } else {
+            console.log('⚠️ لا توجد بيانات في Firebase، جارٍ تهيئة البيانات الافتراضية...');
             await initializeDefaultData();
             return true;
         }
