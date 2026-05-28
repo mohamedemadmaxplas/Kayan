@@ -796,6 +796,85 @@
         margin: 0 15px;
     }
 }
+/* ==================== Scout Logo Header ==================== */
+.scout-logo-header {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    z-index: 1002;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    background: rgba(13, 40, 24, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 8px 18px 8px 20px;
+    border-radius: 60px;
+    border: 1px solid rgba(212, 160, 23, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.scout-logo-header:hover {
+    transform: translateY(-2px);
+    background: rgba(13, 40, 24, 0.95);
+    border-color: #d4a017;
+    box-shadow: 0 6px 20px rgba(212, 160, 23, 0.2);
+}
+
+.logo-circle {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo-circle i {
+    font-size: 28px;
+    color: #0d2818;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-text .logo-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #d4a017;
+    line-height: 1.2;
+}
+
+.logo-text .logo-subtitle {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 768px) {
+    .scout-logo-header {
+        top: 10px;
+        left: 10px;
+        padding: 5px 12px 5px 14px;
+    }
+    .logo-circle {
+        width: 35px;
+        height: 35px;
+    }
+    .logo-circle i {
+        font-size: 20px;
+    }
+    .logo-text .logo-title {
+        font-size: 12px;
+    }
+    .logo-text .logo-subtitle {
+        font-size: 9px;
+    }
+}
     </style>
 </head>
 <body>
@@ -987,11 +1066,25 @@ async function saveAllDataToFirebase() {
             hamburger.classList.toggle('open');
         }
 
-        function closeSidebar() {
-            document.getElementById('sidebar')?.classList.remove('open');
-            document.getElementById('sidebarOverlay')?.classList.remove('active');
-            document.getElementById('hamburger')?.classList.remove('open');
-        }
+        // دالة إضافة شعار الكشافة في أعلى الصفحة
+function addScoutLogoToPage() {
+    // التحقق من وجود الشعار مسبقاً لتجنب التكرار
+    if (document.querySelector('.scout-logo-header')) return;
+    
+    const logoHTML = `
+        <div class="scout-logo-header" onclick="goToLandingPage()">
+            <div class="logo-circle">
+                <i class="fas fa-anchor"></i>
+            </div>
+            <div class="logo-text">
+                <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
+                <span class="logo-subtitle">Sea Scout Organization</span>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('afterbegin', logoHTML);
+}
 
         // ==================== RENDER FUNCTIONS ====================
         function render() {
@@ -1005,7 +1098,7 @@ async function saveAllDataToFirebase() {
             }
         }
 
-        function renderLogin(container) {
+       function renderLogin(container) {
     container.innerHTML = `
         <div class="login-container">
             <div class="login-box">
@@ -1063,6 +1156,9 @@ async function saveAllDataToFirebase() {
             }
         }
     });
+    
+    // إضافة شعار الكشافة
+    addScoutLogoToPage();
 }
 // ==================== الدوال الجديدة لنظام طلبات الانضمام ====================
 
@@ -1286,39 +1382,41 @@ function updatePendingRequestsBadge() {
         }
     }
 }
-        // ==================== ADMIN APP ====================
         function renderAdminApp(container) {
-            container.innerHTML = `
-                <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
-                    <span></span><span></span><span></span>
-                </div>
-                <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-                <div class="sidebar" id="sidebar">
-                    <div class="sidebar-header">
-                        <h3><i class="fas fa-crown"></i> القائد العام</h3>
-                        <p>${currentUser.name}</p>
-                    </div>
-                    <ul class="sidebar-menu">
-                        <li class="active" data-page="dashboard"><a onclick="changeAdminPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
-                        <li data-page="members"><a onclick="changeAdminPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
-                        <li data-page="squads"><a onclick="changeAdminPage('squads')"><i class="fas fa-flag"></i> إدارة الطلايع</a></li>
-                        <li data-page="community"><a onclick="changeAdminPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
-                        <li data-page="tasks"><a onclick="changeAdminPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
-                    </ul>
-                </div>
+    container.innerHTML = `
+        <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-crown"></i> القائد العام</h3>
+                <p>${currentUser.name}</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-page="dashboard"><a onclick="changeAdminPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
+                <li data-page="members"><a onclick="changeAdminPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
+                <li data-page="squads"><a onclick="changeAdminPage('squads')"><i class="fas fa-flag"></i> إدارة الطلايع</a></li>
+                <li data-page="community"><a onclick="changeAdminPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
+                <li data-page="tasks"><a onclick="changeAdminPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
+            </ul>
+        </div>
 
-                <div class="header">
-                    <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - سحابة Firebase</p></div></div>
-                    <div class="user-info"><i class="fas fa-user-shield"></i><span>${currentUser.name}</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
-                </div>
+        <div class="header">
+            <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - سحابة Firebase</p></div></div>
+            <div class="user-info"><i class="fas fa-user-shield"></i><span>${currentUser.name}</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+        </div>
 
-                <div class="main-content">
-                    <div id="adminPageContent"></div>
-                </div>
-                <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
-            `;
-            renderAdminDashboard();
-        }
+        <div class="main-content">
+            <div id="adminPageContent"></div>
+        </div>
+        <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
+    `;
+    renderAdminDashboard();
+    
+    // إضافة شعار الكشافة
+    addScoutLogoToPage();
+}
 
         function changeAdminPage(page) {
             document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
@@ -2381,7 +2479,44 @@ function canSubmitTask(taskId) {
             renderAdminDashboard();
             showToast('تم حذف التكليف');
         }
-
+// دالة إضافة شعار الكشافة في أعلى الصفحة
+function addScoutLogoToPage() {
+    // التحقق من وجود الشعار مسبقاً لتجنب التكرار
+    if (document.querySelector('.scout-logo-header')) return;
+    
+    const logoHTML = `
+        <div class="scout-logo-header" onclick="goToLandingPage()">
+            <div class="logo-circle">
+                <i class="fas fa-anchor"></i>
+            </div>
+            <div class="logo-text">
+                <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
+                <span class="logo-subtitle">Sea Scout Organization</span>
+            </div>
+        </div>
+    `;
+    
+    document.body.insertAdjacentHTML('afterbegin', logoHTML);
+}
+// دالة العودة إلى صفحة الهبوط الرئيسية
+function goToLandingPage() {
+    // حذف الجلسة المخزنة
+    sessionStorage.removeItem('scoutSession');
+    sessionStorage.removeItem('scoutSessionTime');
+    
+    // إعادة تعيين المتغيرات
+    currentUser = null;
+    isAdmin = false;
+    
+    // إيقاف تحديث العدادات
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+    
+    // عرض صفحة الهبوط
+    renderLandingPage();
+}
         // ==================== MEMBER APP ====================
         function renderMemberApp(container) {
             const squad = appData.squads.find(s => s.id === currentUser.squadId);
@@ -2413,6 +2548,7 @@ function canSubmitTask(taskId) {
                 <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
             `;
             renderMemberDashboard();
+            addScoutLogoToPage();
         }
 
         function changeMemberPage(page) {
@@ -2625,6 +2761,9 @@ function renderLandingPage() {
             </div>
         </div>
     `;
+    
+    // إضافة شعار الكشافة
+    addScoutLogoToPage();
 }
 // دالة الانتقال إلى صفحة تسجيل الدخول
 function goToLoginPage() {
@@ -2824,6 +2963,8 @@ function showTaskViewers(taskId) {
 window.showJoinRequestModal = showJoinRequestModal;
 window.showJoinRequestsList = showJoinRequestsList;
 window.viewJoinRequestDetails = viewJoinRequestDetails;
+window.goToLandingPage = goToLandingPage;
+window.addScoutLogoToPage = addScoutLogoToPage;
 window.approveJoinRequest = approveJoinRequest;
 window.rejectJoinRequest = rejectJoinRequest;
 window.goToLoginPage = goToLoginPage;
