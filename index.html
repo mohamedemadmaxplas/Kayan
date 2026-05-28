@@ -1230,6 +1230,7 @@ body {
             branches: [],
             squads: [],
             members: [],
+            subBranches: [],
             tasks: [],
             taskSubmissions: [],
             joinRequests: [],
@@ -1545,7 +1546,6 @@ function autoFlameAnimation() {
 }
 // ==================== الدوال الجديدة لنظام طلبات الانضمام ====================
 
-// 1. دالة عرض نموذج طلب انضمام جديد للعضو (تظهر في شاشة تسجيل الدخول)
 function showJoinRequestModal() {
     const modal = document.createElement('div');
     modal.className = 'modal';
@@ -1571,8 +1571,22 @@ function showJoinRequestModal() {
                         <option value="مساعد عريف">مساعد عريف</option>
                     </select>
                 </div>
-                <div class="input-group"><label>المنطقة</label><select id="reqBranch">${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select></div>
-                <div class="input-group"><label>الطليعة المرغوب الانضمام إليها</label><select id="reqSquad">${appData.squads.filter(s => s.isOpen).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select></div>
+                <div class="input-group"><label>المنطقة</label>
+                    <select id="reqBranch" onchange="updateSubBranchesByBranch('reqBranch', 'reqSubBranch')" required>
+                        <option value="">-- اختر المنطقة --</option>
+                        ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="input-group"><label>الفرع</label>
+                    <select id="reqSubBranch" required>
+                        <option value="">-- اختر المنطقة أولاً --</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>الطليعة المرغوب الانضمام إليها</label>
+                    <select id="reqSquad" required>
+                        <option value="">-- اختر الفرع أولاً --</option>
+                    </select>
+                </div>
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="reqUsername" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="reqPassword" required></div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">إرسال الطلب للقائد</button>
@@ -1580,6 +1594,40 @@ function showJoinRequestModal() {
         </div>
     `;
     document.body.appendChild(modal);
+    
+    // إضافة مستمع لتحديث الفروع عند اختيار المنطقة
+    document.getElementById('reqBranch').addEventListener('change', function() {
+        const branchId = parseInt(this.value);
+        const subBranchSelect = document.getElementById('reqSubBranch');
+        const squadSelect = document.getElementById('reqSquad');
+        
+        if (branchId) {
+            const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
+            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+                branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
+        } else {
+            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+        }
+    });
+    
+    // إضافة مستمع لتحديث الطلايع عند اختيار الفرع
+    document.getElementById('reqSubBranch').addEventListener('change', function() {
+        const subBranchId = parseInt(this.value);
+        const squadSelect = document.getElementById('reqSquad');
+        
+        if (subBranchId) {
+            const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
+            if (subBranch) {
+                const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
+                squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
+                    squads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
+            }
+        } else {
+            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+        }
+    });
     
     document.getElementById('joinRequestForm').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -1594,14 +1642,24 @@ function showJoinRequestModal() {
             return;
         }
         
+        const subBranchId = parseInt(document.getElementById('reqSubBranch').value);
+        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
+        const squadId = parseInt(document.getElementById('reqSquad').value);
+        
+        if (!subBranchId || !squadId) {
+            showToast('الرجاء اختيار الفرع والطليعة', 'error');
+            return;
+        }
+        
         const newRequest = {
             id: Date.now(),
             name: document.getElementById('reqName').value,
             age: parseInt(document.getElementById('reqAge').value),
             phone: document.getElementById('reqPhone').value,
             rank: document.getElementById('reqRank').value,
-            branchId: parseInt(document.getElementById('reqBranch').value),
-            squadId: parseInt(document.getElementById('reqSquad').value),
+            branchId: subBranch.branchId,
+            subBranchId: subBranchId,
+            squadId: squadId,
             username: username,
             password: document.getElementById('reqPassword').value,
             status: 'pending',
@@ -1614,6 +1672,19 @@ function showJoinRequestModal() {
         showToast('تم إرسال طلب الانضمام إلى القائد، انتظر الموافقة');
         modal.remove();
     });
+}
+// دالة مساعدة لتحديث قائمة الفروع عند اختيار المنطقة
+function updateSubBranchesByBranch(branchSelectId, subBranchSelectId) {
+    const branchId = parseInt(document.getElementById(branchSelectId).value);
+    const subBranchSelect = document.getElementById(subBranchSelectId);
+    
+    if (branchId) {
+        const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
+        subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+            branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+    } else {
+        subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+    }
 }
 
 // 2. دالة عرض قائمة طلبات الانضمام للقائد
@@ -2301,13 +2372,62 @@ function canSubmitTask(taskId) {
                 <div class="input-group"><label>كود العضو</label><div class="code-generator"><input type="text" id="memberCode" required><button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCode()">توليد</button></div></div>
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="memberUsername" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="memberPassword" required></div>
-                <div class="input-group"><label>المنطقة</label><select id="memberBranch">${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select></div>
-                <div class="input-group"><label>الطليعة</label><select id="memberSquad">${appData.squads.filter(s => s.isOpen).map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select></div>
+                <div class="input-group"><label>المنطقة</label>
+                    <select id="memberBranch" onchange="updateSubBranchesByBranch('memberBranch', 'memberSubBranch')" required>
+                        <option value="">-- اختر المنطقة --</option>
+                        ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="input-group"><label>الفرع</label>
+                    <select id="memberSubBranch" required>
+                        <option value="">-- اختر المنطقة أولاً --</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>الطليعة</label>
+                    <select id="memberSquad" required>
+                        <option value="">-- اختر الفرع أولاً --</option>
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">إضافة العضو</button>
             </form>
         </div>
     `;
     document.body.appendChild(modal);
+    
+    // إضافة مستمع لتحديث الفروع عند اختيار المنطقة
+    document.getElementById('memberBranch').addEventListener('change', function() {
+        const branchId = parseInt(this.value);
+        const subBranchSelect = document.getElementById('memberSubBranch');
+        const squadSelect = document.getElementById('memberSquad');
+        
+        if (branchId) {
+            const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
+            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+                branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
+        } else {
+            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+        }
+    });
+    
+    // إضافة مستمع لتحديث الطلايع عند اختيار الفرع
+    document.getElementById('memberSubBranch').addEventListener('change', function() {
+        const subBranchId = parseInt(this.value);
+        const squadSelect = document.getElementById('memberSquad');
+        
+        if (subBranchId) {
+            // الحصول على المنطقة التي ينتمي إليها هذا الفرع
+            const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
+            if (subBranch) {
+                const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
+                squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
+                    squads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
+            }
+        } else {
+            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+        }
+    });
     
     document.getElementById('addMemberForm').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -2316,6 +2436,16 @@ function canSubmitTask(taskId) {
             showToast('اسم المستخدم موجود مسبقاً', 'error');
             return;
         }
+        
+        const subBranchId = parseInt(document.getElementById('memberSubBranch').value);
+        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
+        const squadId = parseInt(document.getElementById('memberSquad').value);
+        
+        if (!subBranchId || !squadId) {
+            showToast('الرجاء اختيار الفرع والطليعة', 'error');
+            return;
+        }
+        
         const newMember = {
             id: Date.now(),
             code: document.getElementById('memberCode').value,
@@ -2325,8 +2455,9 @@ function canSubmitTask(taskId) {
             username: newUsername,
             password: document.getElementById('memberPassword').value,
             phone: document.getElementById('memberPhone').value,
-            branchId: parseInt(document.getElementById('memberBranch').value),
-            squadId: parseInt(document.getElementById('memberSquad').value),
+            branchId: subBranch.branchId,
+            subBranchId: subBranchId,
+            squadId: squadId,
             points: 0,
             joinedAt: new Date().toISOString()
         };
@@ -2466,17 +2597,121 @@ function canSubmitTask(taskId) {
             if (codeInput) codeInput.value = `${prefix}${num}`;
         }
 
-        // ==================== ADMIN SQUADS ====================
         function renderAdminSquads() {
-            const container = document.getElementById('adminPageContent');
-            container.innerHTML = `
-                <div class="card"><h3><i class="fas fa-plus-circle"></i> إضافة منطقة أو طليعة</h3><div style="display:flex; gap:15px; flex-wrap:wrap;"><button class="btn btn-primary" onclick="showAddBranchModal()"><i class="fas fa-building"></i> إضافة منطقة</button><button class="btn btn-success" onclick="showAddSquadModal()"><i class="fas fa-flag"></i> إضافة طليعة</button></div></div>
-                <div class="card"><h3><i class="fas fa-list"></i> قائمة الطلايع</h3><div id="squadsList"></div></div>
-            `;
-            renderSquadsList();
-        }
+    const container = document.getElementById('adminPageContent');
+    container.innerHTML = `
+        <div class="card"><h3><i class="fas fa-plus-circle"></i> إدارة المناطق والفروع</h3><div style="display:flex; gap:15px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="showAddBranchModal()"><i class="fas fa-building"></i> إضافة منطقة</button>
+            <button class="btn btn-success" onclick="showAddSubBranchModal()"><i class="fas fa-code-branch"></i> إضافة فرع</button>
+            <button class="btn btn-info" onclick="showAddSquadModal()"><i class="fas fa-flag"></i> إضافة طليعة</button>
+        </div></div>
+        <div class="card"><h3><i class="fas fa-list"></i> قائمة المناطق والفروع</h3><div id="squadsList"></div></div>
+    `;
+    renderSquadsList();
+}
+// حذف منطقة
+function deleteBranch(branchId) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:400px;">
+            <div class="modal-header"><h3><i class="fas fa-trash-alt"></i> تأكيد حذف المنطقة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <p style="text-align:center; margin:20px 0;">هل أنت متأكد من حذف هذه المنطقة؟<br>سيتم حذف جميع الفروع والطلايع التابعة لها!</p>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button class="btn btn-danger" onclick="confirmDeleteBranch(${branchId}); this.closest('.modal').remove();">نعم، احذف</button>
+                <button class="btn btn-primary" onclick="this.closest('.modal').remove()">إلغاء</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
 
-        function renderSquadsList() {
+async function confirmDeleteBranch(branchId) {
+    // حذف الفروع التابعة
+    appData.subBranches = appData.subBranches.filter(sb => sb.branchId !== branchId);
+    // حذف الطلايع التابعة
+    const squadsToDelete = appData.squads.filter(s => s.branchId === branchId);
+    squadsToDelete.forEach(squad => {
+        appData.members.forEach(m => { if (m.squadId === squad.id) m.squadId = null; });
+    });
+    appData.squads = appData.squads.filter(s => s.branchId !== branchId);
+    // حذف المنطقة
+    appData.branches = appData.branches.filter(b => b.id !== branchId);
+    
+    await saveAllDataToFirebase();
+    renderSquadsList();
+    renderAdminDashboard();
+    showToast('تم حذف المنطقة وجميع فروعها وطلايعها');
+}
+
+// حذف فرع
+async function deleteSubBranch(subBranchId) {
+    if (confirm('هل أنت متأكد من حذف هذا الفرع؟')) {
+        appData.subBranches = appData.subBranches.filter(sb => sb.id !== subBranchId);
+        await saveAllDataToFirebase();
+        renderSquadsList();
+        showToast('تم حذف الفرع');
+    }
+}
+// دالة عرض نافذة إضافة فرع جديد
+function showAddSubBranchModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-code-branch"></i> إضافة فرع جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <form id="addSubBranchForm">
+                <div class="input-group">
+                    <label>اختر المنطقة</label>
+                    <select id="subBranchParentBranch" required>
+                        <option value="">-- اختر المنطقة --</option>
+                        ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>اسم الفرع</label>
+                    <input type="text" id="subBranchName" placeholder="مثال: فرع النزهة" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة الفرع</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('addSubBranchForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const parentBranchId = parseInt(document.getElementById('subBranchParentBranch').value);
+        const subBranchName = document.getElementById('subBranchName').value.trim();
+        
+        if (!parentBranchId || !subBranchName) {
+            showToast('الرجاء اختيار المنطقة وإدخال اسم الفرع', 'error');
+            return;
+        }
+        
+        // التحقق من عدم وجود فرع بنفس الاسم في نفس المنطقة
+        const existing = appData.subBranches.find(sb => sb.branchId === parentBranchId && sb.name === subBranchName);
+        if (existing) {
+            showToast('يوجد فرع بهذا الاسم بالفعل في هذه المنطقة', 'error');
+            return;
+        }
+        
+        const newSubBranch = {
+            id: Date.now(),
+            branchId: parentBranchId,
+            name: subBranchName,
+            createdAt: new Date().toISOString()
+        };
+        
+        appData.subBranches.push(newSubBranch);
+        await saveAllDataToFirebase();
+        showToast(`تم إضافة الفرع "${subBranchName}" بنجاح`);
+        modal.remove();
+        renderSquadsList();
+    });
+}
+       function renderSquadsList() {
     const container = document.getElementById('squadsList');
     if (!container) return;
     
@@ -2490,46 +2725,77 @@ function canSubmitTask(taskId) {
         'مساعد عريف': 6
     };
     
-    container.innerHTML = appData.squads.map(squad => {
-        const branchName = appData.branches.find(b => b.id === squad.branchId)?.name;
-        let squadMembers = appData.members.filter(m => m.squadId === squad.id);
+    let html = '';
+    
+    // عرض كل منطقة مع فروعها وطلايعها
+    appData.branches.forEach(branch => {
+        const branchSubBranches = appData.subBranches.filter(sb => sb.branchId === branch.id);
+        const branchSquads = appData.squads.filter(s => s.branchId === branch.id);
         
-        // ترتيب الأعضاء حسب الرتبة
-        squadMembers.sort((a, b) => {
-            const orderA = rankOrder[a.rank] || 999;
-            const orderB = rankOrder[b.rank] || 999;
-            return orderA - orderB;
-        });
-        
-        const memberCount = squadMembers.length;
-        
-        const membersHtml = squadMembers.map(member => `
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #eee; background: ${member.rank === 'عريف اول' ? '#fff8e1' : 'transparent'}">
-                <div>
-                    <strong>${escapeHtml(member.name)}</strong>
-                    <span class="badge" style="background: #d4a017; margin-right: 8px;">${member.rank}</span>
+        html += `
+            <div style="background: #1a472a; color: white; padding: 12px 15px; border-radius: 15px; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div><i class="fas fa-building"></i> <strong style="font-size: 18px;">${branch.name}</strong></div>
+                    <button class="btn btn-sm btn-danger" onclick="deleteBranch(${branch.id})" style="background: #e74c3c;"><i class="fas fa-trash"></i> حذف المنطقة</button>
                 </div>
-                <div><strong>${member.points}</strong> نقطة</div>
-            </div>
-        `).join('');
+        `;
         
-        return `
-            <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:12px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:10px;">
-                    <div><i class="fas fa-flag"></i> <strong>${squad.name}</strong><br><small>${branchName} | القائد: ${squad.leader} | الأعضاء: ${memberCount}</small></div>
-                    <div><span class="badge ${squad.isOpen ? 'badge-active' : 'badge-inactive'}">${squad.isOpen ? 'مفتوحة' : 'مغلقة'}</span>
-                    <button class="btn btn-sm btn-warning" onclick="toggleSquadStatus(${squad.id})"><i class="fas fa-lock"></i></button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteSquad(${squad.id})"><i class="fas fa-trash"></i></button></div>
+        // عرض الفروع التابعة للمنطقة
+        if (branchSubBranches.length > 0) {
+            html += `
+                <div style="margin-top: 12px; margin-right: 20px;">
+                    <div style="font-size: 14px; color: #d4a017; margin-bottom: 8px;"><i class="fas fa-code-branch"></i> الفروع التابعة:</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+            `;
+            branchSubBranches.forEach(sub => {
+                html += `
+                    <div style="background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-location-dot"></i> ${sub.name}
+                        <button onclick="deleteSubBranch(${sub.id})" style="background: none; border: none; color: #ff9999; cursor: pointer; font-size: 12px;"><i class="fas fa-times-circle"></i></button>
+                    </div>
+                `;
+            });
+            html += `</div></div>`;
+        }
+        
+        // عرض الطلايع
+        html += `<div style="margin-top: 15px; margin-right: 20px;"><div style="font-size: 14px; color: #d4a017; margin-bottom: 8px;"><i class="fas fa-flag"></i> الطلايع:</div>`;
+        branchSquads.forEach(squad => {
+            let squadMembers = appData.members.filter(m => m.squadId === squad.id);
+            squadMembers.sort((a, b) => {
+                const orderA = rankOrder[a.rank] || 999;
+                const orderB = rankOrder[b.rank] || 999;
+                return orderA - orderB;
+            });
+            
+            const membersHtml = squadMembers.map(member => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid #eee; background: ${member.rank === 'عريف اول' ? '#fff8e1' : 'transparent'}">
+                    <div><strong>${escapeHtml(member.name)}</strong> <span class="badge" style="background: #d4a017;">${member.rank}</span></div>
+                    <div><strong>${member.points}</strong> نقطة</div>
                 </div>
-                <div style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 10px;">
-                    <strong>أعضاء الطليعة (مرتبين حسب الرتبة):</strong>
-                    <div style="margin-top: 8px;">
-                        ${membersHtml || '<p style="color:#999; text-align:center;">لا يوجد أعضاء في هذه الطليعة</p>'}
+            `).join('');
+            
+            html += `
+                <div style="background: #f8f9fa; color: #333; padding: 12px; border-radius: 12px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                        <div><i class="fas fa-flag"></i> <strong>${squad.name}</strong><br><small>القائد: ${squad.leader} | الأعضاء: ${squadMembers.length}</small></div>
+                        <div>
+                            <span class="badge ${squad.isOpen ? 'badge-active' : 'badge-inactive'}">${squad.isOpen ? 'مفتوحة' : 'مغلقة'}</span>
+                            <button class="btn btn-sm btn-warning" onclick="toggleSquadStatus(${squad.id})"><i class="fas fa-lock"></i></button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteSquad(${squad.id})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px;">
+                        <strong>أعضاء الطليعة:</strong>
+                        <div style="margin-top: 5px;">${membersHtml || '<p style="color:#999; text-align:center;">لا يوجد أعضاء</p>'}</div>
                     </div>
                 </div>
-            </div>
-        `;
-    }).join('');
+            `;
+        });
+        html += `</div></div>`;
+    });
+    
+    container.innerHTML = html || '<p style="text-align:center;">لا توجد مناطق مضافة بعد</p>';
 }
         function showAddBranchModal() {
             const modal = document.createElement('div');
@@ -3481,7 +3747,12 @@ function showTaskViewers(taskId) {
         window.loadMemberMessages = loadMemberMessages;
         window.sendMemberMessage = sendMemberMessage;
         window.submitTaskRequest = submitTaskRequest;
+        window.updateSubBranchesByBranch = updateSubBranchesByBranch;
         window.viewNewTasks = viewNewTasks;
+        window.showAddSubBranchModal = showAddSubBranchModal;
+window.deleteBranch = deleteBranch;
+window.deleteSubBranch = deleteSubBranch;
+window.confirmDeleteBranch = confirmDeleteBranch;
         window.showTaskViewers = showTaskViewers;
         window.onSquadFilterChange = onSquadFilterChange;
         window.renderSquadRankingCard = renderSquadRankingCard;
