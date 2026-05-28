@@ -549,11 +549,10 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, rgba(10, 46, 26, 0.4), rgba(10, 31, 18, 0.5)), url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
+    background: url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    background-repeat: no-repeat;
     position: relative;
 }
 
@@ -593,12 +592,13 @@
 .hero-content {
     text-align: center;
     max-width: 700px;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.85);
     border-radius: 40px;
     padding: 50px 40px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(212, 160, 23, 0.3);
     animation: fadeInUp 0.8s ease;
+    backdrop-filter: blur(3px);
 }
 
 @keyframes fadeInUp {
@@ -687,7 +687,7 @@
 }
 
 .rules-section {
-    background: rgba(255, 255, 255, 0.95);
+    background: transparent;
     padding: 50px 20px;
     position: relative;
     z-index: 1;
@@ -702,12 +702,13 @@
 }
 
 .rules-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.75);
     border-radius: 25px;
     padding: 25px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     border-right: 5px solid #d4a017;
+    backdrop-filter: blur(3px);
 }
 
 .rules-card:hover {
