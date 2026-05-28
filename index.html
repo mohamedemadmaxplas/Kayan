@@ -1227,16 +1227,17 @@ body {
         let isLeader = false;
         let passwordVisible = false;
         let isUpdatingSeenStatus = false;
-        let appData = {
-            branches: [],
-            squads: [],
-            members: [],
-            subBranches: [],
-            tasks: [],
-            taskSubmissions: [],
-            joinRequests: [],
-            messages: []
-        };
+      let appData = {
+    branches: [],
+    subBranches: [],     // <-- تأكد من وجود هذا السطر
+    squads: [],
+    members: [],
+    leaders: [],         // <-- تأكد من وجود هذا السطر
+    tasks: [],
+    taskSubmissions: [],
+    joinRequests: [],
+    messages: []
+};
 
         // ==================== FIREBASE OPERATIONS ====================
         
@@ -1277,19 +1278,78 @@ function createAnimatedBubbles() {
         container.appendChild(bubble);
     }
 }
+function renderLeaderApp(container) {
+    const leader = currentUser;
+    const subBranchesNames = leader.subBranches ? leader.subBranches.map(sb => sb.name).join(' - ') : 'جميع الفروع';
+    
+    container.innerHTML = `
+        <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header" style="padding: 10px 20px; text-align: center;">
+                <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                    <i class="fas fa-user-tie" style="font-size: 32px; color: #d4a017;"></i>
+                    <div>
+                        <h3 style="font-size: 14px; margin: 0;">${leader.name}</h3>
+                        <p style="font-size: 10px;">القائد المسؤول</p>
+                    </div>
+                </div>
+                <p style="font-size: 10px; margin-top: 8px;"><i class="fas fa-code-branch"></i> ${subBranchesNames}</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-page="dashboard"><a onclick="changeLeaderPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
+                <li data-page="members"><a onclick="changeLeaderPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
+                <li data-page="joinRequests"><a onclick="changeLeaderPage('joinRequests')"><i class="fas fa-user-plus"></i> طلبات الانضمام</a></li>
+                <li data-page="tasks"><a onclick="changeLeaderPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
+                <li data-page="community"><a onclick="changeLeaderPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
+                    <a onclick="logout()" style="color: #e74c3c;">
+                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                    </a>
+                </li>
+            </ul>
+        </div>
 
+        <div class="header">
+            <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - ${subBranchesNames}</p></div></div>
+            <div style="flex: 1;"></div>
+            <div class="user-info"><i class="fas fa-user-tie"></i><span>${leader.name}</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+        </div>
+
+        <div class="main-content">
+            <div id="leaderPageContent"></div>
+        </div>
+        <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company</p></div>
+    `;
+    renderLeaderDashboard();
+}
+function changeLeaderPage(page) {
+    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+    document.querySelector(`.sidebar-menu li[data-page="${page}"]`)?.classList.add('active');
+    
+    if (page === 'dashboard') renderLeaderDashboard();
+    else if (page === 'members') renderLeaderMembers();
+    else if (page === 'joinRequests') renderLeaderJoinRequests();
+    else if (page === 'tasks') renderLeaderTasks();
+    else if (page === 'community') renderLeaderCommunity();
+    closeSidebar();
+}
         async function loadAllDataFromFirebase() {
     try {
         const snapshot = await database.ref('appData').once('value');
         const data = snapshot.val();
         if (data) {
             appData.branches = data.branches || [];
+            appData.subBranches = data.subBranches || [];  // <-- أضف هذا
             appData.squads = data.squads || [];
             appData.members = data.members || [];
+            appData.leaders = data.leaders || [];          // <-- أضف هذا
             appData.tasks = data.tasks || [];
             appData.taskSubmissions = data.taskSubmissions || [];
             appData.messages = data.messages || [];
-            appData.joinRequests = data.joinRequests || [];  // <-- أضف هذا السطر
+            appData.joinRequests = data.joinRequests || [];
             console.log('✅ All data loaded from Firebase');
             return true;
         } else {
@@ -1314,6 +1374,13 @@ function createAnimatedBubbles() {
             { id: 2, name: "منطقة الجيزة", createdAt: new Date().toISOString() },
             { id: 3, name: "منطقة الإسكندرية", createdAt: new Date().toISOString() }
         ],
+        subBranches: [  // الفروع التابعة للمناطق
+            { id: 1, branchId: 1, name: "فرع النزهة", createdAt: new Date().toISOString() },
+            { id: 2, branchId: 1, name: "فرع مدينة نصر", createdAt: new Date().toISOString() },
+            { id: 3, branchId: 2, name: "فرع المهندسين", createdAt: new Date().toISOString() },
+            { id: 4, branchId: 2, name: "فرع الهرم", createdAt: new Date().toISOString() },
+            { id: 5, branchId: 3, name: "فرع سيدي جابر", createdAt: new Date().toISOString() }
+        ],
         squads: [
             { id: 1, branchId: 1, name: "طليعة النصر", leader: "قائد أحمد", isOpen: true, createdAt: new Date().toISOString() },
             { id: 2, branchId: 1, name: "طليعة الفتح", leader: "قائد محمد", isOpen: true, createdAt: new Date().toISOString() },
@@ -1321,22 +1388,26 @@ function createAnimatedBubbles() {
             { id: 4, branchId: 3, name: "طليعة العزم", leader: "قائد خالد", isOpen: true, createdAt: new Date().toISOString() }
         ],
         members: [
-            { id: 1, code: "S001", name: "أحمد محمد", age: 16, username: "ahmed", password: "123456", phone: "01012345678", branchId: 1, squadId: 1, points: 150, rank: "قائد", joinedAt: new Date().toISOString() },
-            { id: 2, code: "S002", name: "محمود علي", age: 15, username: "mahmoud", password: "123456", phone: "01087654321", branchId: 1, squadId: 1, points: 120, rank: "نائب قائد", joinedAt: new Date().toISOString() },
-            { id: 3, code: "S003", name: "كريم حسن", age: 14, username: "karim", password: "123456", phone: "01122334455", branchId: 1, squadId: 2, points: 90, rank: "عضو", joinedAt: new Date().toISOString() },
-            { id: 4, code: "S004", name: "يوسف إبراهيم", age: 17, username: "youssef", password: "123456", phone: "01234567890", branchId: 2, squadId: 3, points: 75, rank: "عضو", joinedAt: new Date().toISOString() },
-            { id: 5, code: "S005", name: "عمر سعيد", age: 13, username: "omar", password: "123456", phone: "01555667788", branchId: 3, squadId: 4, points: 60, rank: "عضو", joinedAt: new Date().toISOString() }
+            { id: 1, code: "S001", name: "أحمد محمد", age: 16, username: "ahmed", password: "123456", phone: "01012345678", branchId: 1, subBranchId: 1, squadId: 1, points: 150, rank: "قائد", joinedAt: new Date().toISOString() },
+            { id: 2, code: "S002", name: "محمود علي", age: 15, username: "mahmoud", password: "123456", phone: "01087654321", branchId: 1, subBranchId: 1, squadId: 1, points: 120, rank: "نائب قائد", joinedAt: new Date().toISOString() },
+            { id: 3, code: "S003", name: "كريم حسن", age: 14, username: "karim", password: "123456", phone: "01122334455", branchId: 1, subBranchId: 2, squadId: 2, points: 90, rank: "عضو", joinedAt: new Date().toISOString() },
+            { id: 4, code: "S004", name: "يوسف إبراهيم", age: 17, username: "youssef", password: "123456", phone: "01234567890", branchId: 2, subBranchId: 3, squadId: 3, points: 75, rank: "عضو", joinedAt: new Date().toISOString() },
+            { id: 5, code: "S005", name: "عمر سعيد", age: 13, username: "omar", password: "123456", phone: "01555667788", branchId: 3, subBranchId: 5, squadId: 4, points: 60, rank: "عضو", joinedAt: new Date().toISOString() }
+        ],
+        leaders: [  // قادة تجريبيين
+            { id: 100, name: "قائد محمد", age: 35, phone: "01000000001", branchId: 1, subBranchIds: [1, 2], subBranches: [{id:1, name:"فرع النزهة"},{id:2, name:"فرع مدينة نصر"}], username: "leader1", password: "123456", createdAt: new Date().toISOString(), isLeader: true },
+            { id: 101, name: "قائد علي", age: 40, phone: "01000000002", branchId: 2, subBranchIds: [3, 4], subBranches: [{id:3, name:"فرع المهندسين"},{id:4, name:"فرع الهرم"}], username: "leader2", password: "123456", createdAt: new Date().toISOString(), isLeader: true }
         ],
         tasks: [
-            { id: 1, squadId: 1, title: "حفظ أخلاق الكشاف", description: "حفظ مبادئ وقانون الكشافة", pointsValue: 15, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: defaultEndDate },
-            { id: 2, squadId: 1, title: "مهارات التخييم", description: "تعلم كيفية نصب الخيمة وإشعال النار", pointsValue: 20, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: new Date(now.getTime() + 10*24*60*60*1000).toISOString() },
-            { id: 3, squadId: 2, title: "الإسعافات الأولية", description: "تعلم أساسيات الإسعافات الأولية", pointsValue: 25, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: new Date(now.getTime() + 5*24*60*60*1000).toISOString() }
+            { id: 1, squadId: 1, title: "حفظ أخلاق الكشاف", description: "حفظ مبادئ وقانون الكشافة", pointsValue: 15, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: defaultEndDate, seenByMembers: [] },
+            { id: 2, squadId: 1, title: "مهارات التخييم", description: "تعلم كيفية نصب الخيمة وإشعال النار", pointsValue: 20, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: new Date(now.getTime() + 10*24*60*60*1000).toISOString(), seenByMembers: [] },
+            { id: 3, squadId: 2, title: "الإسعافات الأولية", description: "تعلم أساسيات الإسعافات الأولية", pointsValue: 25, createdAt: new Date().toISOString(), startDate: defaultStartDate, endDate: new Date(now.getTime() + 5*24*60*60*1000).toISOString(), seenByMembers: [] }
         ],
         taskSubmissions: [
             { id: 1, taskId: 1, memberId: 1, status: "submitted", submittedAt: new Date().toISOString(), pointsAwarded: null, reviewedBy: null, reviewedAt: null }
         ],
         messages: [],
-        joinRequests: []  // <-- أضف هذا السطر الجديد
+        joinRequests: []
     };
     await saveAllDataToFirebase();
 }
@@ -1346,18 +1417,19 @@ function createAnimatedBubbles() {
         const data = snapshot.val();
         if (data && currentUser) {
             const oldMembersLength = appData.members.length;
-            const oldRequestsLength = appData.joinRequests.length;  // <-- أضف هذا السطر
+            const oldRequestsLength = appData.joinRequests.length;
             appData.branches = data.branches || [];
+            appData.subBranches = data.subBranches || [];  // <-- أضف هذا
             appData.squads = data.squads || [];
             appData.members = data.members || [];
+            appData.leaders = data.leaders || [];          // <-- أضف هذا
             appData.tasks = data.tasks || [];
             appData.taskSubmissions = data.taskSubmissions || [];
             appData.messages = data.messages || [];
-            appData.joinRequests = data.joinRequests || [];  // <-- أضف هذا السطر
+            appData.joinRequests = data.joinRequests || [];
             
-            // تحديث عداد الطلبات إذا تغير
             if (oldRequestsLength !== appData.joinRequests.length && isAdmin) {
-                updatePendingRequestsBadge();  // <-- استدعاء تحديث العداد
+                updatePendingRequestsBadge();
                 showToast(`📋 يوجد ${appData.joinRequests.filter(r => r.status === 'pending').length} طلب انضمام جديد`, 'info');
             }
             
@@ -1370,9 +1442,22 @@ function createAnimatedBubbles() {
             if (document.getElementById('memberPageContent')) {
                 refreshCurrentMemberPage();
             }
+            if (document.getElementById('leaderPageContent')) {
+                refreshCurrentLeaderPage();
+            }
             showToast('تم تحديث البيانات', 'info');
         }
     });
+}
+
+// دالة مساعدة لتحديث صفحة القائد الحالية
+function refreshCurrentLeaderPage() {
+    const activePage = document.querySelector('.sidebar-menu li.active')?.getAttribute('data-page');
+    if (activePage === 'dashboard') renderLeaderDashboard();
+    else if (activePage === 'members') renderLeaderMembers();
+    else if (activePage === 'joinRequests') renderLeaderJoinRequests();
+    else if (activePage === 'tasks') renderLeaderTasks();
+    else if (activePage === 'community') loadLeaderMessages();
 }
 
         function refreshCurrentAdminPage() {
