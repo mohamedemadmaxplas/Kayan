@@ -2593,24 +2593,10 @@ function canSubmitTask(taskId) {
             renderAdminDashboard();
             showToast('تم حذف التكليف');
         }
-// دالة إضافة شعار الكشافة في أعلى الصفحة
+// دالة إضافة شعار الكشافة - تم إلغاؤها لأن الشعار موجود في الهيدر
 function addScoutLogoToPage() {
-    // التحقق من وجود الشعار مسبقاً لتجنب التكرار
-    if (document.querySelector('.scout-logo-header')) return;
-    
-    const logoHTML = `
-        <div class="scout-logo-header" onclick="goToLandingPage()">
-            <div class="logo-circle">
-                <i class="fas fa-anchor"></i>
-            </div>
-            <div class="logo-text">
-                <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
-                <span class="logo-subtitle">Sea Scout Organization</span>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('afterbegin', logoHTML);
+    // تم نقل الشعار إلى الهيدر
+    return;
 }
 // دالة العودة إلى صفحة الهبوط
 function goToLandingPage() {
@@ -2813,13 +2799,15 @@ function renderLandingPage() {
     const app = document.getElementById('app');
     app.innerHTML = `
         <div class="landing-container">
-           <!-- الهيدر الجديد مع الصورة وزر تسجيل الدخول -->
+           <!-- الهيدر الجديد (الشعار القابل للنقر + زر تسجيل الدخول) -->
 <div class="landing-header">
-    <div class="landing-header-logo">
-        <img src="https://i.ibb.co/d9sKxjZ/In-Shot-20260528-143153172.jpg" alt="شعار النظام" onerror="this.src='https://via.placeholder.com/50x50?text=Logo'">
-        <div class="landing-header-text">
-            <span class="landing-header-title">مجموعة كيان الكشفية البحرية</span>
-            <span class="landing-header-subtitle">Sea Scout Organization</span>
+    <div class="scout-logo-header" onclick="goToLandingPage()" style="position: relative; top: 0; left: 0; transform: none; margin: 0; background: transparent; box-shadow: none; padding: 0;">
+        <div class="logo-circle">
+            <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار الكشافة" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+        </div>
+        <div class="logo-text">
+            <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
+            <span class="logo-subtitle">Sea Scout Organization</span>
         </div>
     </div>
     <button class="landing-header-login-btn" onclick="goToLoginPage()">
@@ -2847,16 +2835,9 @@ function renderLandingPage() {
                 </div>
             </div>
             
-            <!-- المحتوى المركزي (النص الجديد) -->
-            <div class="hero-section">
-                <div class="hero-content">
-                    <div class="organization-name">
-                        <i class="fas fa-ship"></i>
-                        <h2>مجموعة كيان الكشفية البحرية</h2>
-                        <p>Sea Scout Organization</p>
-                    </div>
-                </div>
-            </div>
+           <!-- المحتوى المركزي (تم إزالته) -->
+<div class="hero-section" style="display: none;">
+</div>
             
             <div class="footer-landing">
                 <p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | 01144100018 / 01126125881</p>
