@@ -1173,6 +1173,396 @@ body {
         padding: 4px 10px;
     }
 }
+/* ==================== الصورة في منتصف الهيدر ==================== */
+.landing-header-center-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-header-center-image img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4a017;
+    background: white;
+    padding: 2px;
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .landing-header-center-image img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .landing-header-center-image {
+        display: none;
+    }
+}
+/* ==================== أنيميشنات صفحة الهبوط الجديدة ==================== */
+.hero-section {
+    display: flex !important;
+    min-height: calc(100vh - 80px);
+    position: relative;
+    z-index: 2;
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 650px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 50px;
+    padding: 50px 45px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(212, 160, 23, 0.4);
+    backdrop-filter: blur(12px);
+    animation: fadeInUp 0.8s ease;
+    transition: transform 0.3s ease;
+}
+
+.hero-content:hover {
+    transform: translateY(-5px);
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* شعار منظم وجذاب */
+.organization-logo-large {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(212, 160, 23, 0.4);
+    animation: floatLogo 3s ease-in-out infinite;
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.organization-logo-large img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+}
+
+.organization-name h2 {
+    font-size: 32px;
+    color: #1a472a;
+    margin-bottom: 8px;
+    font-weight: 800;
+}
+
+.organization-name p {
+    font-size: 16px;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+/* النص الترحيبي الجديد */
+.welcome-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    color: white;
+    padding: 8px 25px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 20px 0 15px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.02); }
+}
+
+.main-headline {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1a472a;
+    margin: 15px 0;
+    line-height: 1.4;
+}
+
+.main-headline i {
+    color: #d4a017;
+    margin: 0 5px;
+}
+
+.features-grid-landing {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+.feature-item {
+    background: rgba(212, 160, 23, 0.12);
+    padding: 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: #1a472a;
+    transition: 0.3s;
+    text-align: center;
+    backdrop-filter: blur(4px);
+}
+.feature-item i {
+    color: #d4a017;
+    margin-left: 8px;
+    font-size: 18px;
+}
+.feature-item:hover {
+    background: rgba(212, 160, 23, 0.25);
+    transform: translateY(-5px);
+}
+/* زر تسجيل الدخول الرئيسي */
+.login-main-btn {
+    background: linear-gradient(135deg, #1a472a, #0d2818);
+    color: white;
+    border: none;
+    padding: 16px 45px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.login-main-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(26, 71, 42, 0.4);
+    background: linear-gradient(135deg, #0d2818, #1a472a);
+}
+
+/* خلفية متحركة */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.bg-bubble {
+    position: absolute;
+    background: rgba(212, 160, 23, 0.08);
+    border-radius: 50%;
+    animation: floatBubble 15s infinite ease-in-out;
+}
+
+@keyframes floatBubble {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    25% { transform: translateY(-30px) translateX(20px); }
+    50% { transform: translateY(-60px) translateX(-10px); }
+    75% { transform: translateY(-30px) translateX(15px); }
+}
+
+/* الصور الجانبية بتأثيرات أفضل */
+.scout-image-right {
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border-radius: 20px !important;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(5px);
+    padding: 10px;
+}
+
+.scout-image-right.show {
+    border-radius: 20px !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.flame-image {
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border-radius: 20px !important;
+}
+
+.flame-image.show {
+    border-radius: 20px !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+/* شعار ثابت يظهر في كل الصفحات */
+.global-logo {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    padding: 8px 18px;
+    border-radius: 50px;
+    border: 1px solid rgba(212,160,23,0.4);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.global-logo:hover {
+    transform: translateX(-3px);
+    border-color: #d4a017;
+}
+
+.global-logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.global-logo-text {
+    font-weight: bold;
+    color: #1a472a;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .hero-content { padding: 30px 25px; margin: 0 15px; }
+    .organization-name h2 { font-size: 22px; }
+    .main-headline { font-size: 20px; }
+    .features-grid-landing { grid-template-columns: 1fr; gap: 10px; }
+    .login-main-btn { padding: 12px 30px; font-size: 16px; }
+    .global-logo { padding: 5px 12px; }
+    .global-logo-text { font-size: 10px; }
+    .global-logo-img { width: 30px; height: 30px; }
+}
+/* ==================== خلفية القائمة الجانبية مع الصورة ==================== */
+.sidebar {
+    background: linear-gradient(180deg, rgba(26, 71, 42, 0.92), rgba(13, 40, 24, 0.95)), url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+/* إضافة طبقة شفافة فوق الصورة لتحسين قراءة النص */
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+}
+
+.sidebar-header,
+.sidebar-menu,
+.sidebar * {
+    position: relative;
+    z-index: 1;
+}
+
+/* تحسين ظهور النص على الصورة */
+.sidebar-header h3,
+.sidebar-header p,
+.sidebar-menu li a {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-menu li a:hover {
+    background: rgba(212, 160, 23, 0.25);
+}
+.landing-header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 5px 15px;
+    border-radius: 50px;
+    background: rgba(212, 160, 23, 0.1);
+}
+.landing-header-logo:hover {
+    background: rgba(212, 160, 23, 0.2);
+    transform: translateX(-3px);
+}
+.landing-header-logo img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #d4a017;
+}
+.logo-text-header .logo-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1a472a;
+}
+.logo-text-header .logo-subtitle {
+    font-size: 11px;
+    color: #666;
+}
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+.bg-bubble {
+    position: absolute;
+    background: rgba(212, 160, 23, 0.1);
+    border-radius: 50%;
+    animation: floatBubble 15s infinite ease-in-out;
+}
+@keyframes floatBubble {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    50% { transform: translateY(-60px) translateX(-10px); opacity: 0.6; }
+}
+.global-logo {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.95);
+    padding: 8px 18px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.global-logo:hover {
+    transform: translateX(-3px);
+}
+.global-logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.global-logo-text {
+    font-weight: bold;
+    color: #1a472a;
+    font-size: 14px;
+}
     </style>
 </head>
 <body>
@@ -1229,6 +1619,22 @@ async function saveAllDataToFirebase() {
         console.error('❌ Error saving to Firebase:', error);
         showToast('خطأ في حفظ البيانات', 'error');
         return false;
+    }
+}
+function createAnimatedBubbles() {
+    const container = document.getElementById('animatedBg');
+    if (!container) return;
+    for (let i = 0; i < 15; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bg-bubble';
+        let size = Math.random() * 120 + 40;
+        bubble.style.width = size + 'px';
+        bubble.style.height = size + 'px';
+        bubble.style.left = Math.random() * 100 + '%';
+        bubble.style.top = Math.random() * 100 + '%';
+        bubble.style.animationDelay = Math.random() * 10 + 's';
+        bubble.style.animationDuration = (Math.random() * 15 + 10) + 's';
+        container.appendChild(bubble);
     }
 }
 
@@ -1369,7 +1775,6 @@ function closeSidebar() {
     document.getElementById('hamburger')?.classList.remove('open');
 }
         
-// دالة تشغيل حركات الخيمة والنار
 function startAnimations() {
     const tent = document.querySelector('.floating-tent');
     const scoutImage = document.querySelector('.scout-image-right');
@@ -1379,27 +1784,49 @@ function startAnimations() {
             scoutImage.classList.add('show');
         });
     }
-    
+}
+
+function autoFlameAnimation() {
     const flameIcon = document.querySelector('.flame-icon');
     const flameImage = document.querySelector('.flame-image');
     
     if (flameIcon && flameImage) {
-        let growCount = 0;
-        
-        flameIcon.addEventListener('click', function() {
-            growCount++;
-            this.classList.add('growing');
-            setTimeout(() => {
-                this.classList.remove('growing');
-            }, 800);
+        setTimeout(() => {
+            flameIcon.classList.add('growing');
+            setTimeout(() => flameIcon.classList.remove('growing'), 800);
             
-            if (growCount === 2) {
+            setTimeout(() => {
+                flameIcon.classList.add('growing');
+                setTimeout(() => flameIcon.classList.remove('growing'), 800);
+                
                 setTimeout(() => {
                     flameImage.classList.add('show');
                     flameIcon.classList.add('hide');
                 }, 400);
-            }
-        });
+            }, 1800);
+        }, 500);
+    }
+}
+
+function autoFlameAnimation() {
+    const flameIcon = document.querySelector('.flame-icon');
+    const flameImage = document.querySelector('.flame-image');
+    
+    if (flameIcon && flameImage) {
+        setTimeout(() => {
+            flameIcon.classList.add('growing');
+            setTimeout(() => flameIcon.classList.remove('growing'), 800);
+            
+            setTimeout(() => {
+                flameIcon.classList.add('growing');
+                setTimeout(() => flameIcon.classList.remove('growing'), 800);
+                
+                setTimeout(() => {
+                    flameImage.classList.add('show');
+                    flameIcon.classList.add('hide');
+                }, 400);
+            }, 1800);
+        }, 500);
     }
 }
 
@@ -2826,8 +3253,20 @@ function goToLandingPage() {
     }
     renderLandingPage();
 }
+function addGlobalLogoToAllPages() {
+    if (document.querySelector('.global-logo')) return;
+    const logo = document.createElement('div');
+    logo.className = 'global-logo';
+    logo.onclick = () => goToLandingPage();
+    logo.innerHTML = `
+        <img class="global-logo-img" src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg">
+        <span class="global-logo-text">مجموعة كيان الكشفية البحرية</span>
+    `;
+    document.body.appendChild(logo);
+}
         // ==================== MEMBER APP ====================
         function renderMemberApp(container) {
+            addGlobalLogoToAllPages();
             const squad = appData.squads.find(s => s.id === currentUser.squadId);
             container.innerHTML = `
                 <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
@@ -3010,18 +3449,19 @@ function viewNewTasks() {
             loadMemberMessages();
             showToast('تم إرسال الرسالة');
         }
-// دالة عرض صفحة الهبوط
 function renderLandingPage() {
     const app = document.getElementById('app');
     app.innerHTML = `
+        <!-- تم إزالة الشعار الثابت من هنا -->
+        
         <div class="landing-container">
-           <!-- الهيدر الجديد (الشعار القابل للنقر + زر تسجيل الدخول) -->
-<div class="landing-header">
-    <div class="scout-logo-header" onclick="goToLandingPage()" style="position: relative; top: 0; left: 0; transform: none; margin: 0; background: transparent; box-shadow: none; padding: 0;">
-        <div class="logo-circle">
-            <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار الكشافة" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
-        </div>
-        <div class="logo-text">
+            <!-- خلفية متحركة بفقاعات -->
+            <div class="animated-bg" id="animatedBg"></div>
+            
+           <div class="landing-header">
+    <div class="landing-header-logo" onclick="goToLandingPage()">
+        <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة">
+        <div class="logo-text-header">
             <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
             <span class="logo-subtitle">Sea Scout Organization</span>
         </div>
@@ -3031,7 +3471,7 @@ function renderLandingPage() {
     </button>
 </div>
             
-            <!-- الخيمة الدوارة والصورة الأولى -->
+            <!-- باقي المحتوى كما هو دون تغيير -->
             <div class="tent-animation-area">
                 <div class="floating-tent">
                     <i class="fas fa-campground"></i>
@@ -3041,7 +3481,6 @@ function renderLandingPage() {
                 </div>
             </div>
             
-            <!-- النار والصورة الثانية -->
             <div class="flame-animation-area">
                 <div class="flame-icon">
                     <i class="fas fa-fire"></i>
@@ -3051,61 +3490,132 @@ function renderLandingPage() {
                 </div>
             </div>
             
-           <!-- المحتوى المركزي (تم إزالته) -->
-<div class="hero-section" style="display: none;">
-</div>
+            <div class="hero-section">
+                <div class="hero-content">
+                    <div class="organization-logo-large">
+                        <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة" onerror="this.src='https://via.placeholder.com/75x75?text=Scout'">
+                    </div>
+                    <div class="organization-name">
+                        <h2>مجموعة كيان الكشفية البحرية</h2>
+                        <p>Sea Scout Organization</p>
+                    </div>
+                    
+                    <div class="welcome-badge">
+                        <i class="fas fa-star-of-life"></i> مرحباً بك في نظام الكشاف المتكامل <i class="fas fa-star-of-life"></i>
+                    </div>
+                    
+                    <div class="main-headline">
+                        <i class="fas fa-campground"></i> إدارة متكاملة للطلايع والكشافة <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    
+                    <div class="features-grid-landing">
+                        <div class="feature-item"><i class="fas fa-chart-line"></i> متابعة النقاط والترتيب</div>
+                        <div class="feature-item"><i class="fas fa-tasks"></i> إدارة التكاليف والمهام</div>
+                        <div class="feature-item"><i class="fas fa-comments"></i> تواصل مباشر بين القادة والأعضاء</div>
+                        <div class="feature-item"><i class="fas fa-users"></i> نظام متكامل للطلايع</div>
+                        <div class="feature-item"><i class="fas fa-cloud"></i> مزامنة فورية مع Firebase</div>
+                        <div class="feature-item"><i class="fas fa-trophy"></i> لوحات متقدمة وتقارير</div>
+                    </div>
+                    
+                    <button class="login-main-btn" onclick="goToLoginPage()">
+                        <i class="fas fa-sign-in-alt"></i> ابدأ الآن - تسجيل الدخول
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    
+                    <div style="margin-top: 20px; font-size: 12px; color: #999;">
+                        <i class="fas fa-shield-alt"></i> نظام آمن ومتطور للكشافة البحرية
+                    </div>
+                </div>
+            </div>
             
             <div class="footer-landing">
-                <p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | 01144100018 / 01126125881</p>
-                <p><i class="fas fa-cloud"></i> متزامن مع Firebase Cloud</p>
+                <p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | للتواصل: 01144100018 / 01126125881</p>
+                <p><i class="fas fa-cloud"></i> متزامن مع Firebase Cloud | تم التطوير بواسطة Tecno Shark Company</p>
             </div>
         </div>
     `;
     
-    addScoutLogoToPage();
+    createAnimatedBubbles();
     
-    // تشغيل الحركات التلقائية
     setTimeout(() => {
         startAnimations();
-        // تشغيل النار تلقائياً بعد ثانيتين
         setTimeout(() => {
             autoFlameAnimation();
         }, 2000);
     }, 100);
 }
-// دالة تشغيل النار تلقائياً (تكبر مرتين ثم تختفي وتظهر الصورة)
-function autoFlameAnimation() {
-    const flameIcon = document.querySelector('.flame-icon');
-    const flameImage = document.querySelector('.flame-image');
+
+// دالة إنشاء الفقاعات المتحركة في الخلفية
+function createAnimatedBubbles() {
+    const bgContainer = document.getElementById('animatedBg');
+    if (!bgContainer) return;
     
-    if (flameIcon && flameImage) {
-        let growCount = 0;
-        
-        // التكبيرة الأولى
-        setTimeout(() => {
-            flameIcon.classList.add('growing');
-            setTimeout(() => {
-                flameIcon.classList.remove('growing');
-            }, 800);
-            growCount++;
-        }, 500);
-        
-        // التكبيرة الثانية
-        setTimeout(() => {
-            flameIcon.classList.add('growing');
-            setTimeout(() => {
-                flameIcon.classList.remove('growing');
-            }, 800);
-            growCount++;
-            
-            // إظهار الصورة وإخفاء النار بعد التكبيرة الثانية
-            setTimeout(() => {
-                flameImage.classList.add('show');
-                flameIcon.classList.add('hide');
-            }, 400);
-        }, 1800);
+    const bubbleCount = 15;
+    for (let i = 0; i < bubbleCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.className = 'bg-bubble';
+        const size = Math.random() * 150 + 50;
+        bubble.style.width = size + 'px';
+        bubble.style.height = size + 'px';
+        bubble.style.left = Math.random() * 100 + '%';
+        bubble.style.top = Math.random() * 100 + '%';
+        bubble.style.animationDelay = Math.random() * 10 + 's';
+        bubble.style.animationDuration = (Math.random() * 15 + 10) + 's';
+        bgContainer.appendChild(bubble);
     }
 }
+// ==================== دوال الشعار الثابت (يظهر فقط في صفحة تسجيل الدخول) ====================
+
+// دالة إضافة الشعار (تعمل مرة واحدة فقط)
+function addGlobalLogoToLoginOnly() {
+    if (document.querySelector('.global-logo')) return;
+    
+    const logo = document.createElement('div');
+    logo.className = 'global-logo';
+    logo.onclick = () => goToLandingPage();
+    logo.innerHTML = `
+        <img class="global-logo-img" src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار الكشافة" onerror="this.src='https://via.placeholder.com/40x40?text=Scout'">
+        <span class="global-logo-text">مجموعة كيان الكشفية البحرية</span>
+    `;
+    document.body.appendChild(logo);
+}
+
+// حفظ النسخ الأصلية للدوال
+const originalRenderLoginForLogo = renderLogin;
+const originalRenderAdminAppForLogo = renderAdminApp;
+const originalRenderMemberAppForLogo = renderMemberApp;
+
+// تعديل دالة renderLogin فقط لإضافة الشعار
+renderLogin = function(container) {
+    originalRenderLoginForLogo(container);
+    setTimeout(() => addGlobalLogoToLoginOnly(), 100);
+};
+
+// تعديل دالة renderAdminApp - لا نضيف الشعار فيها
+renderAdminApp = function(container) {
+    originalRenderAdminAppForLogo(container);
+    // لا نضيف الشعار في لوحة القائد
+    // setTimeout(() => addGlobalLogoToLoginOnly(), 100); // تم التعليق
+};
+
+// تعديل دالة renderMemberApp - لا نضيف الشعار فيها
+renderMemberApp = function(container) {
+    originalRenderMemberAppForLogo(container);
+    // لا نضيف الشعار في لوحة العضو
+    // setTimeout(() => addGlobalLogoToLoginOnly(), 100); // تم التعليق
+};
+
+// دالة فارغة للتوافق (لن تؤثر على أي شيء)
+function addGlobalLogoToAllPages() {
+    return;
+}
+
+// دالة إضافة شعار الكشافة في صفحة الهبوط (تستخدم في renderLandingPage)
+function addScoutLogoToPage() {
+    // هذه الدالة مستخدمة في renderLandingPage ولا تؤثر على الشعار الثابت
+    return;
+}
+
 // دالة الانتقال إلى صفحة تسجيل الدخول
 function goToLoginPage() {
     // حفظ الجلسة
