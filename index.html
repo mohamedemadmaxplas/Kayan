@@ -37,6 +37,7 @@ body {
 ::-webkit-scrollbar-thumb { background: #d4a017; border-radius: 10px; }
 
 /* ==================== SIDEBAR ==================== */
+/* Sidebar */
 .sidebar-overlay {
     position: fixed;
     top: 0;
@@ -50,6 +51,7 @@ body {
     opacity: 0;
     transition: 0.3s ease;
 }
+
 .sidebar-overlay.active {
     visibility: visible;
     opacity: 1;
@@ -61,7 +63,7 @@ body {
     right: -300px;
     width: 280px;
     height: 100%;
-    background: linear-gradient(180deg, #1a472a, #0d2818);
+    background: linear-gradient(180deg, #0d2818, #0a1f12);
     z-index: 1000;
     transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     padding: 20px 0;
@@ -69,7 +71,10 @@ body {
     overflow-y: auto;
     border-left: 1px solid rgba(212,160,23,0.3);
 }
-.sidebar.open { right: 0; }
+
+.sidebar.open { 
+    right: 0; 
+}
 
 .sidebar-header {
     padding: 20px 25px;
@@ -111,14 +116,14 @@ body {
 }
 .sidebar-menu li.active a i { color: #0d2818; }
 
-/* ==================== HAMBURGER BUTTON ==================== */
+/* Hamburger Button */
 .hamburger {
     position: fixed;
     top: 20px;
     right: 20px;
     width: 48px;
     height: 48px;
-    background: white;
+    background: linear-gradient(135deg, #1a472a, #0d2818);
     border-radius: 15px;
     display: flex;
     flex-direction: column;
@@ -127,11 +132,16 @@ body {
     gap: 6px;
     cursor: pointer;
     z-index: 1001;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     transition: 0.3s;
-    border: 1px solid #d4a017;
+    border: 1px solid rgba(212,160,23,0.3);
 }
-.hamburger:hover { transform: scale(1.05); border-color: #d4a017; background: #fff; }
+
+.hamburger:hover { 
+    transform: scale(1.05); 
+    border-color: #d4a017; 
+}
+
 .hamburger span {
     width: 28px;
     height: 3px;
@@ -139,46 +149,76 @@ body {
     border-radius: 3px;
     transition: 0.3s;
 }
-.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
-.hamburger.open span:nth-child(2) { opacity: 0; }
-.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
+.hamburger.open span:nth-child(1) { 
+    transform: rotate(45deg) translate(6px, 6px); 
+}
+
+.hamburger.open span:nth-child(2) { 
+    opacity: 0; 
+}
+
+.hamburger.open span:nth-child(3) { 
+    transform: rotate(-45deg) translate(6px, -6px); 
+}
 /* ==================== HEADER ==================== */
+/* Header */
 .header {
-    background: rgba(255,255,255,0.95);
+    background: rgba(13, 40, 24, 0.95);
     backdrop-filter: blur(10px);
     padding: 15px 25px;
     margin-right: 80px;
     margin-left: 20px;
     margin-top: 20px;
     border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 15px;
-    border: 1px solid rgba(212,160,23,0.3);
+    border: 1px solid rgba(212,160,23,0.2);
 }
+
 .logo {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-.logo i { font-size: 32px; color: #d4a017; }
-.logo h1 { font-size: 22px; color: #1a472a; }
-.logo p { font-size: 10px; color: #666; }
+
+.logo i { 
+    font-size: 32px; 
+    color: #d4a017; 
+}
+
+.logo h1 { 
+    font-size: 22px; 
+    color: #d4a017; 
+}
+
+.logo p { 
+    font-size: 10px; 
+    color: rgba(255,255,255,0.6); 
+}
 
 .user-info {
     display: flex;
     gap: 15px;
     align-items: center;
-    background: rgba(0,0,0,0.05);
+    background: rgba(255,255,255,0.1);
     padding: 8px 18px;
     border-radius: 40px;
 }
-.user-info i { font-size: 18px; color: #d4a017; }
-.user-info span { font-weight: 600; color: #1a472a; }
+
+.user-info i { 
+    font-size: 18px; 
+    color: #d4a017; 
+}
+
+.user-info span { 
+    font-weight: 600; 
+    color: white; 
+}
 
 .logout-btn {
     background: linear-gradient(135deg, #c0392b, #e74c3c);
@@ -193,9 +233,14 @@ body {
     align-items: center;
     gap: 8px;
 }
-.logout-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(192,57,43,0.3); }
+
+.logout-btn:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 5px 15px rgba(192,57,43,0.3); 
+}
 
 /* ==================== MAIN CONTENT ==================== */
+/* Main Content */
 .main-content {
     margin-right: 80px;
     margin-left: 20px;
