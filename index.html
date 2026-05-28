@@ -1065,7 +1065,11 @@ async function saveAllDataToFirebase() {
             overlay.classList.toggle('active');
             hamburger.classList.toggle('open');
         }
-
+function closeSidebar() {
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebarOverlay')?.classList.remove('active');
+    document.getElementById('hamburger')?.classList.remove('open');
+}
         // دالة إضافة شعار الكشافة في أعلى الصفحة
 function addScoutLogoToPage() {
     // التحقق من وجود الشعار مسبقاً لتجنب التكرار
