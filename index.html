@@ -1224,12 +1224,14 @@ body {
         let currentUser = null;
         let countdownInterval = null;
         let isAdmin = false;
+        let isUpdatingSeenStatus = false;
         let appData = {
             branches: [],
             squads: [],
             members: [],
             tasks: [],
             taskSubmissions: [],
+            joinRequests: [],
             messages: []
         };
 
@@ -3259,19 +3261,9 @@ function goToLoginPage() {
     // إعادة تحميل الصفحة لبدء التطبيق
     location.reload();
 }
-        function renderMemberTasks() {
+       function renderMemberTasks() {
     const container = document.getElementById('memberPageContent');
-    
-    // تسجيل أن العضو قد شاهد التكاليف الحالية
-    appData.tasks.forEach(task => {
-        if (task.squadId === currentUser.squadId) {
-            if (!task.seenByMembers) task.seenByMembers = [];
-            if (!task.seenByMembers.includes(currentUser.id)) {
-                task.seenByMembers.push(currentUser.id);
-            }
-        }
-    });
-    saveAllDataToFirebase();
+    if (!container) return;
     
     // تصفية المهام حسب الصلاحية (لم تنتهِ بعد)
     const pendingTasks = appData.tasks.filter(t => 
@@ -3330,8 +3322,28 @@ function goToLoginPage() {
             ${completedTasks.length === 0 ? '<p>لا توجد مهام مكتملة بعد</p>' : ''}
         </div>
     `;
+    
+    // تحديث حالة المشاهدة بشكل غير متزامن بدون إعادة تحميل الصفحة
+    updateTaskSeenStatus();
 }
-        
+        // دالة منفصلة لتحديث حالة المشاهدة دون التسبب في حلقة لا نهائية
+async function updateTaskSeenStatus() {
+    let needsUpdate = false;
+    
+    appData.tasks.forEach(task => {
+        if (task.squadId === currentUser.squadId) {
+            if (!task.seenByMembers) task.seenByMembers = [];
+            if (!task.seenByMembers.includes(currentUser.id)) {
+                task.seenByMembers.push(currentUser.id);
+                needsUpdate = true;
+            }
+        }
+    });
+    
+    if (needsUpdate) {
+        await saveAllDataToFirebase();
+    }
+}
 // دالة عرض من شاهد التكليف
 function showTaskViewers(taskId) {
     const task = appData.tasks.find(t => t.id === taskId);
