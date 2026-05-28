@@ -1224,6 +1224,7 @@ body {
         let currentUser = null;
         let countdownInterval = null;
         let isAdmin = false;
+        let isLeader = false;
         let passwordVisible = false;
         let isUpdatingSeenStatus = false;
         let appData = {
@@ -1469,17 +1470,18 @@ function autoFlameAnimation() {
     }
 }
 
-        // ==================== RENDER FUNCTIONS ====================
-        function render() {
-            const app = document.getElementById('app');
-            if (!currentUser) {
-                renderLogin(app);
-            } else if (isAdmin) {
-                renderAdminApp(app);
-            } else {
-                renderMemberApp(app);
-            }
-        }
+      function render() {
+    const app = document.getElementById('app');
+    if (!currentUser) {
+        renderLogin(app);
+    } else if (isAdmin) {
+        renderAdminApp(app);
+    } else if (isLeader) {
+        renderLeaderApp(app);
+    } else {
+        renderMemberApp(app);
+    }
+}
 
    function renderLogin(container) {
     container.innerHTML = `
@@ -1520,26 +1522,45 @@ function autoFlameAnimation() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         
+        // التحقق من حساب القائد العام
         if (username === 'Kayan' && password === 'Kayan123') {
             currentUser = { id: 'admin', name: 'القائد العام', isAdmin: true };
             isAdmin = true;
+            isLeader = false;
             await loadAllDataFromFirebase();
             listenForRealTimeUpdates();
-            showToast('مرحباً أيها القائد!');
+            showToast('مرحباً أيها القائد العام!');
             render();
-        } else {
-            const member = appData.members.find(m => m.username === username && m.password === password);
-            if (member) {
-                currentUser = member;
-                isAdmin = false;
-                await loadAllDataFromFirebase();
-                listenForRealTimeUpdates();
-                showToast(`مرحباً ${member.name}`);
-                render();
-            } else {
-                showToast('بيانات الدخول غير صحيحة', 'error');
-            }
+            return;
         }
+        
+        // التحقق من القادة (leaders)
+        const leader = appData.leaders.find(l => l.username === username && l.password === password);
+        if (leader) {
+            currentUser = leader;
+            isAdmin = false;
+            isLeader = true;
+            await loadAllDataFromFirebase();
+            listenForRealTimeUpdates();
+            showToast(`مرحباً أيها القائد ${leader.name}`);
+            renderLeaderApp(document.getElementById('app'));
+            return;
+        }
+        
+        // التحقق من الأعضاء العاديين
+        const member = appData.members.find(m => m.username === username && m.password === password);
+        if (member) {
+            currentUser = member;
+            isAdmin = false;
+            isLeader = false;
+            await loadAllDataFromFirebase();
+            listenForRealTimeUpdates();
+            showToast(`مرحباً ${member.name}`);
+            render();
+            return;
+        }
+        
+        showToast('بيانات الدخول غير صحيحة', 'error');
     });
     
     addScoutLogoToPage();
@@ -1844,12 +1865,19 @@ function updatePendingRequestsBadge() {
         <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header" style="padding: 10px 20px; text-align: center;">
-                <h3 style="font-size: 16px; margin: 0;"><i class="fas fa-crown"></i> ${currentUser.name}</h3>
+                <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                    <i class="fas fa-crown" style="font-size: 28px; color: #d4a017;"></i>
+                    <div>
+                        <h3 style="font-size: 14px; margin: 0;">${currentUser.name}</h3>
+                        <p style="font-size: 10px;">قائد عام</p>
+                    </div>
+                </div>
             </div>
             <ul class="sidebar-menu">
                 <li class="active" data-page="dashboard"><a onclick="changeAdminPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
                 <li data-page="members"><a onclick="changeAdminPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
                 <li data-page="squads"><a onclick="changeAdminPage('squads')"><i class="fas fa-flag"></i> إدارة الطلايع</a></li>
+                <li data-page="leaders"><a onclick="changeAdminPage('leaders')"><i class="fas fa-user-tie"></i> إدارة القادة</a></li>
                 <li data-page="community"><a onclick="changeAdminPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
                 <li data-page="tasks"><a onclick="changeAdminPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
                 <!-- زر تسجيل الخروج في المينيو -->
@@ -1862,7 +1890,7 @@ function updatePendingRequestsBadge() {
         </div>
 
         <div class="header">
-            <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - سحابة Firebase</p></div></div>
+            <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد العام - سحابة Firebase</p></div></div>
             <div style="flex: 1;"></div>
             <div class="user-info"><i class="fas fa-user-shield"></i><span>${currentUser.name}</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
         </div>
@@ -1877,15 +1905,16 @@ function updatePendingRequestsBadge() {
 }
 
         function changeAdminPage(page) {
-            document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
-            document.querySelector(`.sidebar-menu li[data-page="${page}"]`).classList.add('active');
-            if (page === 'dashboard') renderAdminDashboard();
-            else if (page === 'members') renderAdminMembers();
-            else if (page === 'squads') renderAdminSquads();
-            else if (page === 'community') renderAdminCommunity();
-            else if (page === 'tasks') renderAdminTasks();
-            closeSidebar();
-        }
+    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+    document.querySelector(`.sidebar-menu li[data-page="${page}"]`).classList.add('active');
+    if (page === 'dashboard') renderAdminDashboard();
+    else if (page === 'members') renderAdminMembers();
+    else if (page === 'squads') renderAdminSquads();
+    else if (page === 'leaders') showLeadersPage();
+    else if (page === 'community') renderAdminCommunity();
+    else if (page === 'tasks') renderAdminTasks();
+    closeSidebar();
+}
 
       function renderAdminDashboard() {
     const pendingRequestsCount = appData.joinRequests.filter(r => r.status === 'pending').length;
@@ -2469,7 +2498,560 @@ function canSubmitTask(taskId) {
         renderAdminDashboard();
     });
 }
+// ==================== نظام القادة (Leaders System) ====================
 
+// دالة إضافة قائد جديد (للقائد العام فقط)
+function showAddLeaderModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:600px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-tie"></i> إضافة قائد جديد</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
+            <form id="addLeaderForm">
+                <div class="input-group"><label>الاسم الكامل</label><input type="text" id="leaderName" required></div>
+                <div class="input-group"><label>السن</label><input type="number" id="leaderAge" min="18" max="70" required></div>
+                <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="leaderPhone" required></div>
+                <div class="input-group"><label>المنطقة المسؤول عنها</label>
+                    <select id="leaderBranch" required>
+                        <option value="">-- اختر المنطقة --</option>
+                        ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="input-group"><label>الفروع المسؤول عنها (يمكن اختيار أكثر من فرع)</label>
+                    <div id="leaderSubBranchesContainer" style="background: #f8f9fa; padding: 12px; border-radius: 12px; max-height: 200px; overflow-y: auto; border: 2px solid #e0e0e0;">
+                        <div style="text-align:center; color:#999;">-- اختر المنطقة أولاً --</div>
+                    </div>
+                </div>
+                <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="leaderUsername" required></div>
+                <div class="input-group"><label>كلمة المرور</label><input type="password" id="leaderPassword" required></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة القائد</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // عند تغيير المنطقة، نعرض الفروع
+    document.getElementById('leaderBranch').addEventListener('change', function() {
+        const branchId = parseInt(this.value);
+        const container = document.getElementById('leaderSubBranchesContainer');
+        
+        if (branchId) {
+            const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
+            if (branches.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:#999;">لا توجد فروع في هذه المنطقة</div>';
+            } else {
+                container.innerHTML = branches.map(sb => `
+                    <label style="display: flex; align-items: center; gap: 10px; padding: 8px; margin: 4px 0; background: white; border-radius: 8px; cursor: pointer;">
+                        <input type="checkbox" class="subBranchCheckbox" value="${sb.id}" data-name="${sb.name}">
+                        <span><i class="fas fa-code-branch"></i> ${sb.name}</span>
+                    </label>
+                `).join('');
+            }
+        } else {
+            container.innerHTML = '<div style="text-align:center; color:#999;">-- اختر المنطقة أولاً --</div>';
+        }
+    });
+    
+    document.getElementById('addLeaderForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('leaderUsername').value;
+        if (appData.leaders.some(l => l.username === username)) {
+            showToast('اسم المستخدم موجود مسبقاً', 'error');
+            return;
+        }
+        if (appData.members.some(m => m.username === username)) {
+            showToast('اسم المستخدم مستخدم من قبل عضو', 'error');
+            return;
+        }
+        
+        // جمع الفروع المختارة
+        const selectedSubBranches = [];
+        document.querySelectorAll('.subBranchCheckbox:checked').forEach(cb => {
+            selectedSubBranches.push({
+                id: parseInt(cb.value),
+                name: cb.getAttribute('data-name')
+            });
+        });
+        
+        if (selectedSubBranches.length === 0) {
+            showToast('الرجاء اختيار فرع واحد على الأقل', 'error');
+            return;
+        }
+        
+        const newLeader = {
+            id: Date.now(),
+            name: document.getElementById('leaderName').value,
+            age: parseInt(document.getElementById('leaderAge').value),
+            phone: document.getElementById('leaderPhone').value,
+            branchId: parseInt(document.getElementById('leaderBranch').value),
+            subBranchIds: selectedSubBranches.map(sb => sb.id),
+            subBranches: selectedSubBranches,
+            username: username,
+            password: document.getElementById('leaderPassword').value,
+            createdAt: new Date().toISOString(),
+            isLeader: true
+        };
+        
+        appData.leaders.push(newLeader);
+        await saveAllDataToFirebase();
+        showToast(`تم إضافة القائد ${newLeader.name} بنجاح`);
+        modal.remove();
+        renderLeadersList();
+    });
+}
+
+// دالة عرض قائمة القادة
+function renderLeadersList() {
+    const container = document.getElementById('leadersList');
+    if (!container) return;
+    
+    if (appData.leaders.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#999;">لا يوجد قادة مضافين حتى الآن</p>';
+        return;
+    }
+    
+    container.innerHTML = appData.leaders.map(leader => {
+        const branch = appData.branches.find(b => b.id === leader.branchId);
+        const subBranchesNames = leader.subBranches.map(sb => sb.name).join(', ');
+        
+        return `
+            <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:12px; border-right:4px solid #d4a017;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                    <div>
+                        <strong><i class="fas fa-user-tie"></i> ${leader.name}</strong><br>
+                        <small>📞 ${leader.phone} | ${leader.age} سنة</small><br>
+                        <small>🏢 ${branch?.name || '-'} | 📍 الفروع: ${subBranchesNames}</small><br>
+                        <small>👤 اسم المستخدم: ${leader.username}</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-danger" onclick="deleteLeader(${leader.id})"><i class="fas fa-trash"></i> حذف</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// حذف قائد
+async function deleteLeader(leaderId) {
+    if (confirm('هل أنت متأكد من حذف هذا القائد؟')) {
+        appData.leaders = appData.leaders.filter(l => l.id !== leaderId);
+        await saveAllDataToFirebase();
+        renderLeadersList();
+        showToast('تم حذف القائد');
+    }
+}
+
+// دالة عرض صفحة القادة (للقائد العام)
+function showLeadersPage() {
+    const container = document.getElementById('adminPageContent');
+    container.innerHTML = `
+        <div class="card">
+            <h3><i class="fas fa-user-tie"></i> إدارة القادة</h3>
+            <div style="margin-bottom: 20px;">
+                <button class="btn btn-primary" onclick="showAddLeaderModal()"><i class="fas fa-plus"></i> إضافة قائد جديد</button>
+            </div>
+            <div id="leadersList"></div>
+        </div>
+    `;
+    renderLeadersList();
+}
+
+// ==================== دوال تسجيل دخول القادة ====================
+
+// التحقق من تسجيل دخول القائد
+function loginAsLeader(username, password) {
+    const leader = appData.leaders.find(l => l.username === username && l.password === password);
+    if (leader) {
+        currentUser = leader;
+        isAdmin = false;
+        isLeader = true;  // متغير جديد للتمييز
+        return true;
+    }
+    return false;
+}
+
+// دالة عرض واجهة القائد (مخصصة حسب فروعه)
+function renderLeaderApp(container) {
+    const leader = currentUser;
+    const subBranchesNames = leader.subBranches.map(sb => sb.name).join(' - ');
+    
+    container.innerHTML = `
+        <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header" style="padding: 10px 20px; text-align: center;">
+                <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                    <i class="fas fa-user-tie" style="font-size: 32px; color: #d4a017;"></i>
+                    <div>
+                        <h3 style="font-size: 14px; margin: 0;">${leader.name}</h3>
+                        <p style="font-size: 10px;">القائد المسؤول</p>
+                    </div>
+                </div>
+                <p style="font-size: 10px; margin-top: 8px;"><i class="fas fa-code-branch"></i> ${subBranchesNames}</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-page="dashboard"><a onclick="changeLeaderPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
+                <li data-page="members"><a onclick="changeLeaderPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
+                <li data-page="joinRequests"><a onclick="changeLeaderPage('joinRequests')"><i class="fas fa-user-plus"></i> طلبات الانضمام</a></li>
+                <li data-page="tasks"><a onclick="changeLeaderPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
+                <li data-page="community"><a onclick="changeLeaderPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
+                    <a onclick="logout()" style="color: #e74c3c;">
+                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="header">
+            <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - ${subBranchesNames}</p></div></div>
+            <div style="flex: 1;"></div>
+            <div class="user-info"><i class="fas fa-user-tie"></i><span>${leader.name}</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+        </div>
+
+        <div class="main-content">
+            <div id="leaderPageContent"></div>
+        </div>
+        <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company</p></div>
+    `;
+    renderLeaderDashboard();
+}
+
+// تغيير صفحات القائد
+function changeLeaderPage(page) {
+    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+    document.querySelector(`.sidebar-menu li[data-page="${page}"]`)?.classList.add('active');
+    
+    if (page === 'dashboard') renderLeaderDashboard();
+    else if (page === 'members') renderLeaderMembers();
+    else if (page === 'joinRequests') renderLeaderJoinRequests();
+    else if (page === 'tasks') renderLeaderTasks();
+    else if (page === 'community') renderLeaderCommunity();
+    closeSidebar();
+}
+
+// لوحة تحكم القائد
+function renderLeaderDashboard() {
+    const leader = currentUser;
+    const mySubBranchIds = leader.subBranchIds;
+    
+    // جلب الأعضاء التابعين لفروع القائد
+    const myMembers = appData.members.filter(m => mySubBranchIds.includes(m.subBranchId));
+    const mySquads = appData.squads.filter(s => mySubBranchIds.includes(s.subBranchId) || mySubBranchIds.includes(s.branchId));
+    const myTasks = appData.tasks.filter(t => {
+        const squad = appData.squads.find(s => s.id === t.squadId);
+        return squad && mySubBranchIds.includes(squad.branchId);
+    });
+    const pendingJoinRequests = appData.joinRequests.filter(r => mySubBranchIds.includes(r.subBranchId) && r.status === 'pending');
+    
+    const container = document.getElementById('leaderPageContent');
+    container.innerHTML = `
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-users"></i><div class="number">${myMembers.length}</div><div class="label">الأعضاء</div></div>
+            <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${mySquads.length}</div><div class="label">الطلايع</div></div>
+            <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${myTasks.length}</div><div class="label">التكاليف</div></div>
+            <div class="stat-card stat-card" style="cursor:pointer;" onclick="changeLeaderPage('joinRequests')"><i class="fas fa-user-plus"></i><div class="number" style="color:${pendingJoinRequests.length > 0 ? '#e74c3c' : '#2ecc71'};">${pendingJoinRequests.length}</div><div class="label">طلبات انضمام</div></div>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-trophy"></i> ترتيب الأعضاء (فروعي)</h3>
+            <div id="leaderRankingList"></div>
+        </div>
+    `;
+    
+    // عرض ترتيب الأعضاء
+    const sortedMembers = [...myMembers].sort((a,b) => b.points - a.points);
+    const rankingHtml = sortedMembers.slice(0, 10).map((m, i) => `
+        <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+            <div>${i+1}. ${m.name} <span class="badge" style="background:#d4a017;">${m.rank}</span></div>
+            <div><strong>${m.points}</strong> نقطة</div>
+        </div>
+    `).join('');
+    document.getElementById('leaderRankingList').innerHTML = rankingHtml || '<p>لا يوجد أعضاء</p>';
+}
+
+// عرض أعضاء القائد
+function renderLeaderMembers() {
+    const leader = currentUser;
+    const mySubBranchIds = leader.subBranchIds;
+    const myMembers = appData.members.filter(m => mySubBranchIds.includes(m.subBranchId));
+    
+    const container = document.getElementById('leaderPageContent');
+    container.innerHTML = `
+        <div class="card">
+            <h3><i class="fas fa-users"></i> الأعضاء التابعين لفروعي</h3>
+            <div class="squad-filter">
+                <input type="text" id="leaderMemberSearch" placeholder="بحث بالاسم أو الكود..." oninput="filterLeaderMembers()">
+                <button class="btn btn-primary" onclick="showAddMemberModal()"><i class="fas fa-plus"></i> إضافة عضو</button>
+            </div>
+            <div id="leaderMembersTable"></div>
+        </div>
+    `;
+    
+    const tableHtml = `
+        <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>الكود</th><th>الاسم</th><th>الرتبة</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الإجراءات</th></tr></thead><tbody>
+        ${myMembers.map(m => `<tr>
+            <td>${m.code}</td>
+            <td>${m.name}</td>
+            <td><span class="badge" style="background:#d4a017;">${m.rank}</span></td>
+            <td>${m.phone}</td>
+            <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
+            <td>${m.points}</td>
+            <td><button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
+            </td>
+        `).join('')}
+        ${myMembers.length === 0 ? '<tr><td colspan="7" style="text-align:center;">لا يوجد أعضاء في فروعك</td>' : ''}
+        </tbody></table></div>
+    `;
+    document.getElementById('leaderMembersTable').innerHTML = tableHtml;
+}
+
+// عرض طلبات الانضمام الخاصة بالقائد فقط
+function renderLeaderJoinRequests() {
+    const leader = currentUser;
+    const mySubBranchIds = leader.subBranchIds;
+    const myRequests = appData.joinRequests.filter(r => mySubBranchIds.includes(r.subBranchId) && r.status === 'pending');
+    
+    const container = document.getElementById('leaderPageContent');
+    container.innerHTML = `
+        <div class="card">
+            <h3><i class="fas fa-user-plus"></i> طلبات الانضمام (فروعي)</h3>
+            <div id="leaderRequestsList"></div>
+        </div>
+    `;
+    
+    if (myRequests.length === 0) {
+        document.getElementById('leaderRequestsList').innerHTML = '<p style="text-align:center;">لا توجد طلبات انضمام معلقة</p>';
+        return;
+    }
+    
+    const requestsHtml = myRequests.map(req => {
+        const branch = appData.branches.find(b => b.id === req.branchId);
+        const subBranch = appData.subBranches.find(sb => sb.id === req.subBranchId);
+        const squad = appData.squads.find(s => s.id === req.squadId);
+        return `
+            <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:10px; border-right:3px solid #d4a017;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                    <div>
+                        <strong>${escapeHtml(req.name)}</strong><br>
+                        <small>📞 ${req.phone} | ${req.age} سنة | ${req.rank}</small><br>
+                        <small>🏢 ${branch?.name || '-'} | 📍 ${subBranch?.name || '-'} | 🏴 ${squad?.name || '-'}</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-success" onclick="approveJoinRequest(${req.id})"><i class="fas fa-check"></i> قبول</button>
+                        <button class="btn btn-sm btn-danger" onclick="rejectJoinRequest(${req.id})"><i class="fas fa-ban"></i> رفض</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    document.getElementById('leaderRequestsList').innerHTML = requestsHtml;
+}
+
+// إدارة التكاليف للقائد (تظهر فقط لأعضاء فروعه)
+function renderLeaderTasks() {
+    const leader = currentUser;
+    const mySubBranchIds = leader.subBranchIds;
+    
+    // الطلايع التابعة لفروع القائد
+    const mySquads = appData.squads.filter(s => mySubBranchIds.includes(s.branchId));
+    
+    const container = document.getElementById('leaderPageContent');
+    container.innerHTML = `
+        <div class="card">
+            <h3><i class="fas fa-plus"></i> إضافة تكليف جديد</h3>
+            <select id="leaderTaskSquadSelect" style="width:100%; margin-bottom:15px; padding:10px; border-radius:30px;">
+                <option value="">اختر الطليعة</option>
+                ${mySquads.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
+            </select>
+            <button class="btn btn-primary" onclick="showAddTaskModal()"><i class="fas fa-plus"></i> إضافة تكليف</button>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-list"></i> التكاليف والتسليمات (فروعي)</h3>
+            <div id="leaderTasksList"></div>
+        </div>
+    `;
+    
+    // عرض التكاليف التابعة لطلايع القائد
+    const myTasks = appData.tasks.filter(t => {
+        const squad = appData.squads.find(s => s.id === t.squadId);
+        return squad && mySubBranchIds.includes(squad.branchId);
+    });
+    
+    const tasksHtml = myTasks.map(task => {
+        const squad = appData.squads.find(s => s.id === task.squadId);
+        const submissions = appData.taskSubmissions.filter(ts => ts.taskId === task.id);
+        const myMembersSubmissions = submissions.filter(s => {
+            const member = appData.members.find(m => m.id === s.memberId);
+            return member && mySubBranchIds.includes(member.subBranchId);
+        });
+        
+        return `
+            <div class="task-item">
+                <div class="task-header"><span class="task-title">${task.title}</span><span class="task-points">${task.pointsValue} نقطة</span></div>
+                <div class="task-description">${task.description}</div>
+                <div class="task-meta"><i class="fas fa-flag"></i> ${squad?.name} | <i class="fas fa-calendar"></i> ${new Date(task.endDate).toLocaleDateString('ar-EG')}</div>
+                <button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})"><i class="fas fa-check-circle"></i> إدارة التسليمات (${myMembersSubmissions.filter(s => s.status === 'submitted').length})</button>
+            </div>
+        `;
+    }).join('');
+    
+    document.getElementById('leaderTasksList').innerHTML = tasksHtml || '<p style="text-align:center;">لا توجد تكاليف</p>';
+}
+
+// دردشة القائد (لمجموعاته فقط)
+function renderLeaderCommunity() {
+    const leader = currentUser;
+    const mySubBranchIds = leader.subBranchIds;
+    const mySquads = appData.squads.filter(s => mySubBranchIds.includes(s.branchId));
+    const mySquadIds = mySquads.map(s => s.id);
+    
+    const container = document.getElementById('leaderPageContent');
+    container.innerHTML = `
+        <div class="card">
+            <h3><i class="fas fa-comments"></i> الكميونيتي - دردشة الفروع التابعة لي</h3>
+            <div class="squad-filter">
+                <select id="leaderChatFilter" onchange="loadLeaderMessages()">
+                    <option value="all">📢 جميع الطلايع التابعة لي</option>
+                    ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+                </select>
+                <button class="broadcast-btn" onclick="showLeaderBroadcastModal()"><i class="fas fa-bullhorn"></i> إرسال للجميع (فروعي)</button>
+            </div>
+            <div class="chat-container">
+                <div class="chat-messages" id="leaderChatMessages"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="leaderMessageInput" placeholder="اكتب رسالتك...">
+                    <button onclick="sendLeaderMessage()"><i class="fas fa-paper-plane"></i> إرسال</button>
+                </div>
+            </div>
+        </div>
+    `;
+    loadLeaderMessages();
+}
+
+function loadLeaderMessages() {
+    const filter = document.getElementById('leaderChatFilter')?.value || 'all';
+    const leader = currentUser;
+    const mySquadIds = appData.squads.filter(s => leader.subBranchIds.includes(s.branchId)).map(s => s.id);
+    
+    let messages = appData.messages.filter(m => {
+        if (filter === 'all') {
+            return (m.squadId && mySquadIds.includes(m.squadId)) || m.isBroadcast === true;
+        } else {
+            return m.squadId == filter && !m.isBroadcast;
+        }
+    });
+    messages.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+    
+    const container = document.getElementById('leaderChatMessages');
+    if (!container) return;
+    container.innerHTML = messages.map(m => `
+        <div class="message ${m.senderId === 'admin' || m.senderId === leader.id ? 'sent' : 'received'}">
+            <div class="sender"><i class="fas fa-user"></i> ${m.senderName}</div>
+            <div class="text">${escapeHtml(m.text)}</div>
+            <div class="time">${new Date(m.timestamp).toLocaleString('ar-EG')}</div>
+        </div>
+    `).join('');
+    container.scrollTop = container.scrollHeight;
+}
+
+async function sendLeaderMessage() {
+    const input = document.getElementById('leaderMessageInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const filter = document.getElementById('leaderChatFilter')?.value || 'all';
+    const leader = currentUser;
+    
+    const newMessage = {
+        id: Date.now(),
+        squadId: filter === 'all' ? null : parseInt(filter),
+        senderId: leader.id,
+        senderName: leader.name,
+        text: text,
+        timestamp: new Date().toISOString(),
+        isBroadcast: filter === 'all'
+    };
+    appData.messages.push(newMessage);
+    await saveAllDataToFirebase();
+    input.value = '';
+    loadLeaderMessages();
+    showToast('تم إرسال الرسالة');
+}
+
+function showLeaderBroadcastModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-bullhorn"></i> إرسال رسالة لجميع طلايعي</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <textarea id="leaderBroadcastText" rows="4" placeholder="أدخل نص الرسالة..." style="width:100%; padding:12px; border-radius:12px; border:2px solid #e0e0e0; margin-bottom:15px;"></textarea>
+            <button class="btn btn-primary" onclick="sendLeaderBroadcast(); this.closest('.modal').remove();" style="width:100%;">إرسال للجميع</button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+async function sendLeaderBroadcast() {
+    const text = document.getElementById('leaderBroadcastText')?.value.trim();
+    if (!text) return;
+    const leader = currentUser;
+    
+    const newMessage = {
+        id: Date.now(),
+        squadId: null,
+        senderId: leader.id,
+        senderName: leader.name,
+        text: text,
+        timestamp: new Date().toISOString(),
+        isBroadcast: true
+    };
+    appData.messages.push(newMessage);
+    await saveAllDataToFirebase();
+    showToast('تم إرسال البث للجميع');
+    if (document.getElementById('leaderChatFilter')) loadLeaderMessages();
+}
+
+// دالة مساعدة لفلترة أعضاء القائد
+function filterLeaderMembers() {
+    const searchTerm = document.getElementById('leaderMemberSearch')?.value?.toLowerCase() || '';
+    const leader = currentUser;
+    const mySubBranchIds = leader.subBranchIds;
+    let myMembers = appData.members.filter(m => mySubBranchIds.includes(m.subBranchId));
+    
+    if (searchTerm) {
+        myMembers = myMembers.filter(m => m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm));
+    }
+    
+    const tableHtml = `
+        <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>الكود</th><th>الاسم</th><th>الرتبة</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الإجراءات</th></tr></thead><tbody>
+        ${myMembers.map(m => `<tr>
+            <td>${m.code}</td>
+            <td>${m.name}</td>
+            <td><span class="badge" style="background:#d4a017;">${m.rank}</span></td>
+            <td>${m.phone}</td>
+            <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
+            <td>${m.points}</td>
+            <td><button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
+            </td>
+        </tr>`).join('')}
+        ${myMembers.length === 0 ? '<tr><td colspan="7" style="text-align:center;">لا يوجد أعضاء</td></tr>' : ''}
+        </tbody></table></div>
+    `;
+    const tableContainer = document.getElementById('leaderMembersTable');
+    if (tableContainer) tableContainer.innerHTML = tableHtml;
+}
        function showEditMemberModal(id) {
     const member = appData.members.find(m => m.id === id);
     if (!member) return;
@@ -3715,12 +4297,16 @@ function showTaskViewers(taskId) {
         }
 
         async function logout() {
-            currentUser = null;
-            isAdmin = false;
-            showToast('تم تسجيل الخروج');
-            render();
-        }
-
+    currentUser = null;
+    isAdmin = false;
+    isLeader = false;
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+    showToast('تم تسجيل الخروج');
+    renderLandingPage();
+}
         // Make global functions
         window.toggleSidebar = toggleSidebar;
         window.closeSidebar = closeSidebar;
@@ -3733,6 +4319,22 @@ function showTaskViewers(taskId) {
         window.showAdjustPointsModal = showAdjustPointsModal;
         window.deleteMember = deleteMember;
         window.showAddBranchModal = showAddBranchModal;
+        window.showAddLeaderModal = showAddLeaderModal;
+window.showLeadersPage = showLeadersPage;
+window.renderLeadersList = renderLeadersList;
+window.deleteLeader = deleteLeader;
+window.changeLeaderPage = changeLeaderPage;
+window.renderLeaderDashboard = renderLeaderDashboard;
+window.renderLeaderMembers = renderLeaderMembers;
+window.renderLeaderJoinRequests = renderLeaderJoinRequests;
+window.renderLeaderTasks = renderLeaderTasks;
+window.renderLeaderCommunity = renderLeaderCommunity;
+window.loadLeaderMessages = loadLeaderMessages;
+window.sendLeaderMessage = sendLeaderMessage;
+window.showLeaderBroadcastModal = showLeaderBroadcastModal;
+window.sendLeaderBroadcast = sendLeaderBroadcast;
+window.filterLeaderMembers = filterLeaderMembers;
+window.renderLeaderApp = renderLeaderApp;
         window.showAddSquadModal = showAddSquadModal;
         window.toggleSquadStatus = toggleSquadStatus;
         window.deleteSquad = deleteSquad;
