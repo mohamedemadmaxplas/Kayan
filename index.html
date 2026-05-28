@@ -17,7 +17,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     
     <style>
-       * {
+      /* ==================== RESET & GLOBAL ==================== */
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -35,7 +36,7 @@ body {
 ::-webkit-scrollbar-track { background: #2d5a3f; border-radius: 10px; }
 ::-webkit-scrollbar-thumb { background: #d4a017; border-radius: 10px; }
 
-/* ==================== Sidebar ==================== */
+/* ==================== SIDEBAR ==================== */
 .sidebar-overlay {
     position: fixed;
     top: 0;
@@ -110,7 +111,7 @@ body {
 }
 .sidebar-menu li.active a i { color: #0d2818; }
 
-/* ==================== Hamburger Button ==================== */
+/* ==================== HAMBURGER BUTTON ==================== */
 .hamburger {
     position: fixed;
     top: 20px;
@@ -142,7 +143,7 @@ body {
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
 
-/* ==================== Header ==================== */
+/* ==================== HEADER ==================== */
 .header {
     background: rgba(255,255,255,0.95);
     backdrop-filter: blur(10px);
@@ -194,7 +195,7 @@ body {
 }
 .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(192,57,43,0.3); }
 
-/* ==================== Main Content ==================== */
+/* ==================== MAIN CONTENT ==================== */
 .main-content {
     margin-right: 80px;
     margin-left: 20px;
@@ -203,7 +204,7 @@ body {
     min-height: calc(100vh - 140px);
 }
 
-/* ==================== Stats Cards ==================== */
+/* ==================== STATS CARDS ==================== */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -224,7 +225,7 @@ body {
 .stat-card .number { font-size: 32px; font-weight: bold; color: #1a472a; }
 .stat-card .label { font-size: 14px; color: #666; }
 
-/* ==================== Cards ==================== */
+/* ==================== CARDS ==================== */
 .card {
     background: rgba(255,255,255,0.95);
     border-radius: 20px;
@@ -244,39 +245,7 @@ body {
     padding-bottom: 10px;
 }
 
-/* ==================== Squad Filter ==================== */
-.squad-filter {
-    padding: 15px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-.squad-filter select, .squad-filter input {
-    flex: 1;
-    padding: 10px;
-    border: 2px solid #e0e0e0;
-    border-radius: 30px;
-    font-family: 'Cairo', sans-serif;
-}
-.broadcast-btn {
-    background: #e74c3c;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s;
-}
-.broadcast-btn:hover { transform: translateY(-2px); }
-
-/* ==================== Buttons ==================== */
+/* ==================== BUTTONS ==================== */
 .btn {
     padding: 10px 22px;
     border: none;
@@ -297,7 +266,7 @@ body {
 .btn-sm { padding: 6px 14px; font-size: 12px; }
 .btn:hover { transform: translateY(-2px); }
 
-/* ==================== Tables ==================== */
+/* ==================== TABLES ==================== */
 .data-table {
     width: 100%;
     border-collapse: collapse;
@@ -316,7 +285,7 @@ body {
 }
 .data-table tr:hover { background: #f5f5f5; }
 
-/* ==================== Chat Container ==================== */
+/* ==================== CHAT ==================== */
 .chat-container {
     height: 500px;
     display: flex;
@@ -380,7 +349,7 @@ body {
     transition: 0.3s;
 }
 
-/* ==================== Tasks ==================== */
+/* ==================== TASKS ==================== */
 .task-item {
     background: #f8f9fa;
     padding: 15px;
@@ -405,7 +374,7 @@ body {
 .complete-task-btn { background: #2ecc71; color: white; border: none; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 12px; transition: 0.3s; }
 .complete-task-btn:hover { transform: translateY(-2px); }
 
-/* ==================== Modal ==================== */
+/* ==================== MODAL ==================== */
 .modal {
     display: none;
     position: fixed;
@@ -449,6 +418,7 @@ body {
 }
 .close-modal:hover { color: #e74c3c; transform: rotate(90deg); }
 
+/* ==================== FORM INPUTS ==================== */
 .input-group { margin-bottom: 18px; }
 .input-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #333; }
 .input-group input, .input-group textarea, .input-group select {
@@ -461,13 +431,7 @@ body {
 }
 .input-group input:focus, .input-group select:focus { outline: none; border-color: #d4a017; }
 
-.code-generator {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-.code-generator input { flex: 1; }
-
+/* ==================== BADGES ==================== */
 .badge {
     display: inline-block;
     padding: 4px 12px;
@@ -478,6 +442,7 @@ body {
 .badge-active { background: #2ecc71; color: white; }
 .badge-inactive { background: #e74c3c; color: white; }
 
+/* ==================== DETAILS GRID ==================== */
 .details-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -492,6 +457,7 @@ body {
 .detail-label { font-size: 11px; color: #999; margin-bottom: 4px; }
 .detail-value { font-size: 16px; font-weight: 600; color: #1a472a; }
 
+/* ==================== FOOTER ==================== */
 .footer {
     background: rgba(255,255,255,0.9);
     color: #666;
@@ -500,9 +466,8 @@ body {
     margin-top: 30px;
     border-top: 1px solid rgba(212,160,23,0.2);
 }
-.footer a { color: #d4a017; text-decoration: none; }
 
-/* ==================== Login ==================== */
+/* ==================== LOGIN PAGE ==================== */
 .login-container {
     min-height: 100vh;
     display: flex;
@@ -521,316 +486,35 @@ body {
 .login-box i { font-size: 60px; color: #d4a017; margin-bottom: 15px; }
 .login-box h2 { color: #1a472a; margin-bottom: 25px; }
 
-/* ==================== Loading Spinner ==================== */
-.loading-spinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #d4a017;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* ==================== خلفية صفحة الهبوط فقط (أزرق فاتح) ==================== */
+/* ==================== LANDING PAGE ==================== */
 .landing-container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, #e8f4f8, #d4eaf0, #b8d8e8);
+    background: url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     position: relative;
     overflow-x: hidden;
 }
 
-/* شعار الكشافة الثابت على اليسار */
-.scout-logo-header {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 1002;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    padding: 6px 18px 6px 20px;
-    border-radius: 50px;
-    border: 1px solid rgba(212, 160, 23, 0.5);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-.scout-logo-header:hover {
-    transform: translateX(-3px);
-    background: white;
-    border-color: #d4a017;
-    box-shadow: 0 6px 20px rgba(212, 160, 23, 0.2);
-}
-.logo-circle {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #d4a017;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-.logo-circle img {
+.landing-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-}
-.logo-text {
-    display: flex;
-    flex-direction: column;
-}
-.logo-text .logo-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #1a472a;
-    line-height: 1.2;
-}
-.logo-text .logo-subtitle {
-    font-size: 11px;
-    color: #666;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
 }
 
-/* الخيمة والصورة الأولى */
-.tent-animation-area {
-    position: fixed;
-    right: 50px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    z-index: 100;
-}
-.floating-tent {
-    width: 150px;
-    height: 150px;
-    background: rgba(212, 160, 23, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: rotateTent 0.8s ease-in-out forwards;
-}
-.floating-tent i {
-    font-size: 80px;
-    color: #d4a017;
-    text-shadow: 0 2px 10px rgba(212, 160, 23, 0.5);
-}
-@keyframes rotateTent {
-    0% { transform: rotate(0deg); background: rgba(212, 160, 23, 0.1); }
-    25% { transform: rotate(90deg); background: rgba(212, 160, 23, 0.3); }
-    50% { transform: rotate(180deg); background: rgba(212, 160, 23, 0.5); }
-    75% { transform: rotate(270deg); background: rgba(212, 160, 23, 0.3); }
-    100% { transform: rotate(360deg); background: rgba(212, 160, 23, 0.1); opacity: 0; visibility: hidden; }
-}
-/* جعل الصور بدون حواف وخلفية شفافة */
-.scout-image-right {
-    width: 0;
-    height: 300px;
-    border-radius: 0;
-    overflow: hidden;
-    box-shadow: none;
-    border: none;
-    background: transparent;
-    opacity: 0;
-    transition: all 0.5s ease;
-}
-
-.scout-image-right.show {
-    width: 350px;
-    opacity: 1;
-    border-radius: 0;
-    box-shadow: none;
-}
-@keyframes borderGlow {
-    0% { border-color: #d4a017; box-shadow: 0 0 0px #d4a017; }
-    50% { border-color: #f39c12; box-shadow: 0 0 20px #f39c12; }
-    100% { border-color: #d4a017; box-shadow: 0 0 0px #d4a017; }
-}
-.scout-image-right img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* النار والصورة الثانية */
-.flame-animation-area {
-    position: fixed;
-    bottom: 50px;
-    left: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    z-index: 100;
-}
-.flame-icon {
-    font-size: 70px;
-    color: #e67e22;
-    filter: drop-shadow(0 0 15px #e67e22);
-    cursor: pointer;
-    transition: 0.3s;
-}
-.flame-icon.growing {
-    animation: flameGrow 0.8s ease-in-out;
-}
-@keyframes flameGrow {
-    0% { font-size: 70px; filter: drop-shadow(0 0 15px #e67e22); }
-    50% { font-size: 120px; filter: drop-shadow(0 0 40px #f39c12); }
-    100% { font-size: 70px; filter: drop-shadow(0 0 15px #e67e22); }
-}
-.flame-image {
-    width: 0;
-    height: 300px;
-    border-radius: 0;
-    overflow: hidden;
-    border: none;
-    box-shadow: none;
-    opacity: 0;
-    transition: all 0.5s ease;
-}
-
-.flame-image.show {
-    width: 350px;
-    opacity: 1;
-    border-radius: 0;
-    box-shadow: none;
-}
-@keyframes imagePop {
-    0% { transform: scale(0.8); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
-.flame-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-.flame-icon.hide {
-    display: none;
-}
-
-/* صندوق تسجيل الدخول */
-.hero-section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 60px 20px;
+.landing-container > * {
     position: relative;
     z-index: 1;
-    min-height: 100vh;
-}
-.hero-content {
-    text-align: center;
-    max-width: 600px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 40px;
-    padding: 50px 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(212, 160, 23, 0.3);
-    animation: fadeInUp 0.8s ease;
-    backdrop-filter: blur(5px);
-}
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.logo-large i {
-    font-size: 70px;
-    color: #d4a017;
-    margin-bottom: 15px;
-}
-.logo-large h1 {
-    font-size: 32px;
-    color: #1a472a;
-    margin-bottom: 10px;
-}
-.logo-large p {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #d4a017;
-    display: inline-block;
-}
-.login-landing-btn {
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    color: white;
-    border: none;
-    padding: 15px 40px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 20px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-.login-landing-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(212, 160, 23, 0.3);
 }
 
-/* تذييل الصفحة */
-.footer-landing {
-    background: rgba(255, 255, 255, 0.8);
-    color: #555;
-    padding: 15px;
-    text-align: center;
-    font-size: 13px;
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid rgba(212, 160, 23, 0.2);
-}
-.footer-landing p {
-    margin: 5px 0;
-}
-
-/* ==================== Responsive ==================== */
-@media (max-width: 768px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .main-content { margin-right: 15px; margin-left: 15px; padding: 10px; }
-    .header { margin-right: 70px; margin-left: 10px; }
-    .hamburger { width: 42px; height: 42px; top: 15px; right: 15px; }
-    .details-grid { grid-template-columns: 1fr; }
-    .message { max-width: 85%; }
-    
-    /* Landing page responsive */
-    .hero-content { padding: 30px 20px; }
-    .logo-large h1 { font-size: 24px; }
-    .login-landing-btn { padding: 12px 30px; font-size: 18px; }
-    .scout-logo-header { top: 10px; left: 10px; padding: 5px 12px 5px 14px; }
-    .logo-circle { width: 35px; height: 35px; }
-    .logo-text .logo-title { font-size: 12px; }
-    .logo-text .logo-subtitle { font-size: 9px; }
-    .floating-tent { width: 80px; height: 80px; }
-    .floating-tent i { font-size: 45px; }
-    .scout-image-right.show { width: 200px; height: 180px; }
-    .scout-image-right { height: 180px; }
-    .flame-icon { font-size: 45px; }
-    .flame-image.show { width: 200px; height: 180px; }
-    @keyframes flameGrow {
-        0% { font-size: 45px; }
-        50% { font-size: 80px; }
-        100% { font-size: 45px; }
-    }
-}
-/* ==================== هيدر صفحة الهبوط الجديد ==================== */
 .landing-header {
     position: fixed;
     top: 0;
@@ -847,646 +531,6 @@ body {
     border-bottom: 1px solid rgba(212, 160, 23, 0.3);
 }
 
-.landing-header-logo {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.landing-header-logo img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #d4a017;
-}
-
-.landing-header-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.landing-header-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #1a472a;
-}
-
-.landing-header-subtitle {
-    font-size: 11px;
-    color: #666;
-}
-
-.landing-header-login-btn {
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s;
-}
-
-.landing-header-login-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
-}
-
-/* ==================== النص المركزي الجديد ==================== */
-.hero-section {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 100px 20px 60px;
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-}
-
-.hero-content {
-    text-align: center;
-    max-width: 600px;
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 40px;
-    padding: 40px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(212, 160, 23, 0.3);
-    animation: fadeInUp 0.8s ease;
-    backdrop-filter: blur(5px);
-}
-
-.organization-name i {
-    font-size: 60px;
-    color: #d4a017;
-    margin-bottom: 15px;
-}
-
-.organization-name h2 {
-    font-size: 28px;
-    color: #1a472a;
-    margin-bottom: 8px;
-}
-
-.organization-name p {
-    font-size: 16px;
-    color: #666;
-    letter-spacing: 1px;
-}
-
-/* الخيمة والنار في الخلفية خلف المحتوى */
-.tent-animation-area,
-.flame-animation-area {
-    z-index: 0;
-}
-
-.flame-animation-area {
-    position: fixed;
-    bottom: 50px;
-    left: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    z-index: 100;
-}
-
-/* خلفية الصفحة مع الصورة */
-.landing-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(135deg, rgba(232, 244, 248, 0.9), rgba(180, 216, 232, 0.9)), url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    position: relative;
-    overflow-x: hidden;
-}
-/* ==================== تحسينات التوافق مع الجوال ==================== */
-
-/* جعل الصور في الخلفية بدون حواف على الجوال */
-@media (max-width: 768px) {
-    /* إعادة ترتيب الصور لتكون تحت بعضها */
-    .tent-animation-area {
-        position: relative;
-        right: auto;
-        top: auto;
-        transform: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 20px auto;
-        order: 1;
-    }
-    
-    .flame-animation-area {
-        position: relative;
-        bottom: auto;
-        left: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 20px auto;
-        order: 3;
-    }
-    
-    .hero-section {
-    z-index: 2;
-    position: relative;
-}
-    
-    .landing-container {
-        display: flex;
-        flex-direction: column;
-        padding-top: 70px;
-    }
-    
-    /* إزالة الحواف من الصور وجعلها في الخلفية */
-    .scout-image-right.show {
-        width: 280px;
-        height: 200px;
-        border-radius: 0;
-    }
-    
-    .scout-image-right {
-        border-radius: 0;
-        height: 200px;
-    }
-    
-    .flame-image.show {
-        width: 280px;
-        height: 200px;
-        border-radius: 0;
-    }
-    
-    .flame-image {
-        border-radius: 0;
-        height: 200px;
-    }
-    
-    /* جعل الخلفية تغطي كامل الشاشة بدون حواف */
-    .landing-container {
-        background-attachment: scroll;
-    }
-    
-    /* تحسين الهيدر للجوال */
-    .landing-header {
-        padding: 10px 15px;
-    }
-    
-    .scout-logo-header {
-        padding: 4px 12px 4px 14px;
-    }
-    
-    .logo-circle {
-        width: 35px;
-        height: 35px;
-    }
-    
-    .logo-text .logo-title {
-        font-size: 12px;
-    }
-    
-    .logo-text .logo-subtitle {
-        font-size: 9px;
-    }
-    
-    .landing-header-login-btn {
-        padding: 6px 15px;
-        font-size: 12px;
-    }
-    
-    /* تحسين صندوق تسجيل الدخول في صفحة الدخول للجوال */
-    .login-box {
-        width: 90%;
-        padding: 25px 20px;
-        margin: 60px auto 20px;
-    }
-    
-    .login-box i {
-        font-size: 45px;
-    }
-    
-    .login-box h2 {
-        font-size: 22px;
-    }
-    
-    /* تحسين القوائم الجانبية للجوال */
-    .sidebar {
-        width: 260px;
-    }
-    
-    .header {
-        margin-right: 65px;
-        margin-left: 10px;
-        padding: 10px 15px;
-    }
-    
-    .logo h1 {
-        font-size: 18px;
-    }
-    
-    .user-info span {
-        font-size: 12px;
-    }
-    
-    /* تحسين الجداول للجوال */
-    .data-table {
-        font-size: 12px;
-    }
-    
-    .data-table th, .data-table td {
-        padding: 8px;
-    }
-    
-    /* تحسين البطاقات الإحصائية */
-    .stats-grid {
-        gap: 12px;
-    }
-    
-    .stat-card {
-        padding: 15px;
-    }
-    
-    .stat-card i {
-        font-size: 30px;
-    }
-    
-    .stat-card .number {
-        font-size: 24px;
-    }
-    
-    /* تحسين النماذج */
-    .input-group input, .input-group select, .input-group textarea {
-        padding: 10px;
-        font-size: 14px;
-    }
-    
-    .btn {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-}
-
-/* للشاشات الصغيرة جداً (أقل من 480px) */
-@media (max-width: 480px) {
-    .scout-image-right.show {
-        width: 240px;
-        height: 170px;
-    }
-    
-    .flame-image.show {
-        width: 240px;
-        height: 170px;
-    }
-    
-    .floating-tent {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .floating-tent i {
-        font-size: 35px;
-    }
-    
-    .hero-content {
-        padding: 20px;
-    }
-    
-    .organization-name h2 {
-        font-size: 20px;
-    }
-    
-    .landing-header-text {
-        display: none;
-    }
-    
-    .scout-logo-header {
-        padding: 4px 10px;
-    }
-}
-/* ==================== الصورة في منتصف الهيدر ==================== */
-.landing-header-center-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.landing-header-center-image img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #d4a017;
-    background: white;
-    padding: 2px;
-}
-
-/* للشاشات الصغيرة */
-@media (max-width: 768px) {
-    .landing-header-center-image img {
-        width: 30px;
-        height: 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    .landing-header-center-image {
-        display: none;
-    }
-}
-/* ==================== أنيميشنات صفحة الهبوط الجديدة ==================== */
-.hero-section {
-    display: flex !important;
-    min-height: calc(100vh - 80px);
-    position: relative;
-    z-index: 2;
-}
-
-.hero-content {
-    text-align: center;
-    max-width: 650px;
-    background: rgba(255, 255, 255, 0.92);
-    border-radius: 50px;
-    padding: 50px 45px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(212, 160, 23, 0.4);
-    backdrop-filter: blur(12px);
-    animation: fadeInUp 0.8s ease;
-    transition: transform 0.3s ease;
-}
-
-.hero-content:hover {
-    transform: translateY(-5px);
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* شعار منظم وجذاب */
-.organization-logo-large {
-    width: 90px;
-    height: 90px;
-    margin: 0 auto 20px;
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 10px 25px rgba(212, 160, 23, 0.4);
-    animation: floatLogo 3s ease-in-out infinite;
-}
-
-@keyframes floatLogo {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-.organization-logo-large img {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid white;
-}
-
-.organization-name h2 {
-    font-size: 32px;
-    color: #1a472a;
-    margin-bottom: 8px;
-    font-weight: 800;
-}
-
-.organization-name p {
-    font-size: 16px;
-    color: #555;
-    letter-spacing: 1px;
-}
-
-/* النص الترحيبي الجديد */
-.welcome-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    color: white;
-    padding: 8px 25px;
-    border-radius: 40px;
-    font-size: 14px;
-    font-weight: 600;
-    margin: 20px 0 15px;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.9; transform: scale(1.02); }
-}
-
-.main-headline {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1a472a;
-    margin: 15px 0;
-    line-height: 1.4;
-}
-
-.main-headline i {
-    color: #d4a017;
-    margin: 0 5px;
-}
-
-.features-grid-landing {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin: 30px 0;
-}
-.feature-item {
-    background: rgba(212, 160, 23, 0.12);
-    padding: 14px;
-    border-radius: 20px;
-    font-weight: 600;
-    color: #1a472a;
-    transition: 0.3s;
-    text-align: center;
-    backdrop-filter: blur(4px);
-}
-.feature-item i {
-    color: #d4a017;
-    margin-left: 8px;
-    font-size: 18px;
-}
-.feature-item:hover {
-    background: rgba(212, 160, 23, 0.25);
-    transform: translateY(-5px);
-}
-/* زر تسجيل الدخول الرئيسي */
-.login-main-btn {
-    background: linear-gradient(135deg, #1a472a, #0d2818);
-    color: white;
-    border: none;
-    padding: 16px 45px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 15px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.login-main-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(26, 71, 42, 0.4);
-    background: linear-gradient(135deg, #0d2818, #1a472a);
-}
-
-/* خلفية متحركة */
-.animated-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-}
-
-.bg-bubble {
-    position: absolute;
-    background: rgba(212, 160, 23, 0.08);
-    border-radius: 50%;
-    animation: floatBubble 15s infinite ease-in-out;
-}
-
-@keyframes floatBubble {
-    0%, 100% { transform: translateY(0) translateX(0); }
-    25% { transform: translateY(-30px) translateX(20px); }
-    50% { transform: translateY(-60px) translateX(-10px); }
-    75% { transform: translateY(-30px) translateX(15px); }
-}
-
-/* الصور الجانبية بتأثيرات أفضل */
-.scout-image-right {
-    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    border-radius: 20px !important;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(5px);
-    padding: 10px;
-}
-
-.scout-image-right.show {
-    border-radius: 20px !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
-
-.flame-image {
-    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    border-radius: 20px !important;
-}
-
-.flame-image.show {
-    border-radius: 20px !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
-
-/* شعار ثابت يظهر في كل الصفحات */
-.global-logo {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(8px);
-    padding: 8px 18px;
-    border-radius: 50px;
-    border: 1px solid rgba(212,160,23,0.4);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.global-logo:hover {
-    transform: translateX(-3px);
-    border-color: #d4a017;
-}
-
-.global-logo-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.global-logo-text {
-    font-weight: bold;
-    color: #1a472a;
-    font-size: 14px;
-}
-
-@media (max-width: 768px) {
-    .hero-content { padding: 30px 25px; margin: 0 15px; }
-    .organization-name h2 { font-size: 22px; }
-    .main-headline { font-size: 20px; }
-    .features-grid-landing { grid-template-columns: 1fr; gap: 10px; }
-    .login-main-btn { padding: 12px 30px; font-size: 16px; }
-    .global-logo { padding: 5px 12px; }
-    .global-logo-text { font-size: 10px; }
-    .global-logo-img { width: 30px; height: 30px; }
-}
-/* ==================== خلفية القائمة الجانبية مع الصورة ==================== */
-.sidebar {
-    background: linear-gradient(180deg, rgba(26, 71, 42, 0.92), rgba(13, 40, 24, 0.95)), url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-}
-
-/* إضافة طبقة شفافة فوق الصورة لتحسين قراءة النص */
-.sidebar::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 0;
-}
-
-.sidebar-header,
-.sidebar-menu,
-.sidebar * {
-    position: relative;
-    z-index: 1;
-}
-
-/* تحسين ظهور النص على الصورة */
-.sidebar-header h3,
-.sidebar-header p,
-.sidebar-menu li a {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.sidebar-menu li a:hover {
-    background: rgba(212, 160, 23, 0.25);
-}
 .landing-header-logo {
     display: flex;
     align-items: center;
@@ -1516,6 +560,171 @@ body {
     font-size: 11px;
     color: #666;
 }
+
+.landing-header-login-btn {
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+.landing-header-login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
+}
+
+.hero-section {
+    flex: 1;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 20px 60px;
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 650px;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 50px;
+    padding: 50px 45px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(12px);
+    animation: fadeInUp 0.8s ease;
+    transition: transform 0.3s ease;
+}
+.hero-content:hover {
+    transform: translateY(-5px);
+}
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.organization-logo-large {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(212, 160, 23, 0.4);
+    animation: floatLogo 3s ease-in-out infinite;
+}
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+.organization-logo-large img {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+}
+
+.organization-name h2 {
+    font-size: 32px;
+    color: white;
+    margin-bottom: 8px;
+    font-weight: 800;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.organization-name p {
+    font-size: 16px;
+    color: #eee;
+    letter-spacing: 1px;
+}
+
+.welcome-badge {
+    display: inline-block;
+    background: rgba(212, 160, 23, 0.9);
+    color: white;
+    padding: 8px 25px;
+    border-radius: 40px;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 20px 0 15px;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.02); }
+}
+
+.main-headline {
+    font-size: 28px;
+    font-weight: 800;
+    color: white;
+    margin: 15px 0;
+    line-height: 1.4;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+.main-headline i {
+    color: #d4a017;
+    margin: 0 5px;
+}
+
+.features-grid-landing {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+.feature-item {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: white;
+    transition: 0.3s;
+    text-align: center;
+    backdrop-filter: blur(4px);
+}
+.feature-item i {
+    color: #d4a017;
+    margin-left: 8px;
+    font-size: 18px;
+}
+.feature-item:hover {
+    background: rgba(212, 160, 23, 0.3);
+    transform: translateY(-5px);
+}
+
+.login-main-btn {
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    color: white;
+    border: none;
+    padding: 16px 45px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+.login-main-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(212, 160, 23, 0.4);
+}
+
+/* ==================== ANIMATED BACKGROUND BUBBLES ==================== */
 .animated-bg {
     position: fixed;
     top: 0;
@@ -1528,14 +737,139 @@ body {
 }
 .bg-bubble {
     position: absolute;
-    background: rgba(212, 160, 23, 0.1);
+    background: rgba(212, 160, 23, 0.15);
     border-radius: 50%;
     animation: floatBubble 15s infinite ease-in-out;
 }
 @keyframes floatBubble {
     0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+    25% { transform: translateY(-30px) translateX(20px); }
     50% { transform: translateY(-60px) translateX(-10px); opacity: 0.6; }
+    75% { transform: translateY(-30px) translateX(15px); }
 }
+
+/* ==================== TENT & FLAME ANIMATIONS ==================== */
+.tent-animation-area {
+    position: fixed;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 0;
+}
+.floating-tent {
+    width: 150px;
+    height: 150px;
+    background: rgba(212, 160, 23, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: rotateTent 0.8s ease-in-out forwards;
+}
+.floating-tent i {
+    font-size: 80px;
+    color: #d4a017;
+    text-shadow: 0 2px 10px rgba(212, 160, 23, 0.5);
+}
+@keyframes rotateTent {
+    0% { transform: rotate(0deg); background: rgba(212, 160, 23, 0.1); }
+    25% { transform: rotate(90deg); background: rgba(212, 160, 23, 0.3); }
+    50% { transform: rotate(180deg); background: rgba(212, 160, 23, 0.5); }
+    75% { transform: rotate(270deg); background: rgba(212, 160, 23, 0.3); }
+    100% { transform: rotate(360deg); background: rgba(212, 160, 23, 0.1); opacity: 0; visibility: hidden; }
+}
+.scout-image-right {
+    width: 0;
+    height: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(5px);
+    padding: 10px;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+.scout-image-right.show {
+    width: 350px;
+    opacity: 1;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+.scout-image-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.flame-animation-area {
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 0;
+}
+.flame-icon {
+    font-size: 70px;
+    color: #e67e22;
+    filter: drop-shadow(0 0 15px #e67e22);
+    cursor: pointer;
+    transition: 0.3s;
+}
+.flame-icon.growing {
+    animation: flameGrow 0.8s ease-in-out;
+}
+@keyframes flameGrow {
+    0% { font-size: 70px; filter: drop-shadow(0 0 15px #e67e22); }
+    50% { font-size: 120px; filter: drop-shadow(0 0 40px #f39c12); }
+    100% { font-size: 70px; filter: drop-shadow(0 0 15px #e67e22); }
+}
+.flame-image {
+    width: 0;
+    height: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+.flame-image.show {
+    width: 350px;
+    opacity: 1;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+.flame-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+.flame-icon.hide {
+    display: none;
+}
+
+.footer-landing {
+    background: rgba(0, 0, 0, 0.6);
+    color: #ddd;
+    padding: 15px;
+    text-align: center;
+    font-size: 13px;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid rgba(212, 160, 23, 0.3);
+}
+.footer-landing p {
+    margin: 5px 0;
+}
+
+/* ==================== GLOBAL LOGO (Fixed) ==================== */
 .global-logo {
     position: fixed;
     top: 15px;
@@ -1545,23 +879,117 @@ body {
     align-items: center;
     gap: 10px;
     background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
     padding: 8px 18px;
     border-radius: 50px;
-    cursor: pointer;
+    border: 1px solid rgba(212,160,23,0.4);
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: 0.3s;
 }
 .global-logo:hover {
     transform: translateX(-3px);
+    border-color: #d4a017;
 }
 .global-logo-img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    object-fit: cover;
 }
 .global-logo-text {
     font-weight: bold;
     color: #1a472a;
     font-size: 14px;
+}
+
+/* ==================== SIDEBAR BACKGROUND ==================== */
+.sidebar {
+    background: linear-gradient(180deg, rgba(26, 71, 42, 0.92), rgba(13, 40, 24, 0.95)), url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+}
+.sidebar-header,
+.sidebar-menu,
+.sidebar * {
+    position: relative;
+    z-index: 1;
+}
+.sidebar-header h3,
+.sidebar-header p,
+.sidebar-menu li a {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.sidebar-menu li a:hover {
+    background: rgba(212, 160, 23, 0.25);
+}
+
+/* ==================== RESPONSIVE (MOBILE) ==================== */
+@media (max-width: 768px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .main-content { margin-right: 15px; margin-left: 15px; padding: 10px; }
+    .header { margin-right: 70px; margin-left: 10px; }
+    .hamburger { width: 42px; height: 42px; top: 15px; right: 15px; }
+    .details-grid { grid-template-columns: 1fr; }
+    .message { max-width: 85%; }
+    
+    .hero-content { padding: 30px 25px; margin: 0 15px; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); }
+    .organization-name h2 { font-size: 22px; }
+    .main-headline { font-size: 20px; }
+    .features-grid-landing { grid-template-columns: 1fr; gap: 10px; }
+    .login-main-btn { padding: 12px 30px; font-size: 16px; }
+    
+    .landing-header { padding: 10px 15px; }
+    .landing-header-logo img { width: 35px; height: 35px; }
+    .logo-text-header .logo-title { font-size: 12px; }
+    .logo-text-header .logo-subtitle { font-size: 9px; }
+    .landing-header-login-btn { padding: 6px 15px; font-size: 12px; }
+    
+    .floating-tent { width: 80px; height: 80px; }
+    .floating-tent i { font-size: 45px; }
+    .scout-image-right.show { width: 200px; height: 180px; }
+    .flame-icon { font-size: 45px; }
+    .flame-image.show { width: 200px; height: 180px; }
+    
+    .global-logo { padding: 5px 12px; }
+    .global-logo-text { font-size: 10px; }
+    .global-logo-img { width: 30px; height: 30px; }
+    
+    .login-box { width: 90%; padding: 25px 20px; }
+    .login-box i { font-size: 45px; }
+    .login-box h2 { font-size: 22px; }
+    
+    .sidebar { width: 260px; }
+    .logo h1 { font-size: 18px; }
+    .data-table { font-size: 12px; }
+    .data-table th, .data-table td { padding: 8px; }
+    
+    /* إخفاء الصور الجانبية في الموبايل */
+    .tent-animation-area,
+    .flame-animation-area {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .scout-image-right.show { width: 240px; height: 170px; }
+    .flame-image.show { width: 240px; height: 170px; }
+    .floating-tent { width: 60px; height: 60px; }
+    .floating-tent i { font-size: 35px; }
+    .hero-content { padding: 20px; }
+    .organization-name h2 { font-size: 20px; }
 }
     </style>
 </head>
