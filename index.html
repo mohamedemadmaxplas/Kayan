@@ -2554,8 +2554,6 @@ setTimeout(() => {
 
    function renderLogin(container) {
     container.innerHTML = `
-        <!-- تم حذف الشعار الصغير من أعلى صفحة تسجيل الدخول -->
-        
         <div class="login-container">
             <div class="login-box">
                 <i class="fas fa-campground"></i>
@@ -2572,13 +2570,14 @@ setTimeout(() => {
                     <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">تسجيل الدخول</button>
                 </form>
                 
-                <div style="margin-top: 15px;">
-                    <button onclick="showJoinRequestModal()" class="btn btn-success" style="width: 100%; justify-content: center; background: #2ecc71;">
-                        <i class="fas fa-user-plus"></i> تقديم طلب انضمام جديد
+                <!-- زر ليس لديك حساب -->
+                <div style="margin-top: 15px; text-align: center;">
+                    <button onclick="showJoinRequestModalFromLogin()" style="background: transparent; border: none; color: #d4a017; cursor: pointer; font-size: 14px; font-weight: 600;">
+                        <i class="fas fa-user-plus"></i> ليس لديك حساب؟ اضغط هنا للتسجيل
                     </button>
                 </div>
                 
-                <div style="margin-top: 20px; font-size: 12px; color: #999;">
+                <div style="margin-top: 20px; font-size: 12px; color: #999; text-align: center;">
                     <i class="fas fa-key"></i> تم التطوير بواسطة Tecno Shark Company
                     <br>01144100018 || 01126125881
                 </div>
@@ -2603,7 +2602,7 @@ setTimeout(() => {
             return;
         }
         
-        // التحقق من القادة (leaders)
+        // التحقق من القادة
         const leader = appData.leaders.find(l => l.username === username && l.password === password);
         if (leader) {
             currentUser = leader;
@@ -2616,7 +2615,7 @@ setTimeout(() => {
             return;
         }
         
-        // التحقق من الأعضاء العاديين
+        // التحقق من الأعضاء
         const member = appData.members.find(m => m.username === username && m.password === password);
         if (member) {
             currentUser = member;
@@ -2630,11 +2629,10 @@ setTimeout(() => {
         }
         
         showToast('بيانات الدخول غير صحيحة', 'error');
-        addHomeButton();
-initTheme();
     });
     
-    addScoutLogoToPage();
+    addHomeButton();
+    initTheme();
 }
 // ==================== الدوال الجديدة لنظام طلبات الانضمام ====================
 
@@ -2761,6 +2759,12 @@ function showJoinRequestModal() {
         
         appData.joinRequests.push(newRequest);
         await saveAllDataToFirebase();
+        // البحث عن القائد المسؤول عن هذا الفرع
+const responsibleLeader = appData.leaders.find(leader => 
+    leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
+);
+
+const leaderName = responsibleLeader ? responsibleLeader.name : (squad ? squad.leader : 'القائد المسؤول');
         showToast('تم إرسال طلب الانضمام إلى القائد، انتظر الموافقة');
         modal.remove();
     });
@@ -6150,7 +6154,179 @@ function addThemeToggleButton() {
         modal.remove();
     };
 }
+// ==================== طلب انضمام من صفحة تسجيل الدخول ====================
+function showJoinRequestModalFromLogin() {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:550px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> تقديم طلب انضمام جديد</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
+            <form id="joinRequestFormLogin">
+                <div class="input-group"><label>الاسم الكامل</label><input type="text" id="reqNameLogin" required></div>
+                <div class="input-group"><label>السن</label><input type="number" id="reqAgeLogin" min="6" max="30" required></div>
+                <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="reqPhoneLogin" required></div>
+                <div class="input-group"><label>الرتبة المطلوبة</label>
+                    <select id="reqRankLogin" required>
+                        <option value="">اختر الرتبة</option>
+                        <option value="عريف اول">عريف اول</option>
+                        <option value="عريف">عريف</option>
+                        <option value="سكرتير">سكرتير</option>
+                        <option value="امين صندوق">امين صندوق</option>
+                        <option value="مساعد عريف اول">مساعد عريف اول</option>
+                        <option value="مساعد عريف">مساعد عريف</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>المنطقة</label>
+                    <select id="reqBranchLogin" required>
+                        <option value="">-- اختر المنطقة --</option>
+                        ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="input-group"><label>الفرع</label>
+                    <select id="reqSubBranchLogin" required>
+                        <option value="">-- اختر المنطقة أولاً --</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>الطليعة المرغوب الانضمام إليها</label>
+                    <select id="reqSquadLogin" required>
+                        <option value="">-- اختر الفرع أولاً --</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="reqUsernameLogin" required></div>
+                <div class="input-group"><label>كلمة المرور</label><input type="password" id="reqPasswordLogin" required></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">إرسال الطلب</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // تحديث الفروع عند اختيار المنطقة
+    document.getElementById('reqBranchLogin').addEventListener('change', function() {
+        const branchId = parseInt(this.value);
+        const subBranchSelect = document.getElementById('reqSubBranchLogin');
+        const squadSelect = document.getElementById('reqSquadLogin');
+        
+        if (branchId) {
+            const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
+            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+                branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
+        } else {
+            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+        }
+    });
+    
+    // تحديث الطلايع عند اختيار الفرع
+    document.getElementById('reqSubBranchLogin').addEventListener('change', function() {
+        const subBranchId = parseInt(this.value);
+        const squadSelect = document.getElementById('reqSquadLogin');
+        
+        if (subBranchId) {
+            const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
+            if (subBranch) {
+                const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
+                squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
+                    squads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
+            }
+        } else {
+            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+        }
+    });
+    
+    document.getElementById('joinRequestFormLogin').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const username = document.getElementById('reqUsernameLogin').value;
+        if (appData.members.some(m => m.username === username)) {
+            showToast('اسم المستخدم موجود مسبقاً لدى عضو', 'error');
+            return;
+        }
+        if (appData.joinRequests.some(r => r.username === username && r.status === 'pending')) {
+            showToast('هذا الاسم موجود في طلب سابق لا يزال قيد المراجعة', 'error');
+            return;
+        }
+        
+        const subBranchId = parseInt(document.getElementById('reqSubBranchLogin').value);
+        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
+        const squadId = parseInt(document.getElementById('reqSquadLogin').value);
+        const squad = appData.squads.find(s => s.id === squadId);
+        
+        if (!subBranchId || !squadId) {
+            showToast('الرجاء اختيار الفرع والطليعة', 'error');
+            return;
+        }
+        
+        // البحث عن القائد المسؤول عن هذا الفرع
+        const responsibleLeader = appData.leaders.find(leader => 
+            leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
+        );
+        
+        const leaderName = responsibleLeader ? responsibleLeader.name : (squad ? squad.leader : 'القائد المسؤول');
+        
+        const newRequest = {
+            id: Date.now(),
+            name: document.getElementById('reqNameLogin').value,
+            age: parseInt(document.getElementById('reqAgeLogin').value),
+            phone: document.getElementById('reqPhoneLogin').value,
+            rank: document.getElementById('reqRankLogin').value,
+            branchId: subBranch.branchId,
+            subBranchId: subBranchId,
+            squadId: squadId,
+            username: username,
+            password: document.getElementById('reqPasswordLogin').value,
+            status: 'pending',
+            requestedAt: new Date().toISOString(),
+            code: `KS${String(appData.members.length + 1).padStart(3, '0')}`
+        };
+        
+        appData.joinRequests.push(newRequest);
+        await saveAllDataToFirebase();
+        
+        // إغلاق النافذة
+        modal.remove();
+        
+        // رسالة مخصصة باسم القائد المسؤول
+// عرض رسالة مخصصة باسم القائد المسؤول
+showCustomRequestMessage(leaderName, squad ? squad.name : 'الطليعة', subBranch ? subBranch.name : 'الفرع');
+    });
+}
 
+// دالة عرض رسالة مخصصة بعد تقديم الطلب
+function showCustomRequestMessage(leaderName, squadName, branchName) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:450px; text-align:center;">
+            <div style="font-size:60px; margin-bottom:15px;">
+                <i class="fas fa-paper-plane" style="color:#2ecc71;"></i>
+            </div>
+            <h3 style="color:#1a472a; margin-bottom:10px;">✓ تم إرسال طلبك بنجاح!</h3>
+            <p style="color:#666; margin-bottom:20px; line-height:1.6;">
+                سيتم مراجعة طلب الانضمام الخاص بك من قبل<br>
+                <strong style="color:#d4a017; font-size:18px;">${leaderName}</strong><br>
+                القائد المسؤول عن <strong>${branchName}</strong> - طليعة <strong>${squadName}</strong>
+            </p>
+            <div style="background:#f0f5f0; padding:12px; border-radius:12px; margin-bottom:20px;">
+                <i class="fas fa-clock" style="color:#d4a017;"></i>
+                <span style="color:#555;">سيتم إعلامك عند قبول الطلب عبر القائد</span>
+            </div>
+            <button class="btn btn-primary" onclick="this.closest('.modal').remove()" style="background:#d4a017; width:100%;">
+                <i class="fas fa-check"></i> حسناً
+            </button>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    setTimeout(() => {
+        if (modal && modal.parentNode) modal.remove();
+    }, 5000);
+}
 // تعديل دالة render لتشمل إضافة الزر الثابت
 const originalRender = render;
 render = function() {
