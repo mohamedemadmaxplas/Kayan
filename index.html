@@ -598,415 +598,7 @@ body {
 .login-box i { font-size: 60px; color: #d4a017; margin-bottom: 15px; }
 .login-box h2 { color: #1a472a; margin-bottom: 25px; }
 
-/* ==================== LANDING PAGE ==================== */
-.landing-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: url('https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    position: relative;
-    overflow-x: hidden;
-}
 
-.landing-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 0;
-}
-
-.landing-container > * {
-    position: relative;
-    z-index: 1;
-}
-
-.landing-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 101;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 30px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(212, 160, 23, 0.3);
-}
-
-.landing-header-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-    padding: 5px 15px;
-    border-radius: 50px;
-    background: rgba(212, 160, 23, 0.1);
-}
-
-.landing-header-logo:hover {
-    background: rgba(212, 160, 23, 0.2);
-    transform: translateX(-3px);
-}
-
-.landing-header-logo img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: 2px solid #d4a017;
-}
-
-.logo-text-header .logo-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #1a472a;
-}
-
-.logo-text-header .logo-subtitle {
-    font-size: 11px;
-    color: #666;
-}
-
-.landing-header-login-btn {
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s;
-}
-
-.landing-header-login-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
-}
-
-/* Hero Section */
-.hero-section {
-    flex: 1;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    padding: 100px 20px 60px;
-    position: relative;
-    z-index: 2;
-    min-height: 100vh;
-}
-
-.hero-content {
-    text-align: center;
-    max-width: 650px;
-    background: rgba(0, 0, 0, 0.35);
-    border-radius: 50px;
-    padding: 50px 45px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(12px);
-    animation: fadeInUp 0.8s ease;
-    transition: transform 0.3s ease;
-}
-
-.hero-content:hover { transform: translateY(-5px); }
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.organization-logo-large {
-    width: 90px;
-    height: 90px;
-    margin: 0 auto 20px;
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 10px 25px rgba(212, 160, 23, 0.4);
-    animation: floatLogo 3s ease-in-out infinite;
-}
-
-@keyframes floatLogo {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-.organization-logo-large img {
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid white;
-}
-
-.organization-name h2 {
-    font-size: 32px;
-    color: white;
-    margin-bottom: 8px;
-    font-weight: 800;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.organization-name p {
-    font-size: 16px;
-    color: #eee;
-    letter-spacing: 1px;
-}
-
-.welcome-badge {
-    display: inline-block;
-    background: rgba(212, 160, 23, 0.9);
-    color: white;
-    padding: 8px 25px;
-    border-radius: 40px;
-    font-size: 14px;
-    font-weight: 600;
-    margin: 20px 0 15px;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.9; transform: scale(1.02); }
-}
-
-.main-headline {
-    font-size: 28px;
-    font-weight: 800;
-    color: white;
-    margin: 15px 0;
-    line-height: 1.4;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.main-headline i {
-    color: #d4a017;
-    margin: 0 5px;
-}
-
-.features-grid-landing {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin: 30px 0;
-}
-
-.feature-item {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 14px;
-    border-radius: 20px;
-    font-weight: 600;
-    color: white;
-    transition: 0.3s;
-    text-align: center;
-    backdrop-filter: blur(4px);
-}
-
-.feature-item i {
-    color: #d4a017;
-    margin-left: 8px;
-    font-size: 18px;
-}
-
-.feature-item:hover {
-    background: rgba(212, 160, 23, 0.3);
-    transform: translateY(-5px);
-}
-
-.login-main-btn {
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    color: white;
-    border: none;
-    padding: 16px 45px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 15px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.login-main-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(212, 160, 23, 0.4);
-}
-
-/* ==================== ANIMATED BACKGROUND BUBBLES ==================== */
-.animated-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
-
-.bg-bubble {
-    position: absolute;
-    background: rgba(212, 160, 23, 0.15);
-    border-radius: 50%;
-    animation: floatBubble 15s infinite ease-in-out;
-}
-
-@keyframes floatBubble {
-    0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
-    25% { transform: translateY(-30px) translateX(20px); }
-    50% { transform: translateY(-60px) translateX(-10px); opacity: 0.6; }
-    75% { transform: translateY(-30px) translateX(15px); }
-}
-
-/* ==================== TENT & FLAME ANIMATIONS ==================== */
-.tent-animation-area {
-    position: fixed;
-    right: 50px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    z-index: 0;
-}
-
-.floating-tent {
-    width: 150px;
-    height: 150px;
-    background: rgba(212, 160, 23, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: rotateTent 0.8s ease-in-out forwards;
-}
-
-.floating-tent i {
-    font-size: 80px;
-    color: #d4a017;
-    text-shadow: 0 2px 10px rgba(212, 160, 23, 0.5);
-}
-
-@keyframes rotateTent {
-    0% { transform: rotate(0deg); background: rgba(212, 160, 23, 0.1); }
-    25% { transform: rotate(90deg); background: rgba(212, 160, 23, 0.3); }
-    50% { transform: rotate(180deg); background: rgba(212, 160, 23, 0.5); }
-    75% { transform: rotate(270deg); background: rgba(212, 160, 23, 0.3); }
-    100% { transform: rotate(360deg); background: rgba(212, 160, 23, 0.1); opacity: 0; visibility: hidden; }
-}
-
-.scout-image-right {
-    width: 0;
-    height: 300px;
-    border-radius: 20px;
-    overflow: hidden;
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(5px);
-    padding: 10px;
-    opacity: 0;
-    transition: all 0.5s ease;
-}
-
-.scout-image-right.show {
-    width: 350px;
-    opacity: 1;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
-
-.scout-image-right img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-}
-
-.flame-animation-area {
-    position: fixed;
-    bottom: 50px;
-    left: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    z-index: 0;
-}
-
-.flame-icon {
-    font-size: 70px;
-    color: #e67e22;
-    filter: drop-shadow(0 0 15px #e67e22);
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.flame-icon.growing {
-    animation: flameGrow 0.8s ease-in-out;
-}
-
-@keyframes flameGrow {
-    0% { font-size: 70px; filter: drop-shadow(0 0 15px #e67e22); }
-    50% { font-size: 120px; filter: drop-shadow(0 0 40px #f39c12); }
-    100% { font-size: 70px; filter: drop-shadow(0 0 15px #e67e22); }
-}
-
-.flame-image {
-    width: 0;
-    height: 300px;
-    border-radius: 20px;
-    overflow: hidden;
-    opacity: 0;
-    transition: all 0.5s ease;
-}
-
-.flame-image.show {
-    width: 350px;
-    opacity: 1;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-}
-
-.flame-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-}
-
-.flame-icon.hide { display: none; }
-
-.footer-landing {
-    background: rgba(0, 0, 0, 0.6);
-    color: #ddd;
-    padding: 15px;
-    text-align: center;
-    font-size: 13px;
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid rgba(212, 160, 23, 0.3);
-}
-
-.footer-landing p { margin: 5px 0; }
 
 /* ==================== GLOBAL LOGO (Fixed) ==================== */
 .global-logo {
@@ -1488,244 +1080,7 @@ body.loaded #leadersList > div,
 body.loaded #squadsList > div {
     opacity: 1;
 }
-/* ========== LANDING PAGE NEW STYLES ========== */
-.landing-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 30px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(212, 160, 23, 0.3);
-}
 
-.navbar-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-    padding: 5px 15px;
-    border-radius: 50px;
-    background: rgba(212, 160, 23, 0.1);
-}
-
-.navbar-logo:hover {
-    background: rgba(212, 160, 23, 0.2);
-    transform: translateX(-3px);
-}
-
-.navbar-logo img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: 2px solid #d4a017;
-    object-fit: cover;
-}
-
-.logo-text .logo-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #1a472a;
-}
-
-.logo-text .logo-subtitle {
-    font-size: 11px;
-    color: #666;
-}
-
-.login-nav-btn {
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    color: white;
-    border: none;
-    padding: 8px 22px;
-    border-radius: 40px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: 0.3s;
-}
-
-.login-nav-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
-}
-
-.hero-card {
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(12px);
-    border-radius: 50px;
-    padding: 50px 45px;
-    max-width: 750px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    animation: fadeInUp 0.8s ease;
-    margin: 0 auto;
-}
-
-.org-logo {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 20px;
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: floatLogo 3s ease-in-out infinite;
-}
-
-.org-logo img {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid white;
-}
-
-.org-name h1 {
-    font-size: 34px;
-    color: white;
-    font-weight: 800;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.org-name p {
-    font-size: 16px;
-    color: #eee;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin: 30px 0;
-}
-
-.feature {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 12px;
-    border-radius: 20px;
-    color: white;
-    font-weight: 600;
-    transition: 0.3s;
-}
-
-.feature i {
-    color: #d4a017;
-    margin-left: 8px;
-}
-
-.feature:hover {
-    background: rgba(212, 160, 23, 0.4);
-    transform: translateY(-5px);
-}
-
-.cta-btn {
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    color: white;
-    border: none;
-    padding: 14px 45px;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.cta-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(212, 160, 23, 0.4);
-}
-
-.gallery-section {
-    padding: 60px 30px;
-    background: rgba(255, 255, 255, 0.05);
-    text-align: center;
-}
-
-.gallery-title {
-    font-size: 28px;
-    color: #d4a017;
-    margin-bottom: 30px;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.gallery-item {
-    overflow: hidden;
-    border-radius: 20px;
-    transition: 0.3s;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transition: 0.5s;
-}
-
-.gallery-item:hover {
-    transform: scale(1.03);
-}
-
-.gallery-item:hover img {
-    transform: scale(1.05);
-}
-
-.landing-footer {
-    background: rgba(0, 0, 0, 0.7);
-    color: #ddd;
-    padding: 25px;
-    text-align: center;
-    font-size: 13px;
-    border-top: 1px solid rgba(212, 160, 23, 0.3);
-}
-
-.landing-footer p {
-    margin: 5px 0;
-}
-
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes floatLogo {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-@media (max-width: 768px) {
-    .features-grid { grid-template-columns: 1fr; }
-    .hero-card { padding: 30px 20px; margin: 0 15px; }
-    .org-name h1 { font-size: 24px; }
-    .main-headline { font-size: 20px; }
-    .cta-btn { padding: 10px 25px; font-size: 16px; }
-    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-    .navbar-logo img { width: 35px; height: 35px; }
-    .logo-text .logo-title { font-size: 12px; }
-    .landing-navbar { padding: 10px 15px; }
-}
     </style>
 </head>
 <body>
@@ -1766,19 +1121,7 @@ body.loaded #squadsList > div {
     joinRequests: [],
     messages: []
 };
-// ==================== دالة تحديث الفروع عند اختيار المنطقة ====================
-function updateSubBranchesByBranch(branchSelectId, subBranchSelectId) {
-    const branchId = parseInt(document.getElementById(branchSelectId).value);
-    const subBranchSelect = document.getElementById(subBranchSelectId);
-    
-    if (branchId) {
-        const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
-        subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
-            branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
-    } else {
-        subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
-    }
-}
+
         // ==================== FIREBASE OPERATIONS ====================
         
       // Save all data to Firebase
@@ -1805,8 +1148,65 @@ async function saveAllDataToFirebase() {
     }
 }
 
-// Load all data from Firebase
-async function loadAllDataFromFirebase() {
+function renderLeaderApp(container) {
+    const leader = currentUser;
+    const subBranchesNames = leader.subBranches ? leader.subBranches.map(sb => sb.name).join(' - ') : 'جميع الفروع';
+    
+    container.innerHTML = `
+        <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header" style="padding: 10px 20px; text-align: center;">
+                <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                    <i class="fas fa-user-tie" style="font-size: 32px; color: #d4a017;"></i>
+                    <div>
+                        <h3 style="font-size: 14px; margin: 0;">${leader.name}</h3>
+                        <p style="font-size: 10px;">القائد المسؤول</p>
+                    </div>
+                </div>
+                <p style="font-size: 10px; margin-top: 8px;"><i class="fas fa-code-branch"></i> ${subBranchesNames}</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-page="dashboard"><a onclick="changeLeaderPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
+                <li data-page="members"><a onclick="changeLeaderPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
+                <li data-page="joinRequests"><a onclick="changeLeaderPage('joinRequests')"><i class="fas fa-user-plus"></i> طلبات الانضمام</a></li>
+                <li data-page="tasks"><a onclick="changeLeaderPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
+                <li data-page="community"><a onclick="changeLeaderPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
+                    <a onclick="logout()" style="color: #e74c3c;">
+                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="header">
+            <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - ${subBranchesNames}</p></div></div>
+            <div style="flex: 1;"></div>
+            <div class="user-info"><i class="fas fa-user-tie"></i><span>${leader.name}</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
+        </div>
+
+        <div class="main-content">
+            <div id="leaderPageContent"></div>
+        </div>
+        <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company</p></div>
+    `;
+    renderLeaderDashboard();
+}
+function changeLeaderPage(page) {
+    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+    document.querySelector(`.sidebar-menu li[data-page="${page}"]`)?.classList.add('active');
+    
+    if (page === 'dashboard') renderLeaderDashboard();
+    else if (page === 'members') renderLeaderMembers();
+    else if (page === 'joinRequests') renderLeaderJoinRequests();
+    else if (page === 'tasks') renderLeaderTasks();
+    else if (page === 'community') renderLeaderCommunity();
+    closeSidebar();
+}
+       async function loadAllDataFromFirebase() {
     try {
         const snapshot = await database.ref('appData').once('value');
         const data = snapshot.val();
@@ -1841,82 +1241,6 @@ async function loadAllDataFromFirebase() {
         showToast('خطأ في تحميل البيانات', 'error');
         return false;
     }
-}
-function createAnimatedBubbles() {
-    const container = document.getElementById('animatedBg');
-    if (!container) return;
-    for (let i = 0; i < 15; i++) {
-        const bubble = document.createElement('div');
-        bubble.className = 'bg-bubble';
-        let size = Math.random() * 120 + 40;
-        bubble.style.width = size + 'px';
-        bubble.style.height = size + 'px';
-        bubble.style.left = Math.random() * 100 + '%';
-        bubble.style.top = Math.random() * 100 + '%';
-        bubble.style.animationDelay = Math.random() * 10 + 's';
-        bubble.style.animationDuration = (Math.random() * 15 + 10) + 's';
-        container.appendChild(bubble);
-    }
-}
-// ==================== عرض واجهة القائد (نفس واجهة القائد العام مع فلتر) ====================
-function renderLeaderApp(container) {
-    const leader = currentUser;
-    const subBranch = appData.subBranches.find(sb => sb.id === leader.subBranchId);
-    const branchName = subBranch ? subBranch.name : 'فرعي';
-    
-    container.innerHTML = `
-        <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
-            <span></span><span></span><span></span>
-        </div>
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header" style="padding: 10px 20px; text-align: center;">
-                <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
-                    <i class="fas fa-user-tie" style="font-size: 32px; color: #d4a017;"></i>
-                    <div>
-                        <h3 style="font-size: 14px; margin: 0;">${leader.name}</h3>
-                        <p style="font-size: 10px;">قائد فرع ${branchName}</p>
-                    </div>
-                </div>
-            </div>
-            <ul class="sidebar-menu">
-                <li class="active" data-page="dashboard"><a onclick="changeLeaderPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
-                <li data-page="members"><a onclick="changeLeaderPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
-                <li data-page="joinRequests"><a onclick="changeLeaderPage('joinRequests')"><i class="fas fa-user-plus"></i> طلبات الانضمام</a></li>
-                <li data-page="tasks"><a onclick="changeLeaderPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
-                <li data-page="community"><a onclick="changeLeaderPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
-                    <a onclick="logout()" style="color: #e74c3c;">
-                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="header">
-            <div class="logo"><i class="fas fa-campground"></i><div><h1>نظام الكشاف</h1><p>لوحة تحكم القائد - فرع ${branchName}</p></div></div>
-            <div style="flex: 1;"></div>
-            <div class="user-info"><i class="fas fa-user-tie"></i><span>${leader.name}</span><button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button></div>
-        </div>
-
-        <div class="main-content">
-            <div id="leaderPageContent"></div>
-        </div>
-        <div class="footer"><p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية</p></div>
-    `;
-    renderLeaderDashboard();
-}
-// ==================== تغيير صفحات القائد ====================
-function changeLeaderPage(page) {
-    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
-    document.querySelector(`.sidebar-menu li[data-page="${page}"]`)?.classList.add('active');
-    
-    if (page === 'dashboard') renderLeaderDashboard();
-    else if (page === 'members') renderLeaderMembers();
-    else if (page === 'joinRequests') renderLeaderJoinRequests();
-    else if (page === 'tasks') renderLeaderTasks();
-    else if (page === 'community') renderLeaderCommunity();
-    closeSidebar();
 }
 
         async function initializeDefaultData() {
@@ -2055,37 +1379,6 @@ function showLeaderDetails(leaderId) {
         }
     });
 }
-// ==================== دالة مساعدة لتصفية البيانات حسب القائد ====================
-// ==================== دالة مساعدة لتصفية البيانات حسب القائد ====================
-function getLeaderFilteredData() {
-    const leader = currentUser;
-    
-    // جلب جميع الطلائع التابعة لنفس المنطقة التي يتبعها فرع القائد
-    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
-    const mySquadIds = mySquads.map(s => s.id);
-    
-    // جلب جميع الأعضاء التابعين لهذه الطلائع
-    const myMembers = appData.members.filter(m => mySquadIds.includes(m.squadId));
-    
-    // جلب جميع التكاليف التابعة لهذه الطلائع
-    const myTasks = appData.tasks.filter(t => mySquadIds.includes(t.squadId));
-    
-    // جلب طلبات الانضمام لهذه الطلائع
-    const myJoinRequests = appData.joinRequests.filter(r => mySquadIds.includes(r.squadId));
-    
-    return {
-        mySquads,
-        mySquadIds,
-        myMembers,
-        myTasks,
-        myJoinRequests,
-        branchId: leader.branchId,
-        subBranchId: leader.subBranchId,
-        leaderName: leader.name
-    };
-}
-
-
 
 // دالة تعديل بيانات القائد
 function editLeader(leaderId) {
@@ -2288,38 +1581,9 @@ function closeSidebar() {
     document.getElementById('hamburger')?.classList.remove('open');
 }
         
-function startAnimations() {
-    const tent = document.querySelector('.floating-tent');
-    const scoutImage = document.querySelector('.scout-image-right');
-    
-    if (tent && scoutImage) {
-        tent.addEventListener('animationend', function() {
-            scoutImage.classList.add('show');
-        });
-    }
-}
 
-function autoFlameAnimation() {
-    const flameIcon = document.querySelector('.flame-icon');
-    const flameImage = document.querySelector('.flame-image');
-    
-    if (flameIcon && flameImage) {
-        setTimeout(() => {
-            flameIcon.classList.add('growing');
-            setTimeout(() => flameIcon.classList.remove('growing'), 800);
-            
-            setTimeout(() => {
-                flameIcon.classList.add('growing');
-                setTimeout(() => flameIcon.classList.remove('growing'), 800);
-                
-                setTimeout(() => {
-                    flameImage.classList.add('show');
-                    flameIcon.classList.add('hide');
-                }, 400);
-            }, 1800);
-        }, 500);
-    }
-}
+
+
 
 function autoFlameAnimation() {
     const flameIcon = document.querySelector('.flame-icon');
@@ -2444,7 +1708,6 @@ setTimeout(() => {
 }
 // ==================== الدوال الجديدة لنظام طلبات الانضمام ====================
 
-// دالة عرض طلب انضمام جديد (معدلة لإظهار اسم القائد بجانب الطليعة)
 function showJoinRequestModal() {
     const modal = document.createElement('div');
     modal.className = 'modal';
@@ -2477,7 +1740,7 @@ function showJoinRequestModal() {
                     </select>
                 </div>
                 <div class="input-group"><label>الفرع</label>
-                    <select id="reqSubBranch" onchange="updateSquadsWithLeaders()" required>
+                    <select id="reqSubBranch" required>
                         <option value="">-- اختر المنطقة أولاً --</option>
                     </select>
                 </div>
@@ -2494,48 +1757,38 @@ function showJoinRequestModal() {
     `;
     document.body.appendChild(modal);
     
-    // دالة تحديث الطلايع مع إظهار اسم القائد
-    // دالة تحديث الطلايع مع إظهار اسم القائد (نسخة محسنة)
-window.updateSquadsWithLeaders = function() {
-    const subBranchId = parseInt(document.getElementById('reqSubBranch')?.value);
-    const squadSelect = document.getElementById('reqSquad');
-    
-    console.log('updateSquadsWithLeaders called, subBranchId:', subBranchId);
-    console.log('جميع القادة:', appData.leaders);
-    
-    if (subBranchId && !isNaN(subBranchId)) {
-        // البحث عن الفرع المختار
-        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
-        console.log('الفرع المختار:', subBranch);
+    // إضافة مستمع لتحديث الفروع عند اختيار المنطقة
+    document.getElementById('reqBranch').addEventListener('change', function() {
+        const branchId = parseInt(this.value);
+        const subBranchSelect = document.getElementById('reqSubBranch');
+        const squadSelect = document.getElementById('reqSquad');
         
-        if (subBranch) {
-            // جلب جميع الطلائع التابعة لنفس المنطقة
-            const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
-            console.log('الطلائع في هذه المنطقة:', squads);
-            
-            // جلب القائد المسؤول عن هذا الفرع بالضبط
-            const leader = appData.leaders.find(l => l.subBranchId === subBranchId);
-            console.log('القائد المسؤول عن هذا الفرع:', leader);
-            
-            if (squads.length === 0) {
-                squadSelect.innerHTML = '<option value="">-- لا توجد طلائع في هذا الفرع --</option>';
-            } else {
+        if (branchId) {
+            const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
+            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+                branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
+        } else {
+            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+        }
+    });
+    
+    // إضافة مستمع لتحديث الطلايع عند اختيار الفرع
+    document.getElementById('reqSubBranch').addEventListener('change', function() {
+        const subBranchId = parseInt(this.value);
+        const squadSelect = document.getElementById('reqSquad');
+        
+        if (subBranchId) {
+            const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
+            if (subBranch) {
+                const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
                 squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
-                    squads.map(s => {
-                        const leaderName = leader ? leader.name : 'لم يتم تعيين قائد';
-                        return `<option value="${s.id}">🏴 ${s.name} (القائد المسؤول: ${leaderName})</option>`;
-                    }).join('');
+                    squads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
             }
         } else {
-            squadSelect.innerHTML = '<option value="">-- الفرع غير موجود --</option>';
+            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
         }
-    } else {
-        squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
-    }
-};
-    
-    document.getElementById('reqSubBranch').addEventListener('change', function() {
-        window.updateSquadsWithLeaders();
     });
     
     document.getElementById('joinRequestForm').addEventListener('submit', async (e) => {
@@ -2560,8 +1813,6 @@ window.updateSquadsWithLeaders = function() {
             return;
         }
         
-        const leader = appData.leaders.find(l => l.subBranchId === subBranchId);
-        
         const newRequest = {
             id: Date.now(),
             name: document.getElementById('reqName').value,
@@ -2575,15 +1826,27 @@ window.updateSquadsWithLeaders = function() {
             password: document.getElementById('reqPassword').value,
             status: 'pending',
             requestedAt: new Date().toISOString(),
-            code: `KS${String(appData.members.length + 1).padStart(3, '0')}`,
-            responsibleLeader: leader ? leader.name : 'القائد العام'
+            code: `KS${String(appData.members.length + 1).padStart(3, '0')}`
         };
         
         appData.joinRequests.push(newRequest);
         await saveAllDataToFirebase();
-        showToast(`تم إرسال طلب الانضمام إلى ${leader ? leader.name : 'القائد العام'}، انتظر الموافقة`);
+        showToast('تم إرسال طلب الانضمام إلى القائد، انتظر الموافقة');
         modal.remove();
     });
+}
+// دالة مساعدة لتحديث قائمة الفروع عند اختيار المنطقة
+function updateSubBranchesByBranch(branchSelectId, subBranchSelectId) {
+    const branchId = parseInt(document.getElementById(branchSelectId).value);
+    const subBranchSelect = document.getElementById(subBranchSelectId);
+    
+    if (branchId) {
+        const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
+        subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+            branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+    } else {
+        subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+    }
 }
 
 // 2. دالة عرض قائمة طلبات الانضمام للقائد
@@ -2633,14 +1896,12 @@ function showJoinRequestsList() {
 }
 
 // 3. دالة عرض تفاصيل طلب الانضمام للقائد (قبول أو رفض)
-// دالة عرض تفاصيل طلب الانضمام (معدلة لإظهار القائد المسؤول)
 function viewJoinRequestDetails(requestId) {
     const request = appData.joinRequests.find(r => r.id === requestId);
     if (!request) return;
     
     const branch = appData.branches.find(b => b.id === request.branchId);
     const squad = appData.squads.find(s => s.id === request.squadId);
-    const leader = appData.leaders.find(l => l.subBranchId === request.subBranchId);
     
     const modal = document.createElement('div');
     modal.className = 'modal';
@@ -2658,7 +1919,6 @@ function viewJoinRequestDetails(requestId) {
                 <div class="detail-item"><div class="detail-label">الرتبة المطلوبة</div><div class="detail-value">${request.rank}</div></div>
                 <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
                 <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${squad?.name || '-'}</div></div>
-                <div class="detail-item"><div class="detail-label">القائد المسؤول</div><div class="detail-value"><span class="badge" style="background:#d4a017;">${leader ? leader.name : request.responsibleLeader || 'غير محدد'}</span></div></div>
                 <div class="detail-item"><div class="detail-label">اسم المستخدم</div><div class="detail-value">${request.username}</div></div>
                 <div class="detail-item"><div class="detail-label">كلمة المرور</div><div class="detail-value">••••••</div></div>
                 <div class="detail-item"><div class="detail-label">تاريخ الطلب</div><div class="detail-value">${new Date(request.requestedAt).toLocaleString('ar-EG')}</div></div>
@@ -3380,7 +2640,6 @@ function canSubmitTask(taskId) {
 // ==================== نظام القادة (Leaders System) ====================
 
 // دالة إضافة قائد جديد (للقائد العام فقط)
-// دالة إضافة قائد جديد (للقائد العام فقط) - نسخة محسنة
 function showAddLeaderModal() {
     const modal = document.createElement('div');
     modal.className = 'modal';
@@ -3388,23 +2647,23 @@ function showAddLeaderModal() {
     modal.innerHTML = `
         <div class="modal-content" style="max-width:600px;">
             <div class="modal-header">
-                <h3><i class="fas fa-user-tie"></i> إضافة قائد فرع جديد</h3>
+                <h3><i class="fas fa-user-tie"></i> إضافة قائد جديد</h3>
                 <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
             </div>
             <form id="addLeaderForm">
                 <div class="input-group"><label>الاسم الكامل</label><input type="text" id="leaderName" required></div>
                 <div class="input-group"><label>السن</label><input type="number" id="leaderAge" min="18" max="70" required></div>
                 <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="leaderPhone" required></div>
-                <div class="input-group"><label>المنطقة</label>
+                <div class="input-group"><label>المنطقة المسؤول عنها</label>
                     <select id="leaderBranch" required>
                         <option value="">-- اختر المنطقة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>الفرع (سيشرف على جميع طلائعه)</label>
-                    <select id="leaderSubBranchSelect" required>
-                        <option value="">-- اختر المنطقة أولاً --</option>
-                    </select>
+                <div class="input-group"><label>الفروع المسؤول عنها (يمكن اختيار أكثر من فرع)</label>
+                    <div id="leaderSubBranchesContainer" style="background: #f8f9fa; padding: 12px; border-radius: 12px; max-height: 200px; overflow-y: auto; border: 2px solid #e0e0e0;">
+                        <div style="text-align:center; color:#999;">-- اختر المنطقة أولاً --</div>
+                    </div>
                 </div>
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="leaderUsername" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="leaderPassword" required></div>
@@ -3414,17 +2673,25 @@ function showAddLeaderModal() {
     `;
     document.body.appendChild(modal);
     
-    // عند تغيير المنطقة، تحديث قائمة الفروع
+    // عند تغيير المنطقة، نعرض الفروع
     document.getElementById('leaderBranch').addEventListener('change', function() {
         const branchId = parseInt(this.value);
-        const subBranchSelect = document.getElementById('leaderSubBranchSelect');
+        const container = document.getElementById('leaderSubBranchesContainer');
         
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
-            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
-                branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            if (branches.length === 0) {
+                container.innerHTML = '<div style="text-align:center; color:#999;">لا توجد فروع في هذه المنطقة</div>';
+            } else {
+                container.innerHTML = branches.map(sb => `
+                    <label style="display: flex; align-items: center; gap: 10px; padding: 8px; margin: 4px 0; background: white; border-radius: 8px; cursor: pointer;">
+                        <input type="checkbox" class="subBranchCheckbox" value="${sb.id}" data-name="${sb.name}">
+                        <span><i class="fas fa-code-branch"></i> ${sb.name}</span>
+                    </label>
+                `).join('');
+            }
         } else {
-            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+            container.innerHTML = '<div style="text-align:center; color:#999;">-- اختر المنطقة أولاً --</div>';
         }
     });
     
@@ -3441,11 +2708,17 @@ function showAddLeaderModal() {
             return;
         }
         
-        const subBranchId = parseInt(document.getElementById('leaderSubBranchSelect').value);
-        const selectedSubBranch = appData.subBranches.find(sb => sb.id === subBranchId);
+        // جمع الفروع المختارة
+        const selectedSubBranches = [];
+        document.querySelectorAll('.subBranchCheckbox:checked').forEach(cb => {
+            selectedSubBranches.push({
+                id: parseInt(cb.value),
+                name: cb.getAttribute('data-name')
+            });
+        });
         
-        if (!selectedSubBranch) {
-            showToast('الرجاء اختيار فرع صحيح', 'error');
+        if (selectedSubBranches.length === 0) {
+            showToast('الرجاء اختيار فرع واحد على الأقل', 'error');
             return;
         }
         
@@ -3454,9 +2727,9 @@ function showAddLeaderModal() {
             name: document.getElementById('leaderName').value,
             age: parseInt(document.getElementById('leaderAge').value),
             phone: document.getElementById('leaderPhone').value,
-            branchId: selectedSubBranch.branchId,
-            subBranchId: subBranchId,
-            subBranchName: selectedSubBranch.name,
+            branchId: parseInt(document.getElementById('leaderBranch').value),
+            subBranchIds: selectedSubBranches.map(sb => sb.id),
+            subBranches: selectedSubBranches,
             username: username,
             password: document.getElementById('leaderPassword').value,
             createdAt: new Date().toISOString(),
@@ -3465,7 +2738,7 @@ function showAddLeaderModal() {
         
         appData.leaders.push(newLeader);
         await saveAllDataToFirebase();
-        showToast(`✅ تم إضافة القائد ${newLeader.name} كمسؤول عن فرع ${selectedSubBranch.name}`);
+        showToast(`تم إضافة القائد ${newLeader.name} بنجاح`);
         modal.remove();
         renderLeadersList();
     });
@@ -3614,10 +2887,21 @@ function changeLeaderPage(page) {
 }
 
 // لوحة تحكم القائد
-// ==================== لوحة التحكم (Dashboard) ====================
 function renderLeaderDashboard() {
-    const { myMembers, mySquads, myTasks, myJoinRequests } = getLeaderFilteredData();
-    const pendingRequests = myJoinRequests.filter(r => r.status === 'pending').length;
+    const leader = currentUser;
+    
+    // جلب جميع الطلائع التابعة لنفس فرع القائد
+    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
+    const mySquadIds = mySquads.map(s => s.id);
+    
+    // جلب جميع الأعضاء التابعين لهذه الطلائع
+    const myMembers = appData.members.filter(m => mySquadIds.includes(m.squadId));
+    
+    // جلب جميع التكاليف التابعة لهذه الطلائع
+    const myTasks = appData.tasks.filter(t => mySquadIds.includes(t.squadId));
+    
+    // جلب طلبات الانضمام لهذه الطلائع
+    const pendingJoinRequests = appData.joinRequests.filter(r => mySquadIds.includes(r.squadId) && r.status === 'pending');
     
     const container = document.getElementById('leaderPageContent');
     container.innerHTML = `
@@ -3625,128 +2909,48 @@ function renderLeaderDashboard() {
             <div class="stat-card"><i class="fas fa-users"></i><div class="number">${myMembers.length}</div><div class="label">الأعضاء</div></div>
             <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${mySquads.length}</div><div class="label">الطلايع</div></div>
             <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${myTasks.length}</div><div class="label">التكاليف</div></div>
-            <div class="stat-card" style="cursor:pointer;" onclick="changeLeaderPage('joinRequests')">
-                <i class="fas fa-user-plus"></i>
-                <div class="number" style="color:${pendingRequests > 0 ? '#e74c3c' : '#2ecc71'};">${pendingRequests}</div>
-                <div class="label">طلبات انضمام</div>
-            </div>
+            <div class="stat-card stat-card" style="cursor:pointer;" onclick="changeLeaderPage('joinRequests')"><i class="fas fa-user-plus"></i><div class="number" style="color:${pendingJoinRequests.length > 0 ? '#e74c3c' : '#2ecc71'};">${pendingJoinRequests.length}</div><div class="label">طلبات انضمام</div></div>
         </div>
-        
         <div class="card">
-            <h3><i class="fas fa-trophy"></i> ترتيب الطلايع بالنقاط (فريقي)</h3>
-            <div id="leaderSquadRankingContainer"></div>
-        </div>
-        
-        <div class="card">
-            <h3><i class="fas fa-tasks"></i> التكاليف النشطة (فريقي)</h3>
-            <div id="leaderActiveTasksContainer"></div>
+            <h3><i class="fas fa-trophy"></i> ترتيب الأعضاء (فريقي)</h3>
+            <div id="leaderRankingList"></div>
         </div>
     `;
     
-    renderLeaderSquadRanking();
-    renderLeaderActiveTasks();
-}
-// ==================== التكاليف النشطة للقائد ====================
-function renderLeaderActiveTasks() {
-    const container = document.getElementById('leaderActiveTasksContainer');
-    if (!container) return;
-    
-    const now = new Date();
-    const { myTasks } = getLeaderFilteredData();
-    const activeTasks = myTasks.filter(task => new Date(task.endDate) > now);
-    
-    if (activeTasks.length === 0) {
-        container.innerHTML = '<p style="text-align:center;">🎉 لا توجد تكاليف نشطة حالياً</p>';
-        return;
-    }
-    
-    container.innerHTML = activeTasks.map(task => {
-        const squad = appData.squads.find(s => s.id === task.squadId);
-        const endDate = new Date(task.endDate);
-        const timeRemaining = endDate - now;
-        
-        let countdownText = '';
-        if (timeRemaining > 0) {
-            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeRemaining % (86400000)) / (3600000));
-            countdownText = `${days} يوم ${hours} ساعة`;
-        } else {
-            countdownText = 'انتهى الوقت';
-        }
-        
-        return `
-            <div class="task-item">
-                <div class="task-header">
-                    <span class="task-title">${escapeHtml(task.title)}</span>
-                    <span class="task-points">${task.pointsValue} نقطة</span>
-                </div>
-                <div class="task-description">${escapeHtml(task.description)}</div>
-                <div class="task-meta">
-                    <i class="fas fa-flag"></i> ${squad?.name || '-'} | 
-                    <i class="fas fa-calendar-alt"></i> ينتهي: ${endDate.toLocaleString('ar-EG')}
-                </div>
-                <div class="task-countdown" style="margin-top: 10px; padding: 8px; background: #d4a01720; border-radius: 10px;">
-                    <i class="fas fa-hourglass-half"></i>
-                    <strong>⏳ الوقت المتبقي: ${countdownText}</strong>
-                </div>
-            </div>
-        `;
-    }).join('');
-}
-
-// ==================== ترتيب الطلايع للقائد ====================
-function renderLeaderSquadRanking() {
-    const container = document.getElementById('leaderSquadRankingContainer');
-    if (!container) return;
-    
-    const { mySquads } = getLeaderFilteredData();
-    
-    // حساب نقاط كل طليعة
-    const squadPoints = mySquads.map(squad => {
-        const members = appData.members.filter(m => m.squadId === squad.id);
-        const totalPoints = members.reduce((sum, m) => sum + m.points, 0);
-        return { ...squad, totalPoints, memberCount: members.length };
-    });
-    
-    squadPoints.sort((a, b) => b.totalPoints - a.totalPoints);
-    
-    if (squadPoints.length === 0) {
-        container.innerHTML = '<p style="text-align:center;">لا توجد طلائع</p>';
-        return;
-    }
-    
-    container.innerHTML = squadPoints.map((squad, idx) => `
-        <div style="display:flex; justify-content:space-between; align-items:center; padding:12px; border-bottom:1px solid #eee;">
-            <div>
-                <span style="background:${idx === 0 ? '#d4a017' : '#666'}; color:white; width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; margin-left:10px;">${idx + 1}</span>
-                <strong>🏴 ${squad.name}</strong>
-                <small> (${squad.memberCount} عضو)</small>
-            </div>
-            <div><strong style="color:#1a472a;">${squad.totalPoints}</strong> نقطة</div>
+    // عرض ترتيب الأعضاء
+    const sortedMembers = [...myMembers].sort((a,b) => b.points - a.points);
+    const rankingHtml = sortedMembers.slice(0, 10).map((m, i) => `
+        <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+            <div>${i+1}. ${m.name} <span class="badge" style="background:#d4a017;">${m.rank}</span></div>
+            <div><strong>${m.points}</strong> نقطة</div>
         </div>
     `).join('');
+    document.getElementById('leaderRankingList').innerHTML = rankingHtml || '<p>لا يوجد أعضاء</p>';
 }
 // عرض أعضاء القائد
-// ==================== إدارة الأعضاء (نفس واجهة القائد العام مع فلتر) ====================
 function renderLeaderMembers() {
-    const container = document.getElementById('leaderPageContent');
-    const { mySquads } = getLeaderFilteredData();
+    const leader = currentUser;
     
+    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
+    const mySquadIds = mySquads.map(s => s.id);
+    const myMembers = appData.members.filter(m => mySquadIds.includes(m.squadId));
+    
+    const container = document.getElementById('leaderPageContent');
     container.innerHTML = `
         <div class="card">
-            <h3><i class="fas fa-users"></i> إدارة الأعضاء (فريقي)</h3>
+            <h3><i class="fas fa-users"></i> الأعضاء التابعين لفريقي</h3>
             <div class="squad-filter">
-                <input type="text" id="leaderMemberSearch" placeholder="بحث بالاسم أو الكود..." oninput="filterLeaderMembersTable()">
-                <select id="leaderSquadFilter" onchange="filterLeaderMembersTable()">
+                <input type="text" id="leaderMemberSearch" placeholder="بحث بالاسم أو الكود..." oninput="filterLeaderMembers()">
+                <select id="leaderSquadFilter" onchange="filterLeaderMembers()">
                     <option value="all">جميع الطلايع</option>
-                    ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+                    ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name} (${s.leader})</option>`).join('')}
                 </select>
                 <button class="btn btn-primary" onclick="showAddMemberModalForLeader()"><i class="fas fa-plus"></i> إضافة عضو</button>
             </div>
-            <div id="leaderMembersTableContainer"></div>
+            <div id="leaderMembersTable"></div>
         </div>
     `;
-    filterLeaderMembersTable();
+    filterLeaderMembers();
 }
 
 function filterLeaderMembers() {
@@ -3789,12 +2993,15 @@ function filterLeaderMembers() {
     const tableContainer = document.getElementById('leaderMembersTable');
     if (tableContainer) tableContainer.innerHTML = tableHtml;
 }
-// ==================== فلترة أعضاء القائد ====================
-function filterLeaderMembersTable() {
+
+function filterLeaderMembers() {
+    const leader = currentUser;
     const searchTerm = document.getElementById('leaderMemberSearch')?.value?.toLowerCase() || '';
     const squadFilter = document.getElementById('leaderSquadFilter')?.value || 'all';
     
-    let { myMembers, mySquads } = getLeaderFilteredData();
+    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
+    const mySquadIds = mySquads.map(s => s.id);
+    let myMembers = appData.members.filter(m => mySquadIds.includes(m.squadId));
     
     if (squadFilter !== 'all') {
         myMembers = myMembers.filter(m => m.squadId == squadFilter);
@@ -3803,53 +3010,36 @@ function filterLeaderMembersTable() {
         myMembers = myMembers.filter(m => m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm));
     }
     
-    // ترتيب الرتب
-    const rankOrder = { 'عريف اول': 1, 'عريف': 2, 'سكرتير': 3, 'امين صندوق': 4, 'مساعد عريف اول': 5, 'مساعد عريف': 6 };
-    myMembers.sort((a, b) => (rankOrder[a.rank] || 999) - (rankOrder[b.rank] || 999));
-    
-    const container = document.getElementById('leaderMembersTableContainer');
-    if (!container) return;
-    
-    container.innerHTML = `
-        <div style="overflow-x:auto;">
-            <table class="data-table">
-                <thead>
-                    <tr><th>الكود</th><th>الاسم</th><th>الرتبة</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الإجراءات</th></tr>
-                </thead>
-                <tbody>
-                    ${myMembers.map(m => {
-                        const squad = appData.squads.find(s => s.id === m.squadId);
-                        return `
-                            <tr>
-                                <td>${m.code}</td>
-                                <td>${m.name}</td>
-                                <td><span class="badge" style="background:#d4a017;">${m.rank}</span></td>
-                                <td>${m.phone}</td>
-                                <td>${squad?.name || '-'}</td>
-                                <td>${m.points}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
-                                </td>
-                            </tr>
-                        `;
-                    }).join('')}
-                    ${myMembers.length === 0 ? '<tr><td colspan="7" style="text-align:center;">لا يوجد أعضاء</td></tr>' : ''}
-                </tbody>
-            </table>
-        </div>
+    const tableHtml = `
+        <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>الكود</th><th>الاسم</th><th>الرتبة</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الإجراءات</th></tr></thead><tbody>
+        ${myMembers.map(m => `<tr>
+            <td>${m.code}</td>
+            <td>${m.name}</td>
+            <td><span class="badge" style="background:#d4a017;">${m.rank}</span></td>
+            <td>${m.phone}</td>
+            <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
+            <td>${m.points}</td>
+            <td><button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
+                <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
+            </td>
+        </tr>`).join('')}
+        ${myMembers.length === 0 ? '<tr><td colspan="7" style="text-align:center;">لا يوجد أعضاء</td></tr>' : ''}
+        </tbody>}</table></div>
     `;
+    const tableContainer = document.getElementById('leaderMembersTable');
+    if (tableContainer) tableContainer.innerHTML = tableHtml;
 }
 
-
 // عرض طلبات الانضمام الخاصة بالقائد فقط
-// ==================== طلبات الانضمام للقائد ====================
 function renderLeaderJoinRequests() {
-    const container = document.getElementById('leaderPageContent');
-    const { myJoinRequests } = getLeaderFilteredData();
-    const pendingRequests = myJoinRequests.filter(r => r.status === 'pending');
+    const leader = currentUser;
     
+    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
+    const mySquadIds = mySquads.map(s => s.id);
+    const myRequests = appData.joinRequests.filter(r => mySquadIds.includes(r.squadId) && r.status === 'pending');
+    
+    const container = document.getElementById('leaderPageContent');
     container.innerHTML = `
         <div class="card">
             <h3><i class="fas fa-user-plus"></i> طلبات الانضمام (فريقي)</h3>
@@ -3857,28 +3047,25 @@ function renderLeaderJoinRequests() {
         </div>
     `;
     
-    if (pendingRequests.length === 0) {
+    if (myRequests.length === 0) {
         document.getElementById('leaderRequestsList').innerHTML = '<p style="text-align:center;">لا توجد طلبات انضمام معلقة</p>';
         return;
     }
     
-    const requestsHtml = pendingRequests.map(req => {
+    const requestsHtml = myRequests.map(req => {
         const branch = appData.branches.find(b => b.id === req.branchId);
         const squad = appData.squads.find(s => s.id === req.squadId);
-        const leader = appData.leaders.find(l => l.subBranchId === req.subBranchId);
         return `
             <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:10px; border-right:3px solid #d4a017;">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
                     <div>
                         <strong>${escapeHtml(req.name)}</strong><br>
                         <small>📞 ${req.phone} | ${req.age} سنة | ${req.rank}</small><br>
-                        <small>🏢 ${branch?.name || '-'} | 🏴 ${squad?.name || '-'}</small><br>
-                        <small>👨‍✈️ القائد المسؤول: ${leader ? leader.name : req.responsibleLeader || 'غير محدد'}</small>
+                        <small>🏢 ${branch?.name || '-'} | 🏴 ${squad?.name || '-'}</small>
                     </div>
                     <div>
                         <button class="btn btn-sm btn-success" onclick="approveJoinRequest(${req.id})"><i class="fas fa-check"></i> قبول</button>
                         <button class="btn btn-sm btn-danger" onclick="rejectJoinRequest(${req.id})"><i class="fas fa-ban"></i> رفض</button>
-                        <button class="btn btn-sm btn-info" onclick="viewJoinRequestDetails(${req.id})"><i class="fas fa-eye"></i> تفاصيل</button>
                     </div>
                 </div>
             </div>
@@ -3888,9 +3075,11 @@ function renderLeaderJoinRequests() {
 }
 
 // إدارة التكاليف للقائد (تظهر فقط لأعضاء فروعه)
-// ==================== إدارة التكاليف للقائد ====================
 function renderLeaderTasks() {
-    const { mySquads, myTasks } = getLeaderFilteredData();
+    const leader = currentUser;
+    
+    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
+    const mySquadIds = mySquads.map(s => s.id);
     
     const container = document.getElementById('leaderPageContent');
     container.innerHTML = `
@@ -3898,7 +3087,7 @@ function renderLeaderTasks() {
             <h3><i class="fas fa-plus"></i> إضافة تكليف جديد</h3>
             <select id="leaderTaskSquadSelect" style="width:100%; margin-bottom:15px; padding:10px; border-radius:30px;">
                 <option value="">اختر الطليعة</option>
-                ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
+                ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name} (القائد: ${s.leader})</option>`).join('')}
             </select>
             <button class="btn btn-primary" onclick="showAddTaskModalForLeader()"><i class="fas fa-plus"></i> إضافة تكليف</button>
         </div>
@@ -3908,20 +3097,22 @@ function renderLeaderTasks() {
         </div>
     `;
     
+    const myTasks = appData.tasks.filter(t => mySquadIds.includes(t.squadId));
+    
     const tasksHtml = myTasks.map(task => {
         const squad = appData.squads.find(s => s.id === task.squadId);
         const submissions = appData.taskSubmissions.filter(ts => ts.taskId === task.id);
         const myMembersSubmissions = submissions.filter(s => {
             const member = appData.members.find(m => m.id === s.memberId);
-            return member && member.squadId === task.squadId;
+            return member && mySquadIds.includes(member.squadId);
         });
         
         return `
             <div class="task-item">
                 <div class="task-header"><span class="task-title">${task.title}</span><span class="task-points">${task.pointsValue} نقطة</span></div>
                 <div class="task-description">${task.description}</div>
-                <div class="task-meta"><i class="fas fa-flag"></i> ${squad?.name || '-'} | <i class="fas fa-calendar"></i> ${new Date(task.endDate).toLocaleDateString('ar-EG')}</div>
-                <button class="btn btn-sm btn-primary" onclick="manageTaskSubmissionsForLeader(${task.id})"><i class="fas fa-check-circle"></i> إدارة التسليمات (${myMembersSubmissions.filter(s => s.status === 'submitted').length})</button>
+                <div class="task-meta"><i class="fas fa-flag"></i> ${squad?.name} (${squad?.leader}) | <i class="fas fa-calendar"></i> ${new Date(task.endDate).toLocaleDateString('ar-EG')}</div>
+                <button class="btn btn-sm btn-primary" onclick="manageTaskSubmissions(${task.id})"><i class="fas fa-check-circle"></i> إدارة التسليمات (${myMembersSubmissions.filter(s => s.status === 'submitted').length})</button>
             </div>
         `;
     }).join('');
@@ -3929,22 +3120,93 @@ function renderLeaderTasks() {
     document.getElementById('leaderTasksList').innerHTML = tasksHtml || '<p style="text-align:center;">لا توجد تكاليف</p>';
 }
 
-// دالة إضافة عضو جديد للقائد (تظهر الطلائع مع اسم القائد)
-function showAddMemberModalForLeader() {
+function showAddTaskModalForLeader() {
     const leader = currentUser;
     const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
-    
-    if (mySquads.length === 0) {
-        showToast('لا توجد طلائع تابعة لفرعك', 'error');
-        return;
-    }
     
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.display = 'flex';
     modal.innerHTML = `
         <div class="modal-content">
-            <div class="modal-header"><h3><i class="fas fa-user-plus"></i> إضافة عضو جديد - فرع ${leader.subBranchName || 'فريقي'}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <form id="addTaskFormLeader">
+                <div class="input-group"><label>اختر الطليعة</label>
+                    <select id="taskSquadSelect" required style="width:100%; padding:12px; border-radius:12px; border:2px solid #e0e0e0; margin-bottom:15px;">
+                        <option value="">-- اختر الطليعة --</option>
+                        ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name} (القائد: ${s.leader})</option>`).join('')}
+                    </select>
+                </div>
+                <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
+                <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
+                <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" required></div>
+                <div class="input-group"><label>تاريخ ووقت البدء</label><input type="datetime-local" id="taskStartDate" required></div>
+                <div class="input-group"><label>تاريخ ووقت الانتهاء</label><input type="datetime-local" id="taskEndDate" required></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // تعيين التواريخ الافتراضية
+    const now = new Date();
+    document.getElementById('taskStartDate').value = now.toISOString().slice(0, 16);
+    document.getElementById('taskEndDate').value = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
+    
+    document.getElementById('addTaskFormLeader').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const squadId = parseInt(document.getElementById('taskSquadSelect').value);
+        if (!squadId) {
+            showToast('الرجاء اختيار الطليعة أولاً', 'error');
+            return;
+        }
+        
+        const startDate = new Date(document.getElementById('taskStartDate').value);
+        const endDate = new Date(document.getElementById('taskEndDate').value);
+        
+        if (endDate <= startDate) {
+            showToast('تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء', 'error');
+            return;
+        }
+        
+        const squad = appData.squads.find(s => s.id === squadId);
+        
+        const newTask = {
+            id: Date.now(),
+            squadId: squadId,
+            title: document.getElementById('taskTitle').value,
+            description: document.getElementById('taskDesc').value,
+            pointsValue: parseInt(document.getElementById('taskPoints').value),
+            createdAt: new Date().toISOString(),
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            seenByMembers: []
+        };
+        appData.tasks.push(newTask);
+        await saveAllDataToFirebase();
+        
+        const squadMembers = appData.members.filter(m => m.squadId === squadId);
+        squadMembers.forEach(member => {
+            sessionStorage.removeItem('notificationShown_' + member.id);
+        });
+        
+        showToast(`تم إضافة التكليف "${newTask.title}" إلى طليعة ${squad.name}`);
+        modal.remove();
+        renderLeaderTasks();
+    });
+}
+
+function showAddMemberModalForLeader() {
+    const leader = currentUser;
+    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-user-plus"></i> إضافة عضو جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
             <form id="addMemberFormLeader">
                 <div class="input-group"><label>الاسم الكامل</label><input type="text" id="memberName" required></div>
                 <div class="input-group"><label>السن</label><input type="number" id="memberAge" min="6" max="30" required></div>
@@ -3966,7 +3228,7 @@ function showAddMemberModalForLeader() {
                 <div class="input-group"><label>اختر الطليعة</label>
                     <select id="memberSquad" required style="width:100%; padding:12px; border-radius:12px; border:2px solid #e0e0e0;">
                         <option value="">-- اختر الطليعة --</option>
-                        ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name} (القائد المسؤول: ${leader.name})</option>`).join('')}
+                        ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name} (القائد: ${s.leader})</option>`).join('')}
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">إضافة العضو</button>
@@ -4003,12 +3265,11 @@ function showAddMemberModalForLeader() {
             branchId: squad.branchId,
             squadId: squadId,
             points: 0,
-            joinedAt: new Date().toISOString(),
-            addedByLeader: leader.name
+            joinedAt: new Date().toISOString()
         };
         appData.members.push(newMember);
         await saveAllDataToFirebase();
-        showToast(`✅ تم إضافة العضو ${newMember.name} إلى طليعة ${squad.name} تحت إشرافك`);
+        showToast(`تم إضافة العضو ${newMember.name} إلى طليعة ${squad.name}`);
         modal.remove();
         renderLeaderMembers();
         renderLeaderDashboard();
@@ -4022,9 +3283,11 @@ function generateMemberCodeForLeader() {
     if (codeInput) codeInput.value = `${prefix}${num}`;
 }
 // دردشة القائد (لمجموعاته فقط)
-// ==================== دردشة القائد (لمجموعاته فقط) ====================
 function renderLeaderCommunity() {
-    const { mySquads } = getLeaderFilteredData();
+    const leader = currentUser;
+    
+    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
+    const mySquadIds = mySquads.map(s => s.id);
     
     const container = document.getElementById('leaderPageContent');
     container.innerHTML = `
@@ -4661,76 +3924,6 @@ function showAddSubBranchModal() {
             renderTasksListAdmin();
         }
 
-// ==================== إضافة تكليف جديد للقائد ====================
-function showAddTaskModalForLeader() {
-    const leader = currentUser;
-    const { mySquads } = getLeaderFilteredData();
-    const squadId = document.getElementById('leaderTaskSquadSelect')?.value;
-    
-    if (!squadId) {
-        showToast('الرجاء اختيار الطليعة أولاً', 'error');
-        return;
-    }
-    
-    const now = new Date();
-    const defaultStartDate = now.toISOString().slice(0, 16);
-    const defaultEndDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
-    
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.style.display = 'flex';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-            <form id="addTaskFormLeader">
-                <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
-                <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
-                <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" required></div>
-                <div class="input-group"><label>تاريخ ووقت البدء</label><input type="datetime-local" id="taskStartDate" value="${defaultStartDate}" required></div>
-                <div class="input-group"><label>تاريخ ووقت الانتهاء</label><input type="datetime-local" id="taskEndDate" value="${defaultEndDate}" required></div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
-            </form>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    
-    document.getElementById('addTaskFormLeader').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const startDate = new Date(document.getElementById('taskStartDate').value);
-        const endDate = new Date(document.getElementById('taskEndDate').value);
-        
-        if (endDate <= startDate) {
-            showToast('تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء', 'error');
-            return;
-        }
-        
-        const newTask = {
-            id: Date.now(),
-            squadId: parseInt(squadId),
-            title: document.getElementById('taskTitle').value,
-            description: document.getElementById('taskDesc').value,
-            pointsValue: parseInt(document.getElementById('taskPoints').value),
-            createdAt: new Date().toISOString(),
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-            seenByMembers: []
-        };
-        appData.tasks.push(newTask);
-        await saveAllDataToFirebase();
-        
-        const squadMembers = appData.members.filter(m => m.squadId == squadId);
-        squadMembers.forEach(member => {
-            sessionStorage.removeItem('notificationShown_' + member.id);
-        });
-        
-        showToast('تم إضافة التكليف وسيظهر إشعار للأعضاء');
-        modal.remove();
-        renderLeaderTasks();
-        renderLeaderDashboard();
-    });
-}
-
        function showAddTaskModal() {
     const squadId = document.getElementById('taskSquadSelect')?.value;
     if (!squadId) { showToast('الرجاء اختيار الطليعة أولاً', 'error'); return; }
@@ -4900,24 +4093,9 @@ function addScoutLogoToPage() {
     return;  // تم التعطيل
 }
 
-function goToLandingPage() {
-    sessionStorage.removeItem('scoutSession');
-    sessionStorage.removeItem('scoutSessionTime');
-    currentUser = null;
-    isAdmin = false;
-    isLeader = false;
-    if (countdownInterval) {
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-    }
-    renderLandingPage();
-}
 
-function goToLoginPage() {
-    sessionStorage.setItem('scoutSession', 'active');
-    sessionStorage.setItem('scoutSessionTime', Date.now().toString());
-    location.reload();
-}
+
+
 function addGlobalLogoToAllPages() {
     return;  // تم التعطيل
 }
@@ -5108,82 +4286,6 @@ function viewNewTasks() {
             loadMemberMessages();
             showToast('تم إرسال الرسالة');
         }
-function renderLandingPage() {
-    const app = document.getElementById('app');
-    app.innerHTML = `
-        <div class="landing-container">
-            <!-- خلفية الفقاعات -->
-            <div class="animated-bg" id="animatedBg"></div>
-            
-            <!-- الشريط العلوي (Navbar) -->
-            <div class="landing-navbar">
-                <div class="navbar-logo" onclick="goToLandingPage()">
-                    <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة">
-                    <div class="logo-text">
-                        <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
-                        <span class="logo-subtitle">Sea Scout Organization</span>
-                    </div>
-                </div>
-                <button class="login-nav-btn" onclick="goToLoginPage()">
-                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
-                </button>
-            </div>
-            
-            <!-- القسم الرئيسي Hero -->
-            <div class="hero-section">
-                <div class="hero-card">
-                    <div class="org-logo">
-                        <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة">
-                    </div>
-                    <div class="org-name">
-                        <h1>مجموعة كيان الكشفية البحرية</h1>
-                        <p>Sea Scout Organization</p>
-                    </div>
-                    
-                    <div class="welcome-badge">
-                        <i class="fas fa-star-of-life"></i> مرحباً بك في نظام الكشاف المتكامل <i class="fas fa-star-of-life"></i>
-                    </div>
-                    
-                    <div class="main-headline">
-                        <i class="fas fa-campground"></i> إدارة متكاملة للطلايع والكشافة <i class="fas fa-flag-checkered"></i>
-                    </div>
-                    
-                    <div class="features-grid">
-                        <div class="feature"><i class="fas fa-chart-line"></i> متابعة النقاط والترتيب</div>
-                        <div class="feature"><i class="fas fa-tasks"></i> إدارة التكاليف والمهام</div>
-                        <div class="feature"><i class="fas fa-comments"></i> تواصل مباشر</div>
-                        <div class="feature"><i class="fas fa-users"></i> نظام متكامل للطلايع</div>
-                        <div class="feature"><i class="fas fa-cloud"></i> مزامنة فورية مع Firebase</div>
-                        <div class="feature"><i class="fas fa-trophy"></i> لوحات متقدمة وتقارير</div>
-                    </div>
-                    
-                    <button class="cta-btn" onclick="goToLoginPage()">
-                        <i class="fas fa-sign-in-alt"></i> ابدأ الآن - تسجيل الدخول
-                    </button>
-                </div>
-            </div>
-            
-            <!-- معرض الصور (Gallery) -->
-            <div class="gallery-section">
-                <h2 class="gallery-title"><i class="fas fa-images"></i> ألبوم الأنشطة الكشفية</h2>
-                <div class="gallery-grid">
-                    <div class="gallery-item"><img src="https://i.ibb.co/v6k7gjtq/In-Shot-20260528-142037394.jpg" alt="نشاط كشفي 1"></div>
-                    <div class="gallery-item"><img src="https://i.ibb.co/8D2JcZHp/In-Shot-20260528-142226202.jpg" alt="نشاط كشفي 2"></div>
-                    <div class="gallery-item"><img src="https://i.ibb.co/d9sKxjZ/In-Shot-20260528-143153172.jpg" alt="نشاط كشفي 3"></div>
-                    <div class="gallery-item"><img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة"></div>
-                </div>
-            </div>
-            
-            <!-- التذييل Footer -->
-            <div class="landing-footer">
-                <p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | للتواصل: 01144100018 / 01126125881</p>
-                <p><i class="fas fa-cloud"></i> متزامن مع Firebase Cloud | تم التطوير بواسطة Tecno Shark Company</p>
-            </div>
-        </div>
-    `;
-    createAnimatedBubbles();
-}
-
 // حفظ النسخ الأصلية للدوال
 const originalRenderLoginForLogo = renderLogin;
 const originalRenderAdminAppForLogo = renderAdminApp;
@@ -5192,33 +4294,23 @@ const originalRenderMemberAppForLogo = renderMemberApp;
 // تعديل دالة renderLogin فقط لإضافة الشعار
 renderLogin = function(container) {
     originalRenderLoginForLogo(container);
-    setTimeout(() => addGlobalLogoToLoginOnly(), 100);
 };
 
 // تعديل دالة renderAdminApp - لا نضيف الشعار فيها
 renderAdminApp = function(container) {
     originalRenderAdminAppForLogo(container);
     // لا نضيف الشعار في لوحة القائد
-    // setTimeout(() => addGlobalLogoToLoginOnly(), 100); // تم التعليق
 };
 
 // تعديل دالة renderMemberApp - لا نضيف الشعار فيها
 renderMemberApp = function(container) {
     originalRenderMemberAppForLogo(container);
     // لا نضيف الشعار في لوحة العضو
-    // setTimeout(() => addGlobalLogoToLoginOnly(), 100); // تم التعليق
 };
 
-// دالة فارغة للتوافق (لن تؤثر على أي شيء)
-function addGlobalLogoToAllPages() {
-    return;
-}
 
-// دالة إضافة شعار الكشافة في صفحة الهبوط (تستخدم في renderLandingPage)
-function addScoutLogoToPage() {
-    // هذه الدالة مستخدمة في renderLandingPage ولا تؤثر على الشعار الثابت
-    return;
-}
+
+
 
 // دالة الانتقال إلى صفحة تسجيل الدخول
 function goToLoginPage() {
@@ -5387,7 +4479,7 @@ function showTaskViewers(taskId) {
             return div.innerHTML;
         }
 
-        async function logout() {
+      async function logout() {
     currentUser = null;
     isAdmin = false;
     isLeader = false;
@@ -5396,7 +4488,7 @@ function showTaskViewers(taskId) {
         countdownInterval = null;
     }
     showToast('تم تسجيل الخروج');
-    renderLandingPage();
+    renderLogin(document.getElementById('app'));  // <--- تعديل: يعرض صفحة تسجيل الدخول مباشرة
 }
         // Make global functions
         window.toggleSidebar = toggleSidebar;
@@ -5455,30 +4547,21 @@ window.confirmDeleteBranch = confirmDeleteBranch;
 window.showJoinRequestModal = showJoinRequestModal;
 window.showJoinRequestsList = showJoinRequestsList;
 window.viewJoinRequestDetails = viewJoinRequestDetails;
-window.goToLandingPage = goToLandingPage;
-window.addScoutLogoToPage = addScoutLogoToPage;
-window.startAnimations = startAnimations;
 window.approveJoinRequest = approveJoinRequest;
 window.rejectJoinRequest = rejectJoinRequest;
-window.goToLoginPage = goToLoginPage;
-window.renderLandingPage = renderLandingPage;
 window.updatePendingRequestsBadge = updatePendingRequestsBadge;
         window.logout = logout;
 
-        // Start the app
-(async function start() {
-    // التحقق من وجود جلسة نشطة
+    (async function start() {
     const savedSession = sessionStorage.getItem('scoutSession');
     const sessionTime = sessionStorage.getItem('scoutSessionTime');
     
     if (savedSession === 'active' && sessionTime && (Date.now() - parseInt(sessionTime) < 3600000)) {
-        // جلسة نشطة خلال آخر ساعة - انتقل مباشرة للتطبيق
         await loadAllDataFromFirebase();
         listenForRealTimeUpdates();
         render();
     } else {
-        // لا توجد جلسة نشطة - عرض صفحة الهبوط
-        renderLandingPage();
+        renderLogin(document.getElementById('app'));  // <--- تعديل: يظهر صفحة تسجيل الدخول مباشرة
     }
 })();
     </script>
