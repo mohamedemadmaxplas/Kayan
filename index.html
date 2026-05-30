@@ -1387,7 +1387,527 @@ body.loaded #squadsList > div {
     .fixed-logo-img { width: 32px; height: 32px; }
     .fixed-logo-text { font-size: 11px; }
 }
+/* ==================== DARK/LIGHT MODE VARIABLES ==================== */
+:root {
+    --bg-gradient-start: #1a472a;
+    --bg-gradient-end: #0d2818;
+    --bg-gradient-third: #0a1f12;
+    --card-bg: rgba(255,255,255,0.95);
+    --card-bg-solid: #ffffff;
+    --text-primary: #1a472a;
+    --text-secondary: #666666;
+    --text-white: #ffffff;
+    --border-color: rgba(212,160,23,0.3);
+    --gold: #d4a017;
+    --gold-dark: #b8860b;
+    --header-bg: rgba(255,255,255,0.95);
+    --sidebar-bg: linear-gradient(180deg, #1a472a, #0d2818);
+    --sidebar-text: rgba(255,255,255,0.85);
+    --message-sent: linear-gradient(135deg, #d4a017, #b8860b);
+    --message-received: white;
+    --input-border: #e0e0e0;
+    --table-header: #1a472a;
+    --table-row-hover: #f5f5f5;
+    --shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
 
+body.light-mode {
+    --bg-gradient-start: #e8f5e9;
+    --bg-gradient-end: #c8e6c9;
+    --bg-gradient-third: #a5d6a7;
+    --card-bg: rgba(255,255,255,0.98);
+    --card-bg-solid: #ffffff;
+    --text-primary: #1b5e20;
+    --text-secondary: #555555;
+    --text-white: #1b5e20;
+    --border-color: rgba(27,94,32,0.2);
+    --gold: #c9a03d;
+    --gold-dark: #a07c2a;
+    --header-bg: rgba(255,255,255,0.98);
+    --sidebar-bg: linear-gradient(180deg, #2e7d32, #1b5e20);
+    --sidebar-text: rgba(255,255,255,0.9);
+    --message-sent: linear-gradient(135deg, #c9a03d, #a07c2a);
+    --message-received: #f5f5f5;
+    --input-border: #cccccc;
+    --table-header: #2e7d32;
+    --table-row-hover: #e8f5e9;
+    --shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end), var(--bg-gradient-third));
+    min-height: 100vh;
+    direction: rtl;
+    overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ==================== THEME TOGGLE BUTTON ==================== */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    left: 80px;
+    width: 48px;
+    height: 48px;
+    background: var(--card-bg);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1002;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gold);
+    transition: 0.3s;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.05);
+}
+
+.theme-toggle i {
+    font-size: 24px;
+    color: var(--gold);
+}
+
+/* ==================== HOME BUTTON (RETURN TO LANDING) ==================== */
+.home-btn-wrapper {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1002;
+}
+
+.home-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--card-bg);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gold);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.home-icon i {
+    font-size: 24px;
+    color: var(--gold);
+    transition: 0.3s;
+}
+
+/* عند hover أو الضغط (للجوال) - يتحول لزر */
+.home-icon.expanded {
+    width: auto;
+    border-radius: 50px;
+    padding: 0 20px;
+    gap: 10px;
+}
+
+.home-icon.expanded i {
+    font-size: 20px;
+}
+
+.home-icon.expanded::after {
+    content: "الرئيسية";
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+/* للجوال - عند الضغط */
+@media (max-width: 768px) {
+    .home-icon {
+        width: 42px;
+        height: 42px;
+    }
+    .home-icon.expanded {
+        width: auto;
+        padding: 0 16px;
+    }
+    .home-icon.expanded i {
+        font-size: 18px;
+    }
+    .home-icon.expanded::after {
+        font-size: 12px;
+    }
+    .theme-toggle {
+        left: 70px;
+        width: 42px;
+        height: 42px;
+    }
+    .theme-toggle i {
+        font-size: 20px;
+    }
+}
+
+/* ==================== LANDING PAGE - PROFESSIONAL STYLES ==================== */
+.landing-container {
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Wave Animation */
+.wave-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 1;
+}
+
+.wave {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-46.1-200.5 3.9-293.1 52.9-394.5 46.1V88.7h800V56.9z' fill='%23d4a017' opacity='0.3'/%3E%3C/svg%3E") repeat-x;
+    background-size: 800px 100px;
+    animation: waveMove 20s linear infinite;
+}
+
+.wave2 {
+    height: 80px;
+    opacity: 0.5;
+    animation: waveMove 15s linear infinite reverse;
+    background-position: bottom;
+}
+
+@keyframes waveMove {
+    0% { background-position-x: 0; }
+    100% { background-position-x: 800px; }
+}
+
+/* Floating Anchor */
+.floating-anchor {
+    position: absolute;
+    bottom: 20%;
+    right: 5%;
+    font-size: 80px;
+    color: var(--gold);
+    opacity: 0.15;
+    animation: floatAnchor 6s ease-in-out infinite;
+    z-index: 0;
+}
+
+@keyframes floatAnchor {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+/* Hero Section with Ship Image */
+.hero-landing {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, rgba(10,46,26,0.7), rgba(13,40,24,0.8)), url('https://i.ibb.co/VfWPtdk/5794143090170859641.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.hero-content-landing {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(12px);
+    border-radius: 50px;
+    padding: 50px 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid var(--gold);
+    animation: fadeInUp 0.8s ease;
+    z-index: 2;
+}
+
+/* Scout Badge Animation */
+.scout-badge {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    animation: pulse 2s infinite;
+}
+
+.scout-badge i {
+    font-size: 50px;
+    color: #1a472a;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,160,23,0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(212,160,23,0); }
+}
+
+.org-name-landing {
+    font-size: 28px;
+    color: var(--gold);
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.main-title-landing {
+    font-size: 42px;
+    color: white;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.main-title-landing span {
+    color: var(--gold);
+    display: inline-block;
+}
+
+.subtitle-landing {
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Features Section */
+.features-landing {
+    padding: 80px 20px;
+    background: rgba(255,255,255,0.05);
+    position: relative;
+    z-index: 2;
+}
+
+.section-title-landing {
+    text-align: center;
+    font-size: 36px;
+    color: var(--gold);
+    margin-bottom: 50px;
+}
+
+.features-grid-landing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-card-landing {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 30px;
+    text-align: center;
+    transition: 0.3s;
+    border: 1px solid var(--gold);
+    transition: all 0.3s ease;
+}
+
+.feature-card-landing:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.15);
+}
+
+.feature-icon-landing {
+    font-size: 50px;
+    color: var(--gold);
+    margin-bottom: 20px;
+}
+
+.feature-title-landing {
+    font-size: 22px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.feature-desc-landing {
+    color: rgba(255,255,255,0.7);
+    line-height: 1.6;
+}
+
+/* Marine Life Animations */
+.marine-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.fish {
+    position: absolute;
+    font-size: 30px;
+    opacity: 0.15;
+    animation: swim 15s linear infinite;
+}
+
+.fish1 { bottom: 10%; left: -50px; animation-duration: 12s; }
+.fish2 { bottom: 20%; left: -80px; animation-duration: 18s; animation-delay: 2s; }
+.fish3 { bottom: 5%; left: -30px; animation-duration: 14s; animation-delay: 5s; }
+
+@keyframes swim {
+    0% { transform: translateX(0) scaleX(1); }
+    49% { transform: translateX(calc(100vw + 100px)) scaleX(1); }
+    50% { transform: translateX(calc(100vw + 100px)) scaleX(-1); }
+    99% { transform: translateX(0) scaleX(-1); }
+    100% { transform: translateX(0) scaleX(1); }
+}
+
+/* Stats Section */
+.stats-landing {
+    padding: 60px 20px;
+    background: linear-gradient(135deg, rgba(13,40,24,0.9), rgba(10,31,18,0.9));
+    position: relative;
+    z-index: 2;
+}
+
+.stats-grid-landing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.stat-number-landing {
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--gold);
+}
+
+.stat-label-landing {
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    margin-top: 10px;
+}
+
+/* Footer */
+.footer-landing {
+    background: #071a0f;
+    padding: 40px 20px;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    position: relative;
+    z-index: 2;
+}
+
+/* Fixed Logo Button */
+.fixed-logo-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1002;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    padding: 8px 18px 8px 20px;
+    border-radius: 50px;
+    border: 1px solid var(--gold);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.fixed-logo-btn:hover {
+    transform: translateX(-3px);
+}
+
+.fixed-logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.fixed-logo-text {
+    font-weight: bold;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+/* ==================== CARDS & COMPONENTS (Updated for dark/light) ==================== */
+.card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+.card h3 {
+    color: var(--text-primary);
+    border-bottom-color: var(--gold);
+}
+
+.stat-card {
+    background: var(--card-bg);
+    border-right-color: var(--gold);
+}
+
+.stat-card .number {
+    color: var(--text-primary);
+}
+
+.data-table th {
+    background: var(--table-header);
+}
+
+.data-table tr:hover {
+    background: var(--table-row-hover);
+}
+
+.header {
+    background: var(--header-bg);
+}
+
+.sidebar {
+    background: var(--sidebar-bg);
+}
+
+.sidebar-menu li a {
+    color: var(--sidebar-text);
+}
+
+/* Logout Confirmation Modal */
+.confirm-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 20000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm-modal-content {
+    background: var(--card-bg-solid);
+    border-radius: 30px;
+    padding: 35px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    animation: zoomIn 0.3s ease;
+}
     </style>
 </head>
 <body>
@@ -2009,6 +2529,8 @@ setTimeout(() => {
         }
         
         showToast('بيانات الدخول غير صحيحة', 'error');
+        addHomeButton();
+initTheme();
     });
     
     addScoutLogoToPage();
@@ -2242,7 +2764,281 @@ function viewJoinRequestDetails(requestId) {
     `;
     document.body.appendChild(modal);
 }
+// ==================== DARK/LIGHT MODE FUNCTIONS ====================
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    } else {
+        document.body.classList.remove('light-mode');
+    }
+    addThemeToggleButton();
+}
 
+function addThemeToggleButton() {
+    // إزالة الزر القديم إذا وجد
+    const oldBtn = document.getElementById('themeToggleBtn');
+    if (oldBtn) oldBtn.remove();
+    
+    const themeBtn = document.createElement('div');
+    themeBtn.id = 'themeToggleBtn';
+    themeBtn.className = 'theme-toggle';
+    const isLight = document.body.classList.contains('light-mode');
+    themeBtn.innerHTML = `<i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>`;
+    themeBtn.onclick = toggleTheme;
+    document.body.appendChild(themeBtn);
+}
+
+function toggleTheme() {
+    const isLight = document.body.classList.contains('light-mode');
+    if (isLight) {
+        document.body.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+    } else {
+        document.body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
+        document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+    }
+}
+
+// ==================== HOME BUTTON (RETURN TO LANDING) ====================
+let homeButtonExpanded = false;
+let homeButtonTimeout;
+
+function addHomeButton() {
+    // لا نضيف الزر في صفحة الهبوط
+    if (!currentUser && !isAdmin && !isLeader) {
+        const existingBtn = document.getElementById('homeBtnWrapper');
+        if (existingBtn) existingBtn.remove();
+        return;
+    }
+    
+    const existingBtn = document.getElementById('homeBtnWrapper');
+    if (existingBtn) return;
+    
+    const wrapper = document.createElement('div');
+    wrapper.id = 'homeBtnWrapper';
+    wrapper.className = 'home-btn-wrapper';
+    wrapper.innerHTML = `
+        <div class="home-icon" id="homeIconBtn">
+            <i class="fas fa-home"></i>
+        </div>
+    `;
+    document.body.appendChild(wrapper);
+    
+    const homeIcon = document.getElementById('homeIconBtn');
+    
+    // للكمبيوتر - hover
+    homeIcon.addEventListener('mouseenter', () => {
+        homeIcon.classList.add('expanded');
+    });
+    
+    homeIcon.addEventListener('mouseleave', () => {
+        homeIcon.classList.remove('expanded');
+    });
+    
+    // للجوال - ضغطة
+    homeIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (window.innerWidth <= 768) {
+            if (!homeIcon.classList.contains('expanded')) {
+                homeIcon.classList.add('expanded');
+                if (homeButtonTimeout) clearTimeout(homeButtonTimeout);
+                homeButtonTimeout = setTimeout(() => {
+                    homeIcon.classList.remove('expanded');
+                }, 2000);
+            } else {
+                showReturnToLandingConfirmation();
+                homeIcon.classList.remove('expanded');
+            }
+        } else {
+            showReturnToLandingConfirmation();
+        }
+    });
+    
+    // للديسكتوب - الضغط المباشر
+    if (window.innerWidth > 768) {
+        homeIcon.addEventListener('click', () => {
+            showReturnToLandingConfirmation();
+        });
+    }
+}
+
+function showReturnToLandingConfirmation() {
+    const modal = document.createElement('div');
+    modal.className = 'confirm-modal';
+    modal.innerHTML = `
+        <div class="confirm-modal-content">
+            <i class="fas fa-ship" style="font-size: 50px; color: var(--gold);"></i>
+            <h3>العودة للصفحة الرئيسية؟</h3>
+            <p>سيتم تسجيل خروجك والعودة إلى الصفحة الرئيسية للمجموعة</p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn-yes" id="returnToLandingYes">نعم، عودة</button>
+                <button class="confirm-btn-no" id="returnToLandingNo">إلغاء</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('returnToLandingYes').onclick = async () => {
+        modal.remove();
+        await logout();
+        renderLandingPage();
+        addFixedLogoButton();
+        initTheme();
+        addHomeButton(); // لن يظهر لأنه لا يوجد مستخدم
+    };
+    
+    document.getElementById('returnToLandingNo').onclick = () => {
+        modal.remove();
+    };
+}
+
+// ==================== LANDING PAGE WITH MARINE IMAGES ====================
+function renderLandingPage() {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        <div class="landing-container">
+            <!-- Marine Background Animations -->
+            <div class="marine-bg">
+                <div class="fish fish1"><i class="fas fa-fish"></i></div>
+                <div class="fish fish2"><i class="fas fa-fish"></i></div>
+                <div class="fish fish3"><i class="fas fa-fish"></i></div>
+                <div class="floating-anchor"><i class="fas fa-anchor"></i></div>
+            </div>
+            
+            <div class="hero-landing">
+                <div class="hero-content-landing">
+                    <div class="scout-badge">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <div class="org-name-landing">
+                        <i class="fas fa-anchor"></i> مجموعة كيان الكشفية البحرية
+                    </div>
+                    <h1 class="main-title-landing">
+                        <span>نظام الكشاف</span> المتكامل
+                    </h1>
+                    <p class="subtitle-landing">
+                        نظام متطور لإدارة الطلايع والكشافة البحرية<br>
+                        متكامل مع تقنيات حديثة لتسهيل التواصل وإدارة المهام والنقاط
+                    </p>
+                    <div class="cta-buttons">
+                        <button class="cta-btn cta-primary" onclick="goToLoginFromLanding()">
+                            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                        </button>
+                        <button class="cta-btn cta-secondary" onclick="showJoinRequestModal()">
+                            <i class="fas fa-user-plus"></i> تقديم طلب انضمام
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waves -->
+            <div class="wave-container">
+                <div class="wave"></div>
+                <div class="wave wave2"></div>
+            </div>
+
+            <div class="features-landing">
+                <h2 class="section-title-landing">مميزات النظام</h2>
+                <div class="features-grid-landing">
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-tasks"></i></div>
+                        <h3 class="feature-title-landing">إدارة التكاليف</h3>
+                        <p class="feature-desc-landing">إضافة تكاليف جديدة مع نقاط، ومتابعة تسليمات الأعضاء</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-trophy"></i></div>
+                        <h3 class="feature-title-landing">نظام النقاط والترتيب</h3>
+                        <p class="feature-desc-landing">ترتيب الأعضاء والطلايع حسب النقاط وتحفيز المنافسة</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-comments"></i></div>
+                        <h3 class="feature-title-landing">الكميونيتي والدردشة</h3>
+                        <p class="feature-desc-landing">تواصل مباشر بين القادة والأعضاء داخل الطليعة</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="feature-title-landing">إحصائيات متقدمة</h3>
+                        <p class="feature-desc-landing">لوحات تحكم تفاعلية وإحصائيات دقيقة للأداء</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-ship"></i></div>
+                        <h3 class="feature-title-landing">كشافة بحرية</h3>
+                        <p class="feature-desc-landing">نظام متخصص للكشافة البحرية مع أنشطة ومهارات بحرية</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-shield-alt"></i></div>
+                        <h3 class="feature-title-landing">إدارة آمنة</h3>
+                        <p class="feature-desc-landing">نظام آمن مع صلاحيات متعددة للقادة والأعضاء</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-landing">
+                <div class="stats-grid-landing">
+                    <div>
+                        <div class="stat-number-landing" id="statMembers">0</div>
+                        <div class="stat-label-landing">أعضاء نشطين</div>
+                    </div>
+                    <div>
+                        <div class="stat-number-landing" id="statSquads">0</div>
+                        <div class="stat-label-landing">طليعة</div>
+                    </div>
+                    <div>
+                        <div class="stat-number-landing" id="statTasks">0</div>
+                        <div class="stat-label-landing">تكليف منجز</div>
+                    </div>
+                    <div>
+                        <div class="stat-number-landing" id="statPoints">0</div>
+                        <div class="stat-label-landing">إجمالي النقاط</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-landing">
+                <p>© 2025 نظام الكشاف المتكامل - مجموعة كيان الكشفية البحرية</p>
+                <p style="font-size: 12px; margin-top: 10px;">
+                    <i class="fas fa-phone"></i> 01144100018 / 01126125881
+                </p>
+            </div>
+        </div>
+    `;
+    
+    updateLandingStats();
+    addHomeButton();
+initTheme();
+}
+
+function updateLandingStats() {
+    const membersCount = document.getElementById('statMembers');
+    const squadsCount = document.getElementById('statSquads');
+    const tasksCount = document.getElementById('statTasks');
+    const pointsCount = document.getElementById('statPoints');
+    
+    if (membersCount) animateNumber(membersCount, 0, appData.members.length, 2000);
+    if (squadsCount) animateNumber(squadsCount, 0, appData.squads.length, 2000);
+    if (tasksCount) animateNumber(tasksCount, 0, appData.taskSubmissions.filter(ts => ts.status === 'completed').length, 2000);
+    if (pointsCount) animateNumber(pointsCount, 0, appData.members.reduce((sum, m) => sum + m.points, 0), 2000);
+}
+
+function animateNumber(element, start, end, duration) {
+    let startTime = null;
+    const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        element.textContent = Math.floor(progress * (end - start) + start);
+        if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+}
+
+function goToLoginFromLanding() {
+    renderLogin(document.getElementById('app'));
+    addHomeButton();
+    initTheme();
+}
 // 4. دالة قبول طلب الانضمام وإضافة العضو إلى قاعدة البيانات
 async function approveJoinRequest(requestId) {
     const request = appData.joinRequests.find(r => r.id === requestId);
@@ -2348,6 +3144,8 @@ function renderAdminApp(container) {
         <div class="footer"><p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
     `;
     renderAdminDashboard();
+    addHomeButton();
+initTheme();
 }
 
         function changeAdminPage(page) {
@@ -3178,6 +3976,8 @@ function renderLeaderApp(container) {
         <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company</p></div>
     `;
     renderLeaderDashboard();
+    addHomeButton();
+initTheme();
 }
 
 // تغيير صفحات القائد
@@ -4442,6 +5242,8 @@ function addGlobalLogoToAllPages() {
         <div class="footer"><p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
     `;
     renderMemberDashboard();
+    addHomeButton();
+initTheme();
 }
         function changeMemberPage(page) {
             document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
@@ -4858,13 +5660,14 @@ window.approveJoinRequest = approveJoinRequest;
 window.rejectJoinRequest = rejectJoinRequest;
 window.updatePendingRequestsBadge = updatePendingRequestsBadge;
         window.logout = logout;
-
-   (async function start() {
+window.startApp = async function() {
     await loadAllDataFromFirebase();
     listenForRealTimeUpdates();
     renderLandingPage();
     addFixedLogoButton();
-})();
+    initTheme();
+};
+
 // ==================== LANDING PAGE FUNCTIONS ====================
 
 // عرض صفحة الهبوط (Landing Page)
