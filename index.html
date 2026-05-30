@@ -2881,46 +2881,82 @@ function addThemeToggleButton() {
     const oldBtn = document.getElementById('themeToggleBtn');
     if (oldBtn) oldBtn.remove();
     
+    // نبحث عن الهيدر العلوي
+    const header = document.querySelector('.header');
+    if (!header) return;
+    
+    // نبحث عن user-info (القسم الذي يحتوي على اسم المستخدم والأزرار)
+    let userInfoDiv = header.querySelector('.user-info');
+    
+    if (!userInfoDiv) {
+        // إذا لم نجد user-info، ننشئه
+        userInfoDiv = document.createElement('div');
+        userInfoDiv.className = 'user-info';
+        userInfoDiv.style.display = 'flex';
+        userInfoDiv.style.alignItems = 'center';
+        userInfoDiv.style.gap = '10px';
+        userInfoDiv.style.backgroundColor = 'rgba(0,0,0,0.05)';
+        userInfoDiv.style.padding = '5px 15px';
+        userInfoDiv.style.borderRadius = '40px';
+        header.appendChild(userInfoDiv);
+    }
+    
+    // ننشئ زر تغيير الوضع
     const themeBtn = document.createElement('div');
     themeBtn.id = 'themeToggleBtn';
-    themeBtn.className = 'theme-toggle';
+    themeBtn.style.display = 'inline-flex';
+    themeBtn.style.alignItems = 'center';
+    themeBtn.style.justifyContent = 'center';
+    themeBtn.style.width = '38px';
+    themeBtn.style.height = '38px';
+    themeBtn.style.borderRadius = '50%';
+    themeBtn.style.backgroundColor = 'white';
+    themeBtn.style.cursor = 'pointer';
+    themeBtn.style.border = '1px solid #d4a017';
+    themeBtn.style.transition = 'all 0.3s ease';
+    
     const isLight = document.body.classList.contains('light-mode');
-    themeBtn.innerHTML = `<i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>`;
-    themeBtn.onclick = toggleTheme;
-    document.body.appendChild(themeBtn);
-}
-
-function toggleTheme() {
-    const isLight = document.body.classList.contains('light-mode');
-    if (isLight) {
-        document.body.classList.remove('light-mode');
-        localStorage.setItem('theme', 'dark');
-        document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-moon"></i>';
+    themeBtn.innerHTML = `<i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}" style="font-size: 18px; color: #d4a017;"></i>`;
+    
+    // وظيفة الضغط على الزر
+    themeBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (document.body.classList.contains('light-mode')) {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+            themeBtn.innerHTML = '<i class="fas fa-moon" style="font-size: 18px; color: #d4a017;"></i>';
+        } else {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+            themeBtn.innerHTML = '<i class="fas fa-sun" style="font-size: 18px; color: #d4a017;"></i>';
+        }
+    };
+    
+    // البحث عن زر المنزل
+    const homeBtn = document.getElementById('homeBtnWrapper');
+    
+    if (homeBtn) {
+        // نضيف زر الوضع قبل زر المنزل مباشرة (بجانبه)
+        userInfoDiv.insertBefore(themeBtn, homeBtn);
     } else {
-        document.body.classList.add('light-mode');
-        localStorage.setItem('theme', 'light');
-        document.getElementById('themeToggleBtn').innerHTML = '<i class="fas fa-sun"></i>';
+        // إذا لم نجد زر المنزل، نضيفه في نهاية user-info
+        userInfoDiv.appendChild(themeBtn);
     }
 }
-
 // ==================== HOME BUTTON (RETURN TO LANDING) ====================
 let homeButtonExpanded = false;
 let homeButtonTimeout;
 
 function addHomeButton() {
-    // نتحقق: إذا كان المستخدم غير مسجل، لا نضيف الزر
     if (!currentUser && !isAdmin && !isLeader) {
         return;
     }
     
-    // نبحث عن الهيدر
     const header = document.querySelector('.header');
     if (!header) return;
     
-    // إذا الزر موجود بالفعل، لا نضيفه مرة ثانية
     if (document.getElementById('homeBtnWrapper')) return;
     
-    // نبحث عن user-info
     let userInfoDiv = header.querySelector('.user-info');
     
     if (!userInfoDiv) {
@@ -2935,7 +2971,6 @@ function addHomeButton() {
         header.appendChild(userInfoDiv);
     }
     
-    // ننشئ زر المنزل
     const wrapper = document.createElement('div');
     wrapper.id = 'homeBtnWrapper';
     wrapper.style.display = 'inline-flex';
@@ -2947,12 +2982,11 @@ function addHomeButton() {
         </div>
     `;
     
-    // نضيف زر المنزل في نهاية user-info
+    // نضيف زر المنزل في النهاية (آخر حاجة)
     userInfoDiv.appendChild(wrapper);
     
     const homeIcon = document.getElementById('homeIconBtn');
     
-    // عند مرور الماوس - يتحول لزر مكتوب عليه "الرئيسية"
     homeIcon.addEventListener('mouseenter', () => {
         homeIcon.style.width = 'auto';
         homeIcon.style.borderRadius = '50px';
@@ -2961,7 +2995,6 @@ function addHomeButton() {
         homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 14px;"></i><span style="font-size: 12px; font-weight: 600;">الرئيسية</span>';
     });
     
-    // عند رفع الماوس - يرجع أيقونة فقط
     homeIcon.addEventListener('mouseleave', () => {
         homeIcon.style.width = '38px';
         homeIcon.style.borderRadius = '50%';
@@ -2970,7 +3003,6 @@ function addHomeButton() {
         homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 18px;"></i>';
     });
     
-    // عند الضغط
     homeIcon.addEventListener('click', (e) => {
         e.stopPropagation();
         showReturnToLandingConfirmation();
@@ -6001,6 +6033,23 @@ function showLogoutConfirmation() {
     }
     // ==================== الوضع الداكن/الفاتح ====================
 function initTheme() {
+    function initTheme() {
+    // تنظيف الأزرار القديمة
+    const oldThemeBtn = document.getElementById('themeToggleBtn');
+    if (oldThemeBtn) oldThemeBtn.remove();
+    
+    const oldHomeBtn = document.getElementById('homeBtnWrapper');
+    if (oldHomeBtn) oldHomeBtn.remove();
+    
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+    } else {
+        document.body.classList.remove('light-mode');
+    }
+    addHomeButton();
+    addThemeToggleButton();
+}
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
         document.body.classList.add('light-mode');
