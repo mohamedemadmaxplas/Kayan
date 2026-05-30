@@ -1908,6 +1908,38 @@ body {
     text-align: center;
     animation: zoomIn 0.3s ease;
 }
+/* تنسيق الـ user-info لاستيعاب الأزرار الجديدة */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* تنسيق أزرار الوضع والمنزل */
+#themeToggleBtn, #homeBtnWrapper {
+    display: inline-flex !important;
+    position: static !important;
+}
+
+/* للجوال */
+@media (max-width: 768px) {
+    .user-info {
+        gap: 6px;
+        padding: 3px 10px;
+    }
+    #themeToggleBtn, #homeBtnWrapper div {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    #themeToggleBtn i, #homeBtnWrapper i {
+        font-size: 14px !important;
+    }
+    .logout-btn {
+        padding: 3px 8px !important;
+        font-size: 10px !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -2812,54 +2844,63 @@ function addHomeButton() {
         return;
     }
     
-    // نبحث عن الهيدر (الشريط العلوي)
+    // نبحث عن الهيدر
     const header = document.querySelector('.header');
     if (!header) return;
     
     // إذا الزر موجود بالفعل، لا نضيفه مرة ثانية
     if (document.getElementById('homeBtnWrapper')) return;
     
-    // ننشئ الزر
+    // نبحث عن الـ div الذي يحتوي على أزرار المستخدم
+    let userInfoDiv = header.querySelector('.user-info');
+    
+    // إذا لم نجد user-info، ننشئه
+    if (!userInfoDiv) {
+        userInfoDiv = document.createElement('div');
+        userInfoDiv.className = 'user-info';
+        userInfoDiv.style.display = 'flex';
+        userInfoDiv.style.alignItems = 'center';
+        userInfoDiv.style.gap = '10px';
+        userInfoDiv.style.backgroundColor = 'rgba(0,0,0,0.05)';
+        userInfoDiv.style.padding = '5px 15px';
+        userInfoDiv.style.borderRadius = '40px';
+        header.appendChild(userInfoDiv);
+    }
+    
+    // ننشئ زر المنزل
     const wrapper = document.createElement('div');
     wrapper.id = 'homeBtnWrapper';
-    wrapper.style.display = 'inline-block';
-    wrapper.style.marginLeft = '10px';
+    wrapper.style.display = 'inline-flex';
+    wrapper.style.alignItems = 'center';
     
     wrapper.innerHTML = `
-        <div id="homeIconBtn" style="width: 42px; height: 42px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid #d4a017; transition: all 0.3s ease;">
-            <i class="fas fa-home" style="font-size: 20px; color: #d4a017;"></i>
+        <div id="homeIconBtn" style="width: 38px; height: 38px; background: var(--card-bg, white); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid #d4a017; transition: all 0.3s ease;">
+            <i class="fas fa-home" style="font-size: 18px; color: #d4a017;"></i>
         </div>
     `;
     
-    // نضيف الزر قبل اسم المستخدم
-    const userInfo = header.querySelector('.user-info');
-    if (userInfo) {
-        header.insertBefore(wrapper, userInfo);
-    } else {
-        header.appendChild(wrapper);
-    }
+    // نضيف زر المنزل في نهاية user-info (آخر حاجة من اليمين)
+    userInfoDiv.appendChild(wrapper);
     
     const homeIcon = document.getElementById('homeIconBtn');
     
-    // عند مرور الماوس - يتحول لزر مكتوب عليه "الرئيسية"
+    // عند مرور الماوس
     homeIcon.addEventListener('mouseenter', () => {
         homeIcon.style.width = 'auto';
         homeIcon.style.borderRadius = '50px';
-        homeIcon.style.padding = '0 16px';
-        homeIcon.style.gap = '8px';
-        homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 18px;"></i><span style="font-size: 13px; font-weight: 600;">الرئيسية</span>';
+        homeIcon.style.padding = '0 12px';
+        homeIcon.style.gap = '6px';
+        homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 16px;"></i><span style="font-size: 12px; font-weight: 600;">الرئيسية</span>';
     });
     
-    // عند رفع الماوس - يرجع أيقونة فقط
     homeIcon.addEventListener('mouseleave', () => {
-        homeIcon.style.width = '42px';
+        homeIcon.style.width = '38px';
         homeIcon.style.borderRadius = '50%';
         homeIcon.style.padding = '0';
         homeIcon.style.gap = '0';
-        homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 20px;"></i>';
+        homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 18px;"></i>';
     });
     
-    // عند الضغط - يظهر نافذة التأكيد
     homeIcon.addEventListener('click', (e) => {
         e.stopPropagation();
         showReturnToLandingConfirmation();
@@ -3161,17 +3202,17 @@ function renderAdminApp(container) {
             </ul>
         </div>
 
-        <!-- ====== الهيدر الجديد - تم إزالة النص الزائد ====== -->
-        <div class="header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <!-- الهيدر الجديد - منسق بشكل أفضل -->
+        <div class="header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <div class="logo" style="display: flex; align-items: center; gap: 8px;">
                 <i class="fas fa-campground" style="font-size: 24px; color: #d4a017;"></i>
                 <div>
                     <h1 style="font-size: 18px; margin: 0; color: #1a472a;">نظام الكشاف</h1>
-                    <!-- تم حذف النص: "لوحة تحكم القائد العام - سحابة Firebase" -->
                 </div>
             </div>
             <div style="flex: 1;"></div>
-            <div class="user-info" style="display: flex; gap: 10px; align-items: center; background: rgba(0,0,0,0.05); padding: 5px 15px; border-radius: 40px;">
+            <!-- هذا القسم سيحتوي على: اسم المستخدم + زر خروج + زر الوضع + زر المنزل -->
+            <div class="user-info" style="display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.05); padding: 5px 15px; border-radius: 40px;">
                 <i class="fas fa-user-shield" style="color: #d4a017;"></i>
                 <span style="font-weight: 600; color: #1a472a;">${currentUser.name}</span>
                 <button class="logout-btn" onclick="logout()" style="background: linear-gradient(135deg, #c0392b, #e74c3c); color: white; border: none; padding: 5px 12px; border-radius: 30px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 5px;">
@@ -5880,45 +5921,56 @@ function addThemeToggleButton() {
     const header = document.querySelector('.header');
     if (!header) return;
     
+    // نبحث عن user-info
+    let userInfoDiv = header.querySelector('.user-info');
+    
+    if (!userInfoDiv) {
+        userInfoDiv = document.createElement('div');
+        userInfoDiv.className = 'user-info';
+        userInfoDiv.style.display = 'flex';
+        userInfoDiv.style.alignItems = 'center';
+        userInfoDiv.style.gap = '10px';
+        userInfoDiv.style.backgroundColor = 'rgba(0,0,0,0.05)';
+        userInfoDiv.style.padding = '5px 15px';
+        userInfoDiv.style.borderRadius = '40px';
+        header.appendChild(userInfoDiv);
+    }
+    
+    // ننشئ زر تغيير الوضع
     const themeBtn = document.createElement('div');
     themeBtn.id = 'themeToggleBtn';
-    themeBtn.style.display = 'inline-block';
-    themeBtn.style.marginLeft = '10px';
-    themeBtn.style.width = '42px';
-    themeBtn.style.height = '42px';
-    themeBtn.style.borderRadius = '50%';
-    themeBtn.style.background = 'white';
-    themeBtn.style.display = 'flex';
-    themeBtn.style.justifyContent = 'center';
+    themeBtn.style.display = 'inline-flex';
     themeBtn.style.alignItems = 'center';
+    themeBtn.style.justifyContent = 'center';
+    themeBtn.style.width = '38px';
+    themeBtn.style.height = '38px';
+    themeBtn.style.borderRadius = '50%';
+    themeBtn.style.backgroundColor = 'var(--card-bg, white)';
     themeBtn.style.cursor = 'pointer';
     themeBtn.style.border = '1px solid #d4a017';
+    themeBtn.style.transition = 'all 0.3s ease';
     
     const isLight = document.body.classList.contains('light-mode');
-    themeBtn.innerHTML = `<i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}" style="font-size: 20px; color: #d4a017;"></i>`;
+    themeBtn.innerHTML = `<i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}" style="font-size: 18px; color: #d4a017;"></i>`;
     
     themeBtn.onclick = () => {
         if (document.body.classList.contains('light-mode')) {
             document.body.classList.remove('light-mode');
             localStorage.setItem('theme', 'dark');
-            themeBtn.innerHTML = '<i class="fas fa-moon" style="font-size: 20px; color: #d4a017;"></i>';
+            themeBtn.innerHTML = '<i class="fas fa-moon" style="font-size: 18px; color: #d4a017;"></i>';
         } else {
             document.body.classList.add('light-mode');
             localStorage.setItem('theme', 'light');
-            themeBtn.innerHTML = '<i class="fas fa-sun" style="font-size: 20px; color: #d4a017;"></i>';
+            themeBtn.innerHTML = '<i class="fas fa-sun" style="font-size: 18px; color: #d4a017;"></i>';
         }
     };
     
+    // نضيف زر تغيير الوضع قبل زر المنزل (بمعنى يظهر قبله)
     const homeBtn = document.getElementById('homeBtnWrapper');
     if (homeBtn) {
-        header.insertBefore(themeBtn, homeBtn);
+        userInfoDiv.insertBefore(themeBtn, homeBtn);
     } else {
-        const userInfo = header.querySelector('.user-info');
-        if (userInfo) {
-            header.insertBefore(themeBtn, userInfo);
-        } else {
-            header.appendChild(themeBtn);
-        }
+        userInfoDiv.appendChild(themeBtn);
     }
 }
     
