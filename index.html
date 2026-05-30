@@ -2552,8 +2552,23 @@ setTimeout(() => {
 }, 100);
 }
 
-   function renderLogin(container) {
+function renderLogin(container) {
+    // التحقق من الوضع الحالي لتحديد الأيقونة الصحيحة
+    const isLightMode = document.body.classList.contains('light-mode');
+    
     container.innerHTML = `
+        <!-- إضافة الأزرار في أعلى صفحة تسجيل الدخول -->
+        <div style="position: fixed; top: 20px; left: 20px; display: flex; gap: 10px; z-index: 1002;">
+            <!-- زر المنزل -->
+            <div id="loginHomeBtn" style="width: 42px; height: 42px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid #d4a017; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <i class="fas fa-home" style="font-size: 20px; color: #d4a017;"></i>
+            </div>
+            <!-- زر تغيير الوضع -->
+            <div id="loginThemeBtn" style="width: 42px; height: 42px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid #d4a017; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <i class="fas ${isLightMode ? 'fa-sun' : 'fa-moon'}" style="font-size: 20px; color: #d4a017;"></i>
+            </div>
+        </div>
+        
         <div class="login-container">
             <div class="login-box">
                 <i class="fas fa-campground"></i>
@@ -2584,6 +2599,70 @@ setTimeout(() => {
             </div>
         </div>
     `;
+    
+    // إضافة حدث لزر المنزل في صفحة تسجيل الدخول
+    const loginHomeBtn = document.getElementById('loginHomeBtn');
+    if (loginHomeBtn) {
+        // عند مرور الماوس
+        loginHomeBtn.addEventListener('mouseenter', () => {
+            loginHomeBtn.style.width = 'auto';
+            loginHomeBtn.style.borderRadius = '50px';
+            loginHomeBtn.style.padding = '0 16px';
+            loginHomeBtn.style.gap = '8px';
+            loginHomeBtn.innerHTML = '<i class="fas fa-home" style="font-size: 16px;"></i><span style="font-size: 13px; font-weight: 600;">الرئيسية</span>';
+        });
+        
+        loginHomeBtn.addEventListener('mouseleave', () => {
+            loginHomeBtn.style.width = '42px';
+            loginHomeBtn.style.borderRadius = '50%';
+            loginHomeBtn.style.padding = '0';
+            loginHomeBtn.style.gap = '0';
+            loginHomeBtn.innerHTML = '<i class="fas fa-home" style="font-size: 20px;"></i>';
+        });
+        
+        loginHomeBtn.addEventListener('click', () => {
+            showReturnToLandingConfirmation();
+        });
+    }
+    
+    // إضافة حدث لزر تغيير الوضع في صفحة تسجيل الدخول
+    const loginThemeBtn = document.getElementById('loginThemeBtn');
+    if (loginThemeBtn) {
+        loginThemeBtn.addEventListener('click', () => {
+            // تبديل الوضع
+            if (document.body.classList.contains('light-mode')) {
+                // التبديل إلى الوضع الداكن
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+                loginThemeBtn.innerHTML = '<i class="fas fa-moon" style="font-size: 20px; color: #d4a017;"></i>';
+                // تحديث ألوان الخلفية لصفحة تسجيل الدخول
+                const loginContainer = document.querySelector('.login-container');
+                if (loginContainer) {
+                    loginContainer.style.background = 'linear-gradient(135deg, #1a472a, #0d2818)';
+                }
+                const loginBox = document.querySelector('.login-box');
+                if (loginBox) {
+                    loginBox.style.background = 'white';
+                    loginBox.style.color = '#333';
+                }
+            } else {
+                // التبديل إلى الوضع الفاتح
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+                loginThemeBtn.innerHTML = '<i class="fas fa-sun" style="font-size:20px; color:#d4a017;"></i>';
+                // تحديث ألوان الخلفية لصفحة تسجيل الدخول
+                const loginContainer = document.querySelector('.login-container');
+                if (loginContainer) {
+                    loginContainer.style.background = 'linear-gradient(135deg, #e8f5e9, #c8e6c9)';
+                }
+                const loginBox = document.querySelector('.login-box');
+                if (loginBox) {
+                    loginBox.style.background = 'white';
+                    loginBox.style.color = '#333';
+                }
+            }
+        });
+    }
     
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -2630,10 +2709,10 @@ setTimeout(() => {
         
         showToast('بيانات الدخول غير صحيحة', 'error');
     });
-    
+}
     addHomeButton();
     initTheme();
-}
+
 // ==================== الدوال الجديدة لنظام طلبات الانضمام ====================
 
 function showJoinRequestModal() {
@@ -6323,6 +6402,7 @@ function showCustomRequestMessage(leaderName, squadName, branchName) {
     `;
     document.body.appendChild(modal);
     
+    // إغلاق النافذة بعد 5 ثواني
     setTimeout(() => {
         if (modal && modal.parentNode) modal.remove();
     }, 5000);
