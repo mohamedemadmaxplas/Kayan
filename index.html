@@ -1940,6 +1940,75 @@ body {
         font-size: 10px !important;
     }
 }
+/* تعديل شكل الهيدر لاستيعاب جميع العناصر */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 20px;
+}
+
+/* تنسيق اللوجو الثابت داخل الهيدر */
+#fixedLogoBtn {
+    display: inline-flex !important;
+    position: static !important;
+    margin-right: 10px;
+}
+
+/* تنسيق user-info */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* تنسيق الأزرار */
+#themeToggleBtn, #homeBtnWrapper {
+    display: inline-flex !important;
+    position: static !important;
+}
+
+/* للجوال */
+@media (max-width: 768px) {
+    .header {
+        padding: 8px 12px;
+    }
+    
+    #fixedLogoBtn {
+        padding: 3px 8px 3px 10px !important;
+    }
+    
+    #fixedLogoBtn img {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    
+    #fixedLogoBtn span {
+        font-size: 9px !important;
+    }
+    
+    .user-info {
+        gap: 6px;
+        padding: 3px 10px;
+    }
+    
+    #themeToggleBtn, #homeIconBtn {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    #themeToggleBtn i, #homeIconBtn i {
+        font-size: 14px !important;
+    }
+    
+    .logout-btn {
+        padding: 3px 8px !important;
+        font-size: 10px !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -2851,10 +2920,9 @@ function addHomeButton() {
     // إذا الزر موجود بالفعل، لا نضيفه مرة ثانية
     if (document.getElementById('homeBtnWrapper')) return;
     
-    // نبحث عن الـ div الذي يحتوي على أزرار المستخدم
+    // نبحث عن user-info
     let userInfoDiv = header.querySelector('.user-info');
     
-    // إذا لم نجد user-info، ننشئه
     if (!userInfoDiv) {
         userInfoDiv = document.createElement('div');
         userInfoDiv.className = 'user-info';
@@ -2874,25 +2942,26 @@ function addHomeButton() {
     wrapper.style.alignItems = 'center';
     
     wrapper.innerHTML = `
-        <div id="homeIconBtn" style="width: 38px; height: 38px; background: var(--card-bg, white); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid #d4a017; transition: all 0.3s ease;">
+        <div id="homeIconBtn" style="width: 38px; height: 38px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid #d4a017; transition: all 0.3s ease;">
             <i class="fas fa-home" style="font-size: 18px; color: #d4a017;"></i>
         </div>
     `;
     
-    // نضيف زر المنزل في نهاية user-info (آخر حاجة من اليمين)
+    // نضيف زر المنزل في نهاية user-info
     userInfoDiv.appendChild(wrapper);
     
     const homeIcon = document.getElementById('homeIconBtn');
     
-    // عند مرور الماوس
+    // عند مرور الماوس - يتحول لزر مكتوب عليه "الرئيسية"
     homeIcon.addEventListener('mouseenter', () => {
         homeIcon.style.width = 'auto';
         homeIcon.style.borderRadius = '50px';
         homeIcon.style.padding = '0 12px';
         homeIcon.style.gap = '6px';
-        homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 16px;"></i><span style="font-size: 12px; font-weight: 600;">الرئيسية</span>';
+        homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 14px;"></i><span style="font-size: 12px; font-weight: 600;">الرئيسية</span>';
     });
     
+    // عند رفع الماوس - يرجع أيقونة فقط
     homeIcon.addEventListener('mouseleave', () => {
         homeIcon.style.width = '38px';
         homeIcon.style.borderRadius = '50%';
@@ -2901,12 +2970,12 @@ function addHomeButton() {
         homeIcon.innerHTML = '<i class="fas fa-home" style="font-size: 18px;"></i>';
     });
     
+    // عند الضغط
     homeIcon.addEventListener('click', (e) => {
         e.stopPropagation();
         showReturnToLandingConfirmation();
     });
 }
-
 function showReturnToLandingConfirmation() {
     // إنشاء نافذة منبثقة
     const modal = document.createElement('div');
@@ -5884,16 +5953,43 @@ function addFixedLogoButton() {
     const oldBtn = document.getElementById('fixedLogoBtn');
     if (oldBtn) oldBtn.remove();
     
-    // إنشاء الزر الجديد
+    // نبحث عن الهيدر
+    const header = document.querySelector('.header');
+    if (!header) return;
+    
+    // نبحث عن اللوجو الموجود في الهيدر
+    const existingLogo = header.querySelector('.logo');
+    
+    // ننشئ زر اللوجو الجديد
     const logoBtn = document.createElement('div');
     logoBtn.id = 'fixedLogoBtn';
-    logoBtn.className = 'fixed-logo-btn';
+    logoBtn.style.display = 'flex';
+    logoBtn.style.alignItems = 'center';
+    logoBtn.style.gap = '8px';
+    logoBtn.style.cursor = 'pointer';
+    logoBtn.style.transition = '0.3s';
+    logoBtn.style.backgroundColor = 'rgba(255,255,255,0.9)';
+    logoBtn.style.padding = '4px 12px 4px 15px';
+    logoBtn.style.borderRadius = '40px';
+    logoBtn.style.border = '1px solid #d4a017';
+    logoBtn.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+    
     logoBtn.innerHTML = `
-        <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" class="fixed-logo-img" alt="شعار المجموعة">
-        <span class="fixed-logo-text"><i class="fas fa-ship"></i> مجموعة كيان</span>
+        <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+        <span style="font-weight: bold; color: #1a472a; font-size: 12px;"><i class="fas fa-ship"></i> مجموعة كيان</span>
     `;
+    
     logoBtn.onclick = showLogoutConfirmation;
-    document.body.appendChild(logoBtn);
+    
+    // نضيف اللوجو داخل الهيدر بجوار اللوجو الأصلي
+    if (existingLogo) {
+        // نضيف اللوجو بعد اللوجو الأصلي مباشرة
+        existingLogo.insertAdjacentElement('afterend', logoBtn);
+        logoBtn.style.marginRight = '10px';
+    } else {
+        // إذا لم نجد اللوجو، نضيفه في بداية الهيدر
+        header.insertBefore(logoBtn, header.firstChild);
+    }
 }
 
 // عرض نافذة تأكيد تسجيل الخروج
@@ -5945,7 +6041,7 @@ function addThemeToggleButton() {
     themeBtn.style.width = '38px';
     themeBtn.style.height = '38px';
     themeBtn.style.borderRadius = '50%';
-    themeBtn.style.backgroundColor = 'var(--card-bg, white)';
+    themeBtn.style.backgroundColor = 'white';
     themeBtn.style.cursor = 'pointer';
     themeBtn.style.border = '1px solid #d4a017';
     themeBtn.style.transition = 'all 0.3s ease';
@@ -5965,11 +6061,14 @@ function addThemeToggleButton() {
         }
     };
     
-    // نضيف زر تغيير الوضع قبل زر المنزل (بمعنى يظهر قبله)
+    // البحث عن زر المنزل
     const homeBtn = document.getElementById('homeBtnWrapper');
+    
     if (homeBtn) {
+        // نضيف زر الوضع قبل زر المنزل
         userInfoDiv.insertBefore(themeBtn, homeBtn);
     } else {
+        // نضيفه في نهاية user-info
         userInfoDiv.appendChild(themeBtn);
     }
 }
