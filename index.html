@@ -1488,6 +1488,244 @@ body.loaded #leadersList > div,
 body.loaded #squadsList > div {
     opacity: 1;
 }
+/* ========== LANDING PAGE NEW STYLES ========== */
+.landing-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 30px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    padding: 5px 15px;
+    border-radius: 50px;
+    background: rgba(212, 160, 23, 0.1);
+}
+
+.navbar-logo:hover {
+    background: rgba(212, 160, 23, 0.2);
+    transform: translateX(-3px);
+}
+
+.navbar-logo img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #d4a017;
+    object-fit: cover;
+}
+
+.logo-text .logo-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1a472a;
+}
+
+.logo-text .logo-subtitle {
+    font-size: 11px;
+    color: #666;
+}
+
+.login-nav-btn {
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    color: white;
+    border: none;
+    padding: 8px 22px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.login-nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
+}
+
+.hero-card {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(12px);
+    border-radius: 50px;
+    padding: 50px 45px;
+    max-width: 750px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    animation: fadeInUp 0.8s ease;
+    margin: 0 auto;
+}
+
+.org-logo {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatLogo 3s ease-in-out infinite;
+}
+
+.org-logo img {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid white;
+}
+
+.org-name h1 {
+    font-size: 34px;
+    color: white;
+    font-weight: 800;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.org-name p {
+    font-size: 16px;
+    color: #eee;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.feature {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 12px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.feature i {
+    color: #d4a017;
+    margin-left: 8px;
+}
+
+.feature:hover {
+    background: rgba(212, 160, 23, 0.4);
+    transform: translateY(-5px);
+}
+
+.cta-btn {
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    color: white;
+    border: none;
+    padding: 14px 45px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(212, 160, 23, 0.4);
+}
+
+.gallery-section {
+    padding: 60px 30px;
+    background: rgba(255, 255, 255, 0.05);
+    text-align: center;
+}
+
+.gallery-title {
+    font-size: 28px;
+    color: #d4a017;
+    margin-bottom: 30px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.gallery-item {
+    overflow: hidden;
+    border-radius: 20px;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: 0.5s;
+}
+
+.gallery-item:hover {
+    transform: scale(1.03);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.landing-footer {
+    background: rgba(0, 0, 0, 0.7);
+    color: #ddd;
+    padding: 25px;
+    text-align: center;
+    font-size: 13px;
+    border-top: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+.landing-footer p {
+    margin: 5px 0;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@media (max-width: 768px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .hero-card { padding: 30px 20px; margin: 0 15px; }
+    .org-name h1 { font-size: 24px; }
+    .main-headline { font-size: 20px; }
+    .cta-btn { padding: 10px 25px; font-size: 16px; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .navbar-logo img { width: 35px; height: 35px; }
+    .logo-text .logo-title { font-size: 12px; }
+    .landing-navbar { padding: 10px 15px; }
+}
     </style>
 </head>
 <body>
@@ -2449,7 +2687,7 @@ function updatePendingRequestsBadge() {
         }
     }
 }
-        function renderAdminApp(container) {
+function renderAdminApp(container) {
     container.innerHTML = `
         <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
             <span></span><span></span><span></span>
@@ -2472,7 +2710,6 @@ function updatePendingRequestsBadge() {
                 <li data-page="leaders"><a onclick="changeAdminPage('leaders')"><i class="fas fa-user-tie"></i> إدارة القادة</a></li>
                 <li data-page="community"><a onclick="changeAdminPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
                 <li data-page="tasks"><a onclick="changeAdminPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
-                <!-- زر تسجيل الخروج في المينيو -->
                 <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
                     <a onclick="logout()" style="color: #e74c3c;">
                         <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
@@ -2490,10 +2727,9 @@ function updatePendingRequestsBadge() {
         <div class="main-content">
             <div id="adminPageContent"></div>
         </div>
-        <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
+        <div class="footer"><p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
     `;
     renderAdminDashboard();
-    addScoutLogoToPage();
 }
 
         function changeAdminPage(page) {
@@ -4542,37 +4778,32 @@ function showAddSubBranchModal() {
             renderAdminDashboard();
             showToast('تم حذف التكليف');
         }
-// دالة إضافة شعار الكشافة - تم إلغاؤها لأن الشعار موجود في الهيدر
 function addScoutLogoToPage() {
-    // تم نقل الشعار إلى الهيدر
-    return;
+    return;  // تم التعطيل
 }
-// دالة العودة إلى صفحة الهبوط
+
 function goToLandingPage() {
     sessionStorage.removeItem('scoutSession');
     sessionStorage.removeItem('scoutSessionTime');
     currentUser = null;
     isAdmin = false;
+    isLeader = false;
     if (countdownInterval) {
         clearInterval(countdownInterval);
         countdownInterval = null;
     }
     renderLandingPage();
 }
-function addGlobalLogoToAllPages() {
-    if (document.querySelector('.global-logo')) return;
-    const logo = document.createElement('div');
-    logo.className = 'global-logo';
-    logo.onclick = () => goToLandingPage();
-    logo.innerHTML = `
-        <img class="global-logo-img" src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg">
-        <span class="global-logo-text">مجموعة كيان الكشفية البحرية</span>
-    `;
-    document.body.appendChild(logo);
+
+function goToLoginPage() {
+    sessionStorage.setItem('scoutSession', 'active');
+    sessionStorage.setItem('scoutSessionTime', Date.now().toString());
+    location.reload();
 }
-        // ==================== MEMBER APP ====================
-        function renderMemberApp(container) {
-    addGlobalLogoToAllPages();
+function addGlobalLogoToAllPages() {
+    return;  // تم التعطيل
+}
+       function renderMemberApp(container) {
     const squad = appData.squads.find(s => s.id === currentUser.squadId);
     container.innerHTML = `
         <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
@@ -4582,13 +4813,12 @@ function addGlobalLogoToAllPages() {
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <h3><i class="fas fa-user-scout"></i> ${currentUser.name}</h3>
-                <p>${squad?.name || 'طليعة'}</p>
+                <p>${squad?.name || 'طليعة'} | ${currentUser.rank || 'عضو'}</p>
             </div>
             <ul class="sidebar-menu">
                 <li class="active" data-page="dashboard"><a onclick="changeMemberPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
                 <li data-page="community"><a onclick="changeMemberPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
                 <li data-page="tasks"><a onclick="changeMemberPage('tasks')"><i class="fas fa-tasks"></i> التكاليف</a></li>
-                <!-- زر تسجيل الخروج في المينيو -->
                 <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
                     <a onclick="logout()" style="color: #e74c3c;">
                         <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
@@ -4606,12 +4836,10 @@ function addGlobalLogoToAllPages() {
         <div class="main-content">
             <div id="memberPageContent"></div>
         </div>
-        <div class="footer"><p>© 2025 نظام الكشاف - Tecno Shark Company | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
+        <div class="footer"><p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | 01144100018 / 01126125881 | <i class="fas fa-cloud"></i> متزامن مع Firebase</p></div>
     `;
     renderMemberDashboard();
-    addScoutLogoToPage();
 }
-
         function changeMemberPage(page) {
             document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
             document.querySelector(`.sidebar-menu li[data-page="${page}"]`).classList.add('active');
@@ -4765,51 +4993,32 @@ function viewNewTasks() {
 function renderLandingPage() {
     const app = document.getElementById('app');
     app.innerHTML = `
-        <!-- تم إزالة الشعار الثابت من هنا -->
-        
         <div class="landing-container">
-            <!-- خلفية متحركة بفقاعات -->
+            <!-- خلفية الفقاعات -->
             <div class="animated-bg" id="animatedBg"></div>
             
-           <div class="landing-header">
-    <div class="landing-header-logo" onclick="goToLandingPage()">
-        <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة">
-        <div class="logo-text-header">
-            <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
-            <span class="logo-subtitle">Sea Scout Organization</span>
-        </div>
-    </div>
-    <button class="landing-header-login-btn" onclick="goToLoginPage()">
-        <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
-    </button>
-</div>
-            
-            <!-- باقي المحتوى كما هو دون تغيير -->
-            <div class="tent-animation-area">
-                <div class="floating-tent">
-                    <i class="fas fa-campground"></i>
-                </div>
-                <div class="scout-image-right">
-                    <img src="https://i.ibb.co/v6k7gjtq/In-Shot-20260528-142037394.jpg" alt="Scout Camp" onerror="this.src='https://via.placeholder.com/350x300?text=Scout+Camp'">
-                </div>
-            </div>
-            
-            <div class="flame-animation-area">
-                <div class="flame-icon">
-                    <i class="fas fa-fire"></i>
-                </div>
-                <div class="flame-image">
-                    <img src="https://i.ibb.co/8D2JcZHp/In-Shot-20260528-142226202.jpg" alt="Camp Fire" onerror="this.src='https://via.placeholder.com/350x300?text=Camp+Fire'">
-                </div>
-            </div>
-            
-            <div class="hero-section">
-                <div class="hero-content">
-                    <div class="organization-logo-large">
-                        <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة" onerror="this.src='https://via.placeholder.com/75x75?text=Scout'">
+            <!-- الشريط العلوي (Navbar) -->
+            <div class="landing-navbar">
+                <div class="navbar-logo" onclick="goToLandingPage()">
+                    <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة">
+                    <div class="logo-text">
+                        <span class="logo-title">مجموعة كيان الكشفية البحرية</span>
+                        <span class="logo-subtitle">Sea Scout Organization</span>
                     </div>
-                    <div class="organization-name">
-                        <h2>مجموعة كيان الكشفية البحرية</h2>
+                </div>
+                <button class="login-nav-btn" onclick="goToLoginPage()">
+                    <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                </button>
+            </div>
+            
+            <!-- القسم الرئيسي Hero -->
+            <div class="hero-section">
+                <div class="hero-card">
+                    <div class="org-logo">
+                        <img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة">
+                    </div>
+                    <div class="org-name">
+                        <h1>مجموعة كيان الكشفية البحرية</h1>
                         <p>Sea Scout Organization</p>
                     </div>
                     
@@ -4821,76 +5030,40 @@ function renderLandingPage() {
                         <i class="fas fa-campground"></i> إدارة متكاملة للطلايع والكشافة <i class="fas fa-flag-checkered"></i>
                     </div>
                     
-                    <div class="features-grid-landing">
-                        <div class="feature-item"><i class="fas fa-chart-line"></i> متابعة النقاط والترتيب</div>
-                        <div class="feature-item"><i class="fas fa-tasks"></i> إدارة التكاليف والمهام</div>
-                        <div class="feature-item"><i class="fas fa-comments"></i> تواصل مباشر بين القادة والأعضاء</div>
-                        <div class="feature-item"><i class="fas fa-users"></i> نظام متكامل للطلايع</div>
-                        <div class="feature-item"><i class="fas fa-cloud"></i> مزامنة فورية مع Firebase</div>
-                        <div class="feature-item"><i class="fas fa-trophy"></i> لوحات متقدمة وتقارير</div>
+                    <div class="features-grid">
+                        <div class="feature"><i class="fas fa-chart-line"></i> متابعة النقاط والترتيب</div>
+                        <div class="feature"><i class="fas fa-tasks"></i> إدارة التكاليف والمهام</div>
+                        <div class="feature"><i class="fas fa-comments"></i> تواصل مباشر</div>
+                        <div class="feature"><i class="fas fa-users"></i> نظام متكامل للطلايع</div>
+                        <div class="feature"><i class="fas fa-cloud"></i> مزامنة فورية مع Firebase</div>
+                        <div class="feature"><i class="fas fa-trophy"></i> لوحات متقدمة وتقارير</div>
                     </div>
                     
-                    <button class="login-main-btn" onclick="goToLoginPage()">
+                    <button class="cta-btn" onclick="goToLoginPage()">
                         <i class="fas fa-sign-in-alt"></i> ابدأ الآن - تسجيل الدخول
-                        <i class="fas fa-arrow-left"></i>
                     </button>
-                    
-                    <div style="margin-top: 20px; font-size: 12px; color: #999;">
-                        <i class="fas fa-shield-alt"></i> نظام آمن ومتطور للكشافة البحرية
-                    </div>
                 </div>
             </div>
             
-            <div class="footer-landing">
+            <!-- معرض الصور (Gallery) -->
+            <div class="gallery-section">
+                <h2 class="gallery-title"><i class="fas fa-images"></i> ألبوم الأنشطة الكشفية</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item"><img src="https://i.ibb.co/v6k7gjtq/In-Shot-20260528-142037394.jpg" alt="نشاط كشفي 1"></div>
+                    <div class="gallery-item"><img src="https://i.ibb.co/8D2JcZHp/In-Shot-20260528-142226202.jpg" alt="نشاط كشفي 2"></div>
+                    <div class="gallery-item"><img src="https://i.ibb.co/d9sKxjZ/In-Shot-20260528-143153172.jpg" alt="نشاط كشفي 3"></div>
+                    <div class="gallery-item"><img src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار المجموعة"></div>
+                </div>
+            </div>
+            
+            <!-- التذييل Footer -->
+            <div class="landing-footer">
                 <p>© 2025 نظام الكشاف - مجموعة كيان الكشفية البحرية | للتواصل: 01144100018 / 01126125881</p>
                 <p><i class="fas fa-cloud"></i> متزامن مع Firebase Cloud | تم التطوير بواسطة Tecno Shark Company</p>
             </div>
         </div>
     `;
-    
     createAnimatedBubbles();
-    
-    setTimeout(() => {
-        startAnimations();
-        setTimeout(() => {
-            autoFlameAnimation();
-        }, 2000);
-    }, 100);
-}
-
-// دالة إنشاء الفقاعات المتحركة في الخلفية
-function createAnimatedBubbles() {
-    const bgContainer = document.getElementById('animatedBg');
-    if (!bgContainer) return;
-    
-    const bubbleCount = 15;
-    for (let i = 0; i < bubbleCount; i++) {
-        const bubble = document.createElement('div');
-        bubble.className = 'bg-bubble';
-        const size = Math.random() * 150 + 50;
-        bubble.style.width = size + 'px';
-        bubble.style.height = size + 'px';
-        bubble.style.left = Math.random() * 100 + '%';
-        bubble.style.top = Math.random() * 100 + '%';
-        bubble.style.animationDelay = Math.random() * 10 + 's';
-        bubble.style.animationDuration = (Math.random() * 15 + 10) + 's';
-        bgContainer.appendChild(bubble);
-    }
-}
-// ==================== دوال الشعار الثابت (يظهر فقط في صفحة تسجيل الدخول) ====================
-
-// دالة إضافة الشعار (تعمل مرة واحدة فقط)
-function addGlobalLogoToLoginOnly() {
-    if (document.querySelector('.global-logo')) return;
-    
-    const logo = document.createElement('div');
-    logo.className = 'global-logo';
-    logo.onclick = () => goToLandingPage();
-    logo.innerHTML = `
-        <img class="global-logo-img" src="https://i.ibb.co/LdG0T7Lq/Whats-App-Image-2026-05-28-at-1-29-48-PM.jpg" alt="شعار الكشافة" onerror="this.src='https://via.placeholder.com/40x40?text=Scout'">
-        <span class="global-logo-text">مجموعة كيان الكشفية البحرية</span>
-    `;
-    document.body.appendChild(logo);
 }
 
 // حفظ النسخ الأصلية للدوال
