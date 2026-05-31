@@ -2009,6 +2009,1932 @@ body {
         font-size: 10px !important;
     }
 }
+/* ========== LANDING PAGE STYLES ========== */
+.landing-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a2e1a, #0d2818, #071a0f);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.hero-landing {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 80px 20px 60px;
+    background: linear-gradient(135deg, rgba(10,46,26,0.7), rgba(7,26,15,0.8)), url('https://i.ibb.co/VfWPtdk/5794143090170859641.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.hero-content-landing {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(12px);
+    border-radius: 50px;
+    padding: 40px 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid #d4a017;
+    animation: fadeInUpLanding 0.8s ease;
+}
+
+.hero-logo-landing {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 20px;
+    animation: floatLogoLanding 3s ease-in-out infinite;
+}
+
+.hero-logo-landing img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #d4a017;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+@keyframes floatLogoLanding {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.org-name-landing {
+    font-size: 28px;
+    color: #d4a017;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.main-title-landing {
+    font-size: 38px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.main-title-landing span {
+    color: #d4a017;
+}
+
+.subtitle-landing {
+    font-size: 18px;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 30px;
+}
+
+.landing-header-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 46, 26, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+.header-logo-landing {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-logo-landing img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4a017;
+}
+
+.header-logo-landing span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d4a017;
+}
+
+.header-buttons-landing {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-landing {
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-login-landing {
+    background: transparent;
+    border: 2px solid #d4a017;
+    color: #d4a017;
+}
+
+.btn-login-landing:hover {
+    background: #d4a017;
+    color: #1a472a;
+}
+
+.btn-join-landing {
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    color: #1a472a;
+}
+
+.btn-join-landing:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(212,160,23,0.4);
+}
+
+.about-section-landing {
+    padding: 80px 20px;
+    background: rgba(255,255,255,0.05);
+}
+
+.section-title-landing {
+    text-align: center;
+    font-size: 36px;
+    color: #d4a017;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.section-title-landing:after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: #d4a017;
+}
+
+.about-card-landing {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 40px;
+    border: 1px solid rgba(212,160,23,0.3);
+}
+
+.typing-container-landing {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 10px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.9);
+    font-size: 16px;
+}
+
+.typing-container-landing h1, 
+.typing-container-landing h2, 
+.typing-container-landing h3 {
+    color: #d4a017;
+    margin: 20px 0 10px;
+}
+
+.typing-container-landing p {
+    margin-bottom: 15px;
+}
+
+.typing-container-landing ul, 
+.typing-container-landing ol {
+    margin: 10px 0 15px 20px;
+    padding-right: 20px;
+}
+
+.typing-container-landing li {
+    margin-bottom: 8px;
+}
+
+.typing-container-landing::-webkit-scrollbar {
+    width: 5px;
+}
+.typing-container-landing::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+.typing-container-landing::-webkit-scrollbar-thumb {
+    background: #d4a017;
+    border-radius: 10px;
+}
+
+.social-section-landing {
+    padding: 60px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #071a0f, #0a2e1a);
+}
+
+.social-title-landing {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #d4a017;
+}
+
+.social-icons-landing {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.social-icon-landing {
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid #d4a017;
+    transition: all 0.3s ease;
+}
+
+.social-icon-landing i {
+    font-size: 40px;
+    color: #d4a017;
+}
+
+.social-icon-landing:hover {
+    transform: translateY(-8px);
+    background: #d4a017;
+}
+
+.social-icon-landing:hover i {
+    color: #1a472a;
+}
+
+.social-label-landing {
+    margin-top: 10px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+}
+
+.floating-tent-landing {
+    position: absolute;
+    bottom: 30px;
+    left: 5%;
+    width: 100px;
+    height: 100px;
+    animation: floatTentLanding 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+.floating-tent-landing img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+}
+
+@keyframes floatTentLanding {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+.fish-landing {
+    position: absolute;
+    bottom: 10%;
+    right: 5%;
+    font-size: 40px;
+    opacity: 0.2;
+    animation: swimLanding 12s linear infinite;
+}
+
+@keyframes swimLanding {
+    0% { transform: translateX(0) scaleX(1); }
+    49% { transform: translateX(calc(-100vw - 100px)) scaleX(1); }
+    50% { transform: translateX(calc(-100vw - 100px)) scaleX(-1); }
+    99% { transform: translateX(0) scaleX(-1); }
+    100% { transform: translateX(0) scaleX(1); }
+}
+
+@keyframes fadeInUpLanding {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.footer-landing {
+    background: #071a0f;
+    padding: 30px 20px;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+}
+
+@media (max-width: 768px) {
+    .landing-header-fixed { padding: 10px 15px; }
+    .header-logo-landing span { display: none; }
+    .btn-landing { padding: 6px 16px; font-size: 12px; }
+    .main-title-landing { font-size: 28px; }
+    .org-name-landing { font-size: 20px; }
+    .hero-logo-landing { width: 90px; height: 90px; }
+    .section-title-landing { font-size: 28px; }
+    .about-card-landing { padding: 20px; }
+    .social-icon-landing { width: 65px; height: 65px; }
+    .social-icon-landing i { font-size: 30px; }
+    .floating-tent-landing { width: 70px; height: 70px; }
+}
+/* ==================== ABOUT PAGE STYLES ==================== */
+.about-page-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a472a, #0d2818, #0a1f12);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.about-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 46, 26, 0.97);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212, 160, 23, 0.4);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+.about-page-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.about-page-logo img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4a017;
+}
+
+.about-page-logo span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d4a017;
+}
+
+.about-page-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.about-page-btn {
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    border: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.about-page-btn-home {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #d4a017;
+    color: #d4a017;
+}
+
+.about-page-btn-home:hover {
+    background: #d4a017;
+    color: #1a472a;
+    transform: translateY(-2px);
+}
+
+.about-page-btn-theme {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #d4a017;
+    color: #d4a017;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.about-page-btn-theme:hover {
+    background: #d4a017;
+    color: #1a472a;
+    transform: scale(1.05);
+}
+
+.about-page-content {
+    padding: 100px 20px 40px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.about-page-logo-center {
+    text-align: center;
+    margin: 30px auto 40px;
+    animation: floatLogoAbout 3s ease-in-out infinite;
+}
+
+.about-page-logo-center img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #d4a017;
+    box-shadow: 0 10px 40px rgba(212,160,23,0.3);
+}
+
+@keyframes floatLogoAbout {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.about-page-text-container {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 30px;
+    border: 1px solid rgba(212,160,23,0.3);
+    max-height: 600px;
+    overflow-y: auto;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.9);
+    font-size: 16px;
+}
+
+.about-page-text-container h1 {
+    color: #d4a017;
+    font-size: 28px;
+    margin: 20px 0 15px;
+    text-align: center;
+}
+
+.about-page-text-container h2 {
+    color: #d4a017;
+    font-size: 22px;
+    margin: 20px 0 12px;
+    border-right: 4px solid #d4a017;
+    padding-right: 15px;
+}
+
+.about-page-text-container h3 {
+    color: #e8c84a;
+    font-size: 18px;
+    margin: 15px 0 10px;
+}
+
+.about-page-text-container p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+.about-page-text-container ul, 
+.about-page-text-container ol {
+    margin: 10px 0 15px 20px;
+    padding-right: 20px;
+}
+
+.about-page-text-container li {
+    margin-bottom: 8px;
+}
+
+.about-page-text-container::-webkit-scrollbar {
+    width: 6px;
+}
+.about-page-text-container::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+.about-page-text-container::-webkit-scrollbar-thumb {
+    background: #d4a017;
+    border-radius: 10px;
+}
+
+.about-page-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-46.1-200.5 3.9-293.1 52.9-394.5 46.1V88.7h800V56.9z' fill='%23d4a017' opacity='0.15'/%3E%3C/svg%3E") repeat-x;
+    background-size: 800px 80px;
+    animation: waveMove 20s linear infinite;
+    z-index: 0;
+}
+
+.about-page-footer {
+    text-align: center;
+    padding: 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .about-page-header {
+        padding: 10px 15px;
+    }
+    .about-page-logo span {
+        font-size: 14px;
+    }
+    .about-page-btn {
+        font-size: 12px;
+        padding: 6px 14px;
+    }
+    .about-page-logo-center img {
+        width: 120px;
+        height: 120px;
+    }
+    .about-page-text-container {
+        padding: 20px;
+        font-size: 14px;
+        max-height: 500px;
+    }
+    .about-page-text-container h1 {
+        font-size: 22px;
+    }
+    .about-page-text-container h2 {
+        font-size: 18px;
+    }
+}
+/* ==================== NEW LANDING PAGE STYLES ==================== */
+.landing-new-container {
+    min-height: 100vh;
+    background: #ffffff;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.landing-new-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 80px 20px 60px;
+    background: linear-gradient(180deg, #e8f5e9 0%, #ffffff 30%, #e3f2fd 70%, #bbdefb 100%);
+    background-size: cover;
+}
+
+/* Wave animations */
+.landing-wave-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 1;
+}
+
+.landing-wave {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-46.1-200.5 3.9-293.1 52.9-394.5 46.1V88.7h800V56.9z' fill='%231a472a' opacity='0.15'/%3E%3C/svg%3E") repeat-x;
+    background-size: 800px 100px;
+    animation: waveMove 20s linear infinite;
+}
+
+.landing-wave2 {
+    height: 80px;
+    opacity: 0.3;
+    animation: waveMove 15s linear infinite reverse;
+    background-position: bottom;
+}
+
+@keyframes waveMove {
+    0% { background-position-x: 0; }
+    100% { background-position-x: 800px; }
+}
+
+/* Floating elements - Anchors & Ropes */
+.floating-anchor-new {
+    position: absolute;
+    font-size: 60px;
+    color: #1a472a;
+    opacity: 0.2;
+    animation: floatAnchorNew 6s ease-in-out infinite;
+    z-index: 0;
+}
+
+.floating-anchor-new:nth-child(1) { bottom: 15%; left: 3%; animation-delay: 0s; }
+.floating-anchor-new:nth-child(2) { bottom: 10%; right: 3%; animation-delay: 2s; font-size: 40px; }
+.floating-anchor-new:nth-child(3) { top: 20%; right: 5%; animation-delay: 4s; font-size: 35px; }
+
+@keyframes floatAnchorNew {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+/* Rope decoration */
+.rope-decoration {
+    position: absolute;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #8d6e63, #a1887f, #8d6e63, transparent);
+    border-radius: 2px;
+    z-index: 0;
+    opacity: 0.3;
+}
+
+.rope-decoration:nth-child(4) { top: 10%; left: 0; width: 100%; animation: ropeWave 8s ease-in-out infinite; }
+.rope-decoration:nth-child(5) { top: 15%; left: 10%; width: 80%; animation: ropeWave 10s ease-in-out infinite reverse; }
+
+@keyframes ropeWave {
+    0%, 100% { transform: scaleX(1); opacity: 0.3; }
+    50% { transform: scaleX(0.8); opacity: 0.6; }
+}
+
+/* Fish animation */
+.fish-new {
+    position: absolute;
+    font-size: 30px;
+    color: #1a472a;
+    opacity: 0.2;
+    animation: swimNew 15s linear infinite;
+    z-index: 0;
+}
+
+.fish-new:nth-child(6) { bottom: 20%; left: -50px; animation-duration: 12s; }
+.fish-new:nth-child(7) { bottom: 30%; left: -80px; animation-duration: 18s; animation-delay: 2s; }
+.fish-new:nth-child(8) { bottom: 15%; left: -30px; animation-duration: 14s; animation-delay: 5s; }
+
+@keyframes swimNew {
+    0% { transform: translateX(0) scaleX(1); }
+    49% { transform: translateX(calc(100vw + 100px)) scaleX(1); }
+    50% { transform: translateX(calc(100vw + 100px)) scaleX(-1); }
+    99% { transform: translateX(0) scaleX(-1); }
+    100% { transform: translateX(0) scaleX(1); }
+}
+
+/* Tent image - larger and curved edges */
+.tent-image-new {
+    position: absolute;
+    bottom: 20px;
+    left: 5%;
+    width: 160px;
+    height: 160px;
+    z-index: 1;
+    animation: floatTentNew 4s ease-in-out infinite;
+}
+
+.tent-image-new img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+}
+
+@keyframes floatTentNew {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+/* Hero content box - white with shadow */
+.hero-content-new {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-radius: 40px;
+    padding: 50px 40px;
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid rgba(26, 71, 42, 0.15);
+    box-shadow: 0 20px 60px rgba(26, 71, 42, 0.1);
+    animation: fadeInUpNew 0.8s ease;
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes fadeInUpNew {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-logo-new {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 20px;
+    animation: floatLogoNew 3s ease-in-out infinite;
+}
+
+.hero-logo-new img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1a472a;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+@keyframes floatLogoNew {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.org-name-new {
+    font-size: 28px;
+    color: #1a472a;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.main-title-new {
+    font-size: 38px;
+    color: #1a472a;
+    margin-bottom: 20px;
+}
+
+.main-title-new span {
+    color: #d4a017;
+}
+
+.subtitle-new {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* Marine themed buttons */
+.btn-marine {
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 16px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-marine-primary {
+    background: linear-gradient(135deg, #1a472a, #2e7d32);
+    color: white;
+    box-shadow: 0 5px 20px rgba(26,71,42,0.3);
+}
+
+.btn-marine-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(26,71,42,0.4);
+}
+
+.btn-marine-secondary {
+    background: transparent;
+    border: 2px solid #1a472a;
+    color: #1a472a;
+}
+
+.btn-marine-secondary:hover {
+    background: #1a472a;
+    color: white;
+    transform: translateY(-3px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content-new { padding: 30px 20px; border-radius: 25px; }
+    .main-title-new { font-size: 28px; }
+    .org-name-new { font-size: 20px; }
+    .hero-logo-new { width: 90px; height: 90px; }
+    .tent-image-new { width: 100px; height: 100px; bottom: 10px; left: 3%; }
+    .floating-anchor-new { font-size: 30px; }
+    .btn-marine { padding: 10px 20px; font-size: 14px; }
+}
+.btn-landing.about-btn {
+    background: rgba(212, 160, 23, 0.15);
+    border: 1px solid #d4a017;
+    color: #d4a017;
+}
+
+.btn-landing.about-btn:hover {
+    background: #d4a017;
+    color: #1a472a;
+    transform: translateY(-2px);
+}
+/* ==================== ABOUT PAGE NEW STYLES ==================== */
+.about-page-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a2e1a, #0d2818, #071a0f);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.about-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 46, 26, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212, 160, 23, 0.4);
+}
+
+.about-page-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.about-page-logo img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4a017;
+}
+
+.about-page-logo span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d4a017;
+}
+
+.about-page-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.about-page-btn-home {
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #d4a017;
+    color: #d4a017;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.about-page-btn-home:hover {
+    background: #d4a017;
+    color: #1a472a;
+    transform: translateY(-2px);
+}
+
+.about-page-btn-theme {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #d4a017;
+    color: #d4a017;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.about-page-btn-theme:hover {
+    background: #d4a017;
+    color: #1a472a;
+    transform: scale(1.05);
+}
+
+/* Hero Section */
+.about-hero-section {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    background: linear-gradient(135deg, rgba(10,46,26,0.6), rgba(7,26,15,0.8)), url('https://i.ibb.co/VfWPtdk/5794143090170859641.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.about-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+}
+
+.about-hero-content {
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.8s ease;
+}
+
+.about-logo-animation {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    animation: floatLogo 3s ease-in-out infinite;
+}
+
+.about-logo-animation img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #d4a017;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.about-hero-title {
+    font-size: 48px;
+    color: #d4a017;
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.about-hero-subtitle {
+    font-size: 20px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 20px;
+}
+
+.about-hero-anchor {
+    font-size: 40px;
+    color: #d4a017;
+    opacity: 0.7;
+    animation: bounceAnchor 2s ease-in-out infinite;
+}
+
+@keyframes bounceAnchor {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+
+/* Typing Section */
+.about-typing-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 30px;
+    min-height: 500px;
+    max-height: 70vh;
+    overflow-y: auto;
+    direction: rtl;
+}
+
+.about-typing-container {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 40px;
+    border: 1px solid rgba(212,160,23,0.3);
+    position: relative;
+}
+
+.about-typing-content {
+    line-height: 1.9;
+    color: rgba(255,255,255,0.9);
+    font-size: 16px;
+}
+
+.about-typing-content h1 {
+    color: #d4a017;
+    font-size: 28px;
+    margin: 25px 0 15px;
+    text-align: center;
+}
+
+.about-typing-content h2 {
+    color: #e8c84a;
+    font-size: 22px;
+    margin: 20px 0 12px;
+    border-right: 4px solid #d4a017;
+    padding-right: 15px;
+}
+
+.about-typing-content h3 {
+    color: #d4a017;
+    font-size: 18px;
+    margin: 15px 0 10px;
+}
+
+.about-typing-content p {
+    margin-bottom: 15px;
+}
+
+.about-typing-content ul {
+    margin: 10px 20px 15px;
+    padding-right: 20px;
+}
+
+.about-typing-content li {
+    margin-bottom: 8px;
+}
+
+.about-typing-content strong {
+    color: #d4a017;
+}
+
+.about-typing-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 24px;
+    background-color: #d4a017;
+    margin-right: 5px;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Scrollbar */
+.about-typing-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.about-typing-section::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+
+.about-typing-section::-webkit-scrollbar-thumb {
+    background: #d4a017;
+    border-radius: 10px;
+}
+
+/* Footer */
+.about-page-footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    border-top: 1px solid rgba(212,160,23,0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-page-header {
+        padding: 10px 15px;
+    }
+    .about-page-logo span {
+        font-size: 14px;
+    }
+    .about-hero-title {
+        font-size: 32px;
+    }
+    .about-hero-subtitle {
+        font-size: 16px;
+    }
+    .about-logo-animation {
+        width: 90px;
+        height: 90px;
+    }
+    .about-typing-section {
+        padding: 30px 20px;
+    }
+    .about-typing-container {
+        padding: 20px;
+    }
+    .about-typing-content {
+        font-size: 14px;
+    }
+    .about-typing-content h1 {
+        font-size: 22px;
+    }
+    .about-typing-content h2 {
+        font-size: 18px;
+    }
+}
+/* ==================== ABOUT PAGE NEW STYLES ==================== */
+.about-page-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a2e1a, #0d2818, #071a0f);
+    position: relative;
+    overflow-x: hidden;
+    transition: background 0.3s ease;
+}
+
+body.light-mode .about-page-container {
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7);
+}
+
+/* Header */
+.about-page-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 46, 26, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(212, 160, 23, 0.4);
+}
+
+body.light-mode .about-page-header {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.about-page-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.about-page-logo img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #d4a017;
+}
+
+.about-page-logo span {
+    font-size: 18px;
+    font-weight: bold;
+    color: #d4a017;
+}
+
+.about-page-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.about-page-btn-home {
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #d4a017;
+    color: #d4a017;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.about-page-btn-home:hover {
+    background: #d4a017;
+    color: #1a472a;
+    transform: translateY(-2px);
+}
+
+.about-page-btn-theme {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #d4a017;
+    color: #d4a017;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.about-page-btn-theme:hover {
+    background: #d4a017;
+    color: #1a472a;
+    transform: scale(1.05);
+}
+
+/* Hero Section */
+.about-hero-section {
+    position: relative;
+    height: 55vh;
+    min-height: 400px;
+    background: linear-gradient(135deg, rgba(10,46,26,0.5), rgba(7,26,15,0.7)), url('https://i.ibb.co/VfWPtdk/5794143090170859641.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.about-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.5));
+}
+
+.about-hero-content {
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.8s ease;
+}
+
+.about-logo-animation {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    animation: floatLogo 3s ease-in-out infinite;
+}
+
+.about-logo-animation img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #d4a017;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.about-hero-title {
+    font-size: 48px;
+    color: #d4a017;
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.about-hero-subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 20px;
+}
+
+.about-hero-anchor {
+    font-size: 30px;
+    color: #d4a017;
+    opacity: 0.8;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Typing Wrapper - Full Width */
+.about-typing-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 60px 5%;
+    min-height: 500px;
+    max-height: 70vh;
+    overflow-y: auto;
+    direction: rtl;
+    background: transparent;
+}
+
+.about-typing-section {
+    width: 100%;
+}
+
+.about-typing-container {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 30px;
+    padding: 40px;
+    border: 1px solid rgba(212,160,23,0.3);
+    position: relative;
+    width: 100%;
+}
+
+body.light-mode .about-typing-container {
+    background: rgba(255,255,255,0.9);
+    border-color: rgba(212,160,23,0.5);
+}
+
+.about-typing-content {
+    line-height: 1.9;
+    color: rgba(255,255,255,0.9);
+    font-size: 16px;
+}
+
+body.light-mode .about-typing-content {
+    color: #1a472a;
+}
+
+/* Typing Content Styles */
+.about-typing-content strong {
+    color: #d4a017;
+    font-size: 1.1em;
+}
+
+.about-typing-content hr {
+    margin: 25px 0;
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d4a017, #d4a017, transparent);
+}
+
+.about-typing-content .title-anchor {
+    font-size: 28px;
+    font-weight: 800;
+    color: #d4a017;
+    text-align: center;
+    margin: 30px 0 20px;
+    padding: 10px;
+    background: linear-gradient(135deg, rgba(212,160,23,0.1), rgba(212,160,23,0.05));
+    border-radius: 15px;
+}
+
+.about-typing-content .title-wave {
+    font-size: 26px;
+    font-weight: 800;
+    color: #d4a017;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+.about-typing-content .title-star {
+    font-size: 26px;
+    font-weight: 800;
+    color: #ffd700;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+.about-typing-content .title-target {
+    font-size: 26px;
+    font-weight: 800;
+    color: #e74c3c;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+.about-typing-content .title-boat {
+    font-size: 26px;
+    font-weight: 800;
+    color: #3498db;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+.about-typing-content .title-building {
+    font-size: 26px;
+    font-weight: 800;
+    color: #2ecc71;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+.about-typing-content .title-heart {
+    font-size: 26px;
+    font-weight: 800;
+    color: #e91e63;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+.about-typing-content .title-handshake {
+    font-size: 26px;
+    font-weight: 800;
+    color: #f39c12;
+    text-align: center;
+    margin: 30px 0 20px;
+}
+
+/* Subtitles */
+.about-typing-content .subtitle-fish,
+.about-typing-content .subtitle-tent,
+.about-typing-content .subtitle-circus,
+.about-typing-content .subtitle-trophy,
+.about-typing-content .subtitle-run,
+.about-typing-content .subtitle-book {
+    font-size: 22px;
+    font-weight: 700;
+    color: #d4a017;
+    margin: 25px 0 15px;
+    padding-right: 15px;
+    border-right: 4px solid #d4a017;
+}
+
+/* Location & Items */
+.about-typing-content .location {
+    font-size: 18px;
+    font-weight: 600;
+    color: #3498db;
+    margin: 10px 0 5px;
+    padding-right: 20px;
+}
+
+.about-typing-content .check-item {
+    font-size: 16px;
+    margin: 8px 0;
+    padding-right: 25px;
+    color: #2ecc71;
+}
+
+.about-typing-content .bullet-item {
+    font-size: 15px;
+    margin: 5px 0;
+    padding-right: 30px;
+    color: rgba(255,255,255,0.8);
+}
+
+body.light-mode .about-typing-content .bullet-item {
+    color: #555;
+}
+
+.about-typing-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 24px;
+    background-color: #d4a017;
+    margin-right: 5px;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Scrollbar */
+.about-typing-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.about-typing-wrapper::-webkit-scrollbar-track {
+    background: rgba(212,160,23,0.1);
+    border-radius: 10px;
+}
+
+.about-typing-wrapper::-webkit-scrollbar-thumb {
+    background: #d4a017;
+    border-radius: 10px;
+}
+
+/* Footer */
+.about-page-footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    border-top: 1px solid rgba(212,160,23,0.2);
+}
+
+body.light-mode .about-page-footer {
+    color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-page-header {
+        padding: 10px 15px;
+    }
+    .about-page-logo span {
+        font-size: 14px;
+    }
+    .about-hero-title {
+        font-size: 32px;
+    }
+    .about-hero-subtitle {
+        font-size: 14px;
+    }
+    .about-logo-animation {
+        width: 90px;
+        height: 90px;
+    }
+    .about-typing-wrapper {
+        padding: 30px 20px;
+    }
+    .about-typing-container {
+        padding: 20px;
+    }
+    .about-typing-content {
+        font-size: 14px;
+    }
+    .about-typing-content .title-anchor,
+    .about-typing-content .title-wave,
+    .about-typing-content .title-star,
+    .about-typing-content .title-target {
+        font-size: 22px;
+    }
+    .about-typing-content .subtitle-fish,
+    .about-typing-content .subtitle-tent,
+    .about-typing-content .subtitle-circus {
+        font-size: 18px;
+    }
+}
+/* ==================== NEW CENTER LOGO WITH ANIMATION ==================== */
+.center-logo-container {
+    text-align: center;
+    margin: 20px 0 25px 0;
+    animation: floatLogoCenter 3s ease-in-out infinite;
+}
+
+.center-logo-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #d4a017;
+    box-shadow: 0 15px 35px rgba(212, 160, 23, 0.3);
+    background: #fff;
+    padding: 5px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.center-logo-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 20px 45px rgba(212, 160, 23, 0.5);
+}
+
+@keyframes floatLogoCenter {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .center-logo-img {
+        width: 120px;
+        height: 120px;
+        border-width: 3px;
+    }
+    .center-logo-container {
+        margin: 10px 0 15px 0;
+    }
+}
+/* ==================== HEADER CENTER IMAGE STYLES ==================== */
+.header-center-image {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.header-center-img {
+    height: 70px;
+    width: auto;
+    max-width: 280px;
+    border-radius: 35px;
+    object-fit: cover;
+    border: 2px solid #d4a017;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    animation: headerImageFloat 3s ease-in-out infinite;
+}
+
+.header-center-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(212, 160, 23, 0.4);
+    border-color: #ffd700;
+}
+
+@keyframes headerImageFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .header-center-img {
+        height: 55px;
+        max-width: 200px;
+        border-radius: 28px;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-center-img {
+        height: 45px;
+        max-width: 160px;
+        border-radius: 22px;
+    }
+}
+
+@media (max-width: 500px) {
+    .header-center-img {
+        display: none;
+    }
+}
+/* ==================== LEADERBOARD SECTION STYLES ==================== */
+.leaderboard-section {
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    direction: rtl;
+}
+
+.leaderboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 30px;
+    padding: 25px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+}
+
+body.light-mode .leaderboard-container {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-title {
+    text-align: center;
+    font-size: 32px;
+    color: #d4a017;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.leaderboard-title i {
+    font-size: 36px;
+}
+
+.leaderboard-filters {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a472a;
+    margin-bottom: 8px;
+    margin-right: 5px;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 30px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #d4a017;
+}
+
+.filter-group select:disabled {
+    background: #f0f0f0;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.leaderboard-table-wrapper {
+    overflow-x: auto;
+    border-radius: 20px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.leaderboard-table th {
+    background: #1a472a;
+    color: white;
+    padding: 15px 12px;
+    text-align: center;
+    font-weight: 600;
+}
+
+body.light-mode .leaderboard-table th {
+    background: #2e7d32;
+}
+
+.leaderboard-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+.leaderboard-table tr:hover {
+    background: #f5f5f5;
+}
+
+.leaderboard-table .rank-cell {
+    font-weight: bold;
+    width: 80px;
+}
+
+.rank-medal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.rank-1 { background: #d4a017; color: white; }
+.rank-2 { background: #c0c0c0; color: white; }
+.rank-3 { background: #cd7f32; color: white; }
+.rank-other { background: #666; color: white; }
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 16px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+    .leaderboard-section {
+        padding: 40px 15px;
+    }
+    .leaderboard-container {
+        padding: 15px;
+    }
+    .leaderboard-title {
+        font-size: 24px;
+    }
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+    .filter-group {
+        min-width: 100%;
+    }
+}
+/* ==================== FOOTER NEW STYLES ==================== */
+.footer-landing-new button {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.footer-landing-new button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.footer-landing-new a {
+    text-decoration: none;
+}
+
+/* أزرار الواتساب */
+.footer-landing-new a:first-child button:hover {
+    background: #075e54 !important;
+}
+
+/* زر الاتصال */
+.footer-landing-new a:nth-child(2) button:hover {
+    background: #2980b9 !important;
+}
+
+/* زر فيسبوك */
+.footer-landing-new a:nth-child(3) button:hover {
+    background: #0d47a1 !important;
+}
+
+/* زر تيك توك */
+.footer-landing-new a:nth-child(4) button:hover {
+    background: #1a1a1a !important;
+}
+
+/* زر الموقع */
+.footer-landing-new a:last-child button:hover {
+    background: #b8860b !important;
+    color: white !important;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+    .footer-landing-new {
+        padding: 30px 15px 20px;
+    }
+    .footer-landing-new button {
+        padding: 10px 18px !important;
+        font-size: 12px !important;
+    }
+    .footer-landing-new button i {
+        font-size: 16px !important;
+    }
+    .footer-landing-new div[style*="background: rgba(255,255,255,0.08)"] {
+        padding: 6px 12px !important;
+        font-size: 12px !important;
+    }
+}
+/* ==================== UNIFIED FOOTER STYLES ==================== */
+.unified-footer {
+    width: 100%;
+}
+
+.unified-footer button {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.unified-footer button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.unified-footer a {
+    text-decoration: none;
+}
+
+/* Hover effects for buttons */
+.footer-btn[data-color="whatsapp"] button:hover {
+    background: #075e54 !important;
+}
+.footer-btn[data-color="call"] button:hover {
+    background: #2980b9 !important;
+}
+.footer-btn[data-color="facebook"] button:hover {
+    background: #0d47a1 !important;
+}
+.footer-btn[data-color="tiktok"] button:hover {
+    background: #1a1a1a !important;
+}
+.footer-btn[data-color="website"] button:hover {
+    background: #b8860b !important;
+    color: white !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .unified-footer {
+        padding: 30px 15px 20px !important;
+    }
+    .unified-footer button {
+        padding: 10px 18px !important;
+        font-size: 12px !important;
+    }
+    .unified-footer button i {
+        font-size: 16px !important;
+    }
+    .unified-footer div[style*="background: rgba(255,255,255,0.08)"] {
+        padding: 5px 12px !important;
+        font-size: 11px !important;
+    }
+    .unified-footer h3 {
+        font-size: 18px !important;
+    }
+}
     </style>
 </head>
 <body>
@@ -2038,6 +3964,14 @@ body {
         let isLeader = false;
         let passwordVisible = false;
         let isUpdatingSeenStatus = false;
+        let isTypingAnimationStarted = false;
+        let aboutTypingInterval = null;
+        let aboutTypingTimeout = null;
+        let currentBranchFilter = 'all';
+        let currentTypeFilter = 'all';
+
+
+
       let appData = {
     branches: [],
     subBranches: [],     // <-- تأكد من وجود هذا السطر
@@ -2420,7 +4354,89 @@ function getSubBranchesCheckboxes(branchId, selectedSubBranchIds) {
     `).join('');
 }
 
+// ==================== UNIFIED FOOTER FOR ALL PAGES ====================
+function renderUnifiedFooter() {
+    return `
+        <div class="unified-footer" style="background: linear-gradient(135deg, #0a2e1a, #0d2818); padding: 40px 20px 25px; text-align: center; border-top: 2px solid rgba(212,160,23,0.4); margin-top: auto;">
+            
+            <!-- قسم تواصل معنا (يظهر أعلى الفوتر) -->
+            <div style="margin-bottom: 35px;">
+                <h3 style="color: #d4a017; margin-bottom: 20px; font-size: 22px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fas fa-headset"></i>
+                    <span>📞 Contact us</span>
+                    <i class="fas fa-comments"></i>
+                </h3>
+                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                    <!-- واتساب -->
+                    <a href="https://wa.me/201035636654" target="_blank" class="footer-btn" data-color="whatsapp">
+                        <button style="background: #25D366; border: none; padding: 12px 28px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; font-family: 'Cairo', sans-serif; font-weight: 600; color: white; font-size: 14px;">
+                            <i class="fab fa-whatsapp" style="font-size: 20px;"></i>
+                            <span>WhatsApp 01035636654</span>
+                        </button>
+                    </a>
+                    <!-- اتصال -->
+                    <a href="tel:01144100018" class="footer-btn" data-color="call">
+                        <button style="background: #3498db; border: none; padding: 12px 28px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; font-family: 'Cairo', sans-serif; font-weight: 600; color: white; font-size: 14px;">
+                            <i class="fas fa-phone-alt" style="font-size: 20px;"></i>
+                            <span> Contact us 01144100018</span>
+                        </button>
+                    </a>
+                    <!-- فيسبوك -->
+                    <a href="https://www.facebook.com/share/18oMJ3PRYG/" target="_blank" class="footer-btn" data-color="facebook">
+                        <button style="background: #1877f2; border: none; padding: 12px 28px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; font-family: 'Cairo', sans-serif; font-weight: 600; color: white; font-size: 14px;">
+                            <i class="fab fa-facebook-f" style="font-size: 20px;"></i>
+                            <span>FaceBook</span>
+                        </button>
+                    </a>
+                    <!-- تيك توك -->
+                    <a href="https://www.tiktok.com/@tecno.shark47?_r=1&_t=ZS-96lpm0BrDt7" target="_blank" class="footer-btn" data-color="tiktok">
+                        <button style="background: #000000; border: none; padding: 12px 28px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; font-family: 'Cairo', sans-serif; font-weight: 600; color: white; font-size: 14px;">
+                            <i class="fab fa-tiktok" style="font-size: 20px;"></i>
+                            <span>Tik Tok</span>
+                        </button>
+                    </a>
+                    <!-- الموقع الرسمي -->
+                    <a href="https://tecno-shark.vercel.app/" target="_blank" class="footer-btn" data-color="website">
+                        <button style="background: #d4a017; border: none; padding: 12px 28px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; font-family: 'Cairo', sans-serif; font-weight: 600; color: #1a472a; font-size: 14px;">
+                            <i class="fas fa-globe" style="font-size: 20px;"></i>
+                            <span>Website</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
 
+            <!-- شركة تكنو شارك -->
+            <div style="margin-bottom: 25px;">
+                <div style="display: inline-block; background: rgba(212,160,23,0.12); padding: 8px 25px; border-radius: 50px; margin-bottom: 15px;">
+                    <i class="fas fa-laptop-code" style="color: #d4a017; font-size: 18px;"></i>
+                    <span style="color: #d4a017; font-weight: 600; margin-right: 8px;">Developed by Tecno Shark Company</span>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 10px;">
+                    <div style="background: rgba(255,255,255,0.08); padding: 6px 16px; border-radius: 40px;">
+                        <i class="fas fa-user-tie" style="color: #d4a017; margin-left: 8px;"></i>
+                        <span style="color: #fff;"> Abdul Rahman Muhammad Sobhi </span>
+                        <span style="color: rgba(255,255,255,0.6); font-size: 12px; margin-right: 8px;">(Owner)</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.08); padding: 6px 16px; border-radius: 40px;">
+                        <i class="fas fa-handshake" style="color: #d4a017; margin-left: 8px;"></i>
+                        <span style="color: #fff;">Mohamed Emad Abdel-Ati</span>
+                        <span style="color: rgba(255,255,255,0.6); font-size: 12px; margin-right: 8px;">(Director and partner)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- حقوق الملكية -->
+            <div style="border-top: 1px solid rgba(212,160,23,0.2); padding-top: 20px; margin-top: 10px;">
+                <p style="color: rgba(255,255,255,0.5); font-size: 12px; margin: 5px 0;">
+                    <i class="far fa-copyright"></i> 2025 مجموعة كيان الكشفية البحرية | جميع الحقوق محفوظة
+                </p>
+                <p style="color: rgba(255,255,255,0.4); font-size: 11px; margin: 5px 0;">
+                    <i class="fas fa-code"></i> تم تصميم هذا المنتج | Developed by Tecno Shark Company
+                </p>
+            </div>
+        </div>
+    `;
+}
         function listenForRealTimeUpdates() {
     database.ref('appData').on('value', (snapshot) => {
         const data = snapshot.val();
@@ -2620,6 +4636,7 @@ function renderLogin(container) {
             loginHomeBtn.innerHTML = '<i class="fas fa-home" style="font-size: 20px;"></i>';
         });
         
+        // ✅ التعديل المطلوب: استدعاء نافذة التأكيد التي تعيد إلى صفحة الهبوط
         loginHomeBtn.addEventListener('click', () => {
             showReturnToLandingConfirmation();
         });
@@ -2658,7 +4675,7 @@ function renderLogin(container) {
                 const loginBox = document.querySelector('.login-box');
                 if (loginBox) {
                     loginBox.style.background = 'white';
-                    loginBox.style.color = '#333';
+                    loginBox.style.boxShadow = '0 20px 40px rgba(0,0,0,0.1)';
                 }
             }
         });
@@ -2741,7 +4758,7 @@ function showJoinRequestModal() {
                     </select>
                 </div>
                 <div class="input-group"><label>المنطقة</label>
-                    <select id="reqBranch" onchange="updateSubBranchesByBranch('reqBranch', 'reqSubBranch')" required>
+                    <select id="reqBranch" required>
                         <option value="">-- اختر المنطقة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
@@ -2756,6 +4773,13 @@ function showJoinRequestModal() {
                         <option value="">-- اختر الفرع أولاً --</option>
                     </select>
                 </div>
+                
+                <!-- الخانة الجديدة: نوع الطليعة (يظهر تلقائياً) -->
+                <div class="input-group" id="squadTypeContainer" style="display: none;">
+                    <label><i class="fas fa-users"></i> نوع الطليعة</label>
+                    <input type="text" id="reqSquadType" readonly style="background: #f0f0f0; font-weight: bold; color: #1a472a;">
+                </div>
+                
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="reqUsername" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="reqPassword" required></div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">إرسال الطلب للقائد</button>
@@ -2764,37 +4788,79 @@ function showJoinRequestModal() {
     `;
     document.body.appendChild(modal);
     
-    // إضافة مستمع لتحديث الفروع عند اختيار المنطقة
+    // خريطة لأنواع الفرق مع أيقوناتها
+    const squadTypeIcons = {
+        'الكشافة': '⚜️',
+        'المرشدات': '🌸',
+        'الأشبال': '🦁',
+        'الزهرات': '🌺',
+        'البراعم': '🌱'
+    };
+    
+    // تحديث الفروع عند اختيار المنطقة
     document.getElementById('reqBranch').addEventListener('change', function() {
         const branchId = parseInt(this.value);
         const subBranchSelect = document.getElementById('reqSubBranch');
         const squadSelect = document.getElementById('reqSquad');
+        const squadTypeContainer = document.getElementById('squadTypeContainer');
+        const squadTypeInput = document.getElementById('reqSquadType');
         
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
             subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
                 branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
             squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
+            squadTypeContainer.style.display = 'none';
+            squadTypeInput.value = '';
         } else {
             subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
             squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+            squadTypeContainer.style.display = 'none';
         }
     });
     
-    // إضافة مستمع لتحديث الطلايع عند اختيار الفرع
+    // تحديث الطلايع عند اختيار الفرع
     document.getElementById('reqSubBranch').addEventListener('change', function() {
         const subBranchId = parseInt(this.value);
         const squadSelect = document.getElementById('reqSquad');
+        const squadTypeContainer = document.getElementById('squadTypeContainer');
+        const squadTypeInput = document.getElementById('reqSquadType');
         
         if (subBranchId) {
             const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
             if (subBranch) {
                 const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
                 squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
-                    squads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
+                    squads.map(s => `<option value="${s.id}" data-type="${s.type || 'الكشافة'}">${s.name} (${s.leader})</option>`).join('');
+                squadTypeContainer.style.display = 'none';
+                squadTypeInput.value = '';
             }
         } else {
             squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+            squadTypeContainer.style.display = 'none';
+        }
+    });
+    
+    // عند اختيار الطليعة، تظهر خانة نوع الطليعة تلقائياً
+    document.getElementById('reqSquad').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const squadType = selectedOption.getAttribute('data-type') || 'الكشافة';
+        const squadTypeContainer = document.getElementById('squadTypeContainer');
+        const squadTypeInput = document.getElementById('reqSquadType');
+        const squadTypeIconsMap = {
+            'الكشافة': '⚜️ فريق الكشافة',
+            'المرشدات': '🌸 فريق المرشدات',
+            'الأشبال': '🦁 فريق الأشبال',
+            'الزهرات': '🌺 فريق الزهرات',
+            'البراعم': '🌱 فريق البراعم'
+        };
+        
+        if (this.value && squadType) {
+            squadTypeInput.value = squadTypeIconsMap[squadType] || squadType;
+            squadTypeContainer.style.display = 'block';
+        } else {
+            squadTypeContainer.style.display = 'none';
+            squadTypeInput.value = '';
         }
     });
     
@@ -2814,6 +4880,8 @@ function showJoinRequestModal() {
         const subBranchId = parseInt(document.getElementById('reqSubBranch').value);
         const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
         const squadId = parseInt(document.getElementById('reqSquad').value);
+        const squad = appData.squads.find(s => s.id === squadId);
+        const squadType = document.getElementById('reqSquadType').value || (squad ? squad.type : 'الكشافة');
         
         if (!subBranchId || !squadId) {
             showToast('الرجاء اختيار الفرع والطليعة', 'error');
@@ -2829,6 +4897,7 @@ function showJoinRequestModal() {
             branchId: subBranch.branchId,
             subBranchId: subBranchId,
             squadId: squadId,
+            squadType: squadType,  // حفظ نوع الطليعة مع الطلب
             username: username,
             password: document.getElementById('reqPassword').value,
             status: 'pending',
@@ -2838,12 +4907,12 @@ function showJoinRequestModal() {
         
         appData.joinRequests.push(newRequest);
         await saveAllDataToFirebase();
-        // البحث عن القائد المسؤول عن هذا الفرع
-const responsibleLeader = appData.leaders.find(leader => 
-    leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
-);
-
-const leaderName = responsibleLeader ? responsibleLeader.name : (squad ? squad.leader : 'القائد المسؤول');
+        
+        const responsibleLeader = appData.leaders.find(leader => 
+            leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
+        );
+        const leaderName = responsibleLeader ? responsibleLeader.name : (squad ? squad.leader : 'القائد المسؤول');
+        
         showToast('تم إرسال طلب الانضمام إلى القائد، انتظر الموافقة');
         modal.remove();
     });
@@ -3121,22 +5190,19 @@ function showReturnToLandingConfirmation() {
     
     document.body.appendChild(modal);
     
-    // زر "نعم، عودة" - يقوم بتسجيل الخروج والعودة للصفحة الرئيسية
     document.getElementById('returnToLandingYes').onclick = async () => {
-        modal.remove();  // إغلاق النافذة
+        modal.remove();
         
-        // تسجيل الخروج
         currentUser = null;
         isAdmin = false;
         isLeader = false;
         
-        // إيقاف المؤقتات
         if (countdownInterval) {
             clearInterval(countdownInterval);
             countdownInterval = null;
         }
         
-        // العودة لصفحة الهبوط
+        // ✅ التغيير المطلوب: استدعاء صفحة الهبوط الرئيسية بدلاً من تسجيل الدخول
         renderLandingPage();
         addFixedLogoButton();
         initTheme();
@@ -3148,121 +5214,6 @@ function showReturnToLandingConfirmation() {
     document.getElementById('returnToLandingNo').onclick = () => {
         modal.remove();
     };
-}
-// ==================== LANDING PAGE WITH MARINE IMAGES ====================
-function renderLandingPage() {
-    const app = document.getElementById('app');
-    app.innerHTML = `
-        <div class="landing-container">
-            <!-- Marine Background Animations -->
-            <div class="marine-bg">
-                <div class="fish fish1"><i class="fas fa-fish"></i></div>
-                <div class="fish fish2"><i class="fas fa-fish"></i></div>
-                <div class="fish fish3"><i class="fas fa-fish"></i></div>
-                <div class="floating-anchor"><i class="fas fa-anchor"></i></div>
-            </div>
-            
-            <div class="hero-landing">
-                <div class="hero-content-landing">
-                    <div class="scout-badge">
-                        <i class="fas fa-compass"></i>
-                    </div>
-                    <div class="org-name-landing">
-                        <i class="fas fa-anchor"></i> مجموعة كيان الكشفية البحرية
-                    </div>
-                    <h1 class="main-title-landing">
-                        <span>نظام الكشاف</span> المتكامل
-                    </h1>
-                    <p class="subtitle-landing">
-                        نظام متطور لإدارة الطلايع والكشافة البحرية<br>
-                        متكامل مع تقنيات حديثة لتسهيل التواصل وإدارة المهام والنقاط
-                    </p>
-                    <div class="cta-buttons">
-                        <button class="cta-btn cta-primary" onclick="goToLoginFromLanding()">
-                            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
-                        </button>
-                        <button class="cta-btn cta-secondary" onclick="showJoinRequestModal()">
-                            <i class="fas fa-user-plus"></i> تقديم طلب انضمام
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Waves -->
-            <div class="wave-container">
-                <div class="wave"></div>
-                <div class="wave wave2"></div>
-            </div>
-
-            <div class="features-landing">
-                <h2 class="section-title-landing">مميزات النظام</h2>
-                <div class="features-grid-landing">
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-tasks"></i></div>
-                        <h3 class="feature-title-landing">إدارة التكاليف</h3>
-                        <p class="feature-desc-landing">إضافة تكاليف جديدة مع نقاط، ومتابعة تسليمات الأعضاء</p>
-                    </div>
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-trophy"></i></div>
-                        <h3 class="feature-title-landing">نظام النقاط والترتيب</h3>
-                        <p class="feature-desc-landing">ترتيب الأعضاء والطلايع حسب النقاط وتحفيز المنافسة</p>
-                    </div>
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-comments"></i></div>
-                        <h3 class="feature-title-landing">الكميونيتي والدردشة</h3>
-                        <p class="feature-desc-landing">تواصل مباشر بين القادة والأعضاء داخل الطليعة</p>
-                    </div>
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-chart-line"></i></div>
-                        <h3 class="feature-title-landing">إحصائيات متقدمة</h3>
-                        <p class="feature-desc-landing">لوحات تحكم تفاعلية وإحصائيات دقيقة للأداء</p>
-                    </div>
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-ship"></i></div>
-                        <h3 class="feature-title-landing">كشافة بحرية</h3>
-                        <p class="feature-desc-landing">نظام متخصص للكشافة البحرية مع أنشطة ومهارات بحرية</p>
-                    </div>
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-shield-alt"></i></div>
-                        <h3 class="feature-title-landing">إدارة آمنة</h3>
-                        <p class="feature-desc-landing">نظام آمن مع صلاحيات متعددة للقادة والأعضاء</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stats-landing">
-                <div class="stats-grid-landing">
-                    <div>
-                        <div class="stat-number-landing" id="statMembers">0</div>
-                        <div class="stat-label-landing">أعضاء نشطين</div>
-                    </div>
-                    <div>
-                        <div class="stat-number-landing" id="statSquads">0</div>
-                        <div class="stat-label-landing">طليعة</div>
-                    </div>
-                    <div>
-                        <div class="stat-number-landing" id="statTasks">0</div>
-                        <div class="stat-label-landing">تكليف منجز</div>
-                    </div>
-                    <div>
-                        <div class="stat-number-landing" id="statPoints">0</div>
-                        <div class="stat-label-landing">إجمالي النقاط</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-landing">
-                <p>© 2025 نظام الكشاف المتكامل - مجموعة كيان الكشفية البحرية</p>
-                <p style="font-size: 12px; margin-top: 10px;">
-                    <i class="fas fa-phone"></i> 01144100018 / 01126125881
-                </p>
-            </div>
-        </div>
-    `;
-    
-    updateLandingStats();
-    addHomeButton();
-initTheme();
 }
 
 function updateLandingStats() {
@@ -3309,6 +5260,7 @@ async function approveJoinRequest(requestId) {
         phone: request.phone,
         branchId: request.branchId,
         squadId: request.squadId,
+        squadType: request.squadType || 'الكشافة',  // حفظ نوع الطليعة مع العضو
         points: 0,
         joinedAt: new Date().toISOString()
     };
@@ -3834,9 +5786,6 @@ function canSubmitTask(taskId) {
     const squad = appData.squads.find(s => s.id === m.squadId);
     const branch = appData.branches.find(b => b.id === m.branchId);
     
-    // متغير للتحكم في إظهار كلمة المرور
-    
-    
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.display = 'flex';
@@ -3859,6 +5808,8 @@ function canSubmitTask(taskId) {
                 <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${m.phone}</div></div>
                 <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
                 <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${squad?.name || '-'}</div></div>
+                <!-- السطر الجديد: عرض نوع الطليعة -->
+                <div class="detail-item"><div class="detail-label">نوع الطليعة</div><div class="detail-value">${m.squadType || squad?.type || 'الكشافة'}</div></div>
                 <div class="detail-item"><div class="detail-label">النقاط</div><div class="detail-value">${m.points}</div></div>
                 <div class="detail-item"><div class="detail-label">تاريخ الانضمام</div><div class="detail-value">${new Date(m.joinedAt).toLocaleDateString('ar-EG')}</div></div>
             </div>
@@ -3871,10 +5822,11 @@ function canSubmitTask(taskId) {
     const toggleBtn = document.getElementById('togglePasswordBtn');
     const passwordText = document.getElementById('passwordText');
     const actualPassword = m.password;
+    let passwordVisibleLocal = false;
     
     toggleBtn.addEventListener('click', () => {
-        passwordVisible = !passwordVisible;
-        if (passwordVisible) {
+        passwordVisibleLocal = !passwordVisibleLocal;
+        if (passwordVisibleLocal) {
             passwordText.textContent = actualPassword;
             toggleBtn.classList.remove('fa-eye');
             toggleBtn.classList.add('fa-eye-slash');
@@ -5052,19 +7004,21 @@ function showAddSubBranchModal() {
     const container = document.getElementById('squadsList');
     if (!container) return;
     
-    // ترتيب الرتب حسب الأهمية
     const rankOrder = {
-        'عريف اول': 1,
-        'عريف': 2,
-        'سكرتير': 3,
-        'امين صندوق': 4,
-        'مساعد عريف اول': 5,
-        'مساعد عريف': 6
+        'عريف اول': 1, 'عريف': 2, 'سكرتير': 3, 'امين صندوق': 4, 'مساعد عريف اول': 5, 'مساعد عريف': 6
+    };
+    
+    // خريطة لأيقونات وأنواع الفرق
+    const squadTypeIcons = {
+        'الكشافة': '⚜️',
+        'المرشدات': '🌸',
+        'الأشبال': '🦁',
+        'الزهرات': '🌺',
+        'البراعم': '🌱'
     };
     
     let html = '';
     
-    // عرض كل منطقة مع فروعها وطلايعها
     appData.branches.forEach(branch => {
         const branchSubBranches = appData.subBranches.filter(sb => sb.branchId === branch.id);
         const branchSquads = appData.squads.filter(s => s.branchId === branch.id);
@@ -5077,27 +7031,21 @@ function showAddSubBranchModal() {
                 </div>
         `;
         
-        // عرض الفروع التابعة للمنطقة
         if (branchSubBranches.length > 0) {
-            html += `
-                <div style="margin-top: 12px; margin-right: 20px;">
-                    <div style="font-size: 14px; color: #d4a017; margin-bottom: 8px;"><i class="fas fa-code-branch"></i> الفروع التابعة:</div>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-            `;
+            html += `<div style="margin-top: 12px; margin-right: 20px;"><div style="font-size: 14px; color: #d4a017; margin-bottom: 8px;"><i class="fas fa-code-branch"></i> الفروع التابعة:</div><div style="display: flex; flex-wrap: wrap; gap: 10px;">`;
             branchSubBranches.forEach(sub => {
-                html += `
-                    <div style="background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-location-dot"></i> ${sub.name}
-                        <button onclick="deleteSubBranch(${sub.id})" style="background: none; border: none; color: #ff9999; cursor: pointer; font-size: 12px;"><i class="fas fa-times-circle"></i></button>
-                    </div>
-                `;
+                html += `<div style="background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px;"><i class="fas fa-location-dot"></i> ${sub.name}<button onclick="deleteSubBranch(${sub.id})" style="background: none; border: none; color: #ff9999; cursor: pointer; font-size: 12px;"><i class="fas fa-times-circle"></i></button></div>`;
             });
             html += `</div></div>`;
         }
         
-        // عرض الطلايع
         html += `<div style="margin-top: 15px; margin-right: 20px;"><div style="font-size: 14px; color: #d4a017; margin-bottom: 8px;"><i class="fas fa-flag"></i> الطلايع:</div>`;
+        
         branchSquads.forEach(squad => {
+            // إضافة أيقونة النوع بجانب اسم الطليعة
+            const typeIcon = squadTypeIcons[squad.type] || '🏴';
+            const typeName = squad.type ? ` (${typeIcon} ${squad.type})` : '';
+            
             let squadMembers = appData.members.filter(m => m.squadId === squad.id);
             squadMembers.sort((a, b) => {
                 const orderA = rankOrder[a.rank] || 999;
@@ -5115,7 +7063,7 @@ function showAddSubBranchModal() {
             html += `
                 <div style="background: #f8f9fa; color: #333; padding: 12px; border-radius: 12px; margin-bottom: 10px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                        <div><i class="fas fa-flag"></i> <strong>${squad.name}</strong><br><small>القائد: ${squad.leader} | الأعضاء: ${squadMembers.length}</small></div>
+                        <div><i class="fas fa-flag"></i> <strong>${squad.name}${typeName}</strong><br><small>القائد: ${squad.leader} | الأعضاء: ${squadMembers.length}</small></div>
                         <div>
                             <span class="badge ${squad.isOpen ? 'badge-active' : 'badge-inactive'}">${squad.isOpen ? 'مفتوحة' : 'مغلقة'}</span>
                             <button class="btn btn-sm btn-warning" onclick="toggleSquadStatus(${squad.id})"><i class="fas fa-lock"></i></button>
@@ -5176,6 +7124,21 @@ function showAddSubBranchModal() {
                     </select>
                 </div>
                 <div class="input-group"><label>اسم الطليعة</label><input type="text" id="squadName" required></div>
+                
+                <!-- ------------------- الخانة الجديدة (نوع الفريق) ------------------- -->
+                <div class="input-group">
+                    <label><i class="fas fa-users"></i> نوع الفريق</label>
+                    <select id="squadType" required>
+                        <option value="">-- اختر نوع الفريق --</option>
+                        <option value="الكشافة">⚜️ فريق الكشافة</option>
+                        <option value="المرشدات">🌸 فريق المرشدات</option>
+                        <option value="الأشبال">🦁 فريق الأشبال</option>
+                        <option value="الزهرات">🌺 فريق الزهرات</option>
+                        <option value="البراعم">🌱 فريق البراعم</option>
+                    </select>
+                </div>
+                <!-- ------------------------------------------------------------- -->
+                
                 <div class="input-group" id="autoLeaderContainer" style="background: #e8f5e9; padding: 10px; border-radius: 12px;">
                     <label><i class="fas fa-user-tie"></i> القائد المسؤول (تلقائي)</label>
                     <input type="text" id="autoLeaderName" readonly style="background: #f0f0f0; font-weight: bold; color: #1a472a;">
@@ -5186,6 +7149,7 @@ function showAddSubBranchModal() {
     `;
     document.body.appendChild(modal);
 
+    // حدث تغيير المنطقة
     document.getElementById('squadBranch').addEventListener('change', function() {
         const branchId = parseInt(this.value);
         const subBranchSelect = document.getElementById('squadSubBranch');
@@ -5199,6 +7163,7 @@ function showAddSubBranchModal() {
         document.getElementById('autoLeaderName').value = '';
     });
 
+    // حدث تغيير الفرع
     document.getElementById('squadSubBranch').addEventListener('change', function() {
         const subBranchId = parseInt(this.value);
         const autoLeaderInput = document.getElementById('autoLeaderName');
@@ -5218,24 +7183,30 @@ function showAddSubBranchModal() {
         }
     });
 
+    // حدث الإرسال
     document.getElementById('addSquadForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const branchId = parseInt(document.getElementById('squadBranch').value);
         const subBranchId = parseInt(document.getElementById('squadSubBranch').value);
         const squadName = document.getElementById('squadName').value.trim();
-        if (!branchId || !subBranchId || !squadName) {
-            showToast('الرجاء اختيار المنطقة والفرع وإدخال اسم الطليعة', 'error');
+        const squadType = document.getElementById('squadType').value; // <-- القيمة الجديدة
+        
+        if (!branchId || !subBranchId || !squadName || !squadType) {
+            showToast('الرجاء اختيار المنطقة والفرع وإدخال اسم الطليعة ونوع الفريق', 'error');
             return;
         }
+        
         const responsibleLeader = appData.leaders.find(leader => 
             leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
         );
         const leaderName = responsibleLeader ? responsibleLeader.name : 'لم يتم تعيين قائد بعد';
+        
         const newSquad = {
             id: Date.now(),
             branchId: branchId,
             subBranchId: subBranchId,
             name: squadName,
+            type: squadType,  // <-- حفظ النوع في قاعدة البيانات
             leader: leaderName,
             leaderId: responsibleLeader ? responsibleLeader.id : null,
             isOpen: true,
@@ -5243,11 +7214,23 @@ function showAddSubBranchModal() {
         };
         appData.squads.push(newSquad);
         await saveAllDataToFirebase();
-        showToast(`✅ تم إضافة الطليعة "${squadName}" والقائد المسؤول: ${leaderName}`);
+        showToast(`✅ تم إضافة الطليعة "${squadName}" (${getSquadTypeName(squadType)}) والقائد المسؤول: ${leaderName}`);
         modal.remove();
         renderAdminSquads();
         renderAdminDashboard();
     });
+}
+
+// دالة مساعدة لتحويل الكود إلى اسم عربي (اختياري)
+function getSquadTypeName(type) {
+    const types = {
+        'الكشافة': 'فريق الكشافة',
+        'المرشدات': 'فريق المرشدات',
+        'الأشبال': 'فريق الأشبال',
+        'الزهرات': 'فريق الزهرات',
+        'البراعم': 'فريق البراعم'
+    };
+    return types[type] || type;
 }
 
         async function toggleSquadStatus(id) {
@@ -5958,7 +7941,8 @@ async function logout() {
     }
     stopLeaderCountdownUpdater();
     showToast('تم تسجيل الخروج');
-    renderLandingPage();
+    // عرض صفحة تسجيل الدخول مباشرة
+    renderLogin(document.getElementById('app'));
     addFixedLogoButton();
 }
         // Make global functions
@@ -6022,93 +8006,11 @@ window.approveJoinRequest = approveJoinRequest;
 window.rejectJoinRequest = rejectJoinRequest;
 window.updatePendingRequestsBadge = updatePendingRequestsBadge;
         window.logout = logout;
-window.startApp = async function() {
-    await loadAllDataFromFirebase();
-    listenForRealTimeUpdates();
-    renderLandingPage();
-    addFixedLogoButton();
-    initTheme();
-};
+
 
 // ==================== LANDING PAGE FUNCTIONS ====================
 
-// عرض صفحة الهبوط (Landing Page)
-function renderLandingPage() {
-    const app = document.getElementById('app');
-    app.innerHTML = `
-        <div class="landing-container">
-            <div class="hero-landing">
-                <div class="hero-content-landing">
-                    <div class="org-name-landing">
-                        <i class="fas fa-anchor"></i> مجموعة كيان الكشفية البحرية
-                    </div>
-                    <h1 class="main-title-landing">
-                        <span>نظام الكشاف</span> المتكامل
-                    </h1>
-                    <p class="subtitle-landing">
-                        نظام متطور لإدارة الطلايع والكشافة، متكامل مع تقنيات حديثة<br>
-                        لتسهيل التواصل وإدارة المهام والنقاط بكل سهولة واحترافية
-                    </p>
-                    <div class="cta-buttons">
-                        <button class="cta-btn cta-primary" onclick="goToLoginFromLanding()">
-                            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
-                        </button>
-                        <button class="cta-btn cta-secondary" onclick="showJoinRequestModal()">
-                            <i class="fas fa-user-plus"></i> تقديم طلب انضمام
-                        </button>
-                    </div>
-                </div>
-            </div>
 
-            <div class="features-landing">
-                <h2 class="section-title-landing">مميزات النظام</h2>
-                <div class="features-grid-landing">
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-tasks"></i></div>
-                        <h3 class="feature-title-landing">إدارة التكاليف</h3>
-                        <p class="feature-desc-landing">إضافة تكاليف جديدة مع نقاط وجوائز، ومتابعة تسليمات الأعضاء</p>
-                    </div>
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-trophy"></i></div>
-                        <h3 class="feature-title-landing">نظام النقاط والترتيب</h3>
-                        <p class="feature-desc-landing">ترتيب الأعضاء والطلايع حسب النقاط، وتحفيز المنافسة الشريفة</p>
-                    </div>
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-comments"></i></div>
-                        <h3 class="feature-title-landing">الكميونيتي والدردشة</h3>
-                        <p class="feature-desc-landing">تواصل مباشر بين القادة والأعضاء داخل الطليعة</p>
-                    </div>
-                    <div class="feature-card-landing">
-                        <div class="feature-icon-landing"><i class="fas fa-chart-line"></i></div>
-                        <h3 class="feature-title-landing">إحصائيات متقدمة</h3>
-                        <p class="feature-desc-landing">لوحات تحكم تفاعلية وإحصائيات دقيقة للأداء</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stats-landing">
-                <div class="stats-grid-landing">
-                    <div class="stat-number-landing" id="statMembers">0</div>
-                    <div class="stat-label-landing">أعضاء نشطين</div>
-                    <div class="stat-number-landing" id="statSquads">0</div>
-                    <div class="stat-label-landing">طليعة</div>
-                    <div class="stat-number-landing" id="statTasks">0</div>
-                    <div class="stat-label-landing">تكليف منجز</div>
-                </div>
-            </div>
-
-            <div class="footer-landing">
-                <p>© 2025 نظام الكشاف المتكامل - مجموعة كيان الكشفية البحرية</p>
-                <p style="font-size: 12px; margin-top: 10px;">
-                    <i class="fas fa-phone"></i> 01144100018 / 01126125881
-                </p>
-            </div>
-        </div>
-    `;
-    
-    // تحديث الإحصائيات
-    updateLandingStats();
-}
 
 // تحديث إحصائيات صفحة الهبوط
 function updateLandingStats() {
@@ -6207,8 +8109,7 @@ function addFixedLogoButton() {
 function showLogoutConfirmation() {
     // إذا كان المستخدم غير مسجل دخول، ننتقل مباشرة للاندينج
     if (!currentUser) {
-        renderLandingPage();
-        return;
+renderLogin(document.getElementById('app'))        
     }
     // ==================== الوضع الداكن/الفاتح ====================
 function initTheme() {
@@ -6319,11 +8220,10 @@ function addThemeToggleButton() {
     document.body.appendChild(modal);
     
     document.getElementById('confirmLogoutYes').onclick = async () => {
-        modal.remove();
-        await logout();
-        renderLandingPage();
-        addFixedLogoButton();
-    };
+    modal.remove();
+    await logout();
+    // logout سيتولى عرض صفحة تسجيل الدخول
+};
     
     document.getElementById('confirmLogoutNo').onclick = () => {
         modal.remove();
@@ -6371,6 +8271,13 @@ function showJoinRequestModalFromLogin() {
                         <option value="">-- اختر الفرع أولاً --</option>
                     </select>
                 </div>
+                
+                <!-- الخانة الجديدة: نوع الطليعة (يظهر تلقائياً) -->
+                <div class="input-group" id="squadTypeContainerLogin" style="display: none;">
+                    <label><i class="fas fa-users"></i> نوع الطليعة</label>
+                    <input type="text" id="reqSquadTypeLogin" readonly style="background: #f0f0f0; font-weight: bold; color: #1a472a;">
+                </div>
+                
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="reqUsernameLogin" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="reqPasswordLogin" required></div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">إرسال الطلب</button>
@@ -6384,15 +8291,20 @@ function showJoinRequestModalFromLogin() {
         const branchId = parseInt(this.value);
         const subBranchSelect = document.getElementById('reqSubBranchLogin');
         const squadSelect = document.getElementById('reqSquadLogin');
+        const squadTypeContainer = document.getElementById('squadTypeContainerLogin');
+        const squadTypeInput = document.getElementById('reqSquadTypeLogin');
         
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
             subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
                 branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
             squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
+            squadTypeContainer.style.display = 'none';
+            squadTypeInput.value = '';
         } else {
             subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
             squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+            squadTypeContainer.style.display = 'none';
         }
     });
     
@@ -6400,16 +8312,44 @@ function showJoinRequestModalFromLogin() {
     document.getElementById('reqSubBranchLogin').addEventListener('change', function() {
         const subBranchId = parseInt(this.value);
         const squadSelect = document.getElementById('reqSquadLogin');
+        const squadTypeContainer = document.getElementById('squadTypeContainerLogin');
+        const squadTypeInput = document.getElementById('reqSquadTypeLogin');
         
         if (subBranchId) {
             const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
             if (subBranch) {
                 const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
                 squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
-                    squads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
+                    squads.map(s => `<option value="${s.id}" data-type="${s.type || 'الكشافة'}">${s.name} (${s.leader})</option>`).join('');
+                squadTypeContainer.style.display = 'none';
+                squadTypeInput.value = '';
             }
         } else {
             squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+            squadTypeContainer.style.display = 'none';
+        }
+    });
+    
+    // عند اختيار الطليعة، تظهر خانة نوع الطليعة تلقائياً
+    document.getElementById('reqSquadLogin').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const squadType = selectedOption.getAttribute('data-type') || 'الكشافة';
+        const squadTypeContainer = document.getElementById('squadTypeContainerLogin');
+        const squadTypeInput = document.getElementById('reqSquadTypeLogin');
+        const squadTypeIconsMap = {
+            'الكشافة': '⚜️ فريق الكشافة',
+            'المرشدات': '🌸 فريق المرشدات',
+            'الأشبال': '🦁 فريق الأشبال',
+            'الزهرات': '🌺 فريق الزهرات',
+            'البراعم': '🌱 فريق البراعم'
+        };
+        
+        if (this.value && squadType) {
+            squadTypeInput.value = squadTypeIconsMap[squadType] || squadType;
+            squadTypeContainer.style.display = 'block';
+        } else {
+            squadTypeContainer.style.display = 'none';
+            squadTypeInput.value = '';
         }
     });
     
@@ -6430,18 +8370,12 @@ function showJoinRequestModalFromLogin() {
         const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
         const squadId = parseInt(document.getElementById('reqSquadLogin').value);
         const squad = appData.squads.find(s => s.id === squadId);
+        const squadType = document.getElementById('reqSquadTypeLogin').value || (squad ? squad.type : 'الكشافة');
         
         if (!subBranchId || !squadId) {
             showToast('الرجاء اختيار الفرع والطليعة', 'error');
             return;
         }
-        
-        // البحث عن القائد المسؤول عن هذا الفرع
-        const responsibleLeader = appData.leaders.find(leader => 
-            leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
-        );
-        
-        const leaderName = responsibleLeader ? responsibleLeader.name : (squad ? squad.leader : 'القائد المسؤول');
         
         const newRequest = {
             id: Date.now(),
@@ -6452,6 +8386,7 @@ function showJoinRequestModalFromLogin() {
             branchId: subBranch.branchId,
             subBranchId: subBranchId,
             squadId: squadId,
+            squadType: squadType,  // حفظ نوع الطليعة مع الطلب
             username: username,
             password: document.getElementById('reqPasswordLogin').value,
             status: 'pending',
@@ -6462,15 +8397,15 @@ function showJoinRequestModalFromLogin() {
         appData.joinRequests.push(newRequest);
         await saveAllDataToFirebase();
         
-        // إغلاق النافذة
-        modal.remove();
+        const responsibleLeader = appData.leaders.find(leader => 
+            leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
+        );
+        const leaderName = responsibleLeader ? responsibleLeader.name : (squad ? squad.leader : 'القائد المسؤول');
         
-        // رسالة مخصصة باسم القائد المسؤول
-// عرض رسالة مخصصة باسم القائد المسؤول
-showCustomRequestMessage(leaderName, squad ? squad.name : 'الطليعة', subBranch ? subBranch.name : 'الفرع');
+        modal.remove();
+        showCustomRequestMessage(leaderName, squad ? squad.name : 'الطليعة', subBranch ? subBranch.name : 'الفرع');
     });
 }
-
 // دالة عرض رسالة مخصصة بعد تقديم الطلب
 function showCustomRequestMessage(leaderName, squadName, branchName) {
     const modal = document.createElement('div');
@@ -6520,23 +8455,912 @@ renderLogin = function(container) {
     originalRenderLogin(container);
     addFixedLogoButton();
 };
+// ========== LANDING PAGE RENDER FUNCTION ==========
 
-// تعديل دالة renderLandingPage لإضافة الزر الثابت
-const originalRenderLandingPage = renderLandingPage;
-renderLandingPage = function() {
-    originalRenderLandingPage();
+function renderLandingPage() {
+    const app = document.getElementById('app');
+    
+    app.innerHTML = `
+        <div class="landing-new-container">
+            <!-- Header مع الصورة في المنتصف -->
+            <div class="landing-header-fixed" style="position: relative;">
+                <div class="header-logo-landing">
+                    <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" alt="شعار كيان">
+                    <span>مجموعة كيان</span>
+                </div>
+                
+                <!-- الصورة الجديدة في منتصف الهيدر -->
+                <div class="header-center-image">
+                    <img src="https://i.ibb.co/d9sKxjZ/In-Shot-20260528-143153172.jpg" alt="صورة المجموعة" class="header-center-img">
+                </div>
+                
+                <div class="header-buttons-landing">
+                    <button class="btn-landing about-btn" onclick="renderAboutPage()">
+                        <i class="fas fa-info-circle"></i> من نحن
+                    </button>
+                    <button class="btn-landing btn-login-landing" onclick="goToLoginFromLanding()">
+                        <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                    </button>
+                    <button class="btn-landing btn-join-landing" onclick="showJoinRequestModalFromLanding()">
+                        <i class="fas fa-user-plus"></i> إرسال طلب انضمام
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hero Section -->
+            <div class="landing-new-hero">
+                <!-- Floating decorations -->
+                <div class="floating-anchor-new"><i class="fas fa-anchor"></i></div>
+                <div class="floating-anchor-new"><i class="fas fa-anchor"></i></div>
+                <div class="floating-anchor-new"><i class="fas fa-anchor"></i></div>
+                <div class="rope-decoration"></div>
+                <div class="rope-decoration"></div>
+                <div class="fish-new"><i class="fas fa-fish"></i></div>
+                <div class="fish-new"><i class="fas fa-fish"></i></div>
+                <div class="fish-new"><i class="fas fa-fish"></i></div>
+                
+                <!-- Tent image -->
+                <div class="tent-image-new">
+                    <img src="https://i.ibb.co/v6k7gjtq/In-Shot-20260528-142037394.jpg" alt="خيمة كشفية">
+                </div>
+
+                <div class="hero-content-new">
+                    <div class="hero-logo-new">
+                        <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" alt="شعار كيان">
+                    </div>
+                    <h2 class="org-name-new">⛵ مجموعة كيان الكشفية البحرية</h2>
+                    <h1 class="main-title-new">نصنع <span>القادة</span>...<br>ونبني <span>المستقبل</span></h1>
+                    <p class="subtitle-new">انطلق في رحلة المغامرة والتعلم مع أقوى مجموعة كشفية بحرية في مصر</p>
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                        <button class="btn-marine btn-marine-primary" onclick="goToLoginFromLanding()">
+                            <i class="fas fa-sign-in-alt"></i> ابدأ رحلتك الآن
+                        </button>
+                        <button class="btn-marine btn-marine-secondary" onclick="showJoinRequestModalFromLanding()">
+                            <i class="fas fa-user-plus"></i> انضم إلينا
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Waves -->
+                <div class="landing-wave-container">
+                    <div class="landing-wave"></div>
+                    <div class="landing-wave2"></div>
+                </div>
+            </div>
+
+            <!-- قسم الترتيب (Leaderboard) -->
+            <div id="leaderboardSectionContainer"></div>
+
+            <!-- الفوتر الموحد الجديد -->
+            ${renderUnifiedFooter()}
+        </div>
+    `;
+    
+    setTimeout(() => {
+        addLeaderboardToLanding();
+    }, 100);
+}
+// دالة إضافة قسم السوشيال ميديا في أسفل الصفحة (قبل الفوتر)
+function addSocialSectionToBottom() {
+    const landingContainer = document.querySelector('.landing-new-container');
+    if (!landingContainer) return;
+    
+    // البحث عن الفوتر
+    const footer = document.querySelector('.footer-landing');
+    
+    // حذف قسم السوشيال ميديا القديم إذا وجد
+    const oldSocialSection = document.querySelector('.social-section-landing');
+    if (oldSocialSection) {
+        oldSocialSection.remove();
+    }
+    
+    // إنشاء قسم السوشيال ميديا جديد
+    const socialSection = document.createElement('div');
+    socialSection.className = 'social-section-landing';
+    socialSection.style.cssText = 'background: #1a472a; padding: 40px 20px; text-align: center;';
+    
+    socialSection.innerHTML = `
+        <h3 class="social-title-landing" style="color: #d4a017; font-size: 28px; margin-bottom: 30px;">
+            <i class="fas fa-headset"></i> تواصل معنا
+        </h3>
+        <div class="social-icons-landing" style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;">
+            <div onclick="openWhatsAppLanding()" style="cursor: pointer; text-align: center;">
+                <div class="social-icon-landing" style="width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #d4a017; transition: all 0.3s ease;">
+                    <i class="fab fa-whatsapp" style="font-size: 40px; color: #d4a017;"></i>
+                </div>
+                <div class="social-label-landing" style="margin-top: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">واتساب</div>
+            </div>
+            <div onclick="openFacebookLanding()" style="cursor: pointer; text-align: center;">
+                <div class="social-icon-landing" style="width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #d4a017; transition: all 0.3s ease;">
+                    <i class="fab fa-facebook-f" style="font-size: 40px; color: #d4a017;"></i>
+                </div>
+                <div class="social-label-landing" style="margin-top: 10px; font-size: 14px; color: rgba(255,255,255,0.7);">فيسبوك</div>
+            </div>
+        </div>
+    `;
+    
+    // إضافة قسم السوشيال ميديا قبل الفوتر مباشرة
+    if (footer) {
+        landingContainer.insertBefore(socialSection, footer);
+    } else {
+        landingContainer.appendChild(socialSection);
+    }
+}
+
+// النص الكامل لقسم "عنا"
+const fullAboutText = `# من نحن – مجموعة كيان الكشفية البحرية
+
+تُعد الكشافة واحدة من أكبر الحركات التربوية والتطوعية في العالم، حيث تهدف إلى تنمية الشباب وبناء شخصيات قوية قادرة على القيادة وخدمة المجتمع. وقد بدأت الحركة الكشفية عالميًا على يد القائد "روبرت بادن باول"، ثم انتشرت سريعًا في مختلف دول العالم، ووصلت إلى مصر منذ أكثر من مائة عام لتصبح واحدة من أهم الأنشطة التربوية التي تهتم ببناء الأجيال وتنمية مهاراتهم.
+
+## بداية الكشافة في مصر
+
+بدأت الحركة الكشفية في مصر في أوائل القرن العشرين، وسرعان ما أصبحت جزءًا مهمًا من الأنشطة الشبابية والتربوية داخل المدارس والأندية والمؤسسات المختلفة. وحرصت الكشافة المصرية منذ بدايتها على غرس قيم الانضباط، والاعتماد على النفس، والعمل الجماعي، والقيادة، وخدمة المجتمع.
+
+ومع تطور الحركة الكشفية ظهرت العديد من الفروع والتخصصات، وكان من أبرزها **الكشافة البحرية** التي تهتم بالأنشطة البحرية والمغامرات والتدريبات الميدانية، وتساعد الشباب على اكتساب مهارات مميزة في الحياة البحرية والإنقاذ والتخييم والعمل الجماعي.
+
+## من نحن؟
+
+نحن **مجموعة كيان الكشفية البحرية**، مجموعة كشفية بحرية تهدف إلى صناعة جيل قوي وواعٍ يمتلك روح القيادة والانتماء والتعاون. تأسست المجموعة عام **2017**، ومنذ ذلك الوقت ونحن نسعى إلى تقديم تجربة كشفية مختلفة تجمع بين التعليم والترفيه والمغامرة وتنمية الشخصية.
+
+بدأت رحلتنا بحلم صغير لتكوين مجموعة كشفية تقدم أنشطة مميزة للشباب والأطفال، ومع مرور الوقت تطورت المجموعة وأصبحت تضم العديد من الفروع والأنشطة والفعاليات المختلفة، واستطعنا تكوين مجتمع كشفي مليء بالطاقة والحماس وروح الأخوة.
+
+## رؤيتنا
+
+نسعى إلى بناء جيل قادر على القيادة وتحمل المسؤولية، يمتلك الثقة بالنفس وروح الفريق والانضباط، ويستطيع مواجهة التحديات وخدمة المجتمع بإيجابية.
+
+## رسالتنا
+
+تقديم تجربة كشفية بحرية متكاملة تساعد الأعضاء على تنمية مهاراتهم الجسدية والعقلية والاجتماعية، من خلال برامج وأنشطة عملية ممتعة وآمنة تناسب مختلف الأعمار.
+
+# ماذا نقدم في الكشافة البحرية؟
+
+في مجموعة كيان الكشفية البحرية لا تقتصر الأنشطة على اللعب والترفيه فقط، بل نحرص على تقديم تجربة تعليمية وتربوية متكاملة تساعد الأعضاء على اكتساب خبرات حقيقية ومهارات حياتية مهمة.
+
+## الأنشطة البحرية
+
+نهتم بشكل كبير بالأنشطة البحرية التي تُعد من أهم ما يميز الكشافة البحرية، حيث يتعلم الأعضاء:
+
+* أساسيات الحياة البحرية
+* التجديف واستخدام القوارب
+* قواعد السلامة والإنقاذ
+* التعامل مع المياه بشكل آمن
+* العمل الجماعي أثناء الأنشطة البحرية
+* مهارات الشجاعة وتحمل المسؤولية
+
+كما تساعد الأنشطة البحرية على تنمية الثقة بالنفس وروح المغامرة والانضباط.
+
+## الكامبات والمعسكرات
+
+تُعتبر المعسكرات أو "الكامبات" من أهم الأنشطة داخل الكشافة، حيث يعيش الأعضاء تجربة مليئة بالمغامرة والتحديات والتعاون.
+
+وخلال المعسكرات يتعلم الأعضاء:
+
+* كيفية نصب الخيام
+* الاعتماد على النفس
+* إعداد الطعام داخل المعسكر
+* النظام والانضباط
+* العمل الجماعي
+* القيادة وتحمل المسؤولية
+* مهارات البقاء والتعامل مع الطبيعة
+
+كما تتضمن الكامبات العديد من الأنشطة الممتعة مثل:
+
+* الألعاب الكشفية
+* السمر الليلي
+* المسابقات والتحديات
+* العروض الكشفية
+* تدريبات اللياقة
+* الأنشطة الترفيهية والثقافية
+
+وتساعد هذه المعسكرات على تكوين صداقات قوية وخلق ذكريات مميزة تدوم لسنوات طويلة.
+
+## الرحلات والأنشطة الخارجية
+
+نقوم بتنظيم رحلات وأنشطة خارجية بشكل مستمر لزيادة روح المغامرة والاستكشاف لدى الأعضاء، كما تمنحهم فرصة للتعلم العملي والتفاعل مع الطبيعة واكتساب الخبرات المختلفة.
+
+## تنمية المهارات القيادية
+
+من أهم أهدافنا داخل المجموعة إعداد قادة للمستقبل، لذلك نهتم بتنمية مهارات:
+
+* القيادة
+* التواصل
+* اتخاذ القرار
+* تحمل المسؤولية
+* تنظيم الوقت
+* حل المشكلات
+* العمل تحت الضغط
+
+وذلك من خلال الأنشطة العملية والتحديات الجماعية المختلفة.
+
+## الأنشطة الرياضية والترفيهية
+
+نهتم بتقديم أنشطة رياضية وترفيهية تساعد على تحسين اللياقة البدنية وتنمية الروح الرياضية، بالإضافة إلى خلق أجواء ممتعة مليئة بالحماس والطاقة الإيجابية.
+
+## الأنشطة الثقافية والتربوية
+
+نحرص على تنمية الجانب الفكري والثقافي للأعضاء من خلال:
+
+* ورش العمل
+* الندوات التعليمية
+* الأنشطة الثقافية
+* المسابقات
+* تعليم القيم والسلوكيات الإيجابية
+
+# فروع مجموعة كيان الكشفية البحرية
+
+نفخر بوجود عدة فروع للمجموعة في أماكن مختلفة لتسهيل مشاركة الأعضاء في الأنشطة والفعاليات:
+
+## الفرع الأول – التجمع الثالث
+
+يقع في **نادي مركز شباب المستقبل بالقطامية**.
+
+## الفرع الثاني – التجمع الخامس
+
+يقع في **معاهد الكمال الأزهرية**.
+
+## الفرع الثالث – الدقي
+
+يقع في **بحرية الجيزة على النيل**.
+
+## الفرع الرابع
+
+يقع في **نادي حارس على النيل**.
+
+## الفرع الخامس – العبور
+
+يقع في **جمعية أحمد عرابي**.
+
+# لماذا تنضم إلى مجموعة كيان؟
+
+لأننا نقدم تجربة مختلفة تجمع بين:
+
+* التعلم والمتعة
+* المغامرة والانضباط
+* الصداقة والعمل الجماعي
+* القيادة والثقة بالنفس
+* الأنشطة البحرية والكشفية
+* المعسكرات والرحلات الممتعة
+
+في مجموعة كيان الكشفية البحرية، نحن لا نقدم مجرد أنشطة، بل نصنع جيلًا قويًا وذكريات لا تُنسى وتجارب مليئة بالحماس والتعلم والمغامرة.
+
+# انضم إلينا
+
+إذا كنت تبحث عن مكان يساعدك على تطوير مهاراتك، واكتشاف قدراتك، وخوض مغامرات وتجارب جديدة، فإن مجموعة كيان الكشفية البحرية ترحب بك دائمًا لتكون جزءًا من عائلتنا الكشفية.`;
+
+function startTypingAnimation() {
+    if (isTypingAnimationStarted) return;
+    isTypingAnimationStarted = true;
+    
+    const container = document.getElementById('typingContainerLanding');
+    if (!container) return;
+    
+    // تحويل النص إلى HTML مع تنسيق markdown بسيط
+    let formattedHtml = fullAboutText
+        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^\* (.+)$/gm, '<li>$1</li>')
+        .replace(/<li>(.+)<\/li>\n<li>/g, '<li>$1</li><li>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    
+    // تحويل القوائم
+    formattedHtml = formattedHtml.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+    
+    container.innerHTML = formattedHtml;
+}
+
+function startAboutTypingAnimation() {
+    const container = document.getElementById('aboutTypingContent');
+    if (!container) return;
+    
+    if (aboutTypingInterval) clearInterval(aboutTypingInterval);
+    if (aboutTypingTimeout) clearTimeout(aboutTypingTimeout);
+    
+    // النص المنسق مع إيموجيز وعناوين جذابة
+    const formattedAboutText = `🌊🏴‍☠️ **مجموعة كيان الكشفية البحرية** 🏴‍☠️🌊
+
+نصنع القادة... ونبني المستقبل
+
+---
+
+⚓ **من نحن؟** ⚓
+
+نحن **مجموعة كيان الكشفية البحرية**، مجموعة كشفية بحرية تهدف إلى صناعة جيل قوي وواعٍ يمتلك روح القيادة والانتماء والتعاون. تأسست المجموعة عام **2017**، ومنذ ذلك الوقت ونحن نسعى إلى تقديم تجربة كشفية مختلفة تجمع بين التعليم والترفيه والمغامرة وتنمية الشخصية.
+
+---
+
+🌟 **رؤيتنا** 🌟
+
+نسعى إلى بناء جيل قادر على القيادة وتحمل المسؤولية، يمتلك الثقة بالنفس وروح الفريق والانضباط، ويستطيع مواجهة التحديات وخدمة المجتمع بإيجابية.
+
+---
+
+🎯 **رسالتنا** 🎯
+
+تقديم تجربة كشفية بحرية متكاملة تساعد الأعضاء على تنمية مهاراتهم الجسدية والعقلية والاجتماعية، من خلال برامج وأنشطة عملية ممتعة وآمنة تناسب مختلف الأعمار.
+
+---
+
+🚤 **ماذا نقدم في الكشافة البحرية؟** 🚤
+
+🐠 **الأنشطة البحرية**
+• أساسيات الحياة البحرية والتجديف
+• استخدام القوارب وقواعد السلامة والإنقاذ
+• التعامل مع المياه بشكل آمن
+• العمل الجماعي أثناء الأنشطة البحرية
+• مهارات الشجاعة وتحمل المسؤولية
+
+⛺ **الكامبات والمعسكرات**
+• كيفية نصب الخيام والاعتماد على النفس
+• إعداد الطعام داخل المعسكر
+• النظام والانضباط والعمل الجماعي
+• القيادة وتحمل المسؤولية
+• مهارات البقاء والتعامل مع الطبيعة
+
+🎪 **الأنشطة الترفيهية في المعسكرات**
+• الألعاب الكشفية والسمر الليلي
+• المسابقات والتحديات
+• العروض الكشفية وتدريبات اللياقة
+• الأنشطة الترفيهية والثقافية
+
+🏆 **تنمية المهارات القيادية**
+• القيادة والتواصل واتخاذ القرار
+• تحمل المسؤولية وتنظيم الوقت
+• حل المشكلات والعمل تحت الضغط
+
+🏃 **الأنشطة الرياضية والترفيهية**
+• تحسين اللياقة البدنية
+• تنمية الروح الرياضية
+• خلق أجواء ممتعة مليئة بالحماس والطاقة الإيجابية
+
+📚 **الأنشطة الثقافية والتربوية**
+• ورش العمل والندوات التعليمية
+• الأنشطة الثقافية والمسابقات
+• تعليم القيم والسلوكيات الإيجابية
+
+---
+
+🏢 **فروع مجموعة كيان الكشفية البحرية** 🏢
+
+📍 **الفرع الأول – التجمع الثالث**
+نادي مركز شباب المستقبل بالقطامية
+
+📍 **الفرع الثاني – التجمع الخامس**
+معاهد الكمال الأزهرية
+
+📍 **الفرع الثالث – الدقي**
+بحرية الجيزة على النيل
+
+📍 **الفرع الرابع**
+نادي حارس على النيل
+
+📍 **الفرع الخامس – العبور**
+جمعية أحمد عرابي
+
+---
+
+💙 **لماذا تنضم إلى مجموعة كيان؟** 💙
+
+✓ التعلم والمتعة معاً
+✓ المغامرة والانضباط
+✓ الصداقة والعمل الجماعي
+✓ القيادة والثقة بالنفس
+✓ الأنشطة البحرية والكشفية
+✓ المعسكرات والرحلات الممتعة
+
+---
+
+🤝 **انضم إلينا** 🤝
+
+إذا كنت تبحث عن مكان يساعدك على تطوير مهاراتك، واكتشاف قدراتك، وخوض مغامرات وتجارب جديدة، فإن مجموعة كيان الكشفية البحرية ترحب بك دائمًا لتكون جزءًا من عائلتنا الكشفية.
+
+⚓ **معاً نصنع القادة... ونبني المستقبل** ⚓`;
+
+    let currentIndex = 0;
+    let resultHtml = '';
+    
+    const cursor = document.querySelector('.about-typing-cursor');
+    
+    aboutTypingInterval = setInterval(() => {
+        if (currentIndex < formattedAboutText.length) {
+            let char = formattedAboutText[currentIndex];
+            resultHtml += char;
+            
+            // تطبيق التنسيق
+            let displayHtml = resultHtml;
+            
+            // معالجة العناوين مع الإيموجيز
+            displayHtml = displayHtml.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            displayHtml = displayHtml.replace(/^---$/gm, '<hr>');
+            displayHtml = displayHtml.replace(/^⚓ (.+) ⚓$/gm, '<div class="title-anchor">⚓ $1 ⚓</div>');
+            displayHtml = displayHtml.replace(/^🌊(.+)🌊$/gm, '<div class="title-wave">🌊 $1 🌊</div>');
+            displayHtml = displayHtml.replace(/^🌟 (.+) 🌟$/gm, '<div class="title-star">🌟 $1 🌟</div>');
+            displayHtml = displayHtml.replace(/^🎯 (.+) 🎯$/gm, '<div class="title-target">🎯 $1 🎯</div>');
+            displayHtml = displayHtml.replace(/^🚤 (.+) 🚤$/gm, '<div class="title-boat">🚤 $1 🚤</div>');
+            displayHtml = displayHtml.replace(/^🐠 (.+)$/gm, '<div class="subtitle-fish">🐠 $1</div>');
+            displayHtml = displayHtml.replace(/^⛺ (.+)$/gm, '<div class="subtitle-tent">⛺ $1</div>');
+            displayHtml = displayHtml.replace(/^🎪 (.+)$/gm, '<div class="subtitle-circus">🎪 $1</div>');
+            displayHtml = displayHtml.replace(/^🏆 (.+)$/gm, '<div class="subtitle-trophy">🏆 $1</div>');
+            displayHtml = displayHtml.replace(/^🏃 (.+)$/gm, '<div class="subtitle-run">🏃 $1</div>');
+            displayHtml = displayHtml.replace(/^📚 (.+)$/gm, '<div class="subtitle-book">📚 $1</div>');
+            displayHtml = displayHtml.replace(/^🏢 (.+) 🏢$/gm, '<div class="title-building">🏢 $1 🏢</div>');
+            displayHtml = displayHtml.replace(/^📍 (.+)$/gm, '<div class="location">📍 $1</div>');
+            displayHtml = displayHtml.replace(/^💙 (.+) 💙$/gm, '<div class="title-heart">💙 $1 💙</div>');
+            displayHtml = displayHtml.replace(/^✓ (.+)$/gm, '<div class="check-item">✓ $1</div>');
+            displayHtml = displayHtml.replace(/^🤝 (.+) 🤝$/gm, '<div class="title-handshake">🤝 $1 🤝</div>');
+            displayHtml = displayHtml.replace(/^• (.+)$/gm, '<div class="bullet-item">• $1</div>');
+            
+            container.innerHTML = displayHtml;
+            currentIndex++;
+            
+            // Auto-scroll
+            const wrapper = document.querySelector('.about-typing-wrapper');
+            if (wrapper) {
+                wrapper.scrollTop = wrapper.scrollHeight;
+            }
+        } else {
+            clearInterval(aboutTypingInterval);
+            if (cursor) cursor.style.opacity = '0';
+        }
+    }, 20);
+}
+
+// دوال الانتقال والتواصل
+function goToLoginFromLanding() {
+    renderLogin(document.getElementById('app'));
+}
+
+function showJoinRequestModalFromLanding() {
+    // استدعاء دالة طلب الانضمام من الكود الأصلي
+    if (typeof showJoinRequestModal === 'function') {
+        showJoinRequestModal();
+    } else {
+        alert("الرجاء تسجيل الدخول أولاً لتقديم طلب انضمام");
+    }
+}
+
+function openWhatsAppLanding() {
+    window.open('https://wa.me/201111674468', '_blank');
+}
+
+function openFacebookLanding() {
+    window.open('https://www.facebook.com/share/18pyoHNCSE/', '_blank');
+}
+
+// تعديل دالة startApp الأصلية لعرض صفحة الهبوط بدلاً من تسجيل الدخول
+const originalStartApp = window.startApp;
+window.startApp = async function() {
+    await loadAllDataFromFirebase();
+    listenForRealTimeUpdates();
+    renderLandingPage();  // ← هنا التغيير: نعرض صفحة الهبوط بدلاً من تسجيل الدخول
     addFixedLogoButton();
+    initTheme();
 };
+// ==================== ABOUT PAGE RENDER FUNCTION ====================
+function renderAboutPage() {
+    const app = document.getElementById('app');
+    const isLight = document.body.classList.contains('light-mode');
+    
+    app.innerHTML = `
+        <div class="about-page-container">
+            <!-- Header -->
+            <div class="about-page-header">
+                <div class="about-page-logo">
+                    <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" alt="شعار كيان">
+                    <span>مجموعة كيان</span>
+                </div>
+                <div class="about-page-buttons">
+                    <button class="about-page-btn about-page-btn-home" onclick="renderLandingPage()">
+                        <i class="fas fa-home"></i> الرئيسية
+                    </button>
+                    <button class="about-page-btn-theme" id="aboutThemeBtn">
+                        <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Hero Section -->
+            <div class="about-hero-section">
+                <div class="about-hero-overlay"></div>
+                <div class="about-hero-content">
+                    <div class="about-logo-animation">
+                        <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" alt="شعار مجموعة كيان">
+                    </div>
+                    <h1 class="about-hero-title">⚓ من نحن ⚓</h1>
+                    <p class="about-hero-subtitle">مجموعة كيان الكشفية البحرية | نصنع القادة... ونبني المستقبل</p>
+                    <div class="about-hero-anchor">
+                        <i class="fas fa-ship"></i> <i class="fas fa-anchor"></i> <i class="fas fa-compass"></i>
+                    </div>
+                </div>
+            </div>
 
-// تعديل دالة start لتبدأ بصفحة الهبوط بدلاً من تسجيل الدخول
-// استبدال دالة start الموجودة بهذه:
+            <!-- Typing Animation Section - Full Width -->
+            <div class="about-typing-wrapper">
+                <div class="about-typing-section">
+                    <div class="about-typing-container">
+                        <div class="about-typing-content" id="aboutTypingContent"></div>
+                        <div class="about-typing-cursor">|</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="about-page-footer">
+                <p>© 2025 مجموعة كيان الكشفية البحرية | 01144100018 / 01126125881</p>
+            </div>
+        </div>
+    `;
+    
+    // بدء تأثير الكتابة
+    startAboutTypingAnimation();
+    
+    // إضافة حدث زر تغيير الوضع - الطريقة الصحيحة
+    const themeBtn = document.getElementById('aboutThemeBtn');
+    if (themeBtn) {
+        themeBtn.onclick = function(e) {
+            e.preventDefault();
+            if (document.body.classList.contains('light-mode')) {
+                document.body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+                this.innerHTML = '<i class="fas fa-moon"></i>';
+                // تحديث خلفية الصفحة
+                document.querySelector('.about-page-container').style.background = 'linear-gradient(135deg, #0a2e1a, #0d2818, #071a0f)';
+            } else {
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+                this.innerHTML = '<i class="fas fa-sun"></i>';
+                // تحديث خلفية الصفحة
+                document.querySelector('.about-page-container').style.background = 'linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7)';
+            }
+        };
+    }
+}
+
+// دالة عرض النص في صفحة من نحن
+function renderAboutText() {
+    const container = document.getElementById('aboutTextContainer');
+    if (!container) return;
+    
+    // نفس النص المستخدم في صفحة الهبوط
+    const aboutText = fullAboutText || `# من نحن – مجموعة كيان الكشفية البحرية
+    
+تُعد الكشافة واحدة من أكبر الحركات التربوية والتطوعية في العالم، حيث تهدف إلى تنمية الشباب وبناء شخصيات قوية قادرة على القيادة وخدمة المجتمع. وقد بدأت الحركة الكشفية عالميًا على يد القائد "روبرت بادن باول"، ثم انتشرت سريعًا في مختلف دول العالم، ووصلت إلى مصر منذ أكثر من مائة عام لتصبح واحدة من أهم الأنشطة التربوية التي تهتم ببناء الأجيال وتنمية مهاراتهم.
+
+## بداية الكشافة في مصر
+
+بدأت الحركة الكشفية في مصر في أوائل القرن العشرين، وسرعان ما أصبحت جزءًا مهمًا من الأنشطة الشبابية والتربوية داخل المدارس والأندية والمؤسسات المختلفة. وحرصت الكشافة المصرية منذ بدايتها على غرس قيم الانضباط، والاعتماد على النفس، والعمل الجماعي، والقيادة، وخدمة المجتمع.
+
+ومع تطور الحركة الكشفية ظهرت العديد من الفروع والتخصصات، وكان من أبرزها **الكشافة البحرية** التي تهتم بالأنشطة البحرية والمغامرات والتدريبات الميدانية، وتساعد الشباب على اكتساب مهارات مميزة في الحياة البحرية والإنقاذ والتخييم والعمل الجماعي.
+
+## من نحن؟
+
+نحن **مجموعة كيان الكشفية البحرية**، مجموعة كشفية بحرية تهدف إلى صناعة جيل قوي وواعٍ يمتلك روح القيادة والانتماء والتعاون. تأسست المجموعة عام **2017**، ومنذ ذلك الوقت ونحن نسعى إلى تقديم تجربة كشفية مختلفة تجمع بين التعليم والترفيه والمغامرة وتنمية الشخصية.
+
+## رؤيتنا
+
+نسعى إلى بناء جيل قادر على القيادة وتحمل المسؤولية، يمتلك الثقة بالنفس وروح الفريق والانضباط، ويستطيع مواجهة التحديات وخدمة المجتمع بإيجابية.
+
+## رسالتنا
+
+تقديم تجربة كشفية بحرية متكاملة تساعد الأعضاء على تنمية مهاراتهم الجسدية والعقلية والاجتماعية، من خلال برامج وأنشطة عملية ممتعة وآمنة تناسب مختلف الأعمار.
+
+# ماذا نقدم في الكشافة البحرية؟
+
+## الأنشطة البحرية
+
+نهتم بشكل كبير بالأنشطة البحرية التي تُعد من أهم ما يميز الكشافة البحرية، حيث يتعلم الأعضاء:
+
+* أساسيات الحياة البحرية
+* التجديف واستخدام القوارب
+* قواعد السلامة والإنقاذ
+* التعامل مع المياه بشكل آمن
+* العمل الجماعي أثناء الأنشطة البحرية
+
+## الكامبات والمعسكرات
+
+تُعتبر المعسكرات أو "الكامبات" من أهم الأنشطة داخل الكشافة، حيث يعيش الأعضاء تجربة مليئة بالمغامرة والتحديات والتعاون.
+
+## تنمية المهارات القيادية
+
+من أهم أهدافنا داخل المجموعة إعداد قادة للمستقبل، لذلك نهتم بتنمية مهارات:
+* القيادة
+* التواصل
+* اتخاذ القرار
+* تحمل المسؤولية
+* تنظيم الوقت
+* حل المشكلات
+
+# فروع مجموعة كيان الكشفية البحرية
+
+## الفرع الأول – التجمع الثالث
+يقع في **نادي مركز شباب المستقبل بالقطامية**.
+
+## الفرع الثاني – التجمع الخامس
+يقع في **معاهد الكمال الأزهرية**.
+
+## الفرع الثالث – الدقي
+يقع في **بحرية الجيزة على النيل**.
+
+## الفرع الرابع
+يقع في **نادي حارس على النيل**.
+
+## الفرع الخامس – العبور
+يقع في **جمعية أحمد عرابي**.
+
+# انضم إلينا
+
+إذا كنت تبحث عن مكان يساعدك على تطوير مهاراتك، واكتشاف قدراتك، وخوض مغامرات وتجارب جديدة، فإن مجموعة كيان الكشفية البحرية ترحب بك دائمًا لتكون جزءًا من عائلتنا الكشفية.`;
+
+    // تحويل النص إلى HTML
+    let formattedHtml = aboutText
+        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^\* (.+)$/gm, '<li>$1</li>')
+        .replace(/<li>(.+)<\/li>\n<li>/g, '<li>$1</li><li>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    
+    formattedHtml = formattedHtml.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+    
+    container.innerHTML = formattedHtml;
+}
+
+// دالة الانتقال إلى صفحة الهبوط
+function goToLandingPage() {
+    renderLandingPage();
+}
+
+// دوال التبديل للوضع في صفحة من نحن
+function toggleThemeAbout() {
+    if (document.body.classList.contains('light-mode')) {
+        document.body.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
+        const btn = document.getElementById('aboutThemeBtn');
+        if (btn) btn.innerHTML = '<i class="fas fa-moon"></i>';
+    } else {
+        document.body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
+        const btn = document.getElementById('aboutThemeBtn');
+        if (btn) btn.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+}
+
+// دوال التبديل للوضع في صفحة الهبوط
+function toggleThemeLanding() {
+    if (document.body.classList.contains('light-mode')) {
+        document.body.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
+        const btn = document.getElementById('landingThemeBtn');
+        if (btn) btn.innerHTML = '<i class="fas fa-moon"></i>';
+    } else {
+        document.body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
+        const btn = document.getElementById('landingThemeBtn');
+        if (btn) btn.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+}
+
+// ==================== LEADERBOARD FUNCTIONS ====================
+
+
+
+// دالة عرض جدول الترتيب في صفحة الهبوط
+function renderLeaderboard() {
+    const container = document.getElementById('leaderboardTableContainer');
+    if (!container) return;
+    
+    // جلب البيانات بناءً على الفلاتر
+    let filteredMembers = [...appData.members];
+    
+    // فلتر الفرع (إذا لم يكن 'all')
+    if (currentBranchFilter !== 'all') {
+        const branchId = parseInt(currentBranchFilter);
+        filteredMembers = filteredMembers.filter(m => m.branchId === branchId);
+    }
+    
+    // فلتر النوع (يظهر فقط عند اختيار فرع معين)
+    if (currentBranchFilter !== 'all' && currentTypeFilter !== 'all') {
+        const squadIdsOfType = appData.squads
+            .filter(s => s.type === currentTypeFilter && s.branchId == currentBranchFilter)
+            .map(s => s.id);
+        filteredMembers = filteredMembers.filter(m => squadIdsOfType.includes(m.squadId));
+    }
+    
+    // ترتيب حسب النقاط (تنازلي)
+    filteredMembers.sort((a, b) => b.points - a.points);
+    
+    // بناء HTML الجدول
+    if (filteredMembers.length === 0) {
+        container.innerHTML = '<div class="no-data"><i class="fas fa-info-circle"></i> لا توجد بيانات لعرضها</div>';
+        return;
+    }
+    
+    let tableHtml = `
+        <div class="leaderboard-table-wrapper">
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>الاسم</th>
+                        <th>الفرع / الطليعة</th>
+                        <th>الرتبة</th>
+                        <th><i class="fas fa-star"></i> النقاط</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    filteredMembers.forEach((member, index) => {
+        const rank = index + 1;
+        let rankClass = '';
+        let rankDisplay = '';
+        
+        if (rank === 1) {
+            rankClass = 'rank-1';
+            rankDisplay = '🥇';
+        } else if (rank === 2) {
+            rankClass = 'rank-2';
+            rankDisplay = '🥈';
+        } else if (rank === 3) {
+            rankClass = 'rank-3';
+            rankDisplay = '🥉';
+        } else {
+            rankClass = 'rank-other';
+            rankDisplay = rank;
+        }
+        
+        // جلب معلومات الفرع والطليعة
+        const squad = appData.squads.find(s => s.id === member.squadId);
+        const branch = appData.branches.find(b => b.id === member.branchId);
+        
+        let locationText = '';
+        if (currentBranchFilter !== 'all') {
+            // إذا كان مختار فرع معين، نعرض اسم الطليعة
+            locationText = squad ? `${squad.name} ${squad.type ? `(${squad.type})` : ''}` : branch?.name || '-';
+        } else {
+            // إذا كان الكل، نعرض المنطقة ثم الطليعة
+            locationText = branch ? `${branch.name} - ${squad?.name || ''}` : squad?.name || '-';
+        }
+        
+        tableHtml += `
+            <tr>
+                <td class="rank-cell">
+                    <span class="rank-medal ${rankClass}">${rankDisplay}</span>
+                </td>
+                <td><strong>${escapeHtml(member.name)}</strong></td>
+                <td>${escapeHtml(locationText)}</td>
+                <td><span class="badge" style="background: #d4a01720; color: #1a472a; padding: 4px 10px;">${member.rank || 'عضو'}</span></td>
+                <td><strong style="color: #d4a017; font-size: 18px;">${member.points}</strong></td>
+            </tr>
+        `;
+    });
+    
+    tableHtml += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    container.innerHTML = tableHtml;
+}
+
+// دالة تحديث الفلاتر
+function updateLeaderboardFilters() {
+    const branchSelect = document.getElementById('branchFilterLeaderboard');
+    const typeSelect = document.getElementById('typeFilterLeaderboard');
+    
+    if (!branchSelect) return;
+    
+    currentBranchFilter = branchSelect.value;
+    
+    // تفعيل/تعطيل فلتر النوع
+    if (currentBranchFilter !== 'all') {
+        typeSelect.disabled = false;
+        // تعبئة خيارات النوع بناءً على الفروع الموجودة في المنطقة المختارة
+        const branchId = parseInt(currentBranchFilter);
+        const availableTypes = [...new Set(
+            appData.squads
+                .filter(s => s.branchId === branchId)
+                .map(s => s.type || 'الكشافة')
+        )];
+        
+        // حفظ القيمة الحالية مؤقتاً
+        const oldTypeValue = typeSelect.value;
+        
+        typeSelect.innerHTML = '<option value="all">🎯 جميع الأنواع</option>';
+        availableTypes.forEach(type => {
+            const typeNames = {
+                'الكشافة': '⚜️ الكشافة',
+                'المرشدات': '🌸 المرشدات',
+                'الأشبال': '🦁 الأشبال',
+                'الزهرات': '🌺 الزهرات',
+                'البراعم': '🌱 البراعم'
+            };
+            typeSelect.innerHTML += `<option value="${type}">${typeNames[type] || type}</option>`;
+        });
+        
+        // استعادة القيمة إذا كانت لا تزال موجودة
+        if (availableTypes.includes(oldTypeValue)) {
+            typeSelect.value = oldTypeValue;
+            currentTypeFilter = oldTypeValue;
+        } else {
+            typeSelect.value = 'all';
+            currentTypeFilter = 'all';
+        }
+    } else {
+        typeSelect.disabled = true;
+        typeSelect.value = 'all';
+        currentTypeFilter = 'all';
+    }
+    
+    // تحديث الجدول
+    renderLeaderboard();
+}
+
+// دالة تغيير فلتر النوع
+function onTypeFilterChange() {
+    const typeSelect = document.getElementById('typeFilterLeaderboard');
+    if (typeSelect) {
+        currentTypeFilter = typeSelect.value;
+        renderLeaderboard();
+    }
+}
+
+// دالة إضافة قسم الترتيب إلى صفحة الهبوط
+// دالة إضافة قسم الترتيب إلى صفحة الهبوط
+function addLeaderboardToLanding() {
+    // البحث عن الحاوية المخصصة لقسم الترتيب
+    const container = document.getElementById('leaderboardSectionContainer');
+    if (!container) return;
+    
+    // حذف أي محتوى قديم
+    container.innerHTML = '';
+    
+    // تعبئة الفروع في قائمة الاختيار
+    let branchesOptions = '<option value="all">🌍 جميع الفروع</option>';
+    appData.branches.forEach(branch => {
+        branchesOptions += `<option value="${branch.id}">🏢 ${branch.name}</option>`;
+    });
+    
+    container.innerHTML = `
+        <div class="leaderboard-section">
+            <div class="leaderboard-container">
+                <div class="leaderboard-title">
+                    <i class="fas fa-trophy"></i>
+                    <span>🏆 ترتيب المجموعة حسب النقاط 🏆</span>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="leaderboard-filters">
+                    <div class="filter-group">
+                        <label><i class="fas fa-map-marker-alt"></i> اختر الفرع</label>
+                        <select id="branchFilterLeaderboard" onchange="updateLeaderboardFilters()">
+                            ${branchesOptions}
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label><i class="fas fa-users"></i> اختر النوع (عند اختيار فرع)</label>
+                        <select id="typeFilterLeaderboard" onchange="onTypeFilterChange()" disabled>
+                            <option value="all">🎯 جميع الأنواع</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="leaderboardTableContainer"></div>
+            </div>
+        </div>
+    `;
+    
+    // عرض الجدول
+    renderLeaderboard();
+}
+
+// ==================== تشغيل التطبيق ====================
 window.startApp = async function() {
     await loadAllDataFromFirebase();
     listenForRealTimeUpdates();
     renderLandingPage();
     addFixedLogoButton();
+    initTheme();
 };
-
 // استدعاء التطبيق
 startApp();
     </script>
