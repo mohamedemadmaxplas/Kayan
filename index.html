@@ -2009,465 +2009,6 @@ body {
         font-size: 10px !important;
     }
 }
-/* ========== تصميم صفحة الهبوط الجديدة ========== */
-.landing-container-new {
-    min-height: 100vh;
-    position: relative;
-}
-
-.landing-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(10, 46, 26, 0.92);
-    backdrop-filter: blur(12px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 40px;
-    z-index: 1000;
-    border-bottom: 1px solid rgba(212, 160, 23, 0.4);
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.logo-img {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #d4a017;
-}
-
-.logo-text h2 {
-    font-size: 1.2rem;
-    color: #d4a017;
-    margin: 0;
-}
-
-.header-buttons {
-    display: flex;
-    gap: 15px;
-}
-
-.btn-nav {
-    padding: 8px 24px;
-    border-radius: 40px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    font-family: 'Cairo', sans-serif;
-    transition: 0.3s;
-}
-
-.btn-login {
-    background: #d4a017;
-    color: #0a2e1a;
-}
-
-.btn-join {
-    background: transparent;
-    color: #d4a017;
-    border: 2px solid #d4a017;
-}
-
-.btn-about {
-    background: #1a472a;
-    color: white;
-    border: 1px solid #d4a017;
-}
-
-.hero-section {
-    min-height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.ibb.co/VfWPtdk/5794143090170859641.jpg');
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.hero-overlay {
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(8px);
-    padding: 40px 50px;
-    border-radius: 50px;
-    border: 1px solid #d4a017;
-}
-
-.hero-title {
-    font-size: 48px;
-    color: white;
-    margin-bottom: 15px;
-}
-
-.hero-title span {
-    color: #d4a017;
-}
-
-.hero-subtitle {
-    font-size: 18px;
-    color: #eee;
-    margin-bottom: 30px;
-}
-
-.cta-primary {
-    background: linear-gradient(135deg, #d4a017, #b8860b);
-    border: none;
-    padding: 12px 32px;
-    border-radius: 40px;
-    font-weight: bold;
-    color: #0a2e1a;
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.cta-primary:hover {
-    transform: scale(1.03);
-}
-
-.social-fixed {
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
-    display: flex;
-    gap: 15px;
-    z-index: 1100;
-}
-
-.social-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    color: white;
-    transition: 0.3s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.social-icon.whatsapp {
-    background: #25D366;
-}
-
-.social-icon.facebook {
-    background: #1877f2;
-}
-
-.social-icon:hover {
-    transform: translateY(-5px);
-}
-
-.about-modal .modal-content {
-    max-width: 800px;
-    width: 90%;
-    max-height: 85vh;
-    overflow-y: auto;
-    background: white;
-    border-radius: 28px;
-}
-
-#typedText {
-    white-space: pre-wrap;
-    font-family: 'Cairo', sans-serif;
-    direction: rtl;
-    text-align: right;
-}
-
-@media (max-width: 768px) {
-    .landing-header {
-        padding: 8px 16px;
-    }
-    .logo-img {
-        width: 36px;
-        height: 36px;
-    }
-    .logo-text h2 {
-        font-size: 0.9rem;
-    }
-    .btn-nav {
-        padding: 5px 12px;
-        font-size: 0.7rem;
-    }
-    .hero-title {
-        font-size: 28px;
-    }
-    .hero-overlay {
-        padding: 25px;
-    }
-}
-/* ========== تصميم صفحة الهبوط الجديدة ========== */
-.landing-new {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0a2e1a, #0d2818);
-}
-
-.landing-header-new {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(10, 46, 26, 0.95);
-    backdrop-filter: blur(10px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 40px;
-    z-index: 1000;
-    border-bottom: 1px solid #d4a017;
-}
-
-.logo-area-new {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.logo-img-new {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #d4a017;
-}
-
-.logo-area-new h2 {
-    color: #d4a017;
-    font-size: 18px;
-    margin: 0;
-}
-
-.logo-area-new p {
-    color: white;
-    font-size: 11px;
-    margin: 0;
-}
-
-.header-buttons-new {
-    display: flex;
-    gap: 15px;
-}
-
-.btn-about-new {
-    background: #1a472a;
-    color: white;
-    border: 1px solid #d4a017;
-    padding: 8px 24px;
-    border-radius: 40px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: 'Cairo', sans-serif;
-    transition: 0.3s;
-}
-.btn-about-new:hover {
-    background: #2d5a3f;
-    transform: translateY(-2px);
-}
-
-.btn-login-new {
-    background: #d4a017;
-    color: #0a2e1a;
-}
-
-.btn-join-new {
-    background: transparent;
-    color: #d4a017;
-    border: 2px solid #d4a017;
-}
-
-.btn-login-new:hover, .btn-join-new:hover {
-    transform: translateY(-2px);
-}
-
-.hero-new {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.ibb.co/VfWPtdk/5794143090170859641.jpg');
-    background-size: cover;
-    background-position: center;
-}
-
-.hero-content-new {
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(8px);
-    padding: 50px 40px;
-    border-radius: 50px;
-    border: 1px solid #d4a017;
-}
-
-.hero-content-new h1 {
-    font-size: 42px;
-    color: white;
-    margin-bottom: 20px;
-}
-
-.hero-content-new h1 span {
-    color: #d4a017;
-}
-
-.hero-content-new p {
-    color: #ddd;
-    font-size: 18px;
-    margin-bottom: 30px;
-}
-
-.hero-buttons-new {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.btn-primary-new, .btn-secondary-new {
-    padding: 12px 30px;
-    border-radius: 40px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: 0.3s;
-}
-
-.btn-primary-new {
-    background: #d4a017;
-    color: #0a2e1a;
-}
-
-.btn-secondary-new {
-    background: transparent;
-    color: #d4a017;
-    border: 2px solid #d4a017;
-}
-
-.features-new {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    padding: 60px 40px;
-    background: rgba(0,0,0,0.3);
-}
-
-.feature-card-new {
-    text-align: center;
-    padding: 30px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 25px;
-    transition: 0.3s;
-}
-
-.feature-card-new:hover {
-    transform: translateY(-8px);
-    background: rgba(255,255,255,0.15);
-}
-
-.feature-card-new i {
-    font-size: 50px;
-    color: #d4a017;
-    margin-bottom: 20px;
-}
-
-.feature-card-new h3 {
-    color: white;
-    margin-bottom: 10px;
-}
-
-.feature-card-new p {
-    color: #ccc;
-}
-
-.stats-new {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    padding: 50px 20px;
-    background: #071a0f;
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 48px;
-    font-weight: bold;
-    color: #d4a017;
-}
-
-.stat-label {
-    color: white;
-    font-size: 16px;
-}
-
-.social-new {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    display: flex;
-    gap: 15px;
-    z-index: 1100;
-}
-
-.whatsapp-new, .facebook-new {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    transition: 0.3s;
-    color: white;
-}
-
-.whatsapp-new {
-    background: #25D366;
-}
-
-.facebook-new {
-    background: #1877f2;
-}
-
-.whatsapp-new:hover, .facebook-new:hover {
-    transform: translateY(-5px);
-}
-
-@media (max-width: 768px) {
-    .landing-header-new {
-        padding: 8px 16px;
-    }
-    .logo-img-new {
-        width: 35px;
-        height: 35px;
-    }
-    .btn-login-new, .btn-join-new {
-        padding: 5px 12px;
-        font-size: 12px;
-    }
-    .hero-content-new {
-        padding: 25px;
-    }
-    .hero-content-new h1 {
-        font-size: 28px;
-    }
-    .features-new {
-        padding: 30px 20px;
-        gap: 15px;
-    }
-    .stats-new {
-        gap: 30px;
-    }
-    .stat-number {
-        font-size: 32px;
-    }
-}
     </style>
 </head>
 <body>
@@ -3608,100 +3149,181 @@ function showReturnToLandingConfirmation() {
         modal.remove();
     };
 }
+// ==================== LANDING PAGE WITH MARINE IMAGES ====================
 function renderLandingPage() {
     const app = document.getElementById('app');
     app.innerHTML = `
-        <div class="landing-new">
-            <!-- الهيدر العلوي -->
-            <div class="landing-header-new">
-                <div class="logo-area-new">
-                    <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" class="logo-img-new" alt="كيان">
+        <div class="landing-container">
+            <!-- Marine Background Animations -->
+            <div class="marine-bg">
+                <div class="fish fish1"><i class="fas fa-fish"></i></div>
+                <div class="fish fish2"><i class="fas fa-fish"></i></div>
+                <div class="fish fish3"><i class="fas fa-fish"></i></div>
+                <div class="floating-anchor"><i class="fas fa-anchor"></i></div>
+            </div>
+            
+            <div class="hero-landing">
+                <div class="hero-content-landing">
+                    <div class="scout-badge">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <div class="org-name-landing">
+                        <i class="fas fa-anchor"></i> مجموعة كيان الكشفية البحرية
+                    </div>
+                    <h1 class="main-title-landing">
+                        <span>نظام الكشاف</span> المتكامل
+                    </h1>
+                    <p class="subtitle-landing">
+                        نظام متطور لإدارة الطلايع والكشافة البحرية<br>
+                        متكامل مع تقنيات حديثة لتسهيل التواصل وإدارة المهام والنقاط
+                    </p>
+                    <div class="cta-buttons">
+                        <button class="cta-btn cta-primary" onclick="goToLoginFromLanding()">
+                            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                        </button>
+                        <button class="cta-btn cta-secondary" onclick="showJoinRequestModal()">
+                            <i class="fas fa-user-plus"></i> تقديم طلب انضمام
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waves -->
+            <div class="wave-container">
+                <div class="wave"></div>
+                <div class="wave wave2"></div>
+            </div>
+
+            <div class="features-landing">
+                <h2 class="section-title-landing">مميزات النظام</h2>
+                <div class="features-grid-landing">
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-tasks"></i></div>
+                        <h3 class="feature-title-landing">إدارة التكاليف</h3>
+                        <p class="feature-desc-landing">إضافة تكاليف جديدة مع نقاط، ومتابعة تسليمات الأعضاء</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-trophy"></i></div>
+                        <h3 class="feature-title-landing">نظام النقاط والترتيب</h3>
+                        <p class="feature-desc-landing">ترتيب الأعضاء والطلايع حسب النقاط وتحفيز المنافسة</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-comments"></i></div>
+                        <h3 class="feature-title-landing">الكميونيتي والدردشة</h3>
+                        <p class="feature-desc-landing">تواصل مباشر بين القادة والأعضاء داخل الطليعة</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="feature-title-landing">إحصائيات متقدمة</h3>
+                        <p class="feature-desc-landing">لوحات تحكم تفاعلية وإحصائيات دقيقة للأداء</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-ship"></i></div>
+                        <h3 class="feature-title-landing">كشافة بحرية</h3>
+                        <p class="feature-desc-landing">نظام متخصص للكشافة البحرية مع أنشطة ومهارات بحرية</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-shield-alt"></i></div>
+                        <h3 class="feature-title-landing">إدارة آمنة</h3>
+                        <p class="feature-desc-landing">نظام آمن مع صلاحيات متعددة للقادة والأعضاء</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-landing">
+                <div class="stats-grid-landing">
                     <div>
-                        <h2>مجموعة كيان</h2>
-                        <p>الكشافة البحرية</p>
+                        <div class="stat-number-landing" id="statMembers">0</div>
+                        <div class="stat-label-landing">أعضاء نشطين</div>
                     </div>
-                </div>
-                <div class="header-buttons-new">
-                    <button class="btn-join-new" id="joinBtnHeader"><i class="fas fa-user-plus"></i> تقديم طلب انضمام</button>
-                    <button class="btn-login-new" id="loginBtnHeader"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
-                    <button class="btn-about-new" id="aboutBtnHeader"><i class="fas fa-info-circle"></i> عنا</button>
-                </div>
-            </div>
-
-            <!-- قسم البطل -->
-            <div class="hero-new">
-                <div class="hero-content-new">
-                    <h1>نظام <span>الكشاف المتكامل</span></h1>
-                    <p>نظام متطور لإدارة الطلايع والكشافة، متكامل مع تقنيات حديثة<br>لتسهيل التواصل وإدارة المهام والنقاط بكل سهولة واحترافية</p>
-                    <div class="hero-buttons-new">
-                        <button class="btn-primary-new" id="heroJoinBtn">تقديم طلب انضمام</button>
-                        <button class="btn-secondary-new" id="heroLoginBtn">تسجيل الدخول</button>
+                    <div>
+                        <div class="stat-number-landing" id="statSquads">0</div>
+                        <div class="stat-label-landing">طليعة</div>
+                    </div>
+                    <div>
+                        <div class="stat-number-landing" id="statTasks">0</div>
+                        <div class="stat-label-landing">تكليف منجز</div>
+                    </div>
+                    <div>
+                        <div class="stat-number-landing" id="statPoints">0</div>
+                        <div class="stat-label-landing">إجمالي النقاط</div>
                     </div>
                 </div>
             </div>
 
-            <!-- مميزات النظام -->
-            <div class="features-new">
-                <div class="feature-card-new">
-                    <i class="fas fa-comments"></i>
-                    <h3>التواصل المباشر</h3>
-                    <p>تواصل مباشر بين القادة والأعضاء داخل الطليعة</p>
-                </div>
-                <div class="feature-card-new">
-                    <i class="fas fa-trophy"></i>
-                    <h3>نظام النقاط والترتيب</h3>
-                    <p>ترتيب الأعضاء والطلايع حسب النقاط، وتحفيز المنافسة</p>
-                </div>
-                <div class="feature-card-new">
-                    <i class="fas fa-tasks"></i>
-                    <h3>إدارة التكاليف</h3>
-                    <p>إضافة تكاليف جديدة مع نقاط، ومتابعة تسليمات الأعضاء</p>
-                </div>
-                <div class="feature-card-new">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>إحصائيات متقدمة</h3>
-                    <p>لوحات تحكم تفاعلية وإحصائيات دقيقة للأداء</p>
-                </div>
-            </div>
-
-            <!-- إحصائيات سريعة -->
-            <div class="stats-new">
-                <div class="stat-item-new">
-                    <div class="stat-number" id="statMembersNew">0</div>
-                    <div class="stat-label">أعضاء نشطون</div>
-                </div>
-                <div class="stat-item-new">
-                    <div class="stat-number" id="statSquadsNew">0</div>
-                    <div class="stat-label">طليعة</div>
-                </div>
-                <div class="stat-item-new">
-                    <div class="stat-number" id="statTasksNew">0</div>
-                    <div class="stat-label">تكليف منجز</div>
-                </div>
-            </div>
-
-            <!-- أيقونات التواصل -->
-            <div class="social-new">
-                <a href="https://wa.me/201111674468" target="_blank" class="whatsapp-new"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.facebook.com/share/18pyoHNCSE/" target="_blank" class="facebook-new"><i class="fab fa-facebook-f"></i></a>
+            <div class="footer-landing">
+                <p>© 2025 نظام الكشاف المتكامل - مجموعة كيان الكشفية البحرية</p>
+                <p style="font-size: 12px; margin-top: 10px;">
+                    <i class="fas fa-phone"></i> 01144100018 / 01126125881
+                </p>
             </div>
         </div>
     `;
+    
+    updateLandingStats();
+    addHomeButton();
+initTheme();
+}
 
-    // ربط الأزرار
-    document.getElementById('joinBtnHeader')?.addEventListener('click', () => showJoinRequestModal());
-    document.getElementById('heroJoinBtn')?.addEventListener('click', () => showJoinRequestModal());
-    document.getElementById('loginBtnHeader')?.addEventListener('click', () => goToLoginFromLanding());
-    document.getElementById('heroLoginBtn')?.addEventListener('click', () => goToLoginFromLanding());
-    document.getElementById('aboutBtnHeader')?.addEventListener('click', () => showAboutModalWithTyping());
+function updateLandingStats() {
+    const membersCount = document.getElementById('statMembers');
+    const squadsCount = document.getElementById('statSquads');
+    const tasksCount = document.getElementById('statTasks');
+    const pointsCount = document.getElementById('statPoints');
+    
+    if (membersCount) animateNumber(membersCount, 0, appData.members.length, 2000);
+    if (squadsCount) animateNumber(squadsCount, 0, appData.squads.length, 2000);
+    if (tasksCount) animateNumber(tasksCount, 0, appData.taskSubmissions.filter(ts => ts.status === 'completed').length, 2000);
+    if (pointsCount) animateNumber(pointsCount, 0, appData.members.reduce((sum, m) => sum + m.points, 0), 2000);
+}
 
-    // تحديث الأرقام
-    const membersSpan = document.getElementById('statMembersNew');
-    const squadsSpan = document.getElementById('statSquadsNew');
-    const tasksSpan = document.getElementById('statTasksNew');
-    if (membersSpan) membersSpan.innerText = appData.members.length;
-    if (squadsSpan) squadsSpan.innerText = appData.squads.length;
-    if (tasksSpan) tasksSpan.innerText = appData.taskSubmissions.filter(ts => ts.status === 'completed').length;
+function animateNumber(element, start, end, duration) {
+    let startTime = null;
+    const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        element.textContent = Math.floor(progress * (end - start) + start);
+        if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+}
+
+function goToLoginFromLanding() {
+    renderLogin(document.getElementById('app'));
+    addHomeButton();
+    initTheme();
+}
+// 4. دالة قبول طلب الانضمام وإضافة العضو إلى قاعدة البيانات
+async function approveJoinRequest(requestId) {
+    const request = appData.joinRequests.find(r => r.id === requestId);
+    if (!request) return;
+    
+    const newMember = {
+        id: Date.now(),
+        code: request.code,
+        name: request.name,
+        age: request.age,
+        rank: request.rank,
+        username: request.username,
+        password: request.password,
+        phone: request.phone,
+        branchId: request.branchId,
+        squadId: request.squadId,
+        points: 0,
+        joinedAt: new Date().toISOString()
+    };
+    
+    appData.members.push(newMember);
+    appData.joinRequests = appData.joinRequests.filter(r => r.id !== requestId);
+    
+    await saveAllDataToFirebase();
+    document.querySelectorAll('.modal').forEach(m => m.remove());
+    showToast(`✅ تم قبول ${request.name} وأضيف إلى الطليعة بنجاح`);
+    
+    if (isAdmin && document.getElementById('adminPageContent')) {
+        renderMembersTable();
+        renderAdminDashboard();
+    }
 }
 
 // 5. دالة رفض طلب الانضمام (حذف الطلب)
@@ -6410,7 +6032,126 @@ window.startApp = async function() {
 
 // ==================== LANDING PAGE FUNCTIONS ====================
 
+// عرض صفحة الهبوط (Landing Page)
+function renderLandingPage() {
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        <div class="landing-container">
+            <div class="hero-landing">
+                <div class="hero-content-landing">
+                    <div class="org-name-landing">
+                        <i class="fas fa-anchor"></i> مجموعة كيان الكشفية البحرية
+                    </div>
+                    <h1 class="main-title-landing">
+                        <span>نظام الكشاف</span> المتكامل
+                    </h1>
+                    <p class="subtitle-landing">
+                        نظام متطور لإدارة الطلايع والكشافة، متكامل مع تقنيات حديثة<br>
+                        لتسهيل التواصل وإدارة المهام والنقاط بكل سهولة واحترافية
+                    </p>
+                    <div class="cta-buttons">
+                        <button class="cta-btn cta-primary" onclick="goToLoginFromLanding()">
+                            <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                        </button>
+                        <button class="cta-btn cta-secondary" onclick="showJoinRequestModal()">
+                            <i class="fas fa-user-plus"></i> تقديم طلب انضمام
+                        </button>
+                    </div>
+                </div>
+            </div>
 
+            <div class="features-landing">
+                <h2 class="section-title-landing">مميزات النظام</h2>
+                <div class="features-grid-landing">
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-tasks"></i></div>
+                        <h3 class="feature-title-landing">إدارة التكاليف</h3>
+                        <p class="feature-desc-landing">إضافة تكاليف جديدة مع نقاط وجوائز، ومتابعة تسليمات الأعضاء</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-trophy"></i></div>
+                        <h3 class="feature-title-landing">نظام النقاط والترتيب</h3>
+                        <p class="feature-desc-landing">ترتيب الأعضاء والطلايع حسب النقاط، وتحفيز المنافسة الشريفة</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-comments"></i></div>
+                        <h3 class="feature-title-landing">الكميونيتي والدردشة</h3>
+                        <p class="feature-desc-landing">تواصل مباشر بين القادة والأعضاء داخل الطليعة</p>
+                    </div>
+                    <div class="feature-card-landing">
+                        <div class="feature-icon-landing"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="feature-title-landing">إحصائيات متقدمة</h3>
+                        <p class="feature-desc-landing">لوحات تحكم تفاعلية وإحصائيات دقيقة للأداء</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-landing">
+                <div class="stats-grid-landing">
+                    <div class="stat-number-landing" id="statMembers">0</div>
+                    <div class="stat-label-landing">أعضاء نشطين</div>
+                    <div class="stat-number-landing" id="statSquads">0</div>
+                    <div class="stat-label-landing">طليعة</div>
+                    <div class="stat-number-landing" id="statTasks">0</div>
+                    <div class="stat-label-landing">تكليف منجز</div>
+                </div>
+            </div>
+
+            <div class="footer-landing">
+                <p>© 2025 نظام الكشاف المتكامل - مجموعة كيان الكشفية البحرية</p>
+                <p style="font-size: 12px; margin-top: 10px;">
+                    <i class="fas fa-phone"></i> 01144100018 / 01126125881
+                </p>
+            </div>
+        </div>
+    `;
+    
+    // تحديث الإحصائيات
+    updateLandingStats();
+}
+
+// تحديث إحصائيات صفحة الهبوط
+function updateLandingStats() {
+    const membersCount = document.getElementById('statMembers');
+    const squadsCount = document.getElementById('statSquads');
+    const tasksCount = document.getElementById('statTasks');
+    
+    if (membersCount) {
+        let count = 0;
+        const interval = setInterval(() => {
+            if (count <= appData.members.length) {
+                membersCount.textContent = count;
+                count++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 30);
+    }
+    
+    if (squadsCount) {
+        let count = 0;
+        const interval = setInterval(() => {
+            if (count <= appData.squads.length) {
+                squadsCount.textContent = count;
+                count++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 30);
+    }
+    
+    if (tasksCount) {
+        let count = 0;
+        const interval = setInterval(() => {
+            if (count <= appData.taskSubmissions.filter(ts => ts.status === 'completed').length) {
+                tasksCount.textContent = count;
+                count++;
+            } else {
+                clearInterval(interval);
+            }
+        }, 30);
+    }
+}
 
 // الانتقال من اللاندينج إلى صفحة تسجيل الدخول
 function goToLoginFromLanding() {
@@ -6795,190 +6536,6 @@ window.startApp = async function() {
     renderLandingPage();
     addFixedLogoButton();
 };
-// نافذة "عنا" مع تأثير الكتابة التلقائي
-function showAboutModalWithTyping() {
-    // النص الكامل المطلوب عرضه
-    const fullText = `# من نحن – مجموعة كيان الكشفية البحرية
-
-تُعد الكشافة واحدة من أكبر الحركات التربوية والتطوعية في العالم، حيث تهدف إلى تنمية الشباب وبناء شخصيات قوية قادرة على القيادة وخدمة المجتمع. وقد بدأت الحركة الكشفية عالميًا على يد القائد "روبرت بادن باول"، ثم انتشرت سريعًا في مختلف دول العالم، ووصلت إلى مصر منذ أكثر من مائة عام لتصبح واحدة من أهم الأنشطة التربوية التي تهتم ببناء الأجيال وتنمية مهاراتهم.
-
-## بداية الكشافة في مصر
-
-بدأت الحركة الكشفية في مصر في أوائل القرن العشرين، وسرعان ما أصبحت جزءًا مهمًا من الأنشطة الشبابية والتربوية داخل المدارس والأندية والمؤسسات المختلفة. وحرصت الكشافة المصرية منذ بدايتها على غرس قيم الانضباط، والاعتماد على النفس، والعمل الجماعي، والقيادة، وخدمة المجتمع.
-
-ومع تطور الحركة الكشفية ظهرت العديد من الفروع والتخصصات، وكان من أبرزها **الكشافة البحرية** التي تهتم بالأنشطة البحرية والمغامرات والتدريبات الميدانية، وتساعد الشباب على اكتساب مهارات مميزة في الحياة البحرية والإنقاذ والتخييم والعمل الجماعي.
-
-## من نحن؟
-
-نحن **مجموعة كيان الكشفية البحرية**، مجموعة كشفية بحرية تهدف إلى صناعة جيل قوي وواعٍ يمتلك روح القيادة والانتماء والتعاون. تأسست المجموعة عام **2017**، ومنذ ذلك الوقت ونحن نسعى إلى تقديم تجربة كشفية مختلفة تجمع بين التعليم والترفيه والمغامرة وتنمية الشخصية.
-
-بدأت رحلتنا بحلم صغير لتكوين مجموعة كشفية تقدم أنشطة مميزة للشباب والأطفال، ومع مرور الوقت تطورت المجموعة وأصبحت تضم العديد من الفروع والأنشطة والفعاليات المختلفة، واستطعنا تكوين مجتمع كشفي مليء بالطاقة والحماس وروح الأخوة.
-
-## رؤيتنا
-
-نسعى إلى بناء جيل قادر على القيادة وتحمل المسؤولية، يمتلك الثقة بالنفس وروح الفريق والانضباط، ويستطيع مواجهة التحديات وخدمة المجتمع بإيجابية.
-
-## رسالتنا
-
-تقديم تجربة كشفية بحرية متكاملة تساعد الأعضاء على تنمية مهاراتهم الجسدية والعقلية والاجتماعية، من خلال برامج وأنشطة عملية ممتعة وآمنة تناسب مختلف الأعمار.
-
-# ماذا نقدم في الكشافة البحرية؟
-
-في مجموعة كيان الكشفية البحرية لا تقتصر الأنشطة على اللعب والترفيه فقط، بل نحرص على تقديم تجربة تعليمية وتربوية متكاملة تساعد الأعضاء على اكتساب خبرات حقيقية ومهارات حياتية مهمة.
-
-## الأنشطة البحرية
-
-نهتم بشكل كبير بالأنشطة البحرية التي تُعد من أهم ما يميز الكشافة البحرية، حيث يتعلم الأعضاء:
-
-* أساسيات الحياة البحرية
-* التجديف واستخدام القوارب
-* قواعد السلامة والإنقاذ
-* التعامل مع المياه بشكل آمن
-* العمل الجماعي أثناء الأنشطة البحرية
-* مهارات الشجاعة وتحمل المسؤولية
-
-كما تساعد الأنشطة البحرية على تنمية الثقة بالنفس وروح المغامرة والانضباط.
-
-## الكامبات والمعسكرات
-
-تُعتبر المعسكرات أو "الكامبات" من أهم الأنشطة داخل الكشافة، حيث يعيش الأعضاء تجربة مليئة بالمغامرة والتحديات والتعاون.
-
-وخلال المعسكرات يتعلم الأعضاء:
-
-* كيفية نصب الخيام
-* الاعتماد على النفس
-* إعداد الطعام داخل المعسكر
-* النظام والانضباط
-* العمل الجماعي
-* القيادة وتحمل المسؤولية
-* مهارات البقاء والتعامل مع الطبيعة
-
-كما تتضمن الكامبات العديد من الأنشطة الممتعة مثل:
-
-* الألعاب الكشفية
-* السمر الليلي
-* المسابقات والتحديات
-* العروض الكشفية
-* تدريبات اللياقة
-* الأنشطة الترفيهية والثقافية
-
-وتساعد هذه المعسكرات على تكوين صداقات قوية وخلق ذكريات مميزة تدوم لسنوات طويلة.
-
-## الرحلات والأنشطة الخارجية
-
-نقوم بتنظيم رحلات وأنشطة خارجية بشكل مستمر لزيادة روح المغامرة والاستكشاف لدى الأعضاء، كما تمنحهم فرصة للتعلم العملي والتفاعل مع الطبيعة واكتساب الخبرات المختلفة.
-
-## تنمية المهارات القيادية
-
-من أهم أهدافنا داخل المجموعة إعداد قادة للمستقبل، لذلك نهتم بتنمية مهارات:
-
-* القيادة
-* التواصل
-* اتخاذ القرار
-* تحمل المسؤولية
-* تنظيم الوقت
-* حل المشكلات
-* العمل تحت الضغط
-
-وذلك من خلال الأنشطة العملية والتحديات الجماعية المختلفة.
-
-## الأنشطة الرياضية والترفيهية
-
-نهتم بتقديم أنشطة رياضية وترفيهية تساعد على تحسين اللياقة البدنية وتنمية الروح الرياضية، بالإضافة إلى خلق أجواء ممتعة مليئة بالحماس والطاقة الإيجابية.
-
-## الأنشطة الثقافية والتربوية
-
-نحرص على تنمية الجانب الفكري والثقافي للأعضاء من خلال:
-
-* ورش العمل
-* الندوات التعليمية
-* الأنشطة الثقافية
-* المسابقات
-* تعليم القيم والسلوكيات الإيجابية
-
-# فروع مجموعة كيان الكشفية البحرية
-
-نفخر بوجود عدة فروع للمجموعة في أماكن مختلفة لتسهيل مشاركة الأعضاء في الأنشطة والفعاليات:
-
-## الفرع الأول – التجمع الثالث
-
-يقع في **نادي مركز شباب المستقبل بالقطامية**.
-
-## الفرع الثاني – التجمع الخامس
-
-يقع في **معاهد الكمال الأزهرية**.
-
-## الفرع الثالث – الدقي
-
-يقع في **بحرية الجيزة على النيل**.
-
-## الفرع الرابع
-
-يقع في **نادي حارس على النيل**.
-
-## الفرع الخامس – العبور
-
-يقع في **جمعية أحمد عرابي**.
-
-# لماذا تنضم إلى مجموعة كيان؟
-
-لأننا نقدم تجربة مختلفة تجمع بين:
-
-* التعلم والمتعة
-* المغامرة والانضباط
-* الصداقة والعمل الجماعي
-* القيادة والثقة بالنفس
-* الأنشطة البحرية والكشفية
-* المعسكرات والرحلات الممتعة
-
-في مجموعة كيان الكشفية البحرية، نحن لا نقدم مجرد أنشطة، بل نصنع جيلًا قويًا وذكريات لا تُنسى وتجارب مليئة بالحماس والتعلم والمغامرة.
-
-# انضم إلينا
-
-إذا كنت تبحث عن مكان يساعدك على تطوير مهاراتك، واكتشاف قدراتك، وخوض مغامرات وتجارب جديدة، فإن مجموعة كيان الكشفية البحرية ترحب بك دائمًا لتكون جزءًا من عائلتنا الكشفية.`;
-
-    // إنشاء نافذة المودال
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.style.display = 'flex';
-    modal.innerHTML = `
-        <div class="modal-content about-modal">
-            <div class="modal-header">
-                <h3><i class="fas fa-anchor"></i> من نحن – مجموعة كيان الكشفية البحرية</h3>
-                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
-            </div>
-            <div class="about-text-container" id="typingContainer" style="max-height: 60vh; overflow-y: auto; padding: 10px; background: #fefefe; color: #1a2a1a; border-radius: 16px; line-height: 1.7; font-size: 14px;">
-                <div id="typedText"></div>
-            </div>
-            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-                <a href="https://wa.me/201111674468" target="_blank" class="btn btn-success" style="background:#25D366; color:white;"><i class="fab fa-whatsapp"></i> واتساب</a>
-                <a href="https://www.facebook.com/share/18pyoHNCSE/" target="_blank" class="btn btn-primary" style="background:#1877f2; color:white;"><i class="fab fa-facebook"></i> فيسبوك</a>
-                <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">إغلاق</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-
-    // تأثير الكتابة التلقائي
-    const typedDiv = document.getElementById('typedText');
-    let i = 0;
-    let htmlBuffer = '';
-    // تحويل النص إلى HTML مع الحفاظ على التنسيق
-    const formatted = fullText.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    
-    function typeWriter() {
-        if (i < formatted.length) {
-            htmlBuffer += formatted.charAt(i);
-            typedDiv.innerHTML = htmlBuffer;
-            i++;
-            setTimeout(typeWriter, 15); // سرعة الكتابة
-        } else {
-            // عند الانتهاء، نضيف أيقونة في النهاية
-            typedDiv.innerHTML += '<br><br><i class="fas fa-ship" style="color:#d4a017;"></i> مع تحيات مجموعة كيان';
-        }
-    }
-    typeWriter();
-}
 
 // استدعاء التطبيق
 startApp();
