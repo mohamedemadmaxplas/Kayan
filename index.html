@@ -4797,6 +4797,7 @@ function showEvaluationResultsForLeader(formId) {
     `;
     document.body.appendChild(modal);
 }
+//هنا قفلت inspect البدايه من document.addEventListener('contextmenu', function(e) {
 // منع زر الفأرة الأيمن في جميع أنحاء الصفحة
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
@@ -4869,6 +4870,7 @@ function detectDevTools() {
         // document.body.innerHTML = '<h1 style="color:red; text-align:center;">تم تعطيل أدوات المطور!</h1>';
     }
 }
+// هنا نهاية قفل inspect يا محمد علشان لو في مشكله هنشيلهم علشان نفتحها تاني وترجعهم بعد ما تخلص ها
 
 // استدعاء الدالة بشكل متكرر
 setInterval(detectDevTools, 1000);
