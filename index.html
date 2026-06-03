@@ -21,7 +21,7 @@
 /* ==================== RESET & GLOBAL ==================== */
 * {
     margin: 0;
-    padding: 0;
+    padding: 0; 
     box-sizing: border-box;
 }
 
@@ -3984,6 +3984,57 @@ body.light-mode .leaderboard-table th {
     color: #666;
     font-size: 13px;
 }
+/* ==================== PAGE TRANSITION ANIMATIONS ==================== */
+
+/* تأثير الدخول للصفحة */
+@keyframes pageEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+        filter: blur(5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+/* تأثير الخروج للصفحة */
+@keyframes pageExit {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.96);
+        filter: blur(5px);
+    }
+}
+
+/* تأثير خاص للصفحة القادمة (دوران خفيف) */
+@keyframes pageEnterSlide {
+    0% {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* الكلاس اللي راح نطبقه على الصفحة عند التغيير */
+.page-transition-out {
+    animation: pageExit 0.25s ease forwards !important;
+    pointer-events: none;
+}
+
+.page-transition-in {
+    animation: pageEnter 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards !important;
+}
     </style>
 </head>
 <body>
@@ -4962,6 +5013,40 @@ function showEvaluationFormResults(formId) {
     document.body.appendChild(modal);
 }
 
+// ==================== PAGE TRANSITION FUNCTIONS ====================
+
+// دالة تغيير الصفحة مع أنيميشن
+async function changePageWithAnimation(newPageRenderFunction) {
+    // 1. إضافة تأثير الخروج على الـ container الرئيسي
+    const app = document.getElementById('app');
+    if (!app) return;
+    
+    app.classList.add('page-transition-out');
+    
+    // 2. انتظار انتهاء تأثير الخروج
+    await new Promise(resolve => setTimeout(resolve, 250));
+    
+    // 3. تنفيذ الدالة الجديدة (تغيير المحتوى)
+    if (typeof newPageRenderFunction === 'function') {
+        newPageRenderFunction();
+    } else {
+        newPageRenderFunction();
+    }
+    
+    // 4. إزالة كلاس الخروج وإضافة كلاس الدخول
+    app.classList.remove('page-transition-out');
+    app.classList.add('page-transition-in');
+    
+    // 5. إزالة كلاس الدخول بعد انتهاء الأنيميشن
+    setTimeout(() => {
+        app.classList.remove('page-transition-in');
+    }, 400);
+}
+
+// نسخة مبسطة للاستخدام بدون await (للاستدعاء المباشر)
+function transitionToPage(pageRenderFunction) {
+    changePageWithAnimation(pageRenderFunction);
+}
 // ==================== 6. إضافة زر "فورمات التقييم" في قائمة القائد العام ====================
 
 // أضف هذا السطر في renderAdminApp داخل sidebar-menu:
@@ -6626,6 +6711,12 @@ function renderLogin(container) {
     // التحقق من الوضع الحالي لتحديد الأيقونة الصحيحة
     const isLightMode = document.body.classList.contains('light-mode');
     
+    // إضافة تأثير الأنيميشن عند دخول الصفحة
+    if (container && !container.classList.contains('page-transition-in')) {
+        container.classList.add('page-transition-in');
+        setTimeout(() => container.classList.remove('page-transition-in'), 400);
+    }
+    
     container.innerHTML = `
         <!-- إضافة الأزرار في أعلى صفحة تسجيل الدخول -->
         <div style="position: fixed; top: 20px; left: 20px; display: flex; gap: 10px; z-index: 1002;">
@@ -6690,9 +6781,9 @@ function renderLogin(container) {
             loginHomeBtn.innerHTML = '<i class="fas fa-home" style="font-size: 20px;"></i>';
         });
         
-        // ✅ التعديل المطلوب: استدعاء نافذة التأكيد التي تعيد إلى صفحة الهبوط
+        // العودة إلى صفحة الهبوط مع أنيميشن
         loginHomeBtn.addEventListener('click', () => {
-            showReturnToLandingConfirmation();
+            transitionToPage(() => renderLandingPage());
         });
     }
     
@@ -6740,17 +6831,16 @@ function renderLogin(container) {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         
-        // التحقق من حساب القائد العام
-       // التحقق من حساب القائد العام (من Firebase)
-const adminCreds = await loadAdminCredentialsFromFirebase();
-if (username === adminCreds.username && password === adminCreds.password) {
+        // التحقق من حساب القائد العام (من Firebase)
+        const adminCreds = await loadAdminCredentialsFromFirebase();
+        if (username === adminCreds.username && password === adminCreds.password) {
             currentUser = { id: 'admin', name: 'القائد العام', isAdmin: true };
             isAdmin = true;
             isLeader = false;
             await loadAllDataFromFirebase();
             listenForRealTimeUpdates();
             showToast('مرحباً أيها القائد العام!');
-            render();
+            transitionToPage(() => render());
             return;
         }
         // التحقق من القادة
@@ -6762,7 +6852,7 @@ if (username === adminCreds.username && password === adminCreds.password) {
             await loadAllDataFromFirebase();
             listenForRealTimeUpdates();
             showToast(`مرحباً أيها القائد ${leader.name}`);
-            renderLeaderApp(document.getElementById('app'));
+            transitionToPage(() => renderLeaderApp(document.getElementById('app')));
             return;
         }
         
@@ -6775,16 +6865,13 @@ if (username === adminCreds.username && password === adminCreds.password) {
             await loadAllDataFromFirebase();
             listenForRealTimeUpdates();
             showToast(`مرحباً ${member.name}`);
-            render();
+            transitionToPage(() => render());
             return;
         }
         
         showToast('بيانات الدخول غير صحيحة', 'error');
     });
 }
-    addHomeButton();
-    initTheme();
-
 // ==================== الدوال الجديدة لنظام طلبات الانضمام ====================
 
 function showJoinRequestModal() {
@@ -7331,7 +7418,7 @@ function showReturnToLandingConfirmation() {
     
     // محتوى النافذة
     modal.innerHTML = `
-        <div style="background: white; border-radius: 30px; padding: 35px; max-width: 400px; width: 90%; text-align: center;">
+        <div style="background: white; border-radius: 30px; padding: 35px; max-width: 400px; width: 90%; text-align: center; animation: zoomIn 0.3s ease;">
             <i class="fas fa-ship" style="font-size: 50px; color: #d4a017;"></i>
             <h3 style="color: #1a472a; margin-bottom: 10px;">العودة للصفحة الرئيسية؟</h3>
             <p style="color: #666; margin-bottom: 25px;">سيتم تسجيل خروجك والعودة إلى الصفحة الرئيسية للمجموعة</p>
@@ -7344,6 +7431,7 @@ function showReturnToLandingConfirmation() {
     
     document.body.appendChild(modal);
     
+    // زر "نعم، عودة" - تسجيل خروج والعودة للصفحة الرئيسية مع أنيميشن
     document.getElementById('returnToLandingYes').onclick = async () => {
         modal.remove();
         
@@ -7356,10 +7444,8 @@ function showReturnToLandingConfirmation() {
             countdownInterval = null;
         }
         
-        // ✅ التغيير المطلوب: استدعاء صفحة الهبوط الرئيسية بدلاً من تسجيل الدخول
-        renderLandingPage();
-        addFixedLogoButton();
-        initTheme();
+        // استخدام الأنيميشن للعودة إلى صفحة الهبوط
+        transitionToPage(() => renderLandingPage());
         
         showToast('تم تسجيل الخروج والعودة للصفحة الرئيسية');
     };
@@ -10114,9 +10200,9 @@ async function logout() {
     }
     stopLeaderCountdownUpdater();
     showToast('تم تسجيل الخروج');
-    // عرض صفحة تسجيل الدخول مباشرة
-    renderLogin(document.getElementById('app'));
-    addFixedLogoButton();
+    
+    // استخدام الأنيميشن للرجوع للصفحة الرئيسية
+    changePageWithAnimation(() => renderLandingPage());
 }
         // Make global functions
         window.toggleSidebar = toggleSidebar;
@@ -10629,22 +10715,26 @@ renderLogin = function(container) {
 function renderLandingPage() {
     const app = document.getElementById('app');
     
+    // إضافة تأثير الأنيميشن عند دخول الصفحة
+    if (app && !app.classList.contains('page-transition-in')) {
+        app.classList.add('page-transition-in');
+        setTimeout(() => app.classList.remove('page-transition-in'), 400);
+    }
+    
     app.innerHTML = `
         <div class="landing-new-container">
-            <!-- Header مع الصورة في المنتصف (تمت إزالة الصورة من هنا) -->
+            <!-- Header مع الصورة في المنتصف -->
             <div class="landing-header-fixed" style="position: relative;">
                 <div class="header-logo-landing">
                     <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" alt="شعار كيان">
                     <span>مجموعة كيان</span>
                 </div>
                 
-                <!-- تم حذف الصورة من الهيدر بناءً على طلب المستخدم -->
-                
                 <div class="header-buttons-landing">
-                    <button class="btn-landing about-btn" onclick="renderAboutPage()">
+                    <button class="btn-landing about-btn" onclick="transitionToPage(() => renderAboutPage())">
                         <i class="fas fa-info-circle"></i> من نحن
                     </button>
-                    <button class="btn-landing btn-login-landing" onclick="goToLoginFromLanding()">
+                    <button class="btn-landing btn-login-landing" onclick="transitionToPage(() => goToLoginFromLanding())">
                         <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
                     </button>
                     <button class="btn-landing btn-join-landing" onclick="showJoinRequestModalFromLanding()">
@@ -10653,7 +10743,7 @@ function renderLandingPage() {
                 </div>
             </div>
 
-            <!-- الصورة الجديدة أسفل الهيدر (فقط في صفحة الهبوط) -->
+            <!-- الصورة أسفل الهيدر -->
             <div style="text-align: center; padding: 20px 0 10px 0; background: linear-gradient(180deg, #ffffff 0%, #e8f5e9 100%);">
                 <img src="https://i.ibb.co/d9sKxjZ/In-Shot-20260528-143153172.jpg" alt="صورة المجموعة" style="height: 80px; width: auto; max-width: 90%; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid #d4a017; animation: floatImage 3s ease-in-out infinite;">
             </div>
@@ -10690,7 +10780,7 @@ function renderLandingPage() {
                     <h1 class="main-title-new">نصنع <span>القادة</span>...<br>ونبني <span>المستقبل</span></h1>
                     <p class="subtitle-new">انطلق في رحلة المغامرة والتعلم مع أقوى مجموعة كشفية بحرية في مصر</p>
                     <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
-                        <button class="btn-marine btn-marine-primary" onclick="goToLoginFromLanding()">
+                        <button class="btn-marine btn-marine-primary" onclick="transitionToPage(() => goToLoginFromLanding())">
                             <i class="fas fa-sign-in-alt"></i> ابدأ رحلتك الآن
                         </button>
                         <button class="btn-marine btn-marine-secondary" onclick="showJoinRequestModalFromLanding()">
@@ -10709,7 +10799,7 @@ function renderLandingPage() {
             <!-- قسم الترتيب (Leaderboard) -->
             <div id="leaderboardSectionContainer"></div>
 
-            <!-- الفوتر الموحد الجديد -->
+            <!-- الفوتر الموحد -->
             ${renderUnifiedFooter()}
         </div>
     `;
@@ -10717,8 +10807,7 @@ function renderLandingPage() {
     setTimeout(() => {
         addLeaderboardToLanding();
     }, 100);
-}
-// دالة إضافة قسم السوشيال ميديا في أسفل الصفحة (قبل الفوتر)
+}// دالة إضافة قسم السوشيال ميديا في أسفل الصفحة (قبل الفوتر)
 function addSocialSectionToBottom() {
     const landingContainer = document.querySelector('.landing-new-container');
     if (!landingContainer) return;
@@ -11083,9 +11172,8 @@ function startAboutTypingAnimation() {
     }, 20);
 }
 
-// دوال الانتقال والتواصل
 function goToLoginFromLanding() {
-    renderLogin(document.getElementById('app'));
+    changePageWithAnimation(() => renderLogin(document.getElementById('app')));
 }
 
 function showJoinRequestModalFromLanding() {
@@ -11111,6 +11199,12 @@ function renderAboutPage() {
     const app = document.getElementById('app');
     const isLight = document.body.classList.contains('light-mode');
     
+    // إضافة تأثير الأنيميشن عند دخول الصفحة
+    if (app && !app.classList.contains('page-transition-in')) {
+        app.classList.add('page-transition-in');
+        setTimeout(() => app.classList.remove('page-transition-in'), 400);
+    }
+    
     app.innerHTML = `
         <div class="about-page-container">
             <!-- Header -->
@@ -11120,7 +11214,7 @@ function renderAboutPage() {
                     <span>مجموعة كيان</span>
                 </div>
                 <div class="about-page-buttons">
-                    <button class="about-page-btn about-page-btn-home" onclick="renderLandingPage()">
+                    <button class="about-page-btn about-page-btn-home" onclick="transitionToPage(() => renderLandingPage())">
                         <i class="fas fa-home"></i> الرئيسية
                     </button>
                     <button class="about-page-btn-theme" id="aboutThemeBtn">
@@ -11164,7 +11258,7 @@ function renderAboutPage() {
     // بدء تأثير الكتابة
     startAboutTypingAnimation();
     
-    // إضافة حدث زر تغيير الوضع - الطريقة الصحيحة
+    // إضافة حدث زر تغيير الوضع
     const themeBtn = document.getElementById('aboutThemeBtn');
     if (themeBtn) {
         themeBtn.onclick = function(e) {
@@ -11173,14 +11267,14 @@ function renderAboutPage() {
                 document.body.classList.remove('light-mode');
                 localStorage.setItem('theme', 'dark');
                 this.innerHTML = '<i class="fas fa-moon"></i>';
-                // تحديث خلفية الصفحة
-                document.querySelector('.about-page-container').style.background = 'linear-gradient(135deg, #0a2e1a, #0d2818, #071a0f)';
+                const container = document.querySelector('.about-page-container');
+                if (container) container.style.background = 'linear-gradient(135deg, #0a2e1a, #0d2818, #071a0f)';
             } else {
                 document.body.classList.add('light-mode');
                 localStorage.setItem('theme', 'light');
                 this.innerHTML = '<i class="fas fa-sun"></i>';
-                // تحديث خلفية الصفحة
-                document.querySelector('.about-page-container').style.background = 'linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7)';
+                const container = document.querySelector('.about-page-container');
+                if (container) container.style.background = 'linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7)';
             }
         };
     }
