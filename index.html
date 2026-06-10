@@ -577,26 +577,6 @@ body {
     border-top: 1px solid rgba(212,160,23,0.2);
 }
 
-/* ==================== LOGIN PAGE ==================== */
-.login-container {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #1a472a, #0d2818);
-}
-
-.login-box {
-    background: white;
-    border-radius: 30px;
-    padding: 40px;
-    width: 400px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-
-.login-box i { font-size: 60px; color: #d4a017; margin-bottom: 15px; }
-.login-box h2 { color: #1a472a; margin-bottom: 25px; }
 
 
 
@@ -790,296 +770,7 @@ body {
 .sidebar-menu li:last-child a:hover {
     background: rgba(231, 76, 60, 0.2);
 }
-/* ==================== PAGE LOAD ANIMATIONS ==================== */
 
-/* Animation keyframes */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes fadeInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes slideInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes zoomIn {
-    from {
-        opacity: 0;
-        transform: scale(0.5);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.3);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.05);
-    }
-    70% {
-        transform: scale(0.9);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-@keyframes flipIn {
-    from {
-        opacity: 0;
-        transform: perspective(400px) rotateX(90deg);
-    }
-    to {
-        opacity: 1;
-        transform: perspective(400px) rotateX(0);
-    }
-}
-
-/* تطبيق الأنيميشن على العناصر */
-
-/* الهيدر */
-.header {
-    animation: slideInDown 0.6s ease forwards;
-}
-
-/* بطاقات الإحصائيات (تظهر واحدة تلو الأخرى) */
-.stat-card {
-    opacity: 0;
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
-.stat-card:nth-child(5) { animation-delay: 0.5s; }
-.stat-card:nth-child(6) { animation-delay: 0.6s; }
-
-/* الكروت (Cards) */
-.card {
-    opacity: 0;
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-.card:nth-child(1) { animation-delay: 0.15s; }
-.card:nth-child(2) { animation-delay: 0.3s; }
-.card:nth-child(3) { animation-delay: 0.45s; }
-.card:nth-child(4) { animation-delay: 0.6s; }
-.card:nth-child(5) { animation-delay: 0.75s; }
-
-/* الأزرار */
-.btn, .broadcast-btn, .logout-btn {
-    opacity: 0;
-    animation: scaleIn 0.4s ease forwards;
-}
-
-.btn:nth-child(1) { animation-delay: 0.1s; }
-.btn:nth-child(2) { animation-delay: 0.2s; }
-.btn:nth-child(3) { animation-delay: 0.3s; }
-
-/* عناصر الجدول (الصفوف تظهر واحدة تلو الأخرى) */
-.data-table tr {
-    opacity: 0;
-    animation: fadeInRight 0.3s ease forwards;
-}
-
-.data-table tr:nth-child(1) { animation-delay: 0.05s; }
-.data-table tr:nth-child(2) { animation-delay: 0.1s; }
-.data-table tr:nth-child(3) { animation-delay: 0.15s; }
-.data-table tr:nth-child(4) { animation-delay: 0.2s; }
-.data-table tr:nth-child(5) { animation-delay: 0.25s; }
-.data-table tr:nth-child(6) { animation-delay: 0.3s; }
-.data-table tr:nth-child(7) { animation-delay: 0.35s; }
-.data-table tr:nth-child(8) { animation-delay: 0.4s; }
-.data-table tr:nth-child(9) { animation-delay: 0.45s; }
-.data-table tr:nth-child(10) { animation-delay: 0.5s; }
-
-/* عناصر المهام (Task items) */
-.task-item {
-    opacity: 0;
-    animation: fadeInLeft 0.4s ease forwards;
-}
-
-.task-item:nth-child(1) { animation-delay: 0.1s; }
-.task-item:nth-child(2) { animation-delay: 0.2s; }
-.task-item:nth-child(3) { animation-delay: 0.3s; }
-.task-item:nth-child(4) { animation-delay: 0.4s; }
-.task-item:nth-child(5) { animation-delay: 0.5s; }
-
-/* رسائل الدردشة */
-.message {
-    opacity: 0;
-    animation: fadeInUp 0.3s ease forwards;
-}
-
-.message:nth-child(1) { animation-delay: 0.05s; }
-.message:nth-child(2) { animation-delay: 0.1s; }
-.message:nth-child(3) { animation-delay: 0.15s; }
-.message:nth-child(4) { animation-delay: 0.2s; }
-.message:nth-child(5) { animation-delay: 0.25s; }
-
-/* عناصر الفلتر */
-.squad-filter {
-    opacity: 0;
-    animation: slideInDown 0.5s ease forwards;
-    animation-delay: 0.1s;
-}
-
-/* عناصر السايدبار */
-.sidebar {
-    animation: fadeInRight 0.4s ease;
-}
-
-.sidebar-menu li {
-    opacity: 0;
-    animation: fadeInLeft 0.3s ease forwards;
-}
-
-.sidebar-menu li:nth-child(1) { animation-delay: 0.05s; }
-.sidebar-menu li:nth-child(2) { animation-delay: 0.1s; }
-.sidebar-menu li:nth-child(3) { animation-delay: 0.15s; }
-.sidebar-menu li:nth-child(4) { animation-delay: 0.2s; }
-.sidebar-menu li:nth-child(5) { animation-delay: 0.25s; }
-.sidebar-menu li:nth-child(6) { animation-delay: 0.3s; }
-
-/* الفوتر */
-.footer {
-    opacity: 0;
-    animation: fadeInUp 0.5s ease forwards;
-    animation-delay: 0.3s;
-}
-
-/* عناصر المودال */
-.modal-content {
-    animation: zoomIn 0.3s ease forwards;
-}
-
-/* عناصر الإحصائيات الداخلية */
-.details-grid .detail-item {
-    opacity: 0;
-    animation: fadeInRight 0.3s ease forwards;
-}
-
-.detail-item:nth-child(1) { animation-delay: 0.05s; }
-.detail-item:nth-child(2) { animation-delay: 0.1s; }
-.detail-item:nth-child(3) { animation-delay: 0.15s; }
-.detail-item:nth-child(4) { animation-delay: 0.2s; }
-.detail-item:nth-child(5) { animation-delay: 0.25s; }
-.detail-item:nth-child(6) { animation-delay: 0.3s; }
-.detail-item:nth-child(7) { animation-delay: 0.35s; }
-.detail-item:nth-child(8) { animation-delay: 0.4s; }
-
-/* القادة في صفحة إدارة القادة */
-#leadersList > div {
-    opacity: 0;
-    animation: bounceIn 0.5s ease forwards;
-}
-
-#leadersList > div:nth-child(1) { animation-delay: 0.1s; }
-#leadersList > div:nth-child(2) { animation-delay: 0.2s; }
-#leadersList > div:nth-child(3) { animation-delay: 0.3s; }
-#leadersList > div:nth-child(4) { animation-delay: 0.4s; }
-#leadersList > div:nth-child(5) { animation-delay: 0.5s; }
-
-/* المناطق والطلايع في صفحة الإدارة */
-#squadsList > div {
-    opacity: 0;
-    animation: flipIn 0.5s ease forwards;
-}
-
-#squadsList > div:nth-child(1) { animation-delay: 0.1s; }
-#squadsList > div:nth-child(2) { animation-delay: 0.2s; }
-#squadsList > div:nth-child(3) { animation-delay: 0.3s; }
-
-/* hover effect للعناصر */
-.stat-card, .card, .btn, .task-item, .message {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.stat-card:hover, .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-.btn:hover {
-    transform: translateY(-3px) scale(1.02);
-}
-
-/* تنسيق عام للعناصر المخفية قبل الأنيميشن */
-.stat-card, .card, .btn, .data-table tr, 
-.task-item, .message, .squad-filter, 
-.sidebar-menu li, .footer, .detail-item,
-#leadersList > div, #squadsList > div {
-    opacity: 0;
-}
-
-/* ضمان أن العناصر تظهر بعد تحميل الصفحة */
-body.loaded .stat-card,
-body.loaded .card,
-body.loaded .btn,
-body.loaded .data-table tr,
-body.loaded .task-item,
-body.loaded .message,
-body.loaded .squad-filter,
-body.loaded .sidebar-menu li,
-body.loaded .footer,
-body.loaded .detail-item,
-body.loaded #leadersList > div,
-body.loaded #squadsList > div {
-    opacity: 1;
-}
 /* ==================== LANDING PAGE STYLES ==================== */
 .landing-container {
     min-height: 100vh;
@@ -2324,7 +2015,7 @@ body {
 }
 
 @keyframes fadeInUpLanding {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(20px); }  /* كان 30px */
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -4035,6 +3726,740 @@ body.light-mode .leaderboard-table th {
 .page-transition-in {
     animation: pageEnter 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards !important;
 }
+/* ==================== TOGGLE SWITCH STYLES ==================== */
+.toggle-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-slider {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    background-color: #ccc;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: #d4a017;
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(30px);
+}
+
+.toggle-label {
+    font-weight: 600;
+    color: #1a472a;
+    font-size: 14px;
+}
+
+.points-input-group {
+    background: #f0f5f0;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.points-input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+/* Edit Mode Toggle */
+.edit-mode-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #d4a017;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    cursor: pointer;
+    z-index: 1000;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.edit-mode-toggle i {
+    margin-left: 8px;
+}
+/* ==================== LOGIN PAGE NEW STYLES (بدون خلفية خضراء) ==================== */
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #ffffff;
+    position: relative;
+}
+
+/* Top Buttons */
+.login-top-buttons {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+}
+
+.login-icon-btn {
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 1px solid #d4a017;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: relative;  /* هذا مهم جداً */
+}
+.login-icon-btn i {
+    font-size: 20px;
+    color: #d4a017;
+}
+
+.login-icon-btn {
+    position: relative;
+    overflow: visible;
+}
+
+.login-icon-btn .btn-tooltip {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #d4a017;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 25px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s ease;
+    z-index: 1000;
+    pointer-events: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(212,160,23,0.3);
+}
+
+.login-icon-btn:hover .btn-tooltip {
+    opacity: 1;
+    visibility: visible;
+    bottom: -45px;
+}
+
+
+/* Login Card */
+.login-card {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+    border-radius: 48px;
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 35px 35px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(212, 160, 23, 0.2);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Card Header */
+.login-card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.login-logo {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #d4a017;
+    box-shadow: 0 8px 20px rgba(212, 160, 23, 0.3);
+    animation: floatLogo 3s ease-in-out infinite;
+}
+
+.login-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.login-title {
+    font-size: 20px;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.login-subtitle {
+    font-size: 36px;
+    color: #1a472a;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+}
+
+.login-desc {
+    font-size: 13px;
+    color: #888;
+    border-top: 1px dashed #d4a017;
+    display: inline-block;
+    padding-top: 8px;
+}
+
+/* Form Fields */
+.login-form {
+    margin-bottom: 25px;
+}
+
+.input-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-field .input-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #d4a017;
+    font-size: 18px;
+    z-index: 1;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 15px 50px 15px 20px;
+    border: 2px solid #e8e8e8;
+    border-radius: 60px;
+    font-size: 15px;
+    font-family: 'Cairo', sans-serif;
+    background: white;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.input-field input:focus {
+    border-color: #d4a017;
+    box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.1);
+}
+
+.password-toggle {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+.password-toggle:hover {
+    color: #d4a017;
+}
+
+/* Login Button */
+.login-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #d4a017, #b8860b);
+    border: none;
+    padding: 15px;
+    border-radius: 60px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(212, 160, 23, 0.3);
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 160, 23, 0.4);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* Divider */
+.login-divider {
+    text-align: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+.login-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ddd, #ddd, transparent);
+}
+
+.login-divider span {
+    background: white;
+    padding: 0 15px;
+    position: relative;
+    color: #999;
+    font-size: 13px;
+}
+
+/* Join Button */
+.join-btn {
+    width: 100%;
+    background: transparent;
+    border: 2px solid #d4a017;
+    padding: 13px;
+    border-radius: 60px;
+    color: #d4a017;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Cairo', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.join-btn:hover {
+    background: #d4a017;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Refresh Section */
+.refresh-section {
+    margin: 15px 0 20px;
+    text-align: center;
+}
+
+.refresh-btn {
+    background: rgba(26, 71, 42, 0.08);
+    border: 1px solid #ddd;
+    padding: 10px 20px;
+    border-radius: 40px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    color: #1a472a;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.refresh-btn i {
+    color: #d4a017;
+    font-size: 13px;
+}
+
+.refresh-btn:hover {
+    background: rgba(212, 160, 23, 0.1);
+    border-color: #d4a017;
+    transform: translateY(-2px);
+}
+
+.refresh-time {
+    font-size: 10px;
+    color: #aaa;
+    margin-top: 8px;
+}
+
+/* Footer */
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer-divider {
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d4a017, transparent);
+    margin: 15px auto;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.footer-brand i {
+    color: #d4a017;
+    font-size: 14px;
+}
+
+.footer-brand span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a472a;
+}
+
+.footer-contacts {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-contacts span {
+    font-size: 11px;
+    color: #888;
+}
+
+.footer-contacts i {
+    color: #d4a017;
+    margin-left: 5px;
+}
+
+/* Dark Mode Adjustments */
+body.light-mode .login-wrapper {
+    background: #ffffff;
+}
+
+body.light-mode .login-card {
+    background: rgba(255, 255, 255, 0.98);
+}
+
+body.light-mode .login-divider span {
+    background: white;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 30px 25px;
+        border-radius: 35px;
+    }
+    .login-subtitle {
+        font-size: 28px;
+    }
+    .login-logo {
+        width: 70px;
+        height: 70px;
+    }
+    .login-top-buttons {
+        top: 15px;
+        left: 15px;
+    }
+    .login-icon-btn {
+        width: 38px;
+        height: 38px;
+    }
+    .login-icon-btn i {
+        font-size: 16px;
+    }
+    .footer-contacts {
+        gap: 12px;
+    }
+    .footer-contacts span {
+        font-size: 9px;
+    }
+}
+/* ==================== NEW LOGIN BACKGROUND (بحرية) ==================== */
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #0a2e5a 0%, #0a4a6a 30%, #0a6a7a 60%, #0a7a6a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Waves Animation */
+.wave-background {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-46.1-200.5 3.9-293.1 52.9-394.5 46.1V88.7h800V56.9z' fill='%23ffffff' opacity='0.3'/%3E%3C/svg%3E") repeat-x;
+    background-size: 800px 100px;
+    animation: waveMove 12s linear infinite;
+}
+
+.wave2 {
+    bottom: 20px;
+    opacity: 0.2;
+    animation: waveMove 15s linear infinite reverse;
+    background-size: 800px 100px;
+}
+
+.wave3 {
+    bottom: 40px;
+    opacity: 0.15;
+    animation: waveMove 18s linear infinite;
+    background-size: 800px 100px;
+}
+
+@keyframes waveMove {
+    0% { background-position-x: 0; }
+    100% { background-position-x: 800px; }
+}
+
+/* Floating Anchor Animation */
+.floating-anchor-bg {
+    position: absolute;
+    font-size: 100px;
+    color: rgba(255, 255, 255, 0.15);
+    animation: floatAnchor 4s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.anchor-1 {
+    bottom: 15%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.anchor-2 {
+    top: 20%;
+    right: 8%;
+    font-size: 70px;
+    animation-delay: 1.5s;
+    animation-duration: 5s;
+}
+
+.anchor-3 {
+    top: 50%;
+    left: 10%;
+    font-size: 50px;
+    animation-delay: 3s;
+    animation-duration: 3.5s;
+    opacity: 0.1;
+}
+
+@keyframes floatAnchor {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+    }
+}
+
+/* Floating Bubbles */
+.bubble {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    animation: bubbleFloat 8s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes bubbleFloat {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-100px) scale(1.2);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-200px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Login Card - تعديل الشفافية */
+.login-card {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(12px);
+    border-radius: 48px;
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 35px 35px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.6s ease;
+    position: relative;
+    z-index: 2;
+}
+
+/* Floating particles */
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: particleFloat 10s linear infinite;
+    z-index: 0;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.5;
+    }
+    90% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(50px);
+        opacity: 0;
+    }
+}
+/* ==================== LIGHT MODE FOR LOGIN PAGE ==================== */
+body.light-mode .login-wrapper {
+    background: linear-gradient(135deg, #89CFF0 0%, #5BA3D9 30%, #3D8EC0 60%, #2E7D9E 100%);
+}
+
+body.light-mode .wave {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 88.7'%3E%3Cpath d='M800 56.9c-155.5 0-204.9-50-405.5-46.1-200.5 3.9-293.1 52.9-394.5 46.1V88.7h800V56.9z' fill='%23ffffff' opacity='0.4'/%3E%3C/svg%3E") repeat-x;
+}
+
+body.light-mode .floating-anchor-bg {
+    color: rgba(26, 71, 42, 0.2);
+}
+
+body.light-mode .bubble {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+body.light-mode .login-card {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+body.light-mode .login-title {
+    color: #2c3e50;
+}
+
+body.light-mode .login-subtitle {
+    color: #1a472a;
+}
+
+body.light-mode .login-desc {
+    color: #7f8c8d;
+    border-top-color: #d4a017;
+}
+
+body.light-mode .input-field input {
+    border-color: #ddd;
+    background: white;
+}
+
+body.light-mode .input-field input:focus {
+    border-color: #d4a017;
+}
+
+body.light-mode .login-divider span {
+    background: white;
+    color: #7f8c8d;
+}
+
+body.light-mode .refresh-btn {
+    background: rgba(26, 71, 42, 0.1);
+    color: #1a472a;
+}
+
+body.light-mode .refresh-time {
+    color: #95a5a6;
+}
+
+body.light-mode .footer-brand span {
+    color: #1a472a;
+}
+
+body.light-mode .footer-contacts span {
+    color: #7f8c8d;
+}
+
+body.light-mode .login-icon-btn {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+body.light-mode .login-icon-btn .btn-tooltip {
+    background: rgba(26, 71, 42, 0.9);
+    color: #d4a017;
+}
     </style>
 </head>
 <body>
@@ -4127,7 +4552,7 @@ body.light-mode .leaderboard-table th {
 
 function renderLeaderApp(container) {
     const leader = currentUser;
-    const subBranchesNames = leader.subBranches ? leader.subBranches.map(sb => sb.name).join(' - ') : 'جميع الفروع';
+    const subBranchesNames = leader.subBranches ? leader.subBranches.map(sb => sb.name).join(' - ') : 'جميع الهيئات';
     
     container.innerHTML = `
         <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
@@ -4451,7 +4876,7 @@ async function saveEvaluationFormToFirebase(formData) {
         const newForm = {
             id: Date.now(),
             ...formData,
-            type: 'evaluation', // تمييزه كنوع تقييم
+            type: 'evaluation',
             createdAt: new Date().toISOString(),
             status: 'active'
         };
@@ -4584,11 +5009,10 @@ function showCreateEvaluationFormModal() {
                 <div class="input-group">
                     <label><i class="fas fa-tag"></i> نوع الفريق المستهدف</label>
                     <select id="evalFormSquadType" required>
-                        <option value="all">🎯 جميع الأنواع</option>
+                        <option value="all">🎯 جميع المراحل</option>
                         <option value="الكشافة">⚜️ فريق الكشافة</option>
                         <option value="المرشدات">🌸 فريق المرشدات</option>
-                        <option value="الأشبال">🦁 فريق الأشبال</option>
-                        <option value="الزهرات">🌺 فريق الزهرات</option>
+                        <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>
                         <option value="البراعم">🌱 فريق البراعم</option>
                     </select>
                 </div>
@@ -4596,6 +5020,23 @@ function showCreateEvaluationFormModal() {
                 <div class="input-group">
                     <label><i class="fas fa-align-left"></i> وصف فورم التقييم (اختياري)</label>
                     <textarea id="evalFormDescription" rows="2" placeholder="وصف قصير لفورم التقييم..."></textarea>
+                </div>
+                
+                <!-- زر تشغيل/إيقاف إضافة النقاط -->
+                <div class="input-group">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="evalEnablePointsToggle">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label"><i class="fas fa-star"></i> إضافة نقاط للفورم</span>
+                    </label>
+                </div>
+                
+                <div id="evalPointsSettings" style="display: none;">
+                    <div class="points-input-group">
+                        <label><i class="fas fa-coins"></i> عدد النقاط عند إكمال التقييم</label>
+                        <input type="number" id="evalFormPoints" value="15" min="0">
+                        <small style="color: #666; display: block; margin-top: 5px;">سيحصل العضو على هذه النقاط عند إرسال التقييم</small>
+                    </div>
                 </div>
                 
                 <hr style="margin: 20px 0;">
@@ -4626,7 +5067,15 @@ function showCreateEvaluationFormModal() {
     `;
     document.body.appendChild(modal);
     
-    // إضافة سؤال إضافي افتراضي
+    // إظهار/إخفاء إعدادات النقاط
+    const toggleCheckbox = document.getElementById('evalEnablePointsToggle');
+    const pointsSettings = document.getElementById('evalPointsSettings');
+    
+    toggleCheckbox.addEventListener('change', () => {
+        pointsSettings.style.display = toggleCheckbox.checked ? 'block' : 'none';
+    });
+    
+    // إضافة سؤال افتراضي
     addEvaluationQuestion();
     
     document.getElementById('createEvaluationFormMainForm').addEventListener('submit', async (e) => {
@@ -4639,6 +5088,8 @@ function showCreateEvaluationFormModal() {
         }
         
         const starRatingTitle = document.getElementById('starRatingTitle').value.trim() || 'تقييم عام';
+        const enablePoints = toggleCheckbox.checked;
+        const totalPoints = enablePoints ? parseInt(document.getElementById('evalFormPoints').value) || 0 : 0;
         
         // جمع الأسئلة الإضافية
         const additionalQuestions = [];
@@ -4662,6 +5113,8 @@ function showCreateEvaluationFormModal() {
             description: document.getElementById('evalFormDescription').value,
             starRatingTitle: starRatingTitle,
             questions: additionalQuestions,
+            enablePoints: enablePoints,
+            totalPoints: totalPoints,
             createdAt: new Date().toISOString(),
             status: 'active'
         };
@@ -4997,7 +5450,7 @@ function showEvaluationFormResults(formId) {
                 <p>متوسط التقييم العام: <strong style="font-size:28px; color:#d4a017;">${answers.length > 0 ? (answers.reduce((a,b)=>a+b.starRating,0) / answers.length).toFixed(1) : 0}</strong> / 5</p>
             </div>
             
-            <h4>📈 إحصائيات حسب المنطقة:</h4>
+            <h4>📈 إحصائيات حسب المجموعة:</h4>
             ${branchStatsHtml || '<p>لا توجد إجابات كافية</p>'}
             
             <h4>📝 إجابات الأعضاء:</h4>
@@ -5206,12 +5659,22 @@ function answerEvaluationForm(formId) {
         `;
     });
     
+    // عرض معلومات النقاط إذا كانت مفعلة
+    const pointsInfo = form.enablePoints ? `
+        <div style="background:#e8f5e9; padding:10px; border-radius:12px; margin-bottom:15px; text-align:center;">
+            <i class="fas fa-star" style="color:#d4a017;"></i>
+            <strong>هذا الفورم يمنح ${form.totalPoints || 0} نقطة عند إكمال التقييم</strong>
+        </div>
+    ` : '';
+    
     modal.innerHTML = `
         <div class="modal-content" style="max-width:600px; max-height:85vh; overflow-y:auto;">
             <div class="modal-header">
                 <h3><i class="fas fa-star"></i> ${escapeHtml(form.title)}</h3>
                 <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
             </div>
+            
+            ${pointsInfo}
             
             <div class="input-group" style="text-align:center;">
                 <label><strong>${escapeHtml(form.starRatingTitle || 'تقييم عام')}</strong></label>
@@ -5277,6 +5740,13 @@ function answerEvaluationForm(formId) {
         memberForm.starRating = selectedRating;
         memberForm.answers = answers;
         
+        // إضافة النقاط إذا كان الفورم يدعم النقاط
+        if (form.enablePoints && form.totalPoints > 0) {
+            memberForm.earnedPoints = form.totalPoints;
+            currentUser.points = (currentUser.points || 0) + form.totalPoints;
+            showToast(`🎉 شكراً لتقييمك! حصلت على ${form.totalPoints} نقطة`, 'success');
+        }
+        
         // حفظ الإجابة في التخزين العام للنتائج
         if (!appData.memberEvaluationAnswers) appData.memberEvaluationAnswers = [];
         appData.memberEvaluationAnswers.push({
@@ -5285,6 +5755,7 @@ function answerEvaluationForm(formId) {
             memberId: currentUser.id,
             starRating: selectedRating,
             answers: answers,
+            earnedPoints: form.enablePoints ? form.totalPoints : 0,
             submittedAt: new Date().toISOString()
         });
         
@@ -5292,7 +5763,6 @@ function answerEvaluationForm(formId) {
         showToast('✅ تم إرسال تقييمك بنجاح');
         modal.remove();
         
-        // تحديث الصفحة
         if (typeof renderMemberEvaluationFormsPage === 'function') {
             renderMemberEvaluationFormsPage();
         }
@@ -5535,11 +6005,10 @@ function showCreateFormModal() {
                 <div class="input-group">
                     <label><i class="fas fa-tag"></i> نوع الفريق المستهدف</label>
                     <select id="formSquadType" required>
-                        <option value="all">🎯 جميع الأنواع</option>
+                        <option value="all">🎯 جميع المراحل</option>
                         <option value="الكشافة">⚜️ فريق الكشافة</option>
                         <option value="المرشدات">🌸 فريق المرشدات</option>
-                        <option value="الأشبال">🦁 فريق الأشبال</option>
-                        <option value="الزهرات">🌺 فريق الزهرات</option>
+                        <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>
                         <option value="البراعم">🌱 فريق البراعم</option>
                     </select>
                 </div>
@@ -5547,6 +6016,23 @@ function showCreateFormModal() {
                 <div class="input-group">
                     <label><i class="fas fa-align-left"></i> وصف الفورم (اختياري)</label>
                     <textarea id="formDescription" rows="2" placeholder="وصف قصير للفورم..."></textarea>
+                </div>
+                
+                <!-- زر تشغيل/إيقاف إضافة النقاط -->
+                <div class="input-group">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="enablePointsToggle">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label"><i class="fas fa-star"></i> إضافة نقاط للفورم</span>
+                    </label>
+                </div>
+                
+                <div id="pointsSettings" style="display: none;">
+                    <div class="points-input-group">
+                        <label><i class="fas fa-coins"></i> عدد نقاط السؤال الاول</label>
+                        <input type="number" id="formBasePoints" value="10" min="0">
+                        <small style="color: #666; display: block; margin-top: 5px;">سيتم تقسيم هذه النقاط على الأسئلة تلقائياً</small>
+                    </div>
                 </div>
                 
                 <hr style="margin: 20px 0;">
@@ -5569,6 +6055,15 @@ function showCreateFormModal() {
     `;
     document.body.appendChild(modal);
     
+    // إظهار/إخفاء إعدادات النقاط عند تغيير حالة الزر
+    const toggleCheckbox = document.getElementById('enablePointsToggle');
+    const pointsSettings = document.getElementById('pointsSettings');
+    
+    toggleCheckbox.addEventListener('change', () => {
+        pointsSettings.style.display = toggleCheckbox.checked ? 'block' : 'none';
+    });
+    
+    // إضافة سؤال افتراضي
     addNewQuestion();
     
     document.getElementById('createFormMainForm').addEventListener('submit', async (e) => {
@@ -5580,17 +6075,35 @@ function showCreateFormModal() {
             return;
         }
         
+        const enablePoints = toggleCheckbox.checked;
+        let basePoints = enablePoints ? parseInt(document.getElementById('formBasePoints').value) || 0 : 0;
+        
         const questions = [];
         const questionDivs = document.querySelectorAll('.question-item');
+        let totalAssignedPoints = 0;
         
         for (let i = 0; i < questionDivs.length; i++) {
             const div = questionDivs[i];
             const questionText = div.querySelector('.question-text')?.value.trim();
             if (!questionText) continue;
             
+            let questionPoints = 0;
+            const pointsInput = div.querySelector('.question-points-input');
+            
+            if (enablePoints) {
+                if (pointsInput && pointsInput.value) {
+                    questionPoints = parseInt(pointsInput.value) || 0;
+                } else {
+                    // توزيع النقاط بالتساوي على الأسئلة
+                    questionPoints = Math.floor(basePoints / questionDivs.length);
+                }
+                totalAssignedPoints += questionPoints;
+            }
+            
             const question = {
                 id: Date.now() + i,
                 text: questionText,
+                points: questionPoints,
                 options: [],
                 correctAnswer: null
             };
@@ -5625,6 +6138,8 @@ function showCreateFormModal() {
             squadType: document.getElementById('formSquadType').value,
             description: document.getElementById('formDescription').value,
             questions: questions,
+            enablePoints: enablePoints,
+            totalPoints: enablePoints ? basePoints : 0,
             createdAt: new Date().toISOString(),
             status: 'active'
         };
@@ -5647,6 +6162,15 @@ function addNewQuestion() {
     questionDiv.style.cssText = 'background:#f0f5f0; border-radius:15px; padding:15px; margin-bottom:15px; border-right:3px solid #d4a017;';
     questionDiv.setAttribute('data-id', questionId);
     
+    // التحقق من تشغيل خيار النقاط
+    const enablePoints = document.getElementById('enablePointsToggle')?.checked || false;
+    const pointsHtml = enablePoints ? `
+        <div class="input-group" style="margin-top:10px;">
+            <label><i class="fas fa-coins"></i> نقاط هذا السؤال</label>
+            <input type="number" class="question-points-input" placeholder="نقاط السؤال" min="0" value="0" style="width:100%; padding:8px; border-radius:8px;">
+        </div>
+    ` : '';
+    
     questionDiv.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
             <strong style="color:#1a472a;">السؤال ${questionCounter}</strong>
@@ -5659,6 +6183,8 @@ function addNewQuestion() {
             <label>نص السؤال</label>
             <input type="text" class="question-text" placeholder="أدخل نص السؤال..." style="width:100%;">
         </div>
+        
+        ${pointsHtml}
         
         <div style="margin-top:10px;">
             <label><i class="fas fa-list"></i> الخيارات</label>
@@ -5674,27 +6200,17 @@ function addNewQuestion() {
     const optionsList = questionDiv.querySelector('.options-list');
     addOptionRow(optionsList, 0, questionId);
     addOptionRow(optionsList, 1, questionId);
-}
-
-function updateQuestionNumbers() {
-    const questions = document.querySelectorAll('.question-item');
-    questions.forEach((q, idx) => {
-        const strongTag = q.querySelector('strong');
-        if (strongTag) {
-            strongTag.textContent = `السؤال ${idx + 1}`;
+    
+    // إذا تم تفعيل النقاط، أضف مستمع لتحديث القيمة الافتراضية
+    if (enablePoints) {
+        const basePoints = parseInt(document.getElementById('formBasePoints')?.value) || 0;
+        const currentQuestions = document.querySelectorAll('.question-item').length;
+        const pointsInput = questionDiv.querySelector('.question-points-input');
+        if (pointsInput && basePoints > 0) {
+            pointsInput.value = Math.floor(basePoints / currentQuestions);
         }
-    });
-    questionCounter = questions.length;
+    }
 }
-
-function addOptionToQuestion(button) {
-    const questionDiv = button.closest('.question-item');
-    const optionsList = questionDiv.querySelector('.options-list');
-    const currentCount = optionsList.children.length;
-    const questionId = questionDiv.getAttribute('data-id');
-    addOptionRow(optionsList, currentCount, questionId);
-}
-
 function addOptionRow(container, index, questionId) {
     const optionRow = document.createElement('div');
     optionRow.className = 'option-row';
@@ -5915,10 +6431,10 @@ function showSendFormDestinationModal(formId) {
     const mySquads = appData.squads.filter(s => myBranchIds.includes(s.branchId));
     
     // أنواع الفرق للفلتر
-    const squadTypes = ['الكشافة', 'المرشدات', 'الأشبال', 'الزهرات', 'البراعم'];
+const squadTypes = ['الكشافة', 'المرشدات', 'أشبال وزهرات', 'البراعم'];
     
     // بناء خيارات المناطق
-    let branchesOptions = '<option value="">-- اختر المنطقة --</option>';
+    let branchesOptions = '<option value="">-- اختر المجموعة --</option>';
     myBranchIds.forEach(branchId => {
         const branch = appData.branches.find(b => b.id === branchId);
         if (branch) {
@@ -5938,30 +6454,30 @@ function showSendFormDestinationModal(formId) {
             </div>
             <form id="sendFormDestinationForm">
                 <div class="input-group">
-                    <label><i class="fas fa-map-marker-alt"></i> اختر المنطقة</label>
+                    <label><i class="fas fa-map-marker-alt"></i> اختر المجموعة</label>
                     <select id="destinationBranch" required style="width:100%; padding:10px; border-radius:10px;">
                         ${branchesOptions}
                     </select>
                 </div>
                 
                 <div class="input-group">
-                    <label><i class="fas fa-code-branch"></i> اختر الفرع</label>
+                    <label><i class="fas fa-code-branch"></i> اختر الهيئة</label>
                     <select id="destinationSubBranch" required style="width:100%; padding:10px; border-radius:10px;">
-                        <option value="">-- اختر المنطقة أولاً --</option>
+                        <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
                 
                 <div class="input-group">
                     <label><i class="fas fa-flag"></i> اختر الطليعة</label>
                     <select id="destinationSquad" required style="width:100%; padding:10px; border-radius:10px;">
-                        <option value="all">-- جميع الطلايع في هذا الفرع --</option>
+                        <option value="all">-- جميع الطلايع في هذا الهيئة --</option>
                     </select>
                 </div>
                 
                 <div class="input-group">
                     <label><i class="fas fa-users"></i> اختر نوع الفريق (اختياري)</label>
                     <select id="destinationType" style="width:100%; padding:10px; border-radius:10px;">
-                        <option value="all">🎯 جميع الأنواع</option>
+                        <option value="all">🎯 جميع المراحل</option>
                         ${squadTypes.map(type => `<option value="${type}">${type === 'الكشافة' ? '⚜️' : type === 'المرشدات' ? '🌸' : type === 'الأشبال' ? '🦁' : type === 'الزهرات' ? '🌺' : '🌱'} ${type}</option>`).join('')}
                     </select>
                 </div>
@@ -5993,12 +6509,12 @@ function showSendFormDestinationModal(formId) {
         const branchId = parseInt(branchSelect.value);
         if (branchId) {
             const mySubBranchesFiltered = mySubBranches.filter(sb => sb.branchId === branchId);
-            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' +
+            subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' +
                 mySubBranchesFiltered.map(sb => `<option value="${sb.id}">📍 ${sb.name}</option>`).join('');
-            squadSelect.innerHTML = '<option value="all">-- جميع الطلايع في هذا الفرع --</option>';
+            squadSelect.innerHTML = '<option value="all">-- جميع الطلايع في هذا الهيئة --</option>';
         } else {
-            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
-            squadSelect.innerHTML = '<option value="all">-- اختر الفرع أولاً --</option>';
+            subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
+            squadSelect.innerHTML = '<option value="all">-- اختر الهيئة أولاً --</option>';
         }
         updateMembersCount();
     }
@@ -6010,7 +6526,7 @@ function showSendFormDestinationModal(formId) {
             const selectedSubBranch = mySubBranches.find(sb => sb.id === subBranchId);
             if (selectedSubBranch) {
                 const squads = mySquads.filter(s => s.branchId === selectedSubBranch.branchId);
-                squadSelect.innerHTML = '<option value="all">-- جميع الطلايع في هذا الفرع --</option>' +
+                squadSelect.innerHTML = '<option value="all">-- جميع الطلايع في هذا الهيئة --</option>' +
                     squads.map(s => `<option value="${s.id}">🏴 ${s.name} (${s.type || 'كشافة'})</option>`).join('');
             }
         }
@@ -6079,7 +6595,7 @@ function showSendFormDestinationModal(formId) {
         const typeFilter = typeSelect.value;
         
         if (!branchId || !subBranchId) {
-            showToast('الرجاء اختيار المنطقة والفرع', 'error');
+            showToast('الرجاء اختيار المجموعة الهيئة', 'error');
             return;
         }
         
@@ -6222,6 +6738,7 @@ function answerMemberForm(formId) {
         questionsHtml += `
             <div class="question-answer-item" data-q-idx="${idx}" style="background:#f8f9fa; border-radius:12px; padding:15px; margin-bottom:15px;">
                 <p><strong>${idx + 1}. ${escapeHtml(q.text)}</strong></p>
+                ${form.enablePoints ? `<small style="color:#d4a017;">🎯 ${q.points || 0} نقطة</small><br>` : ''}
                 <div class="options-answer" style="margin-top:10px; margin-right:20px;">
                     ${q.options.map((opt, optIdx) => `
                         <label style="display:flex; align-items:center; gap:8px; margin-bottom:8px; cursor:pointer;">
@@ -6256,37 +6773,49 @@ function answerMemberForm(formId) {
         e.preventDefault();
         
         const answers = [];
-        form.questions.forEach((q, idx) => {
+        let totalEarnedPoints = 0;
+        
+        for (let idx = 0; idx < form.questions.length; idx++) {
+            const q = form.questions[idx];
             const selectedRadio = document.querySelector(`input[name="q_${idx}"]:checked`);
-            if (selectedRadio) {
-                answers.push({
-                    questionId: q.id,
-                    questionText: q.text,
-                    answer: selectedRadio.value,
-                    isCorrect: q.correctAnswer === selectedRadio.value
-                });
-            } else {
+            
+            if (!selectedRadio) {
                 showToast(`الرجاء الإجابة على السؤال ${idx + 1}`, 'error');
                 return;
             }
-        });
+            
+            const isCorrect = q.correctAnswer === selectedRadio.value;
+            const earnedPoints = (form.enablePoints && isCorrect) ? (q.points || 0) : 0;
+            
+            if (isCorrect && form.enablePoints) {
+                totalEarnedPoints += earnedPoints;
+            }
+            
+            answers.push({
+                questionId: q.id,
+                questionText: q.text,
+                answer: selectedRadio.value,
+                isCorrect: isCorrect,
+                earnedPoints: earnedPoints
+            });
+        }
         
-        let score = 0;
-        answers.forEach(ans => {
-            if (ans.isCorrect) score++;
-        });
-        const totalScore = (score / form.questions.length) * 100;
+        // حساب النسبة المئوية
+        const totalPossiblePoints = form.enablePoints ? form.totalPoints : 0;
+        const score = totalPossiblePoints > 0 ? (totalEarnedPoints / totalPossiblePoints) * 100 : 0;
         
         memberForm.isAnswered = true;
         memberForm.answeredAt = new Date().toISOString();
         memberForm.answers = answers;
-        memberForm.score = totalScore;
+        memberForm.score = score;
+        memberForm.earnedPoints = totalEarnedPoints;
         
-        // منح نقاط إذا حصل على 70% أو أكثر
-        if (totalScore >= 70) {
-            const pointsToAdd = Math.floor(form.questions.length * 10);
-            currentUser.points = (currentUser.points || 0) + pointsToAdd;
-            showToast(`🎉 أحسنت! حصلت على ${pointsToAdd} نقطة إضافية`, 'success');
+        // إضافة النقاط للعضو
+        if (form.enablePoints && totalEarnedPoints > 0) {
+            currentUser.points = (currentUser.points || 0) + totalEarnedPoints;
+            showToast(`🎉 أحسنت! حصلت على ${totalEarnedPoints} نقطة`, 'success');
+        } else if (form.enablePoints && totalEarnedPoints === 0) {
+            showToast(`📝 لم تحصل على نقاط هذه المرة، حاول مرة أخرى`, 'info');
         }
         
         await saveAllDataToFirebase();
@@ -6317,8 +6846,8 @@ function showLeaderDetails(leaderId) {
                 <div class="detail-item"><div class="detail-label">الاسم الكامل</div><div class="detail-value">${escapeHtml(leader.name)}</div></div>
                 <div class="detail-item"><div class="detail-label">السن</div><div class="detail-value">${leader.age}</div></div>
                 <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${leader.phone}</div></div>
-                <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
-                <div class="detail-item"><div class="detail-label">الفروع المسؤول عنها</div><div class="detail-value">${subBranchesNames || '-'}</div></div>
+                <div class="detail-item"><div class="detail-label">المجموعة</div><div class="detail-value">${branch?.name || '-'}</div></div>
+                <div class="detail-item"><div class="detail-label">الهيئات المسؤول عنها</div><div class="detail-value">${subBranchesNames || '-'}</div></div>
                 <div class="detail-item"><div class="detail-label">اسم المستخدم</div><div class="detail-value">${leader.username}</div></div>
                 <div class="detail-item" id="leaderPasswordContainer">
                     <div class="detail-label">كلمة المرور</div>
@@ -6377,13 +6906,13 @@ function editLeader(leaderId) {
                 <div class="input-group"><label>الاسم الكامل</label><input type="text" id="editLeaderName" value="${escapeHtml(leader.name)}" required></div>
                 <div class="input-group"><label>السن</label><input type="number" id="editLeaderAge" value="${leader.age}" min="18" max="70" required></div>
                 <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="editLeaderPhone" value="${leader.phone}" required></div>
-                <div class="input-group"><label>المنطقة</label>
+                <div class="input-group"><label>المجموعة</label>
                     <select id="editLeaderBranch" required>
-                        <option value="">-- اختر المنطقة --</option>
+                        <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}" ${b.id === leader.branchId ? 'selected' : ''}>${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>الفروع المسؤول عنها (يمكن اختيار أكثر من فرع)</label>
+                <div class="input-group"><label>الهيئات المسؤول عنها (يمكن اختيار أكثر من هيئه)</label>
                     <div id="editLeaderSubBranchesContainer" style="background: #f8f9fa; padding: 12px; border-radius: 12px; max-height: 200px; overflow-y: auto; border: 2px solid #e0e0e0;">
                         ${getSubBranchesCheckboxes(leader.branchId, leader.subBranchIds)}
                     </div>
@@ -6403,7 +6932,7 @@ function editLeader(leaderId) {
         if (branchId) {
             container.innerHTML = getSubBranchesCheckboxes(branchId, leader.subBranchIds);
         } else {
-            container.innerHTML = '<div style="text-align:center; color:#999;">-- اختر المنطقة أولاً --</div>';
+            container.innerHTML = '<div style="text-align:center; color:#999;">-- اختر المجموعة أولاً --</div>';
         }
     });
     
@@ -6432,7 +6961,7 @@ function editLeader(leaderId) {
         });
         
         if (selectedSubBranches.length === 0) {
-            showToast('الرجاء اختيار فرع واحد على الأقل', 'error');
+            showToast('الرجاء اختيار هيئه واحد على الأقل', 'error');
             return;
         }
         
@@ -6456,11 +6985,11 @@ function editLeader(leaderId) {
 
 // دالة مساعدة للحصول على checked boxes للفروع
 function getSubBranchesCheckboxes(branchId, selectedSubBranchIds) {
-    if (!branchId) return '<div style="text-align:center; color:#999;">-- اختر المنطقة أولاً --</div>';
+    if (!branchId) return '<div style="text-align:center; color:#999;">-- اختر المجموعة أولاً --</div>';
     
     const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
     if (branches.length === 0) {
-        return '<div style="text-align:center; color:#999;">لا توجد فروع في هذه المنطقة</div>';
+        return '<div style="text-align:center; color:#999;">لا توجد فروع في هذه المجموعة</div>';
     }
     
     return branches.map(sb => `
@@ -6707,169 +7236,266 @@ setTimeout(() => {
 }, 100);
 }
 
+        // ==================== RENDER LOGIN PAGE WITH 3D BACKGROUND ====================
+// ==================== RENDER LOGIN PAGE - DESIGN NEW ====================
 function renderLogin(container) {
-    // التحقق من الوضع الحالي لتحديد الأيقونة الصحيحة
     const isLightMode = document.body.classList.contains('light-mode');
     
-    // إضافة تأثير الأنيميشن عند دخول الصفحة
     if (container && !container.classList.contains('page-transition-in')) {
         container.classList.add('page-transition-in');
         setTimeout(() => container.classList.remove('page-transition-in'), 400);
     }
     
     container.innerHTML = `
-        <!-- إضافة الأزرار في أعلى صفحة تسجيل الدخول -->
-        <div style="position: fixed; top: 20px; left: 20px; display: flex; gap: 10px; z-index: 1002;">
-            <!-- زر المنزل -->
-            <div id="loginHomeBtn" style="width: 42px; height: 42px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid #d4a017; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <i class="fas fa-home" style="font-size: 20px; color: #d4a017;"></i>
+        <div class="login-wrapper">
+            <!-- خلفية الأمواج -->
+            <div class="wave-background">
+                <div class="wave"></div>
+                <div class="wave wave2"></div>
+                <div class="wave wave3"></div>
             </div>
-            <!-- زر تغيير الوضع -->
-            <div id="loginThemeBtn" style="width: 42px; height: 42px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; border: 1px solid #d4a017; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <i class="fas ${isLightMode ? 'fa-sun' : 'fa-moon'}" style="font-size: 20px; color: #d4a017;"></i>
+            
+            <!-- المراسي المتحركة -->
+            <div class="floating-anchor-bg anchor-1">
+                <i class="fas fa-anchor"></i>
             </div>
-        </div>
-        
-        <div class="login-container">
-            <div class="login-box">
-                <i class="fas fa-campground"></i>
-                <h2>Scout DoJo </h2>
-                <p style="color: #666; margin-bottom: 25px;">نظام إدارة الطلايع والكشافة - Firebase Cloud</p>
-                
-                <form id="loginForm">
-                    <div class="input-group">
-                        <input type="text" id="username" placeholder="اسم المستخدم" required>
+            <div class="floating-anchor-bg anchor-2">
+                <i class="fas fa-anchor"></i>
+            </div>
+            <div class="floating-anchor-bg anchor-3">
+                <i class="fas fa-anchor"></i>
+            </div>
+            
+            <!-- فقاعات متحركة -->
+            <div id="bubblesContainer"></div>
+            
+            <!-- الأزرار العلوية -->
+            <div class="login-top-buttons">
+                <div class="login-icon-btn" id="loginHomeBtn">
+                    <i class="fas fa-home"></i>
+                    <span class="btn-tooltip">الرئيسية</span>
+                </div>
+                <div class="login-icon-btn" id="loginThemeBtn">
+                    <i class="fas ${isLightMode ? 'fa-sun' : 'fa-moon'}"></i>
+                    <span class="btn-tooltip">${isLightMode ? 'وضع ليلي' : 'وضع نهاري'}</span>
+                </div>
+            </div>
+            
+            <!-- بطاقة تسجيل الدخول الرئيسية -->
+            <div class="login-card">
+                <!-- رأس البطاقة مع الشعار -->
+                <div class="login-card-header">
+                    <div class="login-logo">
+                        <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" alt="شعار Scout DoJo">
                     </div>
-                    <div class="input-group">
-                        <input type="password" id="password" placeholder="كلمة المرور" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">تسجيل الدخول</button>
-                </form>
-                
-                <!-- زر ليس لديك حساب -->
-                <div style="margin-top: 15px; text-align: center;">
-                    <button onclick="showJoinRequestModalFromLogin()" style="background: transparent; border: none; color: #d4a017; cursor: pointer; font-size: 14px; font-weight: 600;">
-                        <i class="fas fa-user-plus"></i> ليس لديك حساب؟ اضغط هنا للتسجيل
-                    </button>
+                    <h2 class="login-title">مرحباً بك في</h2>
+                    <h1 class="login-subtitle">Scout DoJo</h1>
+                    <p class="login-desc">نظام إدارة الكشافة البحرية</p>
                 </div>
                 
-                <div style="margin-top: 20px; font-size: 12px; color: #999; text-align: center;">
-                    <i class="fas fa-key"></i> تم التطوير بواسطة Tecno Shark Company
-                    <br>01144100018 || 01126125881
+                <!-- نموذج تسجيل الدخول -->
+                <form id="loginForm" class="login-form">
+                    <div class="input-field">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="username" placeholder="اسم المستخدم" required autocomplete="off">
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password" placeholder="كلمة المرور" required>
+                        <i class="fas fa-eye-slash password-toggle" id="togglePassword"></i>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>دخول</span>
+                    </button>
+                </form>
+                
+                <!-- قسم طلب حساب جديد -->
+                <div class="login-divider">
+                    <span>أو</span>
+                </div>
+                
+                <button class="join-btn" onclick="showJoinRequestModalFromLogin()">
+                    <i class="fas fa-user-plus"></i>
+                    <span>إرسال طلب انضمام</span>
+                </button>
+                
+                <!-- زر تحديث البيانات -->
+                <div class="refresh-section">
+                    <button id="refreshDataBtn" class="refresh-btn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>تحديث البيانات</span>
+                    </button>
+                    <p class="refresh-time" id="refreshTimeText">
+                        <i class="far fa-clock"></i> آخر تحديث: ${new Date().toLocaleTimeString('ar-EG')}
+                    </p>
+                </div>
+                
+                <!-- توقيع الشركة -->
+                <div class="login-footer">
+                    <div class="footer-divider"></div>
+                    <div class="footer-brand">
+                        <i class="fas fa-laptop-code"></i>
+                        <span>Tecno Shark Company</span>
+                    </div>
+                    <div class="footer-contacts">
+                        <span><i class="fas fa-phone-alt"></i> 01144100018</span>
+                        <span><i class="fas fa-phone-alt"></i> 01126125881</span>
+                    </div>
                 </div>
             </div>
         </div>
     `;
     
-    // إضافة حدث لزر المنزل في صفحة تسجيل الدخول
-    const loginHomeBtn = document.getElementById('loginHomeBtn');
-    if (loginHomeBtn) {
-        // عند مرور الماوس
-        loginHomeBtn.addEventListener('mouseenter', () => {
-            loginHomeBtn.style.width = 'auto';
-            loginHomeBtn.style.borderRadius = '50px';
-            loginHomeBtn.style.padding = '0 16px';
-            loginHomeBtn.style.gap = '8px';
-            loginHomeBtn.innerHTML = '<i class="fas fa-home" style="font-size: 16px;"></i><span style="font-size: 13px; font-weight: 600;">الرئيسية</span>';
-        });
+    // إضافة الفقاعات المتحركة
+    function createBubbles() {
+        const container = document.getElementById('bubblesContainer');
+        if (!container) return;
+        container.style.position = 'absolute';
+        container.style.bottom = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.pointerEvents = 'none';
+        container.style.zIndex = '0';
+        container.style.overflow = 'hidden';
         
-        loginHomeBtn.addEventListener('mouseleave', () => {
-            loginHomeBtn.style.width = '42px';
-            loginHomeBtn.style.borderRadius = '50%';
-            loginHomeBtn.style.padding = '0';
-            loginHomeBtn.style.gap = '0';
-            loginHomeBtn.innerHTML = '<i class="fas fa-home" style="font-size: 20px;"></i>';
+        for (let i = 0; i < 30; i++) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            const size = Math.random() * 30 + 10;
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.bottom = '-' + (Math.random() * 50) + 'px';
+            bubble.style.animationDelay = Math.random() * 8 + 's';
+            bubble.style.animationDuration = Math.random() * 6 + 6 + 's';
+            container.appendChild(bubble);
+        }
+    }
+    
+    createBubbles();
+    
+    // ==================== EVENT HANDLERS ====================
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            togglePassword.classList.toggle('fa-eye');
+            togglePassword.classList.toggle('fa-eye-slash');
         });
-        
-        // العودة إلى صفحة الهبوط مع أنيميشن
-        loginHomeBtn.addEventListener('click', () => {
+    }
+    
+    const homeBtn = document.getElementById('loginHomeBtn');
+    if (homeBtn) {
+        homeBtn.addEventListener('click', () => {
             transitionToPage(() => renderLandingPage());
         });
     }
     
-    // إضافة حدث لزر تغيير الوضع في صفحة تسجيل الدخول
-    const loginThemeBtn = document.getElementById('loginThemeBtn');
-    if (loginThemeBtn) {
-        loginThemeBtn.addEventListener('click', () => {
-            // تبديل الوضع
+    const themeBtn = document.getElementById('loginThemeBtn');
+    if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
             if (document.body.classList.contains('light-mode')) {
-                // التبديل إلى الوضع الداكن
                 document.body.classList.remove('light-mode');
                 localStorage.setItem('theme', 'dark');
-                loginThemeBtn.innerHTML = '<i class="fas fa-moon" style="font-size: 20px; color: #d4a017;"></i>';
-                // تحديث ألوان الخلفية لصفحة تسجيل الدخول
-                const loginContainer = document.querySelector('.login-container');
-                if (loginContainer) {
-                    loginContainer.style.background = 'linear-gradient(135deg, #1a472a, #0d2818)';
-                }
-                const loginBox = document.querySelector('.login-box');
-                if (loginBox) {
-                    loginBox.style.background = 'white';
-                    loginBox.style.color = '#333';
-                }
+                themeBtn.innerHTML = '<i class="fas fa-moon"></i><span class="btn-tooltip">وضع ليلي</span>';
             } else {
-                // التبديل إلى الوضع الفاتح
                 document.body.classList.add('light-mode');
                 localStorage.setItem('theme', 'light');
-                loginThemeBtn.innerHTML = '<i class="fas fa-sun" style="font-size:20px; color:#d4a017;"></i>';
-                // تحديث ألوان الخلفية لصفحة تسجيل الدخول
-                const loginContainer = document.querySelector('.login-container');
-                if (loginContainer) {
-                    loginContainer.style.background = 'linear-gradient(135deg, #e8f5e9, #c8e6c9)';
+                themeBtn.innerHTML = '<i class="fas fa-sun"></i><span class="btn-tooltip">وضع نهاري</span>';
+            }
+        });
+    }
+    
+    const refreshBtn = document.getElementById('refreshDataBtn');
+    const refreshTimeText = document.getElementById('refreshTimeText');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', async () => {
+            const originalHtml = refreshBtn.innerHTML;
+            refreshBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i><span>جاري التحديث...</span>';
+            refreshBtn.disabled = true;
+            refreshBtn.style.opacity = '0.7';
+            
+            try {
+                await loadAllDataFromFirebase();
+                if (refreshTimeText) {
+                    refreshTimeText.innerHTML = `<i class="far fa-clock"></i> آخر تحديث: ${new Date().toLocaleTimeString('ar-EG')}`;
                 }
-                const loginBox = document.querySelector('.login-box');
-                if (loginBox) {
-                    loginBox.style.background = 'white';
-                    loginBox.style.boxShadow = '0 20px 40px rgba(0,0,0,0.1)';
-                }
+                showToast('✅ تم تحديث البيانات بنجاح!', 'success');
+                refreshBtn.innerHTML = '<i class="fas fa-check"></i><span>تم التحديث</span>';
+                setTimeout(() => {
+                    refreshBtn.innerHTML = originalHtml;
+                    refreshBtn.disabled = false;
+                    refreshBtn.style.opacity = '1';
+                }, 2000);
+            } catch (error) {
+                showToast('❌ حدث خطأ في تحديث البيانات', 'error');
+                refreshBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>فشل التحديث</span>';
+                setTimeout(() => {
+                    refreshBtn.innerHTML = originalHtml;
+                    refreshBtn.disabled = false;
+                    refreshBtn.style.opacity = '1';
+                }, 2000);
             }
         });
     }
     
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         
-        // التحقق من حساب القائد العام (من Firebase)
-        const adminCreds = await loadAdminCredentialsFromFirebase();
-        if (username === adminCreds.username && password === adminCreds.password) {
-            currentUser = { id: 'admin', name: 'القائد العام', isAdmin: true };
-            isAdmin = true;
-            isLeader = false;
-            await loadAllDataFromFirebase();
-            listenForRealTimeUpdates();
-            showToast('مرحباً أيها القائد العام!');
-            transitionToPage(() => render());
-            return;
-        }
-        // التحقق من القادة
-        const leader = appData.leaders.find(l => l.username === username && l.password === password);
-        if (leader) {
-            currentUser = leader;
-            isAdmin = false;
-            isLeader = true;
-            await loadAllDataFromFirebase();
-            listenForRealTimeUpdates();
-            showToast(`مرحباً أيها القائد ${leader.name}`);
-            transitionToPage(() => renderLeaderApp(document.getElementById('app')));
-            return;
-        }
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i><span>جاري التحقق...</span>';
+        submitBtn.disabled = true;
         
-        // التحقق من الأعضاء
-        const member = appData.members.find(m => m.username === username && m.password === password);
-        if (member) {
-            currentUser = member;
-            isAdmin = false;
-            isLeader = false;
+        try {
             await loadAllDataFromFirebase();
-            listenForRealTimeUpdates();
-            showToast(`مرحباً ${member.name}`);
-            transitionToPage(() => render());
-            return;
+            const adminCreds = await loadAdminCredentialsFromFirebase();
+            
+            if (username === adminCreds.username && password === adminCreds.password) {
+                currentUser = { id: 'admin', name: 'القائد العام', isAdmin: true };
+                isAdmin = true;
+                isLeader = false;
+                showToast('مرحباً أيها القائد العام!');
+                transitionToPage(() => render());
+                return;
+            }
+            
+            const leader = appData.leaders.find(l => l.username === username && l.password === password);
+            if (leader) {
+                currentUser = leader;
+                isAdmin = false;
+                isLeader = true;
+                showToast(`مرحباً أيها القائد ${leader.name}`);
+                transitionToPage(() => renderLeaderApp(document.getElementById('app')));
+                return;
+            }
+            
+            const member = appData.members.find(m => m.username === username && m.password === password);
+            if (member) {
+                currentUser = member;
+                isAdmin = false;
+                isLeader = false;
+                showToast(`مرحباً ${member.name}`);
+                transitionToPage(() => render());
+                return;
+            }
+            
+            showToast('❌ بيانات الدخول غير صحيحة', 'error');
+        } catch (error) {
+            console.error(error);
+            showToast('❌ حدث خطأ في الاتصال بقاعدة البيانات', 'error');
+        } finally {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
         }
-        
-        showToast('بيانات الدخول غير صحيحة', 'error');
     });
 }
 // ==================== الدوال الجديدة لنظام طلبات الانضمام ====================
@@ -6888,40 +7514,30 @@ function showJoinRequestModal() {
                 <div class="input-group"><label>الاسم الكامل</label><input type="text" id="reqName" required></div>
                 <div class="input-group"><label>السن</label><input type="number" id="reqAge" min="6" max="30" required></div>
                 <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="reqPhone" required></div>
-                <div class="input-group"><label>الرتبة المطلوبة</label>
-                    <select id="reqRank" required>
-                        <option value="">اختر الرتبة</option>
-                        <option value="عريف اول">عريف اول</option>
-                        <option value="عريف">عريف</option>
-                        <option value="سكرتير">سكرتير</option>
-                        <option value="امين صندوق">امين صندوق</option>
-                        <option value="مساعد عريف اول">مساعد عريف اول</option>
-                        <option value="مساعد عريف">مساعد عريف</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>المنطقة</label>
+                <!-- تم إزالة خانة الرتبة نهائياً -->
+                <div class="input-group"><label>المجموعة</label>
                     <select id="reqBranch" required>
-                        <option value="">-- اختر المنطقة --</option>
+                        <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>الفرع</label>
+                <div class="input-group"><label>الهيئة</label>
                     <select id="reqSubBranch" required>
-                        <option value="">-- اختر المنطقة أولاً --</option>
+                        <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
-                <div class="input-group"><label>الطليعة المرغوب الانضمام إليها</label>
-                    <select id="reqSquad" required>
-                        <option value="">-- اختر الفرع أولاً --</option>
+                <!-- تم إزالة خانة الطليعة المرغوب الانضمام إليها نهائياً -->
+                <!-- تم إضافة خانة اختيار المرحلة (مثل الفلاتر) -->
+                <div class="input-group">
+                    <label><i class="fas fa-users"></i> اختر المرحلة</label>
+                    <select id="reqSquadType" required>
+                        <option value="">-- اختر المرحلة --</option>
+                        <option value="الكشافة">⚜️ فريق الكشافة</option>
+                        <option value="المرشدات">🌸 فريق المرشدات</option>
+                        <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>
+                        <option value="البراعم">🌱 فريق البراعم</option>
                     </select>
                 </div>
-                
-                <!-- الخانة الجديدة: نوع الطليعة (يظهر تلقائياً) -->
-                <div class="input-group" id="squadTypeContainer" style="display: none;">
-                    <label><i class="fas fa-users"></i> نوع الطليعة</label>
-                    <input type="text" id="reqSquadType" readonly style="background: #f0f0f0; font-weight: bold; color: #1a472a;">
-                </div>
-                
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="reqUsername" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="reqPassword" required></div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">إرسال الطلب للقائد</button>
@@ -6930,79 +7546,17 @@ function showJoinRequestModal() {
     `;
     document.body.appendChild(modal);
     
-    // خريطة لأنواع الفرق مع أيقوناتها
-    const squadTypeIcons = {
-        'الكشافة': '⚜️',
-        'المرشدات': '🌸',
-        'الأشبال': '🦁',
-        'الزهرات': '🌺',
-        'البراعم': '🌱'
-    };
-    
     // تحديث الفروع عند اختيار المنطقة
     document.getElementById('reqBranch').addEventListener('change', function() {
         const branchId = parseInt(this.value);
         const subBranchSelect = document.getElementById('reqSubBranch');
-        const squadSelect = document.getElementById('reqSquad');
-        const squadTypeContainer = document.getElementById('squadTypeContainer');
-        const squadTypeInput = document.getElementById('reqSquadType');
         
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
-            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+            subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
                 branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
-            squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
-            squadTypeContainer.style.display = 'none';
-            squadTypeInput.value = '';
         } else {
-            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
-            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
-            squadTypeContainer.style.display = 'none';
-        }
-    });
-    
-    // تحديث الطلايع عند اختيار الفرع
-    document.getElementById('reqSubBranch').addEventListener('change', function() {
-        const subBranchId = parseInt(this.value);
-        const squadSelect = document.getElementById('reqSquad');
-        const squadTypeContainer = document.getElementById('squadTypeContainer');
-        const squadTypeInput = document.getElementById('reqSquadType');
-        
-        if (subBranchId) {
-            const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
-            if (subBranch) {
-                const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
-                squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
-                    squads.map(s => `<option value="${s.id}" data-type="${s.type || 'الكشافة'}">${s.name} (${s.leader})</option>`).join('');
-                squadTypeContainer.style.display = 'none';
-                squadTypeInput.value = '';
-            }
-        } else {
-            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
-            squadTypeContainer.style.display = 'none';
-        }
-    });
-    
-    // عند اختيار الطليعة، تظهر خانة نوع الطليعة تلقائياً
-    document.getElementById('reqSquad').addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        const squadType = selectedOption.getAttribute('data-type') || 'الكشافة';
-        const squadTypeContainer = document.getElementById('squadTypeContainer');
-        const squadTypeInput = document.getElementById('reqSquadType');
-        const squadTypeIconsMap = {
-            'الكشافة': '⚜️ فريق الكشافة',
-            'المرشدات': '🌸 فريق المرشدات',
-            'الأشبال': '🦁 فريق الأشبال',
-            'الزهرات': '🌺 فريق الزهرات',
-            'البراعم': '🌱 فريق البراعم'
-        };
-        
-        if (this.value && squadType) {
-            squadTypeInput.value = squadTypeIconsMap[squadType] || squadType;
-            squadTypeContainer.style.display = 'block';
-        } else {
-            squadTypeContainer.style.display = 'none';
-            squadTypeInput.value = '';
+            subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
         }
     });
     
@@ -7021,12 +7575,22 @@ function showJoinRequestModal() {
         
         const subBranchId = parseInt(document.getElementById('reqSubBranch').value);
         const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
-        const squadId = parseInt(document.getElementById('reqSquad').value);
-        const squad = appData.squads.find(s => s.id === squadId);
-        const squadType = document.getElementById('reqSquadType').value || (squad ? squad.type : 'الكشافة');
+        const squadType = document.getElementById('reqSquadType').value;
         
-        if (!subBranchId || !squadId) {
-            showToast('الرجاء اختيار الفرع والطليعة', 'error');
+        if (!subBranchId || !squadType) {
+            showToast('الرجاء اختيار الهيئة والمرحلة', 'error');
+            return;
+        }
+        
+        // البحث عن أول طليعة مفتوحة من نفس النوع في نفس الهيئة
+        const availableSquad = appData.squads.find(s => 
+            s.branchId === subBranch.branchId && 
+            s.type === squadType && 
+            s.isOpen === true
+        );
+        
+        if (!availableSquad) {
+            showToast('⚠️ لا توجد طليعة متاحة من هذا النوع في هذه الهيئة حالياً', 'error');
             return;
         }
         
@@ -7035,11 +7599,11 @@ function showJoinRequestModal() {
             name: document.getElementById('reqName').value,
             age: parseInt(document.getElementById('reqAge').value),
             phone: document.getElementById('reqPhone').value,
-            rank: document.getElementById('reqRank').value,
+            rank: "عضو",  // تعيين رتبة افتراضية "عضو"
             branchId: subBranch.branchId,
             subBranchId: subBranchId,
-            squadId: squadId,
-            squadType: squadType,  // حفظ نوع الطليعة مع الطلب
+            squadId: availableSquad.id,
+            squadType: squadType,
             username: username,
             password: document.getElementById('reqPassword').value,
             status: 'pending',
@@ -7053,7 +7617,7 @@ function showJoinRequestModal() {
         const responsibleLeader = appData.leaders.find(leader => 
             leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
         );
-        const leaderName = responsibleLeader ? responsibleLeader.name : (squad ? squad.leader : 'القائد المسؤول');
+        const leaderName = responsibleLeader ? responsibleLeader.name : (availableSquad ? availableSquad.leader : 'القائد المسؤول');
         
         showToast('تم إرسال طلب الانضمام إلى القائد، انتظر الموافقة');
         modal.remove();
@@ -7079,7 +7643,7 @@ function showResetConfirmation() {
                 <ul style="text-align: right; color: #666; margin-bottom: 20px; padding-right: 20px;">
                     <li>✓ جميع الأعضاء المسجلين</li>
                     <li>✓ جميع القادة</li>
-                    <li>✓ جميع الطلايع والمناطق والفروع</li>
+                    <li>✓ جميع الطلايع المجموعات الهيئات</li>
                     <li>✓ جميع التكاليف والتسليمات</li>
                     <li>✓ جميع طلبات الانضمام</li>
                     <li>✓ جميع رسائل الدردشة</li>
@@ -7165,10 +7729,10 @@ function updateSubBranchesByBranch(branchSelectId, subBranchSelectId) {
     
     if (branchId) {
         const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
-        subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+        subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
             branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
     } else {
-        subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+        subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
     }
 }
 
@@ -7240,7 +7804,7 @@ function viewJoinRequestDetails(requestId) {
                 <div class="detail-item"><div class="detail-label">السن</div><div class="detail-value">${request.age}</div></div>
                 <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${request.phone}</div></div>
                 <div class="detail-item"><div class="detail-label">الرتبة المطلوبة</div><div class="detail-value">${request.rank}</div></div>
-                <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
+                <div class="detail-item"><div class="detail-label">المجموعة</div><div class="detail-value">${branch?.name || '-'}</div></div>
                 <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${squad?.name || '-'}</div></div>
                 <div class="detail-item"><div class="detail-label">اسم المستخدم</div><div class="detail-value">${request.username}</div></div>
                 <div class="detail-item"><div class="detail-label">كلمة المرور</div><div class="detail-value">••••••</div></div>
@@ -7566,7 +8130,7 @@ function renderAdminApp(container) {
             <ul class="sidebar-menu">
                 <li class="active" data-page="dashboard"><a onclick="changeAdminPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
                 <li data-page="members"><a onclick="changeAdminPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
-                <li data-page="squads"><a onclick="changeAdminPage('squads')"><i class="fas fa-flag"></i> إدارة الطلايع</a></li>
+                <li data-page="squads"><a onclick="changeAdminPage('squads')"><i class="fas fa-flag"></i> إدارة المجموعات</a></li>
                 <li data-page="leaders"><a onclick="changeAdminPage('leaders')"><i class="fas fa-user-tie"></i> إدارة القادة</a></li>
                 <li data-page="community"><a onclick="changeAdminPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
                 <li data-page="tasks"><a onclick="changeAdminPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
@@ -7640,7 +8204,7 @@ function renderAdminApp(container) {
         <div class="stats-grid">
             <div class="stat-card"><i class="fas fa-users"></i><div class="number">${stats.members}</div><div class="label">الأعضاء</div></div>
             <div class="stat-card"><i class="fas fa-flag-checkered"></i><div class="number">${stats.squads}</div><div class="label">الطلايع</div></div>
-            <div class="stat-card"><i class="fas fa-building"></i><div class="number">${stats.branches}</div><div class="label">المناطق</div></div>
+            <div class="stat-card"><i class="fas fa-building"></i><div class="number">${stats.branches}</div><div class="label">المجموعات</div></div>
             <div class="stat-card"><i class="fas fa-tasks"></i><div class="number">${stats.tasks}</div><div class="label">التكاليف</div></div>
             <div class="stat-card"><i class="fas fa-clock"></i><div class="number">${stats.pendingSubmissions}</div><div class="label">تسليمات معلقة</div></div>
             
@@ -7955,7 +8519,7 @@ function canSubmitTask(taskId) {
             <h3><i class="fas fa-search"></i> البحث عن الأعضاء</h3>
             <div class="squad-filter">
                 <input type="text" id="memberSearch" placeholder="بحث بالاسم أو الكود..." oninput="filterMembersTable()">
-                <select id="branchFilter" onchange="filterMembersTable()"><option value="">جميع المناطق</option>${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select>
+                <select id="branchFilter" onchange="filterMembersTable()"><option value="">جميع المجموعات</option>${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select>
                 <select id="squadFilter" onchange="filterMembersTable()"><option value="">جميع الطلايع</option>${appData.squads.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select>
                 <button class="btn btn-primary" onclick="showAddMemberModal()"><i class="fas fa-plus"></i> إضافة عضو</button>
                 
@@ -8051,7 +8615,7 @@ function canSubmitTask(taskId) {
                     </div>
                 </div>
                 <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${m.phone}</div></div>
-                <div class="detail-item"><div class="detail-label">المنطقة</div><div class="detail-value">${branch?.name || '-'}</div></div>
+                <div class="detail-item"><div class="detail-label">المجموعة</div><div class="detail-value">${branch?.name || '-'}</div></div>
                 <div class="detail-item"><div class="detail-label">الطليعة</div><div class="detail-value">${squad?.name || '-'}</div></div>
                 <!-- السطر الجديد: عرض نوع الطليعة -->
                 <div class="detail-item"><div class="detail-label">نوع الطليعة</div><div class="detail-value">${m.squadType || squad?.type || 'الكشافة'}</div></div>
@@ -8108,20 +8672,20 @@ function canSubmitTask(taskId) {
                 <div class="input-group"><label>كود العضو</label><div class="code-generator"><input type="text" id="memberCode" required><button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCode()">توليد</button></div></div>
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="memberUsername" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="memberPassword" required></div>
-                <div class="input-group"><label>المنطقة</label>
+                <div class="input-group"><label>المجموعة</label>
                     <select id="memberBranch" onchange="updateSubBranchesByBranch('memberBranch', 'memberSubBranch')" required>
-                        <option value="">-- اختر المنطقة --</option>
+                        <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>الفرع</label>
+                <div class="input-group"><label>الهيئة</label>
                     <select id="memberSubBranch" required>
-                        <option value="">-- اختر المنطقة أولاً --</option>
+                        <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
                 <div class="input-group"><label>الطليعة</label>
                     <select id="memberSquad" required>
-                        <option value="">-- اختر الفرع أولاً --</option>
+                        <option value="">-- اختر الهيئة أولاً --</option>
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">إضافة العضو</button>
@@ -8138,12 +8702,12 @@ function canSubmitTask(taskId) {
         
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
-            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+            subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
                 branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
             squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
         } else {
-            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
-            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+            subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         }
     });
     
@@ -8161,7 +8725,7 @@ function canSubmitTask(taskId) {
                     squads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
             }
         } else {
-            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         }
     });
     
@@ -8178,7 +8742,7 @@ function canSubmitTask(taskId) {
         const squadId = parseInt(document.getElementById('memberSquad').value);
         
         if (!subBranchId || !squadId) {
-            showToast('الرجاء اختيار الفرع والطليعة', 'error');
+            showToast('الرجاء اختيار الهيئة والطليعة', 'error');
             return;
         }
         
@@ -8208,7 +8772,7 @@ function canSubmitTask(taskId) {
 // ==================== نظام القادة (Leaders System) ====================
 
 // دالة إضافة قائد جديد (للقائد العام فقط)
-function showAddLeaderModal() {
+async function showAddLeaderModal() {
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.display = 'flex';
@@ -8222,15 +8786,15 @@ function showAddLeaderModal() {
                 <div class="input-group"><label>الاسم الكامل</label><input type="text" id="leaderName" required></div>
                 <div class="input-group"><label>السن</label><input type="number" id="leaderAge" min="18" max="70" required></div>
                 <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="leaderPhone" required></div>
-                <div class="input-group"><label>المنطقة المسؤول عنها</label>
+                <div class="input-group"><label>المجموعة المسؤول عنها</label>
                     <select id="leaderBranch" required>
-                        <option value="">-- اختر المنطقة --</option>
+                        <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>الفروع المسؤول عنها (يمكن اختيار أكثر من فرع)</label>
+                <div class="input-group"><label>الهيئات المسؤول عنها (يمكن اختيار أكثر من هيئه)</label>
                     <div id="leaderSubBranchesContainer" style="background: #f8f9fa; padding: 12px; border-radius: 12px; max-height: 200px; overflow-y: auto; border: 2px solid #e0e0e0;">
-                        <div style="text-align:center; color:#999;">-- اختر المنطقة أولاً --</div>
+                        <div style="text-align:center; color:#999;">-- اختر المجموعة أولاً --</div>
                     </div>
                 </div>
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="leaderUsername" required></div>
@@ -8249,7 +8813,7 @@ function showAddLeaderModal() {
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
             if (branches.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#999;">لا توجد فروع في هذه المنطقة</div>';
+                container.innerHTML = '<div style="text-align:center; color:#999;">لا توجد فروع في هذه المجموعة</div>';
             } else {
                 container.innerHTML = branches.map(sb => `
                     <label style="display: flex; align-items: center; gap: 10px; padding: 8px; margin: 4px 0; background: white; border-radius: 8px; cursor: pointer;">
@@ -8259,7 +8823,7 @@ function showAddLeaderModal() {
                 `).join('');
             }
         } else {
-            container.innerHTML = '<div style="text-align:center; color:#999;">-- اختر المنطقة أولاً --</div>';
+            container.innerHTML = '<div style="text-align:center; color:#999;">-- اختر المجموعة أولاً --</div>';
         }
     });
     
@@ -8267,6 +8831,8 @@ function showAddLeaderModal() {
         e.preventDefault();
         
         const username = document.getElementById('leaderUsername').value;
+        
+        // التحقق من عدم تكرار اسم المستخدم
         if (appData.leaders.some(l => l.username === username)) {
             showToast('اسم المستخدم موجود مسبقاً', 'error');
             return;
@@ -8286,7 +8852,7 @@ function showAddLeaderModal() {
         });
         
         if (selectedSubBranches.length === 0) {
-            showToast('الرجاء اختيار فرع واحد على الأقل', 'error');
+            showToast('الرجاء اختيار هيئه واحد على الأقل', 'error');
             return;
         }
         
@@ -8305,10 +8871,27 @@ function showAddLeaderModal() {
         };
         
         appData.leaders.push(newLeader);
+        
+        // ========== التعديلات المهمة ==========
+        // 1. حفظ البيانات في Firebase
         await saveAllDataToFirebase();
-        showToast(`تم إضافة القائد ${newLeader.name} بنجاح`);
+        
+        // 2. إعادة تحميل البيانات من Firebase للتأكد من تحديثها
+        await loadAllDataFromFirebase();
+        
+        // 3. عرض رسالة نجاح
+        showToast(`✅ تم إضافة القائد ${newLeader.name} بنجاح`);
+        
+        // 4. إغلاق النافذة
         modal.remove();
+        
+        // 5. تحديث واجهة القادة
         renderLeadersList();
+        
+        // 6. (اختياري) تحديث لوحة التحكم إذا كانت مفتوحة
+        if (typeof renderAdminDashboard === 'function') {
+            renderAdminDashboard();
+        }
     });
 }
 
@@ -8333,7 +8916,7 @@ function renderLeadersList() {
                     <div>
                         <strong><i class="fas fa-user-tie"></i> ${leader.name}</strong><br>
                         <small>📞 ${leader.phone} | ${leader.age} سنة</small><br>
-                        <small>🏢 ${branch?.name || '-'} | 📍 الفروع: ${subBranchesNames}</small><br>
+                        <small>🏢 ${branch?.name || '-'} | 📍 الهيئات: ${subBranchesNames}</small><br>
                         <small>👤 اسم المستخدم: ${leader.username}</small>
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -8575,7 +9158,7 @@ function renderLeaderMembers() {
     const container = document.getElementById('leaderPageContent');
     container.innerHTML = `
         <div class="card">
-            <h3><i class="fas fa-users"></i> إدارة الأعضاء (الفروع المسؤول عنها)</h3>
+            <h3><i class="fas fa-users"></i> إدارة الأعضاء (الهيئات المسؤول عنها)</h3>
             <div class="squad-filter">
                 <input type="text" id="leaderMemberSearch" placeholder="بحث بالاسم أو الكود..." oninput="filterLeaderMembers()">
                 <select id="leaderSquadFilter" onchange="filterLeaderMembers()">
@@ -8628,7 +9211,7 @@ function filterLeaderMembers() {
                  </td>
             </tr>`;
         }).join('')}
-        ${myMembers.length === 0 ? '<tr><td colspan="8" style="text-align:center;">⚠️ لا يوجد أعضاء في الفروع المسؤول عنها</td>' : ''}
+        ${myMembers.length === 0 ? '<tr><td colspan="8" style="text-align:center;">⚠️ لا يوجد أعضاء في الهيئات المسؤول عنها</td>' : ''}
         </tbody>}~table</div>
     `;
     const tableContainer = document.getElementById('leaderMembersTable');
@@ -8638,48 +9221,222 @@ function filterLeaderMembers() {
 
 
 // عرض طلبات الانضمام الخاصة بالقائد فقط
+// استبدل دالة renderLeaderJoinRequests بالكود التالي:
 function renderLeaderJoinRequests() {
     const leader = currentUser;
     
-    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
-    const mySquadIds = mySquads.map(s => s.id);
-    const myRequests = appData.joinRequests.filter(r => mySquadIds.includes(r.squadId) && r.status === 'pending');
+    // جلب الطلبات التي تخص هيئات هذا القائد فقط
+    const mySubBranchIds = leader.subBranchIds || [];
+    const myRequests = appData.joinRequests.filter(r => 
+        mySubBranchIds.includes(r.subBranchId) && 
+        r.status === 'pending'
+    );
     
     const container = document.getElementById('leaderPageContent');
     container.innerHTML = `
         <div class="card">
-            <h3><i class="fas fa-user-plus"></i> طلبات الانضمام (فريقي)</h3>
+            <h3><i class="fas fa-user-plus"></i> طلبات الانضمام (الهيئات المسؤول عنها)</h3>
             <div id="leaderRequestsList"></div>
         </div>
     `;
     
     if (myRequests.length === 0) {
-        document.getElementById('leaderRequestsList').innerHTML = '<p style="text-align:center;">لا توجد طلبات انضمام معلقة</p>';
+        document.getElementById('leaderRequestsList').innerHTML = '<p style="text-align:center; color:#999;">لا توجد طلبات انضمام معلقة</p>';
         return;
     }
     
-    const requestsHtml = myRequests.map(req => {
-        const branch = appData.branches.find(b => b.id === req.branchId);
-        const squad = appData.squads.find(s => s.id === req.squadId);
-        return `
-            <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:10px; border-right:3px solid #d4a017;">
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
-                    <div>
-                        <strong>${escapeHtml(req.name)}</strong><br>
-                        <small>📞 ${req.phone} | ${req.age} سنة | ${req.rank}</small><br>
-                        <small>🏢 ${branch?.name || '-'} | 🏴 ${squad?.name || '-'}</small>
-                    </div>
-                    <div>
-                        <button class="btn btn-sm btn-success" onclick="approveJoinRequest(${req.id})"><i class="fas fa-check"></i> قبول</button>
-                        <button class="btn btn-sm btn-danger" onclick="rejectJoinRequest(${req.id})"><i class="fas fa-ban"></i> رفض</button>
-                    </div>
+    const requestsHtml = myRequests.map(req => `
+        <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:10px; border-right:3px solid #d4a017;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                <div>
+                    <strong><i class="fas fa-user"></i> ${escapeHtml(req.name)}</strong>
+                    <br>
+                    <small>📅 تاريخ الطلب: ${new Date(req.requestedAt).toLocaleDateString('ar-EG')}</small>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-info" onclick="showJoinRequestDetailsForLeader(${req.id})">
+                        <i class="fas fa-eye"></i> التفاصيل
+                    </button>
                 </div>
             </div>
-        `;
-    }).join('');
+        </div>
+    `).join('');
+    
     document.getElementById('leaderRequestsList').innerHTML = requestsHtml;
 }
-
+// أضف هذه الدالة الجديدة:
+function showJoinRequestDetailsForLeader(requestId) {
+    const request = appData.joinRequests.find(r => r.id === requestId);
+    if (!request) return;
+    
+    const branch = appData.branches.find(b => b.id === request.branchId);
+    const subBranch = appData.subBranches.find(sb => sb.id === request.subBranchId);
+    
+    // أسماء المراحل للتنسيق
+    const squadTypeNames = {
+        'الكشافة': '⚜️ فريق الكشافة',
+        'المرشدات': '🌸 فريق المرشدات',
+        'أشبال وزهرات': '🦁🌸 أشبال وزهرات',
+        'البراعم': '🌱 فريق البراعم'
+    };
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:550px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-id-card"></i> تفاصيل طلب الانضمام</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
+            <div class="details-grid">
+                <div class="detail-item"><div class="detail-label">الاسم الكامل</div><div class="detail-value">${escapeHtml(request.name)}</div></div>
+                <div class="detail-item"><div class="detail-label">السن</div><div class="detail-value">${request.age} سنة</div></div>
+                <div class="detail-item"><div class="detail-label">رقم الهاتف</div><div class="detail-value">${request.phone}</div></div>
+                <div class="detail-item"><div class="detail-label">المجموعة</div><div class="detail-value">${branch?.name || '-'}</div></div>
+                <div class="detail-item"><div class="detail-label">الهيئة</div><div class="detail-value">${subBranch?.name || '-'}</div></div>
+                <div class="detail-item"><div class="detail-label">المرحلة المطلوبة</div><div class="detail-value">${squadTypeNames[request.squadType] || request.squadType}</div></div>
+                <div class="detail-item"><div class="detail-label">اسم المستخدم</div><div class="detail-value">${request.username}</div></div>
+                <div class="detail-item"><div class="detail-label">تاريخ الطلب</div><div class="detail-value">${new Date(request.requestedAt).toLocaleString('ar-EG')}</div></div>
+            </div>
+            <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
+                <button class="btn btn-success" onclick="showCompleteDataModal(${requestId}); this.closest('.modal').remove();">
+                    <i class="fas fa-check"></i> قبول
+                </button>
+                <button class="btn btn-danger" onclick="rejectJoinRequest(${requestId}); this.closest('.modal').remove();">
+                    <i class="fas fa-ban"></i> رفض
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+// أضف هذه الدالة الجديدة:
+function showCompleteDataModal(requestId) {
+    const request = appData.joinRequests.find(r => r.id === requestId);
+    if (!request) return;
+    
+    // جلب الطلايع المتاحة في نفس الهيئة
+    const availableSquads = appData.squads.filter(s => 
+        s.subBranchId === request.subBranchId && 
+        s.type === request.squadType &&
+        s.isOpen === true
+    );
+    
+    // تحديد خيارات الرتبة حسب المرحلة
+    let rankOptions = '';
+    if (request.squadType === 'الكشافة' || request.squadType === 'المرشدات') {
+        rankOptions = `
+            <option value="">-- اختر الرتبة --</option>
+            <option value="عريف اول">عريف اول</option>
+            <option value="عريف">عريف</option>
+            <option value="سكرتير">سكرتير</option>
+            <option value="امين صندوق">امين صندوق</option>
+            <option value="مساعد عريف اول">مساعد عريف اول</option>
+            <option value="مساعد عريف">مساعد عريف</option>
+        `;
+    } else {
+        // للأشبال والزهرات والبراعم
+        rankOptions = `
+            <option value="">-- اختر الرتبة --</option>
+            <option value="سداس اكبر">سداس اكبر</option>
+            <option value="سداس">سداس</option>
+            <option value="سكرتير">سكرتير</option>
+            <option value="امين صندوق">امين صندوق</option>
+            <option value="مساعد سداس">مساعد سداس</option>
+        `;
+    }
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-check"></i> استكمال بيانات العضو: ${escapeHtml(request.name)}</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
+            <form id="completeDataForm">
+                <div class="input-group">
+                    <label><i class="fas fa-tag"></i> اختر الرتبة</label>
+                    <select id="memberRankComplete" required style="width:100%; padding:12px; border-radius:12px;">
+                        ${rankOptions}
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-flag"></i> اختر الطليعة</label>
+                    <select id="memberSquadComplete" required style="width:100%; padding:12px; border-radius:12px;">
+                        <option value="">-- اختر الطليعة --</option>
+                        ${availableSquads.map(s => `<option value="${s.id}">🏴 ${s.name} (${s.leader})</option>`).join('')}
+                    </select>
+                </div>
+                ${availableSquads.length === 0 ? '<div style="color:#e74c3c; text-align:center; margin-bottom:10px;">⚠️ لا توجد طلايع متاحة من هذا النوع في هذه الهيئة</div>' : ''}
+                <button type="submit" class="btn btn-primary" style="width:100%;" ${availableSquads.length === 0 ? 'disabled' : ''}>
+                    <i class="fas fa-save"></i> إضافة العضو
+                </button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('completeDataForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const selectedRank = document.getElementById('memberRankComplete').value;
+        const selectedSquadId = parseInt(document.getElementById('memberSquadComplete').value);
+        
+        if (!selectedRank || !selectedSquadId) {
+            showToast('الرجاء اختيار الرتبة والطليعة', 'error');
+            return;
+        }
+        
+        await completeMemberRegistration(requestId, selectedRank, selectedSquadId);
+        modal.remove();
+    });
+}
+// أضف هذه الدالة الجديدة:
+async function completeMemberRegistration(requestId, selectedRank, selectedSquadId) {
+    const request = appData.joinRequests.find(r => r.id === requestId);
+    if (!request) return;
+    
+    const squad = appData.squads.find(s => s.id === selectedSquadId);
+    
+    const newMember = {
+        id: Date.now(),
+        code: request.code,
+        name: request.name,
+        age: request.age,
+        rank: selectedRank,
+        username: request.username,
+        password: request.password,
+        phone: request.phone,
+        branchId: request.branchId,
+        subBranchId: request.subBranchId,
+        squadId: selectedSquadId,
+        squadType: request.squadType,
+        points: 0,
+        joinedAt: new Date().toISOString()
+    };
+    
+    appData.members.push(newMember);
+    appData.joinRequests = appData.joinRequests.filter(r => r.id !== requestId);
+    
+    await saveAllDataToFirebase();
+    showToast(`✅ تم قبول ${request.name} وإضافته إلى طليعة ${squad?.name || ''} برتبة ${selectedRank}`);
+    
+    // تحديث الواجهات
+    if (isAdmin && document.getElementById('adminPageContent')) {
+        renderMembersTable();
+        renderAdminDashboard();
+    }
+    if (isLeader && document.getElementById('leaderPageContent')) {
+        renderLeaderJoinRequests();
+        renderLeaderDashboard();
+    }
+    
+    // إغلاق أي نوافذ مفتوحة
+    document.querySelectorAll('.modal').forEach(m => m.remove());
+}
 // إدارة التكاليف للقائد (تظهر فقط لأعضاء فروعه)
 function renderLeaderTasks() {
     const leader = currentUser;
@@ -8705,7 +9462,7 @@ function renderLeaderTasks() {
     `;
     
     if (myTasks.length === 0) {
-        document.getElementById('leaderTasksList').innerHTML = '<p style="text-align:center;">⚠️ لا توجد تكاليف في الفروع المسؤول عنها</p>';
+        document.getElementById('leaderTasksList').innerHTML = '<p style="text-align:center;">⚠️ لا توجد تكاليف في الهيئات المسؤول عنها</p>';
         return;
     }
     
@@ -9040,7 +9797,7 @@ async function sendLeaderBroadcast() {
                 <div class="input-group"><label>كود العضو</label><input type="text" id="editCode" value="${member.code}" required></div>
                 <div class="input-group"><label>اسم المستخدم</label><input type="text" id="editUsername" value="${member.username}" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="editPassword" placeholder="اتركه فارغاً للحفاظ على نفس كلمة المرور"></div>
-                <div class="input-group"><label>المنطقة</label><select id="editBranch">${appData.branches.map(b => `<option value="${b.id}" ${b.id === member.branchId ? 'selected' : ''}>${b.name}</option>`).join('')}</select></div>
+                <div class="input-group"><label>المجموعة</label><select id="editBranch">${appData.branches.map(b => `<option value="${b.id}" ${b.id === member.branchId ? 'selected' : ''}>${b.name}</option>`).join('')}</select></div>
                 <div class="input-group"><label>الطليعة</label><select id="editSquad">${appData.squads.map(s => `<option value="${s.id}" ${s.id === member.squadId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">حفظ التعديلات</button>
             </form>
@@ -9144,12 +9901,12 @@ async function sendLeaderBroadcast() {
         function renderAdminSquads() {
     const container = document.getElementById('adminPageContent');
     container.innerHTML = `
-        <div class="card"><h3><i class="fas fa-plus-circle"></i> إدارة المناطق والفروع</h3><div style="display:flex; gap:15px; flex-wrap:wrap;">
-            <button class="btn btn-primary" onclick="showAddBranchModal()"><i class="fas fa-building"></i> إضافة منطقة</button>
-            <button class="btn btn-success" onclick="showAddSubBranchModal()"><i class="fas fa-code-branch"></i> إضافة فرع</button>
+        <div class="card"><h3><i class="fas fa-plus-circle"></i> إدارة المجموعات الهيئات</h3><div style="display:flex; gap:15px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="showAddBranchModal()"><i class="fas fa-building"></i> إضافة مجموعة</button>
+            <button class="btn btn-success" onclick="showAddSubBranchModal()"><i class="fas fa-code-branch"></i> إضافة هيئه</button>
             <button class="btn btn-info" onclick="showAddSquadModal()"><i class="fas fa-flag"></i> إضافة طليعة</button>
         </div></div>
-        <div class="card"><h3><i class="fas fa-list"></i> قائمة المناطق والفروع</h3><div id="squadsList"></div></div>
+        <div class="card"><h3><i class="fas fa-list"></i> قائمة المجموعات الهيئات</h3><div id="squadsList"></div></div>
     `;
     renderSquadsList();
 }
@@ -9160,8 +9917,8 @@ function deleteBranch(branchId) {
     modal.style.display = 'flex';
     modal.innerHTML = `
         <div class="modal-content" style="max-width:400px;">
-            <div class="modal-header"><h3><i class="fas fa-trash-alt"></i> تأكيد حذف المنطقة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-            <p style="text-align:center; margin:20px 0;">هل أنت متأكد من حذف هذه المنطقة؟<br>سيتم حذف جميع الفروع والطلايع التابعة لها!</p>
+            <div class="modal-header"><h3><i class="fas fa-trash-alt"></i> تأكيد حذف المجموعة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <p style="text-align:center; margin:20px 0;">هل أنت متأكد من حذف هذه المجموعة؟<br>سيتم حذف جميع الهيئات والطلايع التابعة لها!</p>
             <div style="display:flex; gap:10px; justify-content:center;">
                 <button class="btn btn-danger" onclick="confirmDeleteBranch(${branchId}); this.closest('.modal').remove();">نعم، احذف</button>
                 <button class="btn btn-primary" onclick="this.closest('.modal').remove()">إلغاء</button>
@@ -9172,31 +9929,54 @@ function deleteBranch(branchId) {
 }
 
 async function confirmDeleteBranch(branchId) {
-    // حذف الفروع التابعة
-    appData.subBranches = appData.subBranches.filter(sb => sb.branchId !== branchId);
-    // حذف الطلايع التابعة
-    const squadsToDelete = appData.squads.filter(s => s.branchId === branchId);
+    // جلب الهيئات التابعة للمجموعة
+    const subBranchesToDelete = appData.subBranches.filter(sb => sb.branchId === branchId);
+    
+    // جلب جميع الطلايع التابعة لهذه الهيئات
+    const subBranchIds = subBranchesToDelete.map(sb => sb.id);
+    const squadsToDelete = appData.squads.filter(s => subBranchIds.includes(s.subBranchId));
+    
+    // حذف الأعضاء المرتبطين بهذه الطلايع
     squadsToDelete.forEach(squad => {
-        appData.members.forEach(m => { if (m.squadId === squad.id) m.squadId = null; });
+        appData.members = appData.members.filter(m => m.squadId !== squad.id);
     });
-    appData.squads = appData.squads.filter(s => s.branchId !== branchId);
-    // حذف المنطقة
+    
+    // حذف الطلايع
+    appData.squads = appData.squads.filter(s => !subBranchIds.includes(s.subBranchId));
+    
+    // حذف الهيئات
+    appData.subBranches = appData.subBranches.filter(sb => sb.branchId !== branchId);
+    
+    // حذف المجموعة
     appData.branches = appData.branches.filter(b => b.id !== branchId);
     
     await saveAllDataToFirebase();
     renderSquadsList();
     renderAdminDashboard();
-    showToast('تم حذف المنطقة وجميع فروعها وطلايعها');
+    showToast('✅ تم حذف المجموعة وجميع هيئاتها وطلايعها وأعضائها');
 }
-
 // حذف فرع
 async function deleteSubBranch(subBranchId) {
-    if (confirm('هل أنت متأكد من حذف هذا الفرع؟')) {
-        appData.subBranches = appData.subBranches.filter(sb => sb.id !== subBranchId);
-        await saveAllDataToFirebase();
-        renderSquadsList();
-        showToast('تم حذف الفرع');
-    }
+    if (!confirm('⚠️ هل أنت متأكد من حذف هذه الهيئة؟\nسيتم حذف جميع الطلايع التابعة لها والأعضاء المرتبطين بها!')) return;
+    
+    // جلب جميع الطلايع التابعة لهذه الهيئة
+    const squadsToDelete = appData.squads.filter(s => s.subBranchId === subBranchId);
+    
+    // حذف الأعضاء المرتبطين بهذه الطلايع
+    squadsToDelete.forEach(squad => {
+        appData.members = appData.members.filter(m => m.squadId !== squad.id);
+    });
+    
+    // حذف الطلايع
+    appData.squads = appData.squads.filter(s => s.subBranchId !== subBranchId);
+    
+    // حذف الهيئة
+    appData.subBranches = appData.subBranches.filter(sb => sb.id !== subBranchId);
+    
+    await saveAllDataToFirebase();
+    renderSquadsList();
+    renderAdminDashboard();
+    showToast('✅ تم حذف الهيئة وجميع طلايعها وأعضائها');
 }
 // دالة عرض نافذة إضافة فرع جديد
 function showAddSubBranchModal() {
@@ -9205,20 +9985,20 @@ function showAddSubBranchModal() {
     modal.style.display = 'flex';
     modal.innerHTML = `
         <div class="modal-content">
-            <div class="modal-header"><h3><i class="fas fa-code-branch"></i> إضافة فرع جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <div class="modal-header"><h3><i class="fas fa-code-branch"></i> إضافة هيئه جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
             <form id="addSubBranchForm">
                 <div class="input-group">
-                    <label>اختر المنطقة</label>
+                    <label>اختر المجموعة</label>
                     <select id="subBranchParentBranch" required>
-                        <option value="">-- اختر المنطقة --</option>
+                        <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
                 <div class="input-group">
-                    <label>اسم الفرع</label>
-                    <input type="text" id="subBranchName" placeholder="مثال: فرع النزهة" required>
+                    <label>اسم الهيئة</label>
+                    <input type="text" id="subBranchName" placeholder="مثال: هيئه القطاميه" required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة الفرع</button>
+                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة الهيئة</button>
             </form>
         </div>
     `;
@@ -9230,14 +10010,14 @@ function showAddSubBranchModal() {
         const subBranchName = document.getElementById('subBranchName').value.trim();
         
         if (!parentBranchId || !subBranchName) {
-            showToast('الرجاء اختيار المنطقة وإدخال اسم الفرع', 'error');
+            showToast('الرجاء اختيار المجموعة وإدخال اسم الهيئة', 'error');
             return;
         }
         
         // التحقق من عدم وجود فرع بنفس الاسم في نفس المنطقة
         const existing = appData.subBranches.find(sb => sb.branchId === parentBranchId && sb.name === subBranchName);
         if (existing) {
-            showToast('يوجد فرع بهذا الاسم بالفعل في هذه المنطقة', 'error');
+            showToast('يوجد هيئه بهذا الاسم بالفعل في هذه المجموعة', 'error');
             return;
         }
         
@@ -9250,7 +10030,7 @@ function showAddSubBranchModal() {
         
         appData.subBranches.push(newSubBranch);
         await saveAllDataToFirebase();
-        showToast(`تم إضافة الفرع "${subBranchName}" بنجاح`);
+        showToast(`تم إضافة الهيئة "${subBranchName}" بنجاح`);
         modal.remove();
         renderSquadsList();
     });
@@ -9260,82 +10040,203 @@ function showAddSubBranchModal() {
     if (!container) return;
     
     const rankOrder = {
-        'عريف اول': 1, 'عريف': 2, 'سكرتير': 3, 'امين صندوق': 4, 'مساعد عريف اول': 5, 'مساعد عريف': 6
+        'عريف اول': 1, 'عريف': 2, 'سكرتير': 3, 'امين صندوق': 4, 
+        'مساعد عريف اول': 5, 'مساعد عريف': 6, 'عضو': 99
     };
     
-    // خريطة لأيقونات وأنواع الفرق
+    // ألوان الرتب
+    const rankColors = {
+        'عريف اول': '#d4a017',
+        'عريف': '#16a085',
+        'سكرتير': '#2980b9',
+        'امين صندوق': '#8e44ad',
+        'مساعد عريف اول': '#e67e22',
+        'مساعد عريف': '#f39c12',
+        'عضو': '#7f8c8d'
+    };
+    
     const squadTypeIcons = {
         'الكشافة': '⚜️',
         'المرشدات': '🌸',
-        'الأشبال': '🦁',
-        'الزهرات': '🌺',
+        'أشبال وزهرات': '🦁🌺',
         'البراعم': '🌱'
     };
     
     let html = '';
     
+    // تمر على كل مجموعة (منطقة)
     appData.branches.forEach(branch => {
         const branchSubBranches = appData.subBranches.filter(sb => sb.branchId === branch.id);
-        const branchSquads = appData.squads.filter(s => s.branchId === branch.id);
         
         html += `
-            <div style="background: #1a472a; color: white; padding: 12px 15px; border-radius: 15px; margin-bottom: 15px;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div><i class="fas fa-building"></i> <strong style="font-size: 18px;">${branch.name}</strong></div>
-                    <button class="btn btn-sm btn-danger" onclick="deleteBranch(${branch.id})" style="background: #e74c3c;"><i class="fas fa-trash"></i> حذف المنطقة</button>
-                </div>
-        `;
-        
-        if (branchSubBranches.length > 0) {
-            html += `<div style="margin-top: 12px; margin-right: 20px;"><div style="font-size: 14px; color: #d4a017; margin-bottom: 8px;"><i class="fas fa-code-branch"></i> الفروع التابعة:</div><div style="display: flex; flex-wrap: wrap; gap: 10px;">`;
-            branchSubBranches.forEach(sub => {
-                html += `<div style="background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px;"><i class="fas fa-location-dot"></i> ${sub.name}<button onclick="deleteSubBranch(${sub.id})" style="background: none; border: none; color: #ff9999; cursor: pointer; font-size: 12px;"><i class="fas fa-times-circle"></i></button></div>`;
-            });
-            html += `</div></div>`;
-        }
-        
-        html += `<div style="margin-top: 15px; margin-right: 20px;"><div style="font-size: 14px; color: #d4a017; margin-bottom: 8px;"><i class="fas fa-flag"></i> الطلايع:</div>`;
-        
-        branchSquads.forEach(squad => {
-            // إضافة أيقونة النوع بجانب اسم الطليعة
-            const typeIcon = squadTypeIcons[squad.type] || '🏴';
-            const typeName = squad.type ? ` (${typeIcon} ${squad.type})` : '';
-            
-            let squadMembers = appData.members.filter(m => m.squadId === squad.id);
-            squadMembers.sort((a, b) => {
-                const orderA = rankOrder[a.rank] || 999;
-                const orderB = rankOrder[b.rank] || 999;
-                return orderA - orderB;
-            });
-            
-            const membersHtml = squadMembers.map(member => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid #eee; background: ${member.rank === 'عريف اول' ? '#fff8e1' : 'transparent'}">
-                    <div><strong>${escapeHtml(member.name)}</strong> <span class="badge" style="background: #d4a017;">${member.rank}</span></div>
-                    <div><strong>${member.points}</strong> نقطة</div>
-                </div>
-            `).join('');
-            
-            html += `
-                <div style="background: #f8f9fa; color: #333; padding: 12px; border-radius: 12px; margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-                        <div><i class="fas fa-flag"></i> <strong>${squad.name}${typeName}</strong><br><small>القائد: ${squad.leader} | الأعضاء: ${squadMembers.length}</small></div>
+            <div style="background: linear-gradient(135deg, #1a472a, #0d2818); border-radius: 20px; margin-bottom: 25px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.3);">
+                <!-- رأس المجموعة -->
+                <div style="padding: 15px 20px; background: rgba(0,0,0,0.25); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; border-bottom: 2px solid #d4a017;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fas fa-building" style="font-size: 28px; color: #d4a017;"></i>
                         <div>
-                            <span class="badge ${squad.isOpen ? 'badge-active' : 'badge-inactive'}">${squad.isOpen ? 'مفتوحة' : 'مغلقة'}</span>
-                            <button class="btn btn-sm btn-warning" onclick="toggleSquadStatus(${squad.id})"><i class="fas fa-lock"></i></button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteSquad(${squad.id})"><i class="fas fa-trash"></i></button>
+                            <h3 style="margin: 0; font-size: 20px; color: white;">🏢 ${escapeHtml(branch.name)}</h3>
+                            <small style="color: rgba(255,255,255,0.7);"><i class="fas fa-code-branch"></i> ${branchSubBranches.length} هيئات | <i class="fas fa-flag"></i> ${appData.squads.filter(s => s.branchId === branch.id).length} طليعة</small>
                         </div>
                     </div>
-                    <div style="margin-top: 10px; border-top: 1px solid #ddd; padding-top: 8px;">
-                        <strong>أعضاء الطليعة:</strong>
-                        <div style="margin-top: 5px;">${membersHtml || '<p style="color:#999; text-align:center;">لا يوجد أعضاء</p>'}</div>
-                    </div>
+                    <button class="btn btn-sm btn-danger" onclick="deleteBranch(${branch.id})" style="background: #c0392b; padding: 6px 15px; border: none; border-radius: 25px; cursor: pointer;">
+                        <i class="fas fa-trash"></i> حذف المجموعة
+                    </button>
                 </div>
-            `;
-        });
-        html += `</div></div>`;
+                
+                <div style="padding: 20px;">
+        `;
+        
+        if (branchSubBranches.length === 0) {
+            html += `<div style="text-align: center; padding: 30px; color: rgba(255,255,255,0.4);">🚫 لا توجد هيئات في هذه المجموعة</div>`;
+        } else {
+            // تمر على كل هيئة تابعة للمجموعة
+            branchSubBranches.forEach(subBranch => {
+                const subBranchSquads = appData.squads.filter(s => s.subBranchId === subBranch.id);
+                
+                html += `
+                    <div style="background: rgba(255,255,255,0.08); border-radius: 16px; margin-bottom: 20px; overflow: hidden; backdrop-filter: blur(2px);">
+                        <!-- رأس الهيئة -->
+                        <div style="padding: 12px 18px; background: rgba(212,160,23,0.2); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; border-right: 4px solid #d4a017;">
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <i class="fas fa-location-dot" style="color: #d4a017; font-size: 18px;"></i>
+                                <span style="font-weight: bold; font-size: 16px; color: white;">📍 ${escapeHtml(subBranch.name)}</span>
+                                <span style="background: rgba(212,160,23,0.3); padding: 3px 12px; border-radius: 20px; font-size: 12px; color: #d4a017;">
+                                    <i class="fas fa-flag"></i> ${subBranchSquads.length} طليعة
+                                </span>
+                            </div>
+                            <button onclick="deleteSubBranch(${subBranch.id})" style="background: rgba(231,76,60,0.7); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 12px; transition: 0.2s;" onmouseover="this.style.background='#e74c3c'; this.style.transform='scale(1.05)'" onmouseout="this.style.background='rgba(231,76,60,0.7)'; this.style.transform='scale(1)'">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div style="padding: 15px;">
+                `;
+                
+                if (subBranchSquads.length === 0) {
+                    html += `<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.4);">📌 لا توجد طلايع في هذه الهيئة</div>`;
+                } else {
+                    // تمر على كل طليعة تابعة للهيئة
+                    subBranchSquads.forEach(squad => {
+                        let squadMembers = appData.members.filter(m => m.squadId === squad.id);
+                        squadMembers.sort((a, b) => {
+                            const orderA = rankOrder[a.rank] || 99;
+                            const orderB = rankOrder[b.rank] || 99;
+                            return orderA - orderB;
+                        });
+                        
+                        const typeIcon = squadTypeIcons[squad.type] || '🏴';
+                        const typeName = squad.type ? ` (${typeIcon} ${squad.type})` : '';
+                        
+                        // بناء جدول الأعضاء بألوان واضحة
+                        let membersHtml = '';
+                        if (squadMembers.length === 0) {
+                            membersHtml = '<div style="text-align: center; padding: 15px; color: #999; background: #f8f9fa; border-radius: 10px;">🚫 لا يوجد أعضاء في هذه الطليعة</div>';
+                        } else {
+                            membersHtml = `
+                                <div style="overflow-x: auto; margin-top: 10px;">
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; border-radius: 10px; overflow: hidden;">
+                                        <thead>
+                                            <tr style="background: #2c3e50; color: white;">
+                                                <th style="padding: 10px 8px; text-align: center; width: 50px;">#</th>
+                                                <th style="padding: 10px 8px; text-align: right;">الاسم</th>
+                                                <th style="padding: 10px 8px; text-align: center; width: 100px;">الرتبة</th>
+                                                <th style="padding: 10px 8px; text-align: center; width: 80px;">⭐ النقاط</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                            `;
+                            squadMembers.forEach((member, idx) => {
+                                const rankColor = rankColors[member.rank] || '#7f8c8d';
+                                // صفوف متناوبة بألوان مختلفة للوضوح
+                                const bgColor = idx % 2 === 0 ? '#ffffff' : '#f0f5f0';
+                                membersHtml += `
+                                    <tr style="border-bottom: 1px solid #e0e0e0; background: ${bgColor};">
+                                        <td style="padding: 10px 8px; text-align: center; font-weight: bold; color: #1a472a;">${idx + 1}</td>
+                                        <td style="padding: 10px 8px;">
+                                            <strong style="color: #2c3e50;">${escapeHtml(member.name)}</strong>
+                                            ${member.rank === 'عريف اول' ? '<span style="background: #d4a017; color: white; padding: 2px 6px; border-radius: 12px; font-size: 10px; margin-right: 8px;">قائد</span>' : ''}
+                                        </td>
+                                        <td style="padding: 10px 8px; text-align: center;">
+                                            <span style="background: ${rankColor}20; color: ${rankColor}; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid ${rankColor}40;">
+                                                ${member.rank || 'عضو'}
+                                            </span>
+                                        </td>
+                                        <td style="padding: 10px 8px; text-align: center;">
+                                            <span style="background: #d4a01720; color: #b8860b; padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 14px;">
+                                                ${member.points}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+                            membersHtml += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            `;
+                        }
+                        
+                        html += `
+                            <div style="background: white; border-radius: 14px; margin-bottom: 18px; overflow: hidden; box-shadow: 0 3px 12px rgba(0,0,0,0.15);">
+                                <div style="padding: 14px 18px; background: linear-gradient(135deg, #f5f5f5, #e8e8e8); border-right: 5px solid #d4a017; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                                    <div>
+                                        <span style="font-size: 18px; font-weight: bold; color: #1a472a;">
+                                            <i class="fas fa-flag" style="color: #d4a017;"></i> ${escapeHtml(squad.name)}${typeName}
+                                        </span>
+                                        <br>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 5px;">
+                                            <small style="color: #555;">
+                                                <i class="fas fa-user-tie" style="color: #d4a017;"></i> القائد: <strong>${squad.leader}</strong>
+                                            </small>
+                                            <small style="color: #555;">
+                                                <i class="fas fa-users" style="color: #d4a017;"></i> عدد الأعضاء: <strong>${squadMembers.length}</strong>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        <span style="background: ${squad.isOpen ? '#2ecc71' : '#e74c3c'}; color: white; padding: 5px 14px; border-radius: 25px; font-size: 12px; font-weight: bold;">
+                                            <i class="fas ${squad.isOpen ? 'fa-unlock-alt' : 'fa-lock'}"></i> ${squad.isOpen ? 'مفتوحة' : 'مغلقة'}
+                                        </span>
+                                        <button class="btn btn-sm" onclick="toggleSquadStatus(${squad.id})" style="background: #f39c12; color: white; border: none; padding: 5px 14px; border-radius: 25px; cursor: pointer; font-size: 12px;">
+                                            <i class="fas fa-exchange-alt"></i> تغيير
+                                        </button>
+                                        <button class="btn btn-sm" onclick="deleteSquad(${squad.id})" style="background: #e74c3c; color: white; border: none; padding: 5px 14px; border-radius: 25px; cursor: pointer; font-size: 12px;">
+                                            <i class="fas fa-trash"></i> حذف
+                                        </button>
+                                    </div>
+                                </div>
+                                <div style="padding: 15px; background: #fafafa;">
+                                    <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                                        <i class="fas fa-users" style="color: #1a472a;"></i>
+                                        <strong style="color: #1a472a;">📋 قائمة الأعضاء</strong>
+                                        <span style="background: #1a472a; color: white; padding: 2px 10px; border-radius: 20px; font-size: 11px;">${squadMembers.length} عضو</span>
+                                    </div>
+                                    ${membersHtml}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        html += `
+                </div>
+            </div>
+        `;
     });
     
-    container.innerHTML = html || '<p style="text-align:center;">لا توجد مناطق مضافة بعد</p>';
+    if (appData.branches.length === 0) {
+        html = '<div style="text-align:center; padding:50px; background:rgba(255,255,255,0.9); border-radius:25px; margin:20px;"><i class="fas fa-building" style="font-size: 60px; color: #d4a017;"></i><p style="color:#666; margin-top:15px;">🏢 لا توجد مجموعات مضافة بعد.<br>اضغط على "إضافة مجموعة" للبدء</p></div>';
+    }
+    
+    container.innerHTML = html;
 }
         function showAddBranchModal() {
             const modal = document.createElement('div');
@@ -9343,8 +10244,8 @@ function showAddSubBranchModal() {
             modal.style.display = 'flex';
             modal.innerHTML = `
                 <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-building"></i> إضافة منطقة جديدة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <form id="addBranchForm"><div class="input-group"><label>اسم المنطقة</label><input type="text" id="branchName" required></div><button type="submit" class="btn btn-primary" style="width:100%;">إضافة</button></form>
+                    <div class="modal-header"><h3><i class="fas fa-building"></i> إضافة مجموعة جديدة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+                    <form id="addBranchForm"><div class="input-group"><label>اسم المجموعة</label><input type="text" id="branchName" required></div><button type="submit" class="btn btn-primary" style="width:100%;">إضافة</button></form>
                 </div>
             `;
             document.body.appendChild(modal);
@@ -9353,7 +10254,7 @@ function showAddSubBranchModal() {
                 const newBranch = { id: Date.now(), name: document.getElementById('branchName').value, createdAt: new Date().toISOString() };
                 appData.branches.push(newBranch);
                 await saveAllDataToFirebase();
-                showToast('تم إضافة المنطقة');
+                showToast('تم إضافة المجموعة');
                 modal.remove();
                 renderAdminSquads();
             });
@@ -9367,15 +10268,15 @@ function showAddSubBranchModal() {
         <div class="modal-content">
             <div class="modal-header"><h3><i class="fas fa-flag"></i> إضافة طليعة جديدة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
             <form id="addSquadForm">
-                <div class="input-group"><label>اختر المنطقة</label>
+                <div class="input-group"><label>اختر المجموعة</label>
                     <select id="squadBranch" required>
-                        <option value="">-- اختر المنطقة --</option>
+                        <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>اختر الفرع</label>
+                <div class="input-group"><label>اختر الهيئة</label>
                     <select id="squadSubBranch" required>
-                        <option value="">-- اختر المنطقة أولاً --</option>
+                        <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
                 <div class="input-group"><label>اسم الطليعة</label><input type="text" id="squadName" required></div>
@@ -9384,13 +10285,13 @@ function showAddSubBranchModal() {
                 <div class="input-group">
                     <label><i class="fas fa-users"></i> نوع الفريق</label>
                     <select id="squadType" required>
-                        <option value="">-- اختر نوع الفريق --</option>
-                        <option value="الكشافة">⚜️ فريق الكشافة</option>
-                        <option value="المرشدات">🌸 فريق المرشدات</option>
-                        <option value="الأشبال">🦁 فريق الأشبال</option>
-                        <option value="الزهرات">🌺 فريق الزهرات</option>
-                        <option value="البراعم">🌱 فريق البراعم</option>
-                    </select>
+    <option value="">-- اختر المرحلة --</option>
+    <option value="الكشافة">⚜️ فريق الكشافة</option>
+    <option value="المرشدات">🌸 فريق المرشدات</option>
+    <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>  // معدل
+    <option value="البراعم">🌱 فريق البراعم</option>
+</select>
+
                 </div>
                 <!-- ------------------------------------------------------------- -->
                 
@@ -9410,10 +10311,10 @@ function showAddSubBranchModal() {
         const subBranchSelect = document.getElementById('squadSubBranch');
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
-            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+            subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
                 branches.map(sb => `<option value="${sb.id}" data-branch-id="${sb.branchId}">${sb.name}</option>`).join('');
         } else {
-            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+            subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
         }
         document.getElementById('autoLeaderName').value = '';
     });
@@ -9430,7 +10331,7 @@ function showAddSubBranchModal() {
                 autoLeaderInput.value = responsibleLeader.name + ' (تم تعيينه تلقائياً)';
                 autoLeaderInput.style.color = '#2ecc71';
             } else {
-                autoLeaderInput.value = '⚠️ لا يوجد قائد مسؤول لهذا الفرع';
+                autoLeaderInput.value = '⚠️ لا يوجد قائد مسؤول لهذا الهيئة';
                 autoLeaderInput.style.color = '#e74c3c';
             }
         } else {
@@ -9447,7 +10348,7 @@ function showAddSubBranchModal() {
         const squadType = document.getElementById('squadType').value; // <-- القيمة الجديدة
         
         if (!branchId || !subBranchId || !squadName || !squadType) {
-            showToast('الرجاء اختيار المنطقة والفرع وإدخال اسم الطليعة ونوع الفريق', 'error');
+            showToast('الرجاء اختيار المجموعة الهيئة وإدخال اسم الطليعة ونوع الفريق', 'error');
             return;
         }
         
@@ -10277,6 +11178,10 @@ window.approveJoinRequest = approveJoinRequest;
 window.rejectJoinRequest = rejectJoinRequest;
 window.updatePendingRequestsBadge = updatePendingRequestsBadge;
         window.logout = logout;
+        // أضف هذه الأسطر في نهاية الملف (قبل startApp)
+window.showJoinRequestDetailsForLeader = showJoinRequestDetailsForLeader;
+window.showCompleteDataModal = showCompleteDataModal;
+window.completeMemberRegistration = completeMemberRegistration;
 
 
 // ==================== LANDING PAGE FUNCTIONS ====================
@@ -10485,6 +11390,7 @@ function addThemeToggleButton() {
     };
 }
 // ==================== طلب انضمام من صفحة تسجيل الدخول ====================
+// استبدل دالة showJoinRequestModalFromLogin بالكود التالي:
 function showJoinRequestModalFromLogin() {
     const modal = document.createElement('div');
     modal.className = 'modal';
@@ -10499,40 +11405,27 @@ function showJoinRequestModalFromLogin() {
                 <div class="input-group"><label>الاسم الكامل</label><input type="text" id="reqNameLogin" required></div>
                 <div class="input-group"><label>السن</label><input type="number" id="reqAgeLogin" min="6" max="30" required></div>
                 <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="reqPhoneLogin" required></div>
-                <div class="input-group"><label>الرتبة المطلوبة</label>
-                    <select id="reqRankLogin" required>
-                        <option value="">اختر الرتبة</option>
-                        <option value="عريف اول">عريف اول</option>
-                        <option value="عريف">عريف</option>
-                        <option value="سكرتير">سكرتير</option>
-                        <option value="امين صندوق">امين صندوق</option>
-                        <option value="مساعد عريف اول">مساعد عريف اول</option>
-                        <option value="مساعد عريف">مساعد عريف</option>
-                    </select>
-                </div>
-                <div class="input-group"><label>المنطقة</label>
+                <div class="input-group"><label>المجموعة</label>
                     <select id="reqBranchLogin" required>
-                        <option value="">-- اختر المنطقة --</option>
+                        <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>الفرع</label>
+                <div class="input-group"><label>الهيئة</label>
                     <select id="reqSubBranchLogin" required>
-                        <option value="">-- اختر المنطقة أولاً --</option>
+                        <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
-                <div class="input-group"><label>الطليعة المرغوب الانضمام إليها</label>
-                    <select id="reqSquadLogin" required>
-                        <option value="">-- اختر الفرع أولاً --</option>
+                <div class="input-group">
+                    <label><i class="fas fa-users"></i> اختر المرحلة</label>
+                    <select id="reqSquadTypeLogin" required>
+                        <option value="">-- اختر المرحلة --</option>
+                        <option value="الكشافة">⚜️ فريق الكشافة</option>
+                        <option value="المرشدات">🌸 فريق المرشدات</option>
+                        <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>
+                        <option value="البراعم">🌱 فريق البراعم</option>
                     </select>
                 </div>
-                
-                <!-- الخانة الجديدة: نوع الطليعة (يظهر تلقائياً) -->
-                <div class="input-group" id="squadTypeContainerLogin" style="display: none;">
-                    <label><i class="fas fa-users"></i> نوع الطليعة</label>
-                    <input type="text" id="reqSquadTypeLogin" readonly style="background: #f0f0f0; font-weight: bold; color: #1a472a;">
-                </div>
-                
                 <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="reqUsernameLogin" required></div>
                 <div class="input-group"><label>كلمة المرور</label><input type="password" id="reqPasswordLogin" required></div>
                 <button type="submit" class="btn btn-primary" style="width:100%;">إرسال الطلب</button>
@@ -10545,66 +11438,13 @@ function showJoinRequestModalFromLogin() {
     document.getElementById('reqBranchLogin').addEventListener('change', function() {
         const branchId = parseInt(this.value);
         const subBranchSelect = document.getElementById('reqSubBranchLogin');
-        const squadSelect = document.getElementById('reqSquadLogin');
-        const squadTypeContainer = document.getElementById('squadTypeContainerLogin');
-        const squadTypeInput = document.getElementById('reqSquadTypeLogin');
         
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
-            subBranchSelect.innerHTML = '<option value="">-- اختر الفرع --</option>' + 
+            subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
                 branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
-            squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
-            squadTypeContainer.style.display = 'none';
-            squadTypeInput.value = '';
         } else {
-            subBranchSelect.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
-            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
-            squadTypeContainer.style.display = 'none';
-        }
-    });
-    
-    // تحديث الطلايع عند اختيار الفرع
-    document.getElementById('reqSubBranchLogin').addEventListener('change', function() {
-        const subBranchId = parseInt(this.value);
-        const squadSelect = document.getElementById('reqSquadLogin');
-        const squadTypeContainer = document.getElementById('squadTypeContainerLogin');
-        const squadTypeInput = document.getElementById('reqSquadTypeLogin');
-        
-        if (subBranchId) {
-            const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
-            if (subBranch) {
-                const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
-                squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
-                    squads.map(s => `<option value="${s.id}" data-type="${s.type || 'الكشافة'}">${s.name} (${s.leader})</option>`).join('');
-                squadTypeContainer.style.display = 'none';
-                squadTypeInput.value = '';
-            }
-        } else {
-            squadSelect.innerHTML = '<option value="">-- اختر الفرع أولاً --</option>';
-            squadTypeContainer.style.display = 'none';
-        }
-    });
-    
-    // عند اختيار الطليعة، تظهر خانة نوع الطليعة تلقائياً
-    document.getElementById('reqSquadLogin').addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        const squadType = selectedOption.getAttribute('data-type') || 'الكشافة';
-        const squadTypeContainer = document.getElementById('squadTypeContainerLogin');
-        const squadTypeInput = document.getElementById('reqSquadTypeLogin');
-        const squadTypeIconsMap = {
-            'الكشافة': '⚜️ فريق الكشافة',
-            'المرشدات': '🌸 فريق المرشدات',
-            'الأشبال': '🦁 فريق الأشبال',
-            'الزهرات': '🌺 فريق الزهرات',
-            'البراعم': '🌱 فريق البراعم'
-        };
-        
-        if (this.value && squadType) {
-            squadTypeInput.value = squadTypeIconsMap[squadType] || squadType;
-            squadTypeContainer.style.display = 'block';
-        } else {
-            squadTypeContainer.style.display = 'none';
-            squadTypeInput.value = '';
+            subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
         }
     });
     
@@ -10623,12 +11463,10 @@ function showJoinRequestModalFromLogin() {
         
         const subBranchId = parseInt(document.getElementById('reqSubBranchLogin').value);
         const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
-        const squadId = parseInt(document.getElementById('reqSquadLogin').value);
-        const squad = appData.squads.find(s => s.id === squadId);
-        const squadType = document.getElementById('reqSquadTypeLogin').value || (squad ? squad.type : 'الكشافة');
+        const squadType = document.getElementById('reqSquadTypeLogin').value;
         
-        if (!subBranchId || !squadId) {
-            showToast('الرجاء اختيار الفرع والطليعة', 'error');
+        if (!subBranchId || !squadType) {
+            showToast('الرجاء اختيار الهيئة والمرحلة', 'error');
             return;
         }
         
@@ -10637,11 +11475,10 @@ function showJoinRequestModalFromLogin() {
             name: document.getElementById('reqNameLogin').value,
             age: parseInt(document.getElementById('reqAgeLogin').value),
             phone: document.getElementById('reqPhoneLogin').value,
-            rank: document.getElementById('reqRankLogin').value,
+            rank: "عضو",
             branchId: subBranch.branchId,
             subBranchId: subBranchId,
-            squadId: squadId,
-            squadType: squadType,  // حفظ نوع الطليعة مع الطلب
+            squadType: squadType,
             username: username,
             password: document.getElementById('reqPasswordLogin').value,
             status: 'pending',
@@ -10652,17 +11489,20 @@ function showJoinRequestModalFromLogin() {
         appData.joinRequests.push(newRequest);
         await saveAllDataToFirebase();
         
-        const responsibleLeader = appData.leaders.find(leader => 
+        // إرسال إشعار للقادة المسؤولين عن هذه الهيئة
+        const responsibleLeaders = appData.leaders.filter(leader => 
             leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
         );
-        const leaderName = responsibleLeader ? responsibleLeader.name : (squad ? squad.leader : 'القائد المسؤول');
+        
+        const leaderNames = responsibleLeaders.map(l => l.name).join('، ');
         
         modal.remove();
-        showCustomRequestMessage(leaderName, squad ? squad.name : 'الطليعة', subBranch ? subBranch.name : 'الفرع');
+        showCustomRequestMessage(leaderNames, subBranch ? subBranch.name : 'الهيئة');
     });
 }
 // دالة عرض رسالة مخصصة بعد تقديم الطلب
-function showCustomRequestMessage(leaderName, squadName, branchName) {
+// استبدل دالة showCustomRequestMessage بالكود التالي:
+function showCustomRequestMessage(leaderNames, branchName) {
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.display = 'flex';
@@ -10674,8 +11514,8 @@ function showCustomRequestMessage(leaderName, squadName, branchName) {
             <h3 style="color:#1a472a; margin-bottom:10px;">✓ تم إرسال طلبك بنجاح!</h3>
             <p style="color:#666; margin-bottom:20px; line-height:1.6;">
                 سيتم مراجعة طلب الانضمام الخاص بك من قبل<br>
-                <strong style="color:#d4a017; font-size:18px;">${leaderName}</strong><br>
-                القائد المسؤول عن <strong>${branchName}</strong> - طليعة <strong>${squadName}</strong>
+                <strong style="color:#d4a017; font-size:18px;">${leaderNames}</strong><br>
+                القادة المسؤولين عن <strong>${branchName}</strong>
             </p>
             <div style="background:#f0f5f0; padding:12px; border-radius:12px; margin-bottom:20px;">
                 <i class="fas fa-clock" style="color:#d4a017;"></i>
@@ -10688,7 +11528,6 @@ function showCustomRequestMessage(leaderName, squadName, branchName) {
     `;
     document.body.appendChild(modal);
     
-    // إغلاق النافذة بعد 5 ثواني
     setTimeout(() => {
         if (modal && modal.parentNode) modal.remove();
     }, 5000);
@@ -10743,11 +11582,10 @@ function renderLandingPage() {
                 </div>
             </div>
 
-            <!-- الصورة أسفل الهيدر -->
-            <div style="text-align: center; padding: 20px 0 10px 0; background: linear-gradient(180deg, #ffffff 0%, #e8f5e9 100%);">
-                <img src="https://i.ibb.co/d9sKxjZ/In-Shot-20260528-143153172.jpg" alt="صورة المجموعة" style="height: 80px; width: auto; max-width: 90%; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid #d4a017; animation: floatImage 3s ease-in-out infinite;">
-            </div>
-
+<!-- الصورة أسفل الهيدر -->
+<div style="text-align: center; padding: 20px 0 10px 0; background: linear-gradient(180deg, #ffffff 0%, #e8f5e9 100%);">
+    <img src="https://i.ibb.co/YC6MCty/Whats-App-Image-2026-06-05-at-6-22-06-PM.jpg" alt="صورة المجموعة" style="height: 110px; width: auto; max-width: 90%; border-radius: 50px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border: 2px solid #d4a017; animation: floatImage 3s ease-in-out infinite;">
+</div>
             <style>
             @keyframes floatImage {
                 0%, 100% { transform: translateY(0); }
@@ -10781,7 +11619,7 @@ function renderLandingPage() {
                     <p class="subtitle-new">انطلق في رحلة المغامرة والتعلم مع أقوى مجموعة كشفية بحرية في مصر</p>
                     <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
                         <button class="btn-marine btn-marine-primary" onclick="transitionToPage(() => goToLoginFromLanding())">
-                            <i class="fas fa-sign-in-alt"></i> ابدأ رحلتك الآن
+                            <i class="fas fa-sign-in-alt"></i> تسجيل دخول
                         </button>
                         <button class="btn-marine btn-marine-secondary" onclick="showJoinRequestModalFromLanding()">
                             <i class="fas fa-user-plus"></i> انضم إلينا
@@ -11457,7 +12295,7 @@ function renderLeaderboard() {
                     <tr>
                         <th>#</th>
                         <th>الاسم</th>
-                        <th>الفرع / الطليعة</th>
+                        <th>الهيئة / الطليعة</th>
                         <th>الرتبة</th>
                         <th><i class="fas fa-star"></i> النقاط</th>
                     </tr>
@@ -11561,7 +12399,7 @@ function updateLeaderboardFilters() {
     };
     
     // بناء خيارات فلتر النوع
-    typeSelect.innerHTML = '<option value="all">🎯 جميع الأنواع</option>';
+    typeSelect.innerHTML = '<option value="all">🎯 جميع المراحل</option>';
     
     if (availableTypes.length > 0) {
         availableTypes.forEach(type => {
@@ -11596,7 +12434,7 @@ function addLeaderboardToLanding() {
     container.innerHTML = '';
     
     // تعبئة الفروع في قائمة الاختيار
-    let branchesOptions = '<option value="all">🌍 جميع الفروع</option>';
+    let branchesOptions = '<option value="all">🌍 جميع الهيئات</option>';
     appData.branches.forEach(branch => {
         branchesOptions += `<option value="${branch.id}">🏢 ${branch.name}</option>`;
     });
@@ -11611,21 +12449,21 @@ function addLeaderboardToLanding() {
                 </div>
                 <div class="leaderboard-filters">
                     <div class="filter-group">
-                        <label><i class="fas fa-map-marker-alt"></i> اختر الفرع</label>
+                        <label><i class="fas fa-map-marker-alt"></i> اختر الهيئة</label>
                         <select id="branchFilterLeaderboard" onchange="updateLeaderboardFilters()">
                             ${branchesOptions}
                         </select>
                     </div>
                     <div class="filter-group">
                         <label><i class="fas fa-users"></i> اختر النوع</label>
-                        <select id="typeFilterLeaderboard" onchange="updateLeaderboardFilters()">
-                            <option value="all">🎯 جميع الأنواع</option>
-                            <option value="الكشافة">⚜️ الكشافة</option>
-                            <option value="المرشدات">🌸 المرشدات</option>
-                            <option value="الأشبال">🦁 الأشبال</option>
-                            <option value="الزهرات">🌺 الزهرات</option>
-                            <option value="البراعم">🌱 البراعم</option>
-                        </select>
+<select id="typeFilterLeaderboard">
+    <option value="all">🎯 جميع المراحل</option>
+    <option value="الكشافة">⚜️ الكشافة</option>
+    <option value="المرشدات">🌸 المرشدات</option>
+    <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>  // معدل
+    <option value="البراعم">🌱 البراعم</option>
+</select>
+
                     </div>
                 </div>
                 <div id="leaderboardTableContainer"></div>
@@ -11876,7 +12714,7 @@ window.showSendEvaluationFormDestinationModal = function(formId) {
     const mySubBranches = appData.subBranches.filter(sb => mySubBranchIds.includes(sb.id));
     const mySquads = appData.squads.filter(s => myBranchIds.includes(s.branchId));
     
-    let branchesOptions = '<option value="">-- اختر المنطقة --</option>';
+    let branchesOptions = '<option value="">-- اختر المجموعة --</option>';
     myBranchIds.forEach(branchId => {
         const branch = appData.branches.find(b => b.id === branchId);
         if (branch) branchesOptions += `<option value="${branch.id}">🏢 ${branch.name}</option>`;
@@ -11892,8 +12730,8 @@ window.showSendEvaluationFormDestinationModal = function(formId) {
                 <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
             </div>
             <form id="sendEvalForm">
-                <div class="input-group"><label>اختر المنطقة</label><select id="evalBranch" required style="width:100%; padding:10px;">${branchesOptions}</select></div>
-                <div class="input-group"><label>اختر الفرع</label><select id="evalSubBranch" required style="width:100%; padding:10px;"><option value="">-- اختر المنطقة أولاً --</option></select></div>
+                <div class="input-group"><label>اختر المجموعة</label><select id="evalBranch" required style="width:100%; padding:10px;">${branchesOptions}</select></div>
+                <div class="input-group"><label>اختر الهيئة</label><select id="evalSubBranch" required style="width:100%; padding:10px;"><option value="">-- اختر المجموعة أولاً --</option></select></div>
                 <div class="input-group"><label>اختر الطليعة</label><select id="evalSquad" style="width:100%; padding:10px;"><option value="all">-- جميع الطلايع --</option></select></div>
                 <div id="evalCount" style="background:#e8f5e9; padding:10px; border-radius:10px; text-align:center;">سيتم الإرسال إلى <span id="evalCountNum">0</span> عضو</div>
                 <div style="display:flex; gap:10px; margin-top:20px;">
@@ -11925,10 +12763,10 @@ window.showSendEvaluationFormDestinationModal = function(formId) {
         const branchId = parseInt(branchSel.value);
         if (branchId) {
             const filtered = mySubBranches.filter(sb => sb.branchId === branchId);
-            subBranchSel.innerHTML = '<option value="">-- اختر الفرع --</option>' + filtered.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            subBranchSel.innerHTML = '<option value="">-- اختر الهيئة --</option>' + filtered.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
             squadSel.innerHTML = '<option value="all">-- جميع الطلايع --</option>';
         } else {
-            subBranchSel.innerHTML = '<option value="">-- اختر المنطقة أولاً --</option>';
+            subBranchSel.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
         }
         updateCount();
     }
@@ -11954,7 +12792,7 @@ window.showSendEvaluationFormDestinationModal = function(formId) {
         e.preventDefault();
         const subBranchId = parseInt(subBranchSel.value);
         const squadId = squadSel.value;
-        if (!subBranchId) { showToast('الرجاء اختيار الفرع', 'error'); return; }
+        if (!subBranchId) { showToast('الرجاء اختيار الهيئة', 'error'); return; }
         
         let targetMembers = squadId === 'all' ? appData.members.filter(m => m.subBranchId === subBranchId) : appData.members.filter(m => m.squadId == squadId);
         if (targetMembers.length === 0) { showToast('⚠️ لا يوجد أعضاء', 'error'); return; }
