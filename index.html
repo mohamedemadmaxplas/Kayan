@@ -8646,121 +8646,230 @@ function canSubmitTask(taskId) {
         }
     });
 }
-
-      function showAddMemberModal() {
+function showAddMemberModal() {
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.display = 'flex';
     modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header"><h3><i class="fas fa-user-plus"></i> إضافة عضو جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+        <div class="modal-content" style="max-width:550px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> إضافة عضو جديد</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
             <form id="addMemberForm">
-                <div class="input-group"><label>الاسم الكامل</label><input type="text" id="memberName" required></div>
-                <div class="input-group"><label>السن</label><input type="number" id="memberAge" min="6" max="30" placeholder="أدخل السن" required></div>
-                <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="memberPhone" required></div>
-                <div class="input-group"><label>الرتبة</label>
-                    <select id="memberRank" required>
-                        <option value="">اختر الرتبة</option>
-                        <option value="عريف اول">عريف اول</option>
-                        <option value="عريف">عريف</option>
-                        <option value="سكرتير">سكرتير</option>
-                        <option value="امين صندوق">امين صندوق</option>
-                        <option value="مساعد عريف اول">مساعد عريف اول</option>
-                        <option value="مساعد عريف">مساعد عريف</option>
-                    </select>
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> الاسم الكامل</label>
+                    <input type="text" id="memberName" required>
                 </div>
-                <div class="input-group"><label>كود العضو</label><div class="code-generator"><input type="text" id="memberCode" required><button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCode()">توليد</button></div></div>
-                <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="memberUsername" required></div>
-                <div class="input-group"><label>كلمة المرور</label><input type="password" id="memberPassword" required></div>
-                <div class="input-group"><label>المجموعة</label>
-                    <select id="memberBranch" onchange="updateSubBranchesByBranch('memberBranch', 'memberSubBranch')" required>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-qrcode"></i> كود العضو</label>
+                    <div class="code-generator">
+                        <input type="text" id="memberCode" required>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCode()">توليد</button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-user-circle"></i> اسم المستخدم (للدخول)</label>
+                    <input type="text" id="memberUsername" required>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> كلمة المرور</label>
+                    <input type="password" id="memberPassword" required>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-building"></i> المجموعة</label>
+                    <select id="memberBranch" required>
                         <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>الهيئة</label>
-                    <select id="memberSubBranch" required>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-users"></i> المرحلة</label>
+                    <select id="memberStage" required disabled>
                         <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
-                <div class="input-group"><label>الطليعة</label>
-                    <select id="memberSquad" required>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-code-branch"></i> الهيئة</label>
+                    <select id="memberSubBranch" required disabled>
+                        <option value="">-- اختر المرحلة أولاً --</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-flag"></i>الطليعة / السداسي</label>
+                    <select id="memberSquad" required disabled>
                         <option value="">-- اختر الهيئة أولاً --</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة العضو</button>
+                
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">
+                    <i class="fas fa-save"></i> إضافة العضو
+                </button>
             </form>
         </div>
     `;
     document.body.appendChild(modal);
     
-    // إضافة مستمع لتحديث الفروع عند اختيار المنطقة
-    document.getElementById('memberBranch').addEventListener('change', function() {
-        const branchId = parseInt(this.value);
-        const subBranchSelect = document.getElementById('memberSubBranch');
-        const squadSelect = document.getElementById('memberSquad');
+    const branchSelect = document.getElementById('memberBranch');
+    const stageSelect = document.getElementById('memberStage');
+    const subBranchSelect = document.getElementById('memberSubBranch');
+    const squadSelect = document.getElementById('memberSquad');
+    
+    // تحديث المراحل عند اختيار المجموعة
+    branchSelect.addEventListener('change', function() {
+        const selectedBranchId = parseInt(this.value);
         
-        if (branchId) {
-            const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
-            subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
-                branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
-            squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>';
+        if (selectedBranchId) {
+            // جلب جميع المراحل الموجودة في هذه المجموعة
+            const stagesInBranch = [...new Set(
+                appData.squads
+                    .filter(s => s.branchId === selectedBranchId)
+                    .map(s => s.type)
+                    .filter(type => type) // إزالة القيم الفارغة
+            )];
+            
+            const stageNames = {
+                'الكشافة': '⚜️ فريق الكشافة',
+                'المرشدات': '🌸 فريق المرشدات',
+                'أشبال وزهرات': '🦁🌸 أشبال وزهرات',
+                'البراعم': '🌱 فريق البراعم'
+            };
+            
+            if (stagesInBranch.length > 0) {
+                stageSelect.disabled = false;
+                stageSelect.innerHTML = '<option value="">-- اختر المرحلة --</option>' + 
+                    stagesInBranch.map(stage => `<option value="${stage}">${stageNames[stage] || stage}</option>`).join('');
+            } else {
+                stageSelect.disabled = true;
+                stageSelect.innerHTML = '<option value="">-- لا توجد مراحل متاحة --</option>';
+                showToast('⚠️ لا توجد طلايع في هذه المجموعة', 'error');
+            }
+            
+            // إعادة تعيين الهيئة والطليعة
+            subBranchSelect.disabled = true;
+            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
+            squadSelect.disabled = true;
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         } else {
-            subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
+            stageSelect.disabled = true;
+            stageSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
+            subBranchSelect.disabled = true;
+            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
+            squadSelect.disabled = true;
             squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         }
     });
     
-    // إضافة مستمع لتحديث الطلايع عند اختيار الفرع
-    document.getElementById('memberSubBranch').addEventListener('change', function() {
-        const subBranchId = parseInt(this.value);
-        const squadSelect = document.getElementById('memberSquad');
+    // تحديث الهيئات عند اختيار المرحلة
+    stageSelect.addEventListener('change', function() {
+        const selectedBranchId = parseInt(branchSelect.value);
+        const selectedStage = this.value;
         
-        if (subBranchId) {
-            // الحصول على المنطقة التي ينتمي إليها هذا الفرع
-            const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
-            if (subBranch) {
-                const squads = appData.squads.filter(s => s.branchId === subBranch.branchId && s.isOpen);
+        if (selectedBranchId && selectedStage) {
+            // جلب الهيئات التي بها طلايع من هذه المرحلة في هذه المجموعة
+            const squadsInBranch = appData.squads.filter(s => 
+                s.branchId === selectedBranchId && s.type === selectedStage
+            );
+            
+            const subBranchIds = [...new Set(squadsInBranch.map(s => s.subBranchId))];
+            const availableSubBranches = appData.subBranches.filter(sb => subBranchIds.includes(sb.id));
+            
+            if (availableSubBranches.length > 0) {
+                subBranchSelect.disabled = false;
+                subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
+                    availableSubBranches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            } else {
+                subBranchSelect.disabled = true;
+                subBranchSelect.innerHTML = '<option value="">-- لا توجد هيئات متاحة --</option>';
+                showToast('⚠️ لا توجد هيئات تحتوي على طلايع من هذه المرحلة', 'error');
+            }
+            
+            // إعادة تعيين الطليعة
+            squadSelect.disabled = true;
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
+        } else {
+            subBranchSelect.disabled = true;
+            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
+            squadSelect.disabled = true;
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
+        }
+    });
+    
+    // تحديث الطلايع عند اختيار الهيئة
+    subBranchSelect.addEventListener('change', function() {
+        const selectedBranchId = parseInt(branchSelect.value);
+        const selectedStage = stageSelect.value;
+        const selectedSubBranchId = parseInt(this.value);
+        
+        if (selectedSubBranchId && selectedBranchId && selectedStage) {
+            const availableSquads = appData.squads.filter(s => 
+                s.branchId === selectedBranchId &&
+                s.subBranchId === selectedSubBranchId &&
+                s.type === selectedStage &&
+                s.isOpen === true
+            );
+            
+            if (availableSquads.length > 0) {
+                squadSelect.disabled = false;
                 squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
-                    squads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
+                    availableSquads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
+            } else {
+                squadSelect.disabled = true;
+                squadSelect.innerHTML = '<option value="">-- لا توجد طلايع متاحة --</option>';
+                showToast('⚠️ لا توجد طلايع مفتوحة من هذه المرحلة في هذه الهيئة', 'error');
             }
         } else {
+            squadSelect.disabled = true;
             squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         }
     });
     
     document.getElementById('addMemberForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const newUsername = document.getElementById('memberUsername').value;
-        if (appData.members.some(m => m.username === newUsername)) {
+        
+        const username = document.getElementById('memberUsername').value;
+        
+        if (appData.members.some(m => m.username === username)) {
             showToast('اسم المستخدم موجود مسبقاً', 'error');
             return;
         }
         
+        const branchId = parseInt(document.getElementById('memberBranch').value);
         const subBranchId = parseInt(document.getElementById('memberSubBranch').value);
-        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
         const squadId = parseInt(document.getElementById('memberSquad').value);
+        const selectedStage = document.getElementById('memberStage').value;
         
-        if (!subBranchId || !squadId) {
-            showToast('الرجاء اختيار الهيئة والطليعة', 'error');
+        if (!branchId || !subBranchId || !squadId || !selectedStage) {
+            showToast('الرجاء اختيار جميع البيانات', 'error');
             return;
         }
+        
+        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
         
         const newMember = {
             id: Date.now(),
             code: document.getElementById('memberCode').value,
             name: document.getElementById('memberName').value,
-            age: parseInt(document.getElementById('memberAge').value),
-            rank: document.getElementById('memberRank').value,
-            username: newUsername,
+            age: null,
+            rank: "عضو",
+            username: username,
             password: document.getElementById('memberPassword').value,
-            phone: document.getElementById('memberPhone').value,
-            branchId: subBranch.branchId,
+            phone: null,
+            branchId: branchId,
             subBranchId: subBranchId,
             squadId: squadId,
+            squadType: selectedStage,
             points: 0,
             joinedAt: new Date().toISOString()
         };
+        
         appData.members.push(newMember);
         await saveAllDataToFirebase();
         showToast('تم إضافة العضو بنجاح');
@@ -9571,83 +9680,240 @@ function showAddTaskModalForLeader() {
 
 function showAddMemberModalForLeader() {
     const leader = currentUser;
-    const mySquads = appData.squads.filter(s => s.branchId === leader.branchId);
+    const mySubBranchIds = leader.subBranchIds || [];
+    const myBranchIds = [...new Set(appData.subBranches.filter(sb => mySubBranchIds.includes(sb.id)).map(sb => sb.branchId))];
     
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.display = 'flex';
     modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header"><h3><i class="fas fa-user-plus"></i> إضافة عضو جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+        <div class="modal-content" style="max-width:550px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> إضافة عضو جديد</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
             <form id="addMemberFormLeader">
-                <div class="input-group"><label>الاسم الكامل</label><input type="text" id="memberName" required></div>
-                <div class="input-group"><label>السن</label><input type="number" id="memberAge" min="6" max="30" required></div>
-                <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="memberPhone" required></div>
-                <div class="input-group"><label>الرتبة</label>
-                    <select id="memberRank" required>
-                        <option value="">اختر الرتبة</option>
-                        <option value="عريف اول">عريف اول</option>
-                        <option value="عريف">عريف</option>
-                        <option value="سكرتير">سكرتير</option>
-                        <option value="امين صندوق">امين صندوق</option>
-                        <option value="مساعد عريف اول">مساعد عريف اول</option>
-                        <option value="مساعد عريف">مساعد عريف</option>
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> الاسم الكامل</label>
+                    <input type="text" id="memberName" required>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-qrcode"></i> كود العضو</label>
+                    <div class="code-generator">
+                        <input type="text" id="memberCode" required>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCodeForLeader()">توليد</button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-user-circle"></i> اسم المستخدم (للدخول)</label>
+                    <input type="text" id="memberUsername" required>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> كلمة المرور</label>
+                    <input type="password" id="memberPassword" required>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-building"></i> المجموعة</label>
+                    <select id="memberBranch" required>
+                        <option value="">-- اختر المجموعة --</option>
+                        ${appData.branches.filter(b => myBranchIds.includes(b.id)).map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>كود العضو</label><div class="code-generator"><input type="text" id="memberCode" required><button type="button" class="btn btn-sm btn-primary" onclick="generateMemberCodeForLeader()">توليد</button></div></div>
-                <div class="input-group"><label>اسم المستخدم (للدخول)</label><input type="text" id="memberUsername" required></div>
-                <div class="input-group"><label>كلمة المرور</label><input type="password" id="memberPassword" required></div>
-                <div class="input-group"><label>اختر الطليعة</label>
-                    <select id="memberSquad" required style="width:100%; padding:12px; border-radius:12px; border:2px solid #e0e0e0;">
-                        <option value="">-- اختر الطليعة --</option>
-                        ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name} (القائد: ${s.leader})</option>`).join('')}
+                
+                <div class="input-group">
+                    <label><i class="fas fa-users"></i> المرحلة</label>
+                    <select id="memberStage" required disabled>
+                        <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة العضو</button>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-code-branch"></i> الهيئة</label>
+                    <select id="memberSubBranch" required disabled>
+                        <option value="">-- اختر المرحلة أولاً --</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-flag"></i> الطليعة</label>
+                    <select id="memberSquad" required disabled>
+                        <option value="">-- اختر الهيئة أولاً --</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">
+                    <i class="fas fa-save"></i> إضافة العضو
+                </button>
             </form>
         </div>
     `;
     document.body.appendChild(modal);
     
+    const branchSelect = document.getElementById('memberBranch');
+    const stageSelect = document.getElementById('memberStage');
+    const subBranchSelect = document.getElementById('memberSubBranch');
+    const squadSelect = document.getElementById('memberSquad');
+    
+    // تحديث المراحل عند اختيار المجموعة
+    branchSelect.addEventListener('change', function() {
+        const selectedBranchId = parseInt(this.value);
+        
+        if (selectedBranchId) {
+            const stagesInBranch = [...new Set(
+                appData.squads
+                    .filter(s => s.branchId === selectedBranchId && myBranchIds.includes(s.branchId))
+                    .map(s => s.type)
+                    .filter(type => type)
+            )];
+            
+            const stageNames = {
+                'الكشافة': '⚜️ فريق الكشافة',
+                'المرشدات': '🌸 فريق المرشدات',
+                'أشبال وزهرات': '🦁🌸 أشبال وزهرات',
+                'البراعم': '🌱 فريق البراعم'
+            };
+            
+            if (stagesInBranch.length > 0) {
+                stageSelect.disabled = false;
+                stageSelect.innerHTML = '<option value="">-- اختر المرحلة --</option>' + 
+                    stagesInBranch.map(stage => `<option value="${stage}">${stageNames[stage] || stage}</option>`).join('');
+            } else {
+                stageSelect.disabled = true;
+                stageSelect.innerHTML = '<option value="">-- لا توجد مراحل متاحة --</option>';
+                showToast('⚠️ لا توجد طلايع في هذه المجموعة', 'error');
+            }
+            
+            subBranchSelect.disabled = true;
+            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
+            squadSelect.disabled = true;
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
+        } else {
+            stageSelect.disabled = true;
+            stageSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
+            subBranchSelect.disabled = true;
+            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
+            squadSelect.disabled = true;
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
+        }
+    });
+    
+    // تحديث الهيئات عند اختيار المرحلة
+    stageSelect.addEventListener('change', function() {
+        const selectedBranchId = parseInt(branchSelect.value);
+        const selectedStage = this.value;
+        
+        if (selectedBranchId && selectedStage) {
+            const squadsInBranch = appData.squads.filter(s => 
+                s.branchId === selectedBranchId && 
+                s.type === selectedStage &&
+                myBranchIds.includes(s.branchId)
+            );
+            
+            const subBranchIds = [...new Set(squadsInBranch.map(s => s.subBranchId))];
+            const availableSubBranches = appData.subBranches.filter(sb => 
+                subBranchIds.includes(sb.id) && mySubBranchIds.includes(sb.id)
+            );
+            
+            if (availableSubBranches.length > 0) {
+                subBranchSelect.disabled = false;
+                subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
+                    availableSubBranches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            } else {
+                subBranchSelect.disabled = true;
+                subBranchSelect.innerHTML = '<option value="">-- لا توجد هيئات متاحة --</option>';
+                showToast('⚠️ لا توجد هيئات تحتوي على طلايع من هذه المرحلة', 'error');
+            }
+            
+            squadSelect.disabled = true;
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
+        } else {
+            subBranchSelect.disabled = true;
+            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
+            squadSelect.disabled = true;
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
+        }
+    });
+    
+    // تحديث الطلايع عند اختيار الهيئة
+    subBranchSelect.addEventListener('change', function() {
+        const selectedBranchId = parseInt(branchSelect.value);
+        const selectedStage = stageSelect.value;
+        const selectedSubBranchId = parseInt(this.value);
+        
+        if (selectedSubBranchId && selectedBranchId && selectedStage) {
+            const availableSquads = appData.squads.filter(s => 
+                s.branchId === selectedBranchId &&
+                s.subBranchId === selectedSubBranchId &&
+                s.type === selectedStage &&
+                s.isOpen === true
+            );
+            
+            if (availableSquads.length > 0) {
+                squadSelect.disabled = false;
+                squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
+                    availableSquads.map(s => `<option value="${s.id}">${s.name} (${s.leader})</option>`).join('');
+            } else {
+                squadSelect.disabled = true;
+                squadSelect.innerHTML = '<option value="">-- لا توجد طلايع متاحة --</option>';
+                showToast('⚠️ لا توجد طلايع مفتوحة من هذه المرحلة في هذه الهيئة', 'error');
+            }
+        } else {
+            squadSelect.disabled = true;
+            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
+        }
+    });
+    
     document.getElementById('addMemberFormLeader').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const newUsername = document.getElementById('memberUsername').value;
-        if (appData.members.some(m => m.username === newUsername)) {
+        
+        const username = document.getElementById('memberUsername').value;
+        
+        if (appData.members.some(m => m.username === username)) {
             showToast('اسم المستخدم موجود مسبقاً', 'error');
             return;
         }
         
+        const branchId = parseInt(document.getElementById('memberBranch').value);
+        const subBranchId = parseInt(document.getElementById('memberSubBranch').value);
         const squadId = parseInt(document.getElementById('memberSquad').value);
-        const squad = appData.squads.find(s => s.id === squadId);
+        const selectedStage = document.getElementById('memberStage').value;
         
-        if (!squad) {
-            showToast('الرجاء اختيار طليعة صحيحة', 'error');
+        if (!branchId || !subBranchId || !squadId || !selectedStage) {
+            showToast('الرجاء اختيار جميع البيانات', 'error');
             return;
         }
+        
+        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
         
         const newMember = {
             id: Date.now(),
             code: document.getElementById('memberCode').value,
             name: document.getElementById('memberName').value,
-            age: parseInt(document.getElementById('memberAge').value),
-            rank: document.getElementById('memberRank').value,
-            username: newUsername,
+            age: null,
+            rank: "عضو",
+            username: username,
             password: document.getElementById('memberPassword').value,
-            phone: document.getElementById('memberPhone').value,
-            branchId: squad.branchId,
+            phone: null,
+            branchId: branchId,
+            subBranchId: subBranchId,
             squadId: squadId,
+            squadType: selectedStage,
             points: 0,
             joinedAt: new Date().toISOString()
         };
+        
         appData.members.push(newMember);
         await saveAllDataToFirebase();
-        showToast(`تم إضافة العضو ${newMember.name} إلى طليعة ${squad.name}`);
+        showToast('تم إضافة العضو بنجاح');
         modal.remove();
         renderLeaderMembers();
         renderLeaderDashboard();
     });
 }
-
 function generateMemberCodeForLeader() {
     const prefix = 'KS';
     const num = String(appData.members.length + 1).padStart(3, '0');
@@ -12295,7 +12561,7 @@ function renderLeaderboard() {
                     <tr>
                         <th>#</th>
                         <th>الاسم</th>
-                        <th>المجموعه / الطليعه / السداسي</th>
+                        <th>المجموعه / الهيئه</th>
                         <th>الرتبة</th>
                         <th><i class="fas fa-star"></i> النقاط</th>
                     </tr>
@@ -12322,15 +12588,20 @@ function renderLeaderboard() {
             rankDisplay = rank;
         }
         
-        // جلب معلومات الفرع والطليعة
-        const squad = appData.squads.find(s => s.id === member.squadId);
+        // جلب معلومات المجموعة والهيئة
         const branch = appData.branches.find(b => b.id === member.branchId);
+        const subBranch = appData.subBranches.find(sb => sb.id === member.subBranchId);
         
+        // عرض المجموعة والهيئة فقط
         let locationText = '';
-        if (currentBranchFilter !== 'all') {
-            locationText = squad ? `${squad.name} ${squad.type ? `(${squad.type})` : ''}` : branch?.name || '-';
+        if (branch && subBranch) {
+            locationText = `${branch.name} - ${subBranch.name}`;
+        } else if (branch) {
+            locationText = branch.name;
+        } else if (subBranch) {
+            locationText = subBranch.name;
         } else {
-            locationText = branch ? `${branch.name} - ${squad?.name || ''}` : squad?.name || '-';
+            locationText = '-';
         }
         
         tableHtml += `
@@ -12353,76 +12624,6 @@ function renderLeaderboard() {
     `;
     
     container.innerHTML = tableHtml;
-}
-
-function updateLeaderboardFilters() {
-    const branchSelect = document.getElementById('branchFilterLeaderboard');
-    const typeSelect = document.getElementById('typeFilterLeaderboard');
-    
-    if (!branchSelect) return;
-    
-    currentBranchFilter = branchSelect.value;
-    
-    // تفعيل فلتر النوع دائماً (حتى عند اختيار جميع الفروع)
-    typeSelect.disabled = false;
-    
-    // جلب جميع أنواع الفرق من كل الفروع (عند اختيار "جميع الفروع")
-    let availableTypes = [];
-    
-    if (currentBranchFilter === 'all') {
-        // إذا كان الكل، نجلب جميع الأنواع من كل الفروع
-        availableTypes = [...new Set(
-            appData.squads
-                .filter(s => s.type)
-                .map(s => s.type)
-        )];
-    } else {
-        // إذا كان فرع محدد، نجلب الأنواع الموجودة في هذا الفرع فقط
-        const branchId = parseInt(currentBranchFilter);
-        availableTypes = [...new Set(
-            appData.squads
-                .filter(s => s.branchId === branchId && s.type)
-                .map(s => s.type)
-        )];
-    }
-    
-    // حفظ القيمة الحالية مؤقتاً
-    const oldTypeValue = typeSelect.value;
-    
-    // أسماء الأنواع المعروضة
-    const typeNames = {
-        'الكشافة': '⚜️ الكشافة',
-        'المرشدات': '🌸 المرشدات',
-        'الأشبال': '🦁 الأشبال',
-        'الزهرات': '🌺 الزهرات',
-        'البراعم': '🌱 البراعم'
-    };
-    
-    // بناء خيارات فلتر النوع
-    typeSelect.innerHTML = '<option value="all">🎯 جميع المراحل</option>';
-    
-    if (availableTypes.length > 0) {
-        availableTypes.forEach(type => {
-            typeSelect.innerHTML += `<option value="${type}">${typeNames[type] || type}</option>`;
-        });
-    } else {
-        // إذا لم تكن هناك أنواع، نضيف الخيارات الافتراضية
-        Object.entries(typeNames).forEach(([key, value]) => {
-            typeSelect.innerHTML += `<option value="${key}">${value}</option>`;
-        });
-    }
-    
-    // استعادة القيمة إذا كانت لا تزال موجودة
-    if (availableTypes.includes(oldTypeValue) || oldTypeValue === 'all') {
-        typeSelect.value = oldTypeValue;
-        currentTypeFilter = oldTypeValue;
-    } else {
-        typeSelect.value = 'all';
-        currentTypeFilter = 'all';
-    }
-    
-    // تحديث الجدول
-    renderLeaderboard();
 }
 
 function addLeaderboardToLanding() {
