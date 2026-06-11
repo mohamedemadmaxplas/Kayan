@@ -4460,6 +4460,197 @@ body.light-mode .login-icon-btn .btn-tooltip {
     background: rgba(26, 71, 42, 0.9);
     color: #d4a017;
 }
+/* ==================== NOTIFICATION STYLES ==================== */
+.notification-bell {
+    position: relative;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: white;
+    border-radius: 50%;
+    border: 1px solid #d4a017;
+    transition: all 0.3s ease;
+}
+
+.notification-bell i {
+    font-size: 18px;
+    color: #d4a017;
+    transition: 0.2s;
+}
+
+.notification-bell:hover {
+    transform: scale(1.05);
+    background: #d4a017;
+}
+
+.notification-bell:hover i {
+    color: white;
+}
+
+.notification-bell.has-notification {
+    animation: bellRing 0.8s ease-in-out infinite;
+}
+
+@keyframes bellRing {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    10%, 30%, 50%, 70%, 90% { transform: rotate(10deg) scale(1.05); }
+    20%, 40%, 60%, 80% { transform: rotate(-10deg) scale(1.05); }
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    min-width: 18px;
+    height: 18px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    box-shadow: 0 0 5px rgba(231,76,60,0.5);
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
+/* نافذة الإشعارات */
+.notification-modal {
+    position: fixed;
+    top: 70px;
+    left: 20px;
+    width: 350px;
+    max-width: calc(100% - 40px);
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    z-index: 2000;
+    animation: slideDown 0.3s ease;
+    border: 1px solid #d4a017;
+    direction: rtl;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.notification-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a472a;
+    border-radius: 20px 20px 0 0;
+    color: white;
+}
+
+.notification-header h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.notification-header h4 i {
+    color: #d4a017;
+    margin-left: 8px;
+}
+
+.mark-all-read {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.mark-all-read:hover {
+    background: #d4a017;
+    color: #1a472a;
+}
+
+.notification-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.notification-item:hover {
+    background: #f8f9fa;
+}
+
+.notification-item.unread {
+    background: #fff8e1;
+    border-right: 3px solid #d4a017;
+}
+
+.notification-icon {
+    font-size: 18px;
+    min-width: 32px;
+    text-align: center;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.notification-message {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.notification-time {
+    font-size: 10px;
+    color: #999;
+}
+
+.empty-notifications {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+}
+
+.empty-notifications i {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #ddd;
+}
     </style>
 </head>
 <body>
@@ -4494,6 +4685,16 @@ body.light-mode .login-icon-btn .btn-tooltip {
         let aboutTypingTimeout = null;
         let currentBranchFilter = 'all';
         let currentTypeFilter = 'all';
+        let userNotifications = [];
+        let notificationModal = null;
+        let currentBranchFilterLeaderboard = 'all';
+        let currentSubBranchFilterLeaderboard = 'all';
+        let currentTypeFilterLeaderboard = 'all';
+
+
+
+
+
 
 
 
@@ -5824,7 +6025,634 @@ function viewEvaluationFormDetails(formId) {
     `;
     document.body.appendChild(modal);
 }
+// ==================== NOTIFICATION SYSTEM ====================
 
+
+// أنواع الإشعارات
+const NOTIFICATION_TYPES = {
+    NEW_TASK: 'new_task',
+    TASK_DEADLINE: 'task_deadline',
+    TASK_SUBMITTED: 'task_submitted',
+    TASK_GRADED: 'task_graded',
+    NEW_FORM: 'new_form',
+    FORM_SUBMITTED: 'form_submitted',
+    POINTS_CHANGED: 'points_changed',
+    RANK_CHANGED: 'rank_changed',
+    NEW_MEMBER: 'new_member',
+    JOIN_REQUEST: 'join_request',
+    SQUAD_RANKING: 'squad_ranking',
+    BRANCH_RANKING: 'branch_ranking'
+};
+
+// دالة إضافة إشعار جديد
+async function addNotification(userId, type, title, message, relatedId = null, extraData = {}) {
+    const notification = {
+        id: Date.now(),
+        userId: userId,
+        type: type,
+        title: title,
+        message: message,
+        relatedId: relatedId,
+        extraData: extraData,
+        isRead: false,
+        createdAt: new Date().toISOString()
+    };
+    
+    // حفظ في Firebase
+    try {
+        await database.ref(`notifications/${userId}/${notification.id}`).set(notification);
+        console.log('✅ تم إضافة إشعار:', title);
+        
+        // إذا كان المستخدم الحالي هو المستهدف، نحدث الواجهة
+        if (currentUser && (currentUser.id === userId || (userId === 'admin' && currentUser.id === 'admin'))) {
+            await loadUserNotifications();
+            updateNotificationBell();
+        }
+    } catch (error) {
+        console.error('❌ خطأ في إضافة الإشعار:', error);
+    }
+}
+
+// دالة تحميل إشعارات المستخدم الحالي
+async function loadUserNotifications() {
+    if (!currentUser) return;
+    
+    const userId = currentUser.id || (isAdmin ? 'admin' : currentUser.username);
+    
+    try {
+        const snapshot = await database.ref(`notifications/${userId}`).once('value');
+        const data = snapshot.val();
+        
+        if (data) {
+            userNotifications = Object.values(data).sort((a, b) => b.id - a.id);
+        } else {
+            userNotifications = [];
+        }
+        
+        updateNotificationBell();
+    } catch (error) {
+        console.error('❌ خطأ في تحميل الإشعارات:', error);
+        userNotifications = [];
+    }
+}
+
+// دالة تحديث زر الجرس
+function updateNotificationBell() {
+    const bellBtn = document.getElementById('notificationBellBtn');
+    if (!bellBtn) return;
+    
+    const unreadCount = userNotifications.filter(n => !n.isRead).length;
+    const badge = bellBtn.querySelector('.notification-badge');
+    
+    if (unreadCount > 0) {
+        if (badge) {
+            badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            badge.style.display = 'flex';
+        } else {
+            const newBadge = document.createElement('span');
+            newBadge.className = 'notification-badge';
+            newBadge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+            bellBtn.appendChild(newBadge);
+        }
+        bellBtn.classList.add('has-notification');
+    } else {
+        if (badge) badge.style.display = 'none';
+        bellBtn.classList.remove('has-notification');
+    }
+}
+
+// دالة عرض نافذة الإشعارات
+function showNotificationsModal() {
+    // إزالة النافذة القديمة إذا وجدت
+    if (notificationModal) {
+        notificationModal.remove();
+        notificationModal = null;
+        return;
+    }
+    
+    const unreadCount = userNotifications.filter(n => !n.isRead).length;
+    
+    notificationModal = document.createElement('div');
+    notificationModal.className = 'notification-modal';
+    
+    let notificationsHtml = '';
+    
+    if (userNotifications.length === 0) {
+        notificationsHtml = `
+            <div class="empty-notifications">
+                <i class="far fa-bell-slash"></i>
+                <p>لا توجد إشعارات جديدة</p>
+            </div>
+        `;
+    } else {
+        notificationsHtml = userNotifications.map(notif => `
+            <div class="notification-item ${!notif.isRead ? 'unread' : ''}" data-id="${notif.id}" onclick="markNotificationAsRead(${notif.id})">
+                <div class="notification-icon">
+                    ${getNotificationIcon(notif.type)}
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">${escapeHtml(notif.title)}</div>
+                    <div class="notification-message">${escapeHtml(notif.message)}</div>
+                    <div class="notification-time">${formatNotificationTime(notif.createdAt)}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    notificationModal.innerHTML = `
+        <div class="notification-header">
+            <h4><i class="fas fa-bell"></i> الإشعارات</h4>
+            ${unreadCount > 0 ? '<button class="mark-all-read" onclick="markAllNotificationsAsRead()">تحديد الكل كمقروء</button>' : ''}
+        </div>
+        <div class="notification-list">
+            ${notificationsHtml}
+        </div>
+    `;
+    
+    document.body.appendChild(notificationModal);
+    
+    // إغلاق النافذة عند النقر خارجها
+    setTimeout(() => {
+        document.addEventListener('click', function closeModal(e) {
+            if (notificationModal && !notificationModal.contains(e.target) && e.target.id !== 'notificationBellBtn') {
+                notificationModal.remove();
+                notificationModal = null;
+                document.removeEventListener('click', closeModal);
+            }
+        });
+    }, 100);
+}
+
+// دالة تحديد إشعار كمقروء
+async function markNotificationAsRead(notificationId) {
+    const notification = userNotifications.find(n => n.id === notificationId);
+    if (notification && !notification.isRead) {
+        notification.isRead = true;
+        
+        const userId = currentUser.id || (isAdmin ? 'admin' : currentUser.username);
+        await database.ref(`notifications/${userId}/${notificationId}/isRead`).set(true);
+        
+        updateNotificationBell();
+        
+        // تحديث واجهة النافذة
+        const item = document.querySelector(`.notification-item[data-id="${notificationId}"]`);
+        if (item) {
+            item.classList.remove('unread');
+        }
+    }
+}
+
+// دالة تحديد كل الإشعارات كمقروءة
+async function markAllNotificationsAsRead() {
+    const unreadNotifications = userNotifications.filter(n => !n.isRead);
+    
+    const userId = currentUser.id || (isAdmin ? 'admin' : currentUser.username);
+    
+    for (const notif of unreadNotifications) {
+        notif.isRead = true;
+        await database.ref(`notifications/${userId}/${notif.id}/isRead`).set(true);
+    }
+    
+    updateNotificationBell();
+    
+    // إعادة تحميل النافذة
+    if (notificationModal) {
+        notificationModal.remove();
+        notificationModal = null;
+        showNotificationsModal();
+    }
+}
+
+// دالة الحصول على أيقونة الإشعار
+function getNotificationIcon(type) {
+    const icons = {
+        new_task: '<i class="fas fa-tasks" style="color: #3498db;"></i>',
+        task_deadline: '<i class="fas fa-hourglass-half" style="color: #f39c12;"></i>',
+        task_submitted: '<i class="fas fa-paper-plane" style="color: #2ecc71;"></i>',
+        task_graded: '<i class="fas fa-star" style="color: #d4a017;"></i>',
+        new_form: '<i class="fas fa-file-alt" style="color: #9b59b6;"></i>',
+        form_submitted: '<i class="fas fa-check-circle" style="color: #2ecc71;"></i>',
+        points_changed: '<i class="fas fa-coins" style="color: #d4a017;"></i>',
+        rank_changed: '<i class="fas fa-medal" style="color: #d4a017;"></i>',
+        new_member: '<i class="fas fa-user-plus" style="color: #2ecc71;"></i>',
+        join_request: '<i class="fas fa-user-clock" style="color: #f39c12;"></i>',
+        squad_ranking: '<i class="fas fa-chart-line" style="color: #3498db;"></i>',
+        branch_ranking: '<i class="fas fa-trophy" style="color: #d4a017;"></i>'
+    };
+    return icons[type] || '<i class="fas fa-bell" style="color: #d4a017;"></i>';
+}
+
+// دالة تنسيق وقت الإشعار
+function formatNotificationTime(timestamp) {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    if (diffMins < 1) return 'الآن';
+    if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
+    if (diffHours < 24) return `منذ ${diffHours} ساعة`;
+    if (diffDays < 7) return `منذ ${diffDays} يوم`;
+    return date.toLocaleDateString('ar-EG');
+}
+
+// ==================== إضافة زر الإشعارات في الهيدر ====================
+
+function addNotificationBell() {
+    const header = document.querySelector('.header');
+    if (!header) return;
+    
+    // البحث عن user-info
+    let userInfoDiv = header.querySelector('.user-info');
+    
+    if (!userInfoDiv) {
+        userInfoDiv = document.createElement('div');
+        userInfoDiv.className = 'user-info';
+        userInfoDiv.style.display = 'flex';
+        userInfoDiv.style.alignItems = 'center';
+        userInfoDiv.style.gap = '10px';
+        userInfoDiv.style.backgroundColor = 'rgba(0,0,0,0.05)';
+        userInfoDiv.style.padding = '5px 15px';
+        userInfoDiv.style.borderRadius = '40px';
+        header.appendChild(userInfoDiv);
+    }
+    
+    // إزالة الزر القديم إذا وجد
+    const oldBell = document.getElementById('notificationBellBtn');
+    if (oldBell) oldBell.remove();
+    
+    // إنشاء زر الجرس
+    const bellBtn = document.createElement('div');
+    bellBtn.id = 'notificationBellBtn';
+    bellBtn.className = 'notification-bell';
+    bellBtn.innerHTML = '<i class="fas fa-bell"></i>';
+    bellBtn.onclick = (e) => {
+        e.stopPropagation();
+        showNotificationsModal();
+    };
+    
+    // إضافة الزر في user-info
+    userInfoDiv.appendChild(bellBtn);
+    
+    // تحميل الإشعارات
+    loadUserNotifications();
+}
+
+// ==================== التحديث التلقائي للبيانات في الخلفية ====================
+
+let autoRefreshInterval = null;
+
+function startAutoRefresh() {
+    if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+    
+    // تحديث كل 30 ثانية
+    autoRefreshInterval = setInterval(async () => {
+        try {
+            // حفظ الإشعارات الحالية مؤقتاً
+            const oldNotifications = [...userNotifications];
+            
+            // جلب البيانات الجديدة من Firebase
+            const snapshot = await database.ref('appData').once('value');
+            const newData = snapshot.val();
+            
+            if (newData) {
+                // التحقق من التغييرات في البيانات
+                const oldMembersCount = appData.members.length;
+                const oldTasksCount = appData.tasks.length;
+                const oldFormsCount = (appData.forms || []).length;
+                
+                // تحديث البيانات
+                appData.branches = newData.branches || [];
+                appData.subBranches = newData.subBranches || [];
+                appData.squads = newData.squads || [];
+                appData.members = newData.members || [];
+                appData.leaders = newData.leaders || [];
+                appData.tasks = newData.tasks || [];
+                appData.taskSubmissions = newData.taskSubmissions || [];
+                appData.messages = newData.messages || [];
+                appData.joinRequests = newData.joinRequests || [];
+                appData.forms = newData.forms || [];
+                appData.leaderForms = newData.leaderForms || [];
+                appData.memberForms = newData.memberForms || [];
+                appData.evaluationForms = newData.evaluationForms || [];
+                appData.leaderEvaluationForms = newData.leaderEvaluationForms || [];
+                appData.memberEvaluationAnswers = newData.memberEvaluationAnswers || [];
+                
+                // إضافة إشعارات بناءً على التغييرات
+                await checkAndAddNotificationsForCurrentUser(oldMembersCount, oldTasksCount, oldFormsCount);
+                
+                // تحديث واجهة المستخدم إذا كانت مفتوحة
+                refreshCurrentPage();
+            }
+            
+            // إعادة تحميل الإشعارات
+            await loadUserNotifications();
+            
+            console.log('🔄 تم تحديث البيانات تلقائياً:', new Date().toLocaleTimeString());
+        } catch (error) {
+            console.error('❌ خطأ في التحديث التلقائي:', error);
+        }
+    }, 30000); // كل 30 ثانية
+}
+
+function stopAutoRefresh() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+    }
+}
+
+// دالة التحقق من التغييرات وإضافة إشعارات للمستخدم الحالي
+async function checkAndAddNotificationsForCurrentUser(oldMembersCount, oldTasksCount, oldFormsCount) {
+    if (!currentUser) return;
+    
+    // للمستخدم العادي (عضو)
+    if (!isAdmin && !isLeader && currentUser.id) {
+        const mySquadId = currentUser.squadId;
+        
+        // التحقق من التكاليف الجديدة
+        const newTasks = appData.tasks.filter(t => 
+            t.squadId === mySquadId && 
+            (!oldTasksCount || t.createdAt > new Date(Date.now() - 60000).toISOString())
+        );
+        
+        for (const task of newTasks) {
+            // التحقق من عدم إرسال إشعار مكرر
+            const existingNotif = userNotifications.find(n => 
+                n.type === NOTIFICATION_TYPES.NEW_TASK && n.relatedId === task.id
+            );
+            if (!existingNotif) {
+                await addNotification(
+                    currentUser.id,
+                    NOTIFICATION_TYPES.NEW_TASK,
+                    '📋 تكليف جديد!',
+                    `تم إضافة تكليف جديد: "${task.title}" بقيمة ${task.pointsValue} نقطة`,
+                    task.id
+                );
+            }
+        }
+        
+        // التحقق من تغيير النقاط
+        const currentMember = appData.members.find(m => m.id === currentUser.id);
+        if (currentMember && currentMember.points !== currentUser.points) {
+            const diff = currentMember.points - currentUser.points;
+            if (diff !== 0) {
+                await addNotification(
+                    currentUser.id,
+                    NOTIFICATION_TYPES.POINTS_CHANGED,
+                    diff > 0 ? '🎉 زيادة في النقاط!' : '⚠️ خصم نقاط',
+                    diff > 0 ? `تمت إضافة ${diff} نقطة إلى رصيدك` : `تم خصم ${Math.abs(diff)} نقطة من رصيدك`,
+                    null,
+                    { oldPoints: currentUser.points, newPoints: currentMember.points }
+                );
+                currentUser.points = currentMember.points;
+            }
+        }
+        
+        // التحقق من تغيير الرتبة
+        if (currentMember && currentMember.rank !== currentUser.rank) {
+            await addNotification(
+                currentUser.id,
+                NOTIFICATION_TYPES.RANK_CHANGED,
+                '🏅 تغيير في الرتبة!',
+                `تم ترقيتك إلى رتبة ${currentMember.rank}`,
+                null,
+                { oldRank: currentUser.rank, newRank: currentMember.rank }
+            );
+            currentUser.rank = currentMember.rank;
+        }
+    }
+    
+    // للقادة
+    if (isLeader && currentUser.id) {
+        const mySubBranchIds = currentUser.subBranchIds || [];
+        const mySquadIds = appData.squads.filter(s => mySubBranchIds.includes(s.branchId)).map(s => s.id);
+        
+        // التحقق من تسليمات جديدة
+        const newSubmissions = appData.taskSubmissions.filter(ts => 
+            mySquadIds.includes(appData.members.find(m => m.id === ts.memberId)?.squadId) &&
+            ts.status === 'submitted' && !ts.pointsAwarded &&
+            (!oldTasksCount || ts.submittedAt > new Date(Date.now() - 60000).toISOString())
+        );
+        
+        for (const submission of newSubmissions) {
+            const member = appData.members.find(m => m.id === submission.memberId);
+            const task = appData.tasks.find(t => t.id === submission.taskId);
+            if (member && task) {
+                await addNotification(
+                    currentUser.id,
+                    NOTIFICATION_TYPES.TASK_SUBMITTED,
+                    '📝 تسليم جديد!',
+                    `${member.name} قام بتسليم تكليف "${task.title}"`,
+                    submission.id
+                );
+            }
+        }
+        
+        // التحقق من طلبات انضمام جديدة
+        const newRequests = appData.joinRequests.filter(r => 
+            mySubBranchIds.includes(r.subBranchId) && r.status === 'pending' &&
+            (!oldMembersCount || r.requestedAt > new Date(Date.now() - 60000).toISOString())
+        );
+        
+        for (const request of newRequests) {
+            await addNotification(
+                currentUser.id,
+                NOTIFICATION_TYPES.JOIN_REQUEST,
+                '👤 طلب انضمام جديد',
+                `${request.name} يطلب الانضمام إلى الهيئة`,
+                request.id
+            );
+        }
+    }
+}
+
+// دالة تحديث الصفحة الحالية
+function refreshCurrentPage() {
+    if (isAdmin && document.getElementById('adminPageContent')) {
+        const activePage = document.querySelector('.sidebar-menu li.active')?.getAttribute('data-page');
+        if (activePage === 'dashboard') renderAdminDashboard();
+        else if (activePage === 'members') renderMembersTable();
+        else if (activePage === 'squads') renderSquadsList();
+        else if (activePage === 'leaders') renderLeadersList();
+        else if (activePage === 'community') loadAdminMessages();
+        else if (activePage === 'tasks') renderTasksListAdmin();
+        else if (activePage === 'forms') renderFormsPage();
+        else if (activePage === 'evaluationForms') renderEvaluationFormsPage();
+        else if (activePage === 'settings') {}
+    } else if (isLeader && document.getElementById('leaderPageContent')) {
+        const activePage = document.querySelector('.sidebar-menu li.active')?.getAttribute('data-page');
+        if (activePage === 'dashboard') renderLeaderDashboard();
+        else if (activePage === 'members') renderLeaderMembers();
+        else if (activePage === 'joinRequests') renderLeaderJoinRequests();
+        else if (activePage === 'tasks') renderLeaderTasks();
+        else if (activePage === 'forms') renderLeaderFormsPage();
+        else if (activePage === 'evaluationForms') renderLeaderEvaluationFormsPage();
+        else if (activePage === 'community') loadLeaderMessages();
+    } else if (!isAdmin && !isLeader && document.getElementById('memberPageContent')) {
+        const activePage = document.querySelector('.sidebar-menu li.active')?.getAttribute('data-page');
+        if (activePage === 'dashboard') renderMemberDashboard();
+        else if (activePage === 'community') loadMemberMessages();
+        else if (activePage === 'tasks') renderMemberTasks();
+        else if (activePage === 'forms') renderMemberFormsPage();
+        else if (activePage === 'evaluationForms') renderMemberEvaluationFormsPage();
+    }
+}
+
+// ==================== تعديل دوال الإضافة لتشمل الإشعارات ====================
+
+// تعديل دالة إضافة تكليف جديد
+const originalAddTask = showAddTaskModal;
+window.showAddTaskModal = function() {
+    const squadId = document.getElementById('taskSquadSelect')?.value;
+    if (!squadId) { showToast('الرجاء اختيار الطليعة أولاً', 'error'); return; }
+    
+    const now = new Date();
+    const defaultStartDate = now.toISOString().slice(0, 16);
+    const defaultEndDate = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 16);
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-tasks"></i> إضافة تكليف جديد</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <form id="addTaskForm">
+                <div class="input-group"><label>عنوان التكليف</label><input type="text" id="taskTitle" required></div>
+                <div class="input-group"><label>وصف التكليف</label><textarea id="taskDesc" rows="3" required></textarea></div>
+                <div class="input-group"><label>قيمة النقاط</label><input type="number" id="taskPoints" value="10" required></div>
+                <div class="input-group"><label>تاريخ ووقت البدء</label><input type="datetime-local" id="taskStartDate" value="${defaultStartDate}" required></div>
+                <div class="input-group"><label>تاريخ ووقت الانتهاء</label><input type="datetime-local" id="taskEndDate" value="${defaultEndDate}" required></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">إضافة التكليف</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const startDate = new Date(document.getElementById('taskStartDate').value);
+        const endDate = new Date(document.getElementById('taskEndDate').value);
+        
+        if (endDate <= startDate) {
+            showToast('تاريخ الانتهاء يجب أن يكون بعد تاريخ البدء', 'error');
+            return;
+        }
+        
+        const newTask = {
+            id: Date.now(),
+            squadId: parseInt(squadId),
+            title: document.getElementById('taskTitle').value,
+            description: document.getElementById('taskDesc').value,
+            pointsValue: parseInt(document.getElementById('taskPoints').value),
+            createdAt: new Date().toISOString(),
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            seenByMembers: []
+        };
+        appData.tasks.push(newTask);
+        await saveAllDataToFirebase();
+        
+        // إرسال إشعارات لجميع أعضاء الطليعة
+        const squadMembers = appData.members.filter(m => m.squadId == squadId);
+        for (const member of squadMembers) {
+            await addNotification(
+                member.id,
+                NOTIFICATION_TYPES.NEW_TASK,
+                '📋 تكليف جديد!',
+                `تم إضافة تكليف جديد: "${newTask.title}" بقيمة ${newTask.pointsValue} نقطة`,
+                newTask.id
+            );
+        }
+        
+        showToast('تم إضافة التكليف وسيظهر إشعار للأعضاء');
+        modal.remove();
+        renderTasksListAdmin();
+        renderAdminDashboard();
+    });
+};
+
+// تعديل دالة منح النقاط لتشمل الإشعار
+const originalAwardPoints = awardPoints;
+window.awardPoints = async function(taskId, memberId) {
+    const pointsInput = document.getElementById(`points_${memberId}`);
+    const points = parseInt(pointsInput?.value) || 0;
+    const submission = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === memberId);
+    if (submission) {
+        const oldPoints = appData.members.find(m => m.id === memberId)?.points || 0;
+        const newPoints = oldPoints + points;
+        
+        submission.pointsAwarded = points;
+        submission.status = 'completed';
+        submission.reviewedAt = new Date().toISOString();
+        submission.reviewedBy = isAdmin ? 'admin' : currentUser.name;
+        const member = appData.members.find(m => m.id === memberId);
+        const oldRank = member.rank;
+        member.points = newPoints;
+        
+        // تحديث الرتبة
+        if (member.points >= 200) member.rank = "قائد متميز";
+        else if (member.points >= 100) member.rank = "قائد";
+        else if (member.points >= 50) member.rank = "نائب قائد";
+        else member.rank = "عضو";
+        
+        await saveAllDataToFirebase();
+        
+        // إرسال إشعار للعضو
+        await addNotification(
+            memberId,
+            NOTIFICATION_TYPES.TASK_GRADED,
+            '⭐ تم تقييم تكليفك!',
+            `حصلت على ${points} نقطة في تكليف "${appData.tasks.find(t => t.id === taskId)?.title}"`,
+            taskId,
+            { points: points, totalPoints: newPoints }
+        );
+        
+        // إرسال إشعار بتغيير الرتبة إذا تغيرت
+        if (oldRank !== member.rank) {
+            await addNotification(
+                memberId,
+                NOTIFICATION_TYPES.RANK_CHANGED,
+                '🏅 ترقية!',
+                `تهانينا! تمت ترقيتك إلى رتبة ${member.rank}`,
+                null,
+                { oldRank: oldRank, newRank: member.rank }
+            );
+        }
+        
+        showToast(`تم منح ${points} نقطة للعضو ${member.name}`);
+        manageTaskSubmissions(taskId);
+        renderTasksListAdmin();
+        renderAdminDashboard();
+    }
+};
+
+// ==================== بدء التحديث التلقائي والإشعارات ====================
+
+// تعديل دالة startApp لتشمل بدء التحديث التلقائي
+const originalStartApp = window.startApp;
+window.startApp = async function() {
+    await originalStartApp();
+    
+    // بدء التحديث التلقائي
+    startAutoRefresh();
+    
+    // إضافة زر الإشعارات بعد تحميل الصفحة
+    setTimeout(() => {
+        addNotificationBell();
+    }, 500);
+    
+    console.log('✅ تم تفعيل نظام الإشعارات والتحديث التلقائي');
+};
+
+// تعديل دالة logout لإيقاف التحديث التلقائي
+const originalLogout = logout;
+window.logout = async function() {
+    stopAutoRefresh();
+    await originalLogout();
+};
 function confirmSendEvaluationFormToLeaders(formId) {
     const modal = document.createElement('div');
     modal.className = 'modal';
@@ -6824,6 +7652,229 @@ function answerMemberForm(formId) {
         renderMemberFormsPage();
         if (typeof renderMemberDashboard === 'function') renderMemberDashboard();
     });
+}
+
+// دالة تحديث فلتر المجموعة (تظهر الهيئات والمراحل المتاحة)
+function updateLeaderboardBranchFilter() {
+    const branchSelect = document.getElementById('branchFilterLeaderboard');
+    const subBranchSelect = document.getElementById('subBranchFilterLeaderboard');
+    const typeSelect = document.getElementById('typeFilterLeaderboard');
+    
+    currentBranchFilterLeaderboard = branchSelect.value;
+    
+    if (currentBranchFilterLeaderboard === 'all') {
+        // إذا تم اختيار جميع المجموعات
+        // تفعيل فلتر الهيئة مع جميع الهيئات
+        subBranchSelect.disabled = false;
+        let allSubBranchesHtml = '<option value="all">🌍 جميع الهيئات</option>';
+        appData.subBranches.forEach(sb => {
+            allSubBranchesHtml += `<option value="${sb.id}">📍 ${sb.name}</option>`;
+        });
+        subBranchSelect.innerHTML = allSubBranchesHtml;
+        
+        // تفعيل فلتر المرحلة مع جميع المراحل الموجودة
+        typeSelect.disabled = false;
+        const allStages = [...new Set(appData.squads.map(s => s.type).filter(t => t))];
+        const stageNames = {
+            'الكشافة': '⚜️ الكشافة',
+            'المرشدات': '🌸 المرشدات',
+            'أشبال وزهرات': '🦁🌸 أشبال وزهرات',
+            'البراعم': '🌱 البراعم'
+        };
+        let allTypesHtml = '<option value="all">🎯 جميع المراحل</option>';
+        allStages.forEach(stage => {
+            allTypesHtml += `<option value="${stage}">${stageNames[stage] || stage}</option>`;
+        });
+        typeSelect.innerHTML = allTypesHtml;
+        
+    } else {
+        // إذا تم اختيار مجموعة محددة
+        const branchId = parseInt(currentBranchFilterLeaderboard);
+        
+        // جلب الهيئات التابعة لهذه المجموعة فقط
+        const subBranchesInBranch = appData.subBranches.filter(sb => sb.branchId === branchId);
+        
+        if (subBranchesInBranch.length > 0) {
+            subBranchSelect.disabled = false;
+            let subBranchesHtml = '<option value="all">🌍 جميع الهيئات</option>';
+            subBranchesInBranch.forEach(sb => {
+                subBranchesHtml += `<option value="${sb.id}">📍 ${sb.name}</option>`;
+            });
+            subBranchSelect.innerHTML = subBranchesHtml;
+        } else {
+            subBranchSelect.disabled = true;
+            subBranchSelect.innerHTML = '<option value="all">🌍 لا توجد هيئات</option>';
+        }
+        
+        // جلب المراحل الموجودة في هذه المجموعة فقط
+        const stagesInBranch = [...new Set(
+            appData.squads
+                .filter(s => s.branchId === branchId && s.type)
+                .map(s => s.type)
+        )];
+        
+        if (stagesInBranch.length > 0) {
+            typeSelect.disabled = false;
+            const stageNames = {
+                'الكشافة': '⚜️ الكشافة',
+                'المرشدات': '🌸 المرشدات',
+                'أشبال وزهرات': '🦁🌸 أشبال وزهرات',
+                'البراعم': '🌱 البراعم'
+            };
+            let typesHtml = '<option value="all">🎯 جميع المراحل</option>';
+            stagesInBranch.forEach(stage => {
+                typesHtml += `<option value="${stage}">${stageNames[stage] || stage}</option>`;
+            });
+            typeSelect.innerHTML = typesHtml;
+        } else {
+            typeSelect.disabled = true;
+            typeSelect.innerHTML = '<option value="all">🎯 لا توجد مراحل</option>';
+        }
+    }
+    
+    // إعادة تعيين فلتر الهيئة والمرحلة إلى "الكل"
+    currentSubBranchFilterLeaderboard = 'all';
+    currentTypeFilterLeaderboard = 'all';
+    subBranchSelect.value = 'all';
+    typeSelect.value = 'all';
+    
+    // تحديث البيانات
+    updateLeaderboardData();
+}
+
+// دالة تحديث بيانات الجدول بناءً على الفلاتر
+function updateLeaderboardData() {
+    const subBranchSelect = document.getElementById('subBranchFilterLeaderboard');
+    const typeSelect = document.getElementById('typeFilterLeaderboard');
+    
+    if (subBranchSelect) {
+        currentSubBranchFilterLeaderboard = subBranchSelect.value;
+    }
+    if (typeSelect) {
+        currentTypeFilterLeaderboard = typeSelect.value;
+    }
+    
+    renderLeaderboardWithFilters();
+}
+
+// دالة عرض الجدول مع تطبيق الفلاتر
+function renderLeaderboardWithFilters() {
+    const container = document.getElementById('leaderboardTableContainer');
+    if (!container) return;
+    
+    // جلب البيانات بناءً على الفلاتر
+    let filteredMembers = [...appData.members];
+    
+    // فلتر المجموعة
+    if (currentBranchFilterLeaderboard !== 'all') {
+        const branchId = parseInt(currentBranchFilterLeaderboard);
+        filteredMembers = filteredMembers.filter(m => m.branchId === branchId);
+    }
+    
+    // فلتر الهيئة
+    if (currentSubBranchFilterLeaderboard !== 'all') {
+        const subBranchId = parseInt(currentSubBranchFilterLeaderboard);
+        filteredMembers = filteredMembers.filter(m => m.subBranchId === subBranchId);
+    }
+    
+    // فلتر المرحلة
+    if (currentTypeFilterLeaderboard !== 'all') {
+        // جلب IDs الطلايع التي تطابق المرحلة المختارة
+        let squadIdsOfType = [];
+        
+        if (currentBranchFilterLeaderboard !== 'all') {
+            const branchId = parseInt(currentBranchFilterLeaderboard);
+            squadIdsOfType = appData.squads
+                .filter(s => s.type === currentTypeFilterLeaderboard && s.branchId === branchId)
+                .map(s => s.id);
+        } else {
+            squadIdsOfType = appData.squads
+                .filter(s => s.type === currentTypeFilterLeaderboard)
+                .map(s => s.id);
+        }
+        
+        filteredMembers = filteredMembers.filter(m => squadIdsOfType.includes(m.squadId));
+    }
+    
+    // ترتيب حسب النقاط (تنازلي)
+    filteredMembers.sort((a, b) => b.points - a.points);
+    
+    // بناء HTML الجدول
+    if (filteredMembers.length === 0) {
+        container.innerHTML = '<div class="no-data"><i class="fas fa-info-circle"></i> لا توجد بيانات لعرضها</div>';
+        return;
+    }
+    
+    let tableHtml = `
+        <div class="leaderboard-table-wrapper">
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>الاسم</th>
+                        <th>المجموعة / الهيئة</th>
+                        <th>الرتبة</th>
+                        <th><i class="fas fa-star"></i> النقاط</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    filteredMembers.forEach((member, index) => {
+        const rank = index + 1;
+        let rankClass = '';
+        let rankDisplay = '';
+        
+        if (rank === 1) {
+            rankClass = 'rank-1';
+            rankDisplay = '🥇';
+        } else if (rank === 2) {
+            rankClass = 'rank-2';
+            rankDisplay = '🥈';
+        } else if (rank === 3) {
+            rankClass = 'rank-3';
+            rankDisplay = '🥉';
+        } else {
+            rankClass = 'rank-other';
+            rankDisplay = rank;
+        }
+        
+        // جلب معلومات المجموعة والهيئة
+        const branch = appData.branches.find(b => b.id === member.branchId);
+        const subBranch = appData.subBranches.find(sb => sb.id === member.subBranchId);
+        
+        // عرض المجموعة والهيئة
+        let locationText = '';
+        if (branch && subBranch) {
+            locationText = `${branch.name} - ${subBranch.name}`;
+        } else if (branch) {
+            locationText = branch.name;
+        } else if (subBranch) {
+            locationText = subBranch.name;
+        } else {
+            locationText = '-';
+        }
+        
+        tableHtml += `
+            <tr>
+                <td class="rank-cell">
+                    <span class="rank-medal ${rankClass}">${rankDisplay}</span>
+                </td>
+                <td><strong>${escapeHtml(member.name)}</strong></td>
+                <td>${escapeHtml(locationText)}</td>
+                <td><span class="badge" style="background: #d4a01720; color: #1a472a; padding: 4px 10px;">${member.rank || 'عضو'}</span></td>
+                <td><strong style="color: #d4a017; font-size: 18px;">${member.points}</strong></td>
+            </td>
+        `;
+    });
+    
+    tableHtml += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    container.innerHTML = tableHtml;
 }
 // دالة عرض تفاصيل القائد
 function showLeaderDetails(leaderId) {
@@ -8171,6 +9222,10 @@ function renderAdminApp(container) {
     renderAdminDashboard();
     addHomeButton();
     initTheme();
+    // بعد initTheme();
+setTimeout(() => {
+    addNotificationBell();
+}, 100);
 }
        function changeAdminPage(page) {
     document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
@@ -8692,18 +9747,22 @@ function showAddMemberModal() {
                     <label><i class="fas fa-users"></i> المرحلة</label>
                     <select id="memberStage" required disabled>
                         <option value="">-- اختر المجموعة أولاً --</option>
+                        <option value="الكشافة">⚜️ فريق الكشافة</option>
+                        <option value="المرشدات">🌸 فريق المرشدات</option>
+                        <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>
+                        <option value="البراعم">🌱 فريق البراعم</option>
                     </select>
                 </div>
                 
                 <div class="input-group">
                     <label><i class="fas fa-code-branch"></i> الهيئة</label>
                     <select id="memberSubBranch" required disabled>
-                        <option value="">-- اختر المرحلة أولاً --</option>
+                        <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
                 
                 <div class="input-group">
-                    <label><i class="fas fa-flag"></i>الطليعة / السداسي</label>
+                    <label><i class="fas fa-flag"></i> الطليعة</label>
                     <select id="memberSquad" required disabled>
                         <option value="">-- اختر الهيئة أولاً --</option>
                     </select>
@@ -8722,64 +9781,16 @@ function showAddMemberModal() {
     const subBranchSelect = document.getElementById('memberSubBranch');
     const squadSelect = document.getElementById('memberSquad');
     
-    // تحديث المراحل عند اختيار المجموعة
+    // تحديث عند اختيار المجموعة
     branchSelect.addEventListener('change', function() {
         const selectedBranchId = parseInt(this.value);
         
         if (selectedBranchId) {
-            // جلب جميع المراحل الموجودة في هذه المجموعة
-            const stagesInBranch = [...new Set(
-                appData.squads
-                    .filter(s => s.branchId === selectedBranchId)
-                    .map(s => s.type)
-                    .filter(type => type) // إزالة القيم الفارغة
-            )];
+            // تفعيل خانة المرحلة
+            stageSelect.disabled = false;
             
-            const stageNames = {
-                'الكشافة': '⚜️ فريق الكشافة',
-                'المرشدات': '🌸 فريق المرشدات',
-                'أشبال وزهرات': '🦁🌸 أشبال وزهرات',
-                'البراعم': '🌱 فريق البراعم'
-            };
-            
-            if (stagesInBranch.length > 0) {
-                stageSelect.disabled = false;
-                stageSelect.innerHTML = '<option value="">-- اختر المرحلة --</option>' + 
-                    stagesInBranch.map(stage => `<option value="${stage}">${stageNames[stage] || stage}</option>`).join('');
-            } else {
-                stageSelect.disabled = true;
-                stageSelect.innerHTML = '<option value="">-- لا توجد مراحل متاحة --</option>';
-                showToast('⚠️ لا توجد طلايع في هذه المجموعة', 'error');
-            }
-            
-            // إعادة تعيين الهيئة والطليعة
-            subBranchSelect.disabled = true;
-            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
-            squadSelect.disabled = true;
-            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
-        } else {
-            stageSelect.disabled = true;
-            stageSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
-            subBranchSelect.disabled = true;
-            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
-            squadSelect.disabled = true;
-            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
-        }
-    });
-    
-    // تحديث الهيئات عند اختيار المرحلة
-    stageSelect.addEventListener('change', function() {
-        const selectedBranchId = parseInt(branchSelect.value);
-        const selectedStage = this.value;
-        
-        if (selectedBranchId && selectedStage) {
-            // جلب الهيئات التي بها طلايع من هذه المرحلة في هذه المجموعة
-            const squadsInBranch = appData.squads.filter(s => 
-                s.branchId === selectedBranchId && s.type === selectedStage
-            );
-            
-            const subBranchIds = [...new Set(squadsInBranch.map(s => s.subBranchId))];
-            const availableSubBranches = appData.subBranches.filter(sb => subBranchIds.includes(sb.id));
+            // جلب جميع الهيئات التابعة لهذه المجموعة
+            const availableSubBranches = appData.subBranches.filter(sb => sb.branchId === selectedBranchId);
             
             if (availableSubBranches.length > 0) {
                 subBranchSelect.disabled = false;
@@ -8788,27 +9799,27 @@ function showAddMemberModal() {
             } else {
                 subBranchSelect.disabled = true;
                 subBranchSelect.innerHTML = '<option value="">-- لا توجد هيئات متاحة --</option>';
-                showToast('⚠️ لا توجد هيئات تحتوي على طلايع من هذه المرحلة', 'error');
             }
             
             // إعادة تعيين الطليعة
             squadSelect.disabled = true;
             squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         } else {
+            stageSelect.disabled = true;
             subBranchSelect.disabled = true;
-            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
+            subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
             squadSelect.disabled = true;
             squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         }
     });
     
-    // تحديث الطلايع عند اختيار الهيئة
-    subBranchSelect.addEventListener('change', function() {
+    // تحديث الطلايع عند اختيار المرحلة والهيئة
+    function updateSquads() {
         const selectedBranchId = parseInt(branchSelect.value);
         const selectedStage = stageSelect.value;
-        const selectedSubBranchId = parseInt(this.value);
+        const selectedSubBranchId = parseInt(subBranchSelect.value);
         
-        if (selectedSubBranchId && selectedBranchId && selectedStage) {
+        if (selectedBranchId && selectedStage && selectedSubBranchId) {
             const availableSquads = appData.squads.filter(s => 
                 s.branchId === selectedBranchId &&
                 s.subBranchId === selectedSubBranchId &&
@@ -8823,13 +9834,18 @@ function showAddMemberModal() {
             } else {
                 squadSelect.disabled = true;
                 squadSelect.innerHTML = '<option value="">-- لا توجد طلايع متاحة --</option>';
-                showToast('⚠️ لا توجد طلايع مفتوحة من هذه المرحلة في هذه الهيئة', 'error');
+                if (selectedStage && selectedSubBranchId) {
+                    showToast('⚠️ لا توجد طلايع مفتوحة من هذه المرحلة في هذه الهيئة', 'error');
+                }
             }
         } else {
             squadSelect.disabled = true;
             squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         }
-    });
+    }
+    
+    stageSelect.addEventListener('change', updateSquads);
+    subBranchSelect.addEventListener('change', updateSquads);
     
     document.getElementById('addMemberForm').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -8850,8 +9866,6 @@ function showAddMemberModal() {
             showToast('الرجاء اختيار جميع البيانات', 'error');
             return;
         }
-        
-        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
         
         const newMember = {
             id: Date.now(),
@@ -8877,8 +9891,7 @@ function showAddMemberModal() {
         renderMembersTable();
         renderAdminDashboard();
     });
-}
-// ==================== نظام القادة (Leaders System) ====================
+}// ==================== نظام القادة (Leaders System) ====================
 
 // دالة إضافة قائد جديد (للقائد العام فقط)
 async function showAddLeaderModal() {
@@ -9135,7 +10148,13 @@ function renderLeaderApp(container) {
     renderLeaderDashboard();
     addHomeButton();
 initTheme();
+ // إضافة زر الإشعارات بعد تحميل الصفحة
+    setTimeout(() => {
+        addNotificationBell();
+    }, 100);
+    
 startLeaderCountdownUpdater();
+
 }
 
 // تغيير صفحات القائد
@@ -9728,13 +10747,17 @@ function showAddMemberModalForLeader() {
                     <label><i class="fas fa-users"></i> المرحلة</label>
                     <select id="memberStage" required disabled>
                         <option value="">-- اختر المجموعة أولاً --</option>
+                        <option value="الكشافة">⚜️ فريق الكشافة</option>
+                        <option value="المرشدات">🌸 فريق المرشدات</option>
+                        <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>
+                        <option value="البراعم">🌱 فريق البراعم</option>
                     </select>
                 </div>
                 
                 <div class="input-group">
                     <label><i class="fas fa-code-branch"></i> الهيئة</label>
                     <select id="memberSubBranch" required disabled>
-                        <option value="">-- اختر المرحلة أولاً --</option>
+                        <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
                 
@@ -9758,65 +10781,16 @@ function showAddMemberModalForLeader() {
     const subBranchSelect = document.getElementById('memberSubBranch');
     const squadSelect = document.getElementById('memberSquad');
     
-    // تحديث المراحل عند اختيار المجموعة
+    // تحديث عند اختيار المجموعة
     branchSelect.addEventListener('change', function() {
         const selectedBranchId = parseInt(this.value);
         
         if (selectedBranchId) {
-            const stagesInBranch = [...new Set(
-                appData.squads
-                    .filter(s => s.branchId === selectedBranchId && myBranchIds.includes(s.branchId))
-                    .map(s => s.type)
-                    .filter(type => type)
-            )];
+            // تفعيل خانة المرحلة
+            stageSelect.disabled = false;
             
-            const stageNames = {
-                'الكشافة': '⚜️ فريق الكشافة',
-                'المرشدات': '🌸 فريق المرشدات',
-                'أشبال وزهرات': '🦁🌸 أشبال وزهرات',
-                'البراعم': '🌱 فريق البراعم'
-            };
-            
-            if (stagesInBranch.length > 0) {
-                stageSelect.disabled = false;
-                stageSelect.innerHTML = '<option value="">-- اختر المرحلة --</option>' + 
-                    stagesInBranch.map(stage => `<option value="${stage}">${stageNames[stage] || stage}</option>`).join('');
-            } else {
-                stageSelect.disabled = true;
-                stageSelect.innerHTML = '<option value="">-- لا توجد مراحل متاحة --</option>';
-                showToast('⚠️ لا توجد طلايع في هذه المجموعة', 'error');
-            }
-            
-            subBranchSelect.disabled = true;
-            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
-            squadSelect.disabled = true;
-            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
-        } else {
-            stageSelect.disabled = true;
-            stageSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
-            subBranchSelect.disabled = true;
-            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
-            squadSelect.disabled = true;
-            squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
-        }
-    });
-    
-    // تحديث الهيئات عند اختيار المرحلة
-    stageSelect.addEventListener('change', function() {
-        const selectedBranchId = parseInt(branchSelect.value);
-        const selectedStage = this.value;
-        
-        if (selectedBranchId && selectedStage) {
-            const squadsInBranch = appData.squads.filter(s => 
-                s.branchId === selectedBranchId && 
-                s.type === selectedStage &&
-                myBranchIds.includes(s.branchId)
-            );
-            
-            const subBranchIds = [...new Set(squadsInBranch.map(s => s.subBranchId))];
-            const availableSubBranches = appData.subBranches.filter(sb => 
-                subBranchIds.includes(sb.id) && mySubBranchIds.includes(sb.id)
-            );
+            // ✅ جلب جميع الهيئات التابعة للمجموعة المختارة (بدون فلتر الصلاحيات)
+            const availableSubBranches = appData.subBranches.filter(sb => sb.branchId === selectedBranchId);
             
             if (availableSubBranches.length > 0) {
                 subBranchSelect.disabled = false;
@@ -9825,26 +10799,27 @@ function showAddMemberModalForLeader() {
             } else {
                 subBranchSelect.disabled = true;
                 subBranchSelect.innerHTML = '<option value="">-- لا توجد هيئات متاحة --</option>';
-                showToast('⚠️ لا توجد هيئات تحتوي على طلايع من هذه المرحلة', 'error');
             }
             
+            // إعادة تعيين الطليعة
             squadSelect.disabled = true;
             squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         } else {
+            stageSelect.disabled = true;
             subBranchSelect.disabled = true;
-            subBranchSelect.innerHTML = '<option value="">-- اختر المرحلة أولاً --</option>';
+            subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
             squadSelect.disabled = true;
             squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         }
     });
     
-    // تحديث الطلايع عند اختيار الهيئة
-    subBranchSelect.addEventListener('change', function() {
+    // تحديث الطلايع عند اختيار المرحلة والهيئة
+    function updateSquads() {
         const selectedBranchId = parseInt(branchSelect.value);
         const selectedStage = stageSelect.value;
-        const selectedSubBranchId = parseInt(this.value);
+        const selectedSubBranchId = parseInt(subBranchSelect.value);
         
-        if (selectedSubBranchId && selectedBranchId && selectedStage) {
+        if (selectedBranchId && selectedStage && selectedSubBranchId) {
             const availableSquads = appData.squads.filter(s => 
                 s.branchId === selectedBranchId &&
                 s.subBranchId === selectedSubBranchId &&
@@ -9859,13 +10834,18 @@ function showAddMemberModalForLeader() {
             } else {
                 squadSelect.disabled = true;
                 squadSelect.innerHTML = '<option value="">-- لا توجد طلايع متاحة --</option>';
-                showToast('⚠️ لا توجد طلايع مفتوحة من هذه المرحلة في هذه الهيئة', 'error');
+                if (selectedStage && selectedSubBranchId) {
+                    showToast('⚠️ لا توجد طلايع مفتوحة من هذه المرحلة في هذه الهيئة', 'error');
+                }
             }
         } else {
             squadSelect.disabled = true;
             squadSelect.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
         }
-    });
+    }
+    
+    stageSelect.addEventListener('change', updateSquads);
+    subBranchSelect.addEventListener('change', updateSquads);
     
     document.getElementById('addMemberFormLeader').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -9886,8 +10866,6 @@ function showAddMemberModalForLeader() {
             showToast('الرجاء اختيار جميع البيانات', 'error');
             return;
         }
-        
-        const subBranch = appData.subBranches.find(sb => sb.id === subBranchId);
         
         const newMember = {
             id: Date.now(),
@@ -11012,7 +11990,13 @@ function addGlobalLogoToAllPages() {
     renderMemberDashboard();
     addHomeButton();
 initTheme();
+// إضافة زر الإشعارات بعد تحميل الصفحة
+    setTimeout(() => {
+        addNotificationBell();
+    }, 100);
 }
+
+
         function changeMemberPage(page) {
             document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
             document.querySelector(`.sidebar-menu li[data-page="${page}"]`).classList.add('active');
@@ -12634,8 +13618,8 @@ function addLeaderboardToLanding() {
     // حذف أي محتوى قديم
     container.innerHTML = '';
     
-    // تعبئة الفروع في قائمة الاختيار
-    let branchesOptions = '<option value="all">🌍 جميع الهيئات</option>';
+    // تعبئة الفروع في قائمة اختيار المجموعة
+    let branchesOptions = '<option value="all">🌍 جميع المجموعات</option>';
     appData.branches.forEach(branch => {
         branchesOptions += `<option value="${branch.id}">🏢 ${branch.name}</option>`;
     });
@@ -12650,21 +13634,22 @@ function addLeaderboardToLanding() {
                 </div>
                 <div class="leaderboard-filters">
                     <div class="filter-group">
-                        <label><i class="fas fa-map-marker-alt"></i> اختر الهيئة</label>
-                        <select id="branchFilterLeaderboard" onchange="updateLeaderboardFilters()">
+                        <label><i class="fas fa-building"></i> اختر المجموعة</label>
+                        <select id="branchFilterLeaderboard" onchange="updateLeaderboardBranchFilter()">
                             ${branchesOptions}
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label><i class="fas fa-users"></i> اختر النوع</label>
-<select id="typeFilterLeaderboard">
-    <option value="all">🎯 جميع المراحل</option>
-    <option value="الكشافة">⚜️ الكشافة</option>
-    <option value="المرشدات">🌸 المرشدات</option>
-    <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>  // معدل
-    <option value="البراعم">🌱 البراعم</option>
-</select>
-
+                        <label><i class="fas fa-code-branch"></i> اختر الهيئة</label>
+                        <select id="subBranchFilterLeaderboard" onchange="updateLeaderboardData()" disabled>
+                            <option value="all">🌍 جميع الهيئات</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label><i class="fas fa-users"></i> اختر المرحلة</label>
+                        <select id="typeFilterLeaderboard" onchange="updateLeaderboardData()" disabled>
+                            <option value="all">🎯 جميع المراحل</option>
+                        </select>
                     </div>
                 </div>
                 <div id="leaderboardTableContainer"></div>
@@ -12673,9 +13658,8 @@ function addLeaderboardToLanding() {
     `;
     
     // عرض الجدول
-    renderLeaderboard();
+    updateLeaderboardData();
 }
-
 // ==================== تشغيل التطبيق ====================
 window.startApp = async function() {
     // تحميل جميع البيانات من Firebase
