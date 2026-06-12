@@ -4985,6 +4985,7 @@ function changeLeaderPage(page) {
     else if (page === 'joinRequests') renderLeaderJoinRequests();
     else if (page === 'tasks') renderLeaderTasks();
     else if (page === 'community') renderLeaderCommunity();
+    else if (page === 'pointsEvaluation') renderPointsEvaluationPage();
     closeSidebar();
 }
       async function loadAllDataFromFirebase() {
@@ -5507,23 +5508,24 @@ function renderMembersTable() {
     const searchTerm = document.getElementById('memberSearch')?.value?.toLowerCase() || '';
     const branchFilter = document.getElementById('branchFilter')?.value || '';
     const squadFilter = document.getElementById('squadFilter')?.value || '';
+    const statusFilter = document.getElementById('statusFilter')?.value || 'all'; // <-- فلتر الحالة الجديد
     
     const rankOrder = {
-        'عريف اول': 1,
-        'عريف': 2,
-        'سكرتير': 3,
-        'امين صندوق': 4,
-        'مساعد عريف اول': 5,
-        'مساعد عريف': 6
+        'عريف اول': 1, 'عريف': 2, 'سكرتير': 3, 'امين صندوق': 4, 'مساعد عريف اول': 5, 'مساعد عريف': 6
     };
     
-    // ❗ فقط الأعضاء النشطين
     let filtered = appData.members.filter(m => 
-        m.isActive === true &&   // <-- السطر الجديد
         (m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm) || m.username.toLowerCase().includes(searchTerm)) &&
         (branchFilter === '' || m.branchId == branchFilter) &&
         (squadFilter === '' || m.squadId == squadFilter)
     );
+    
+    // تطبيق فلتر الحالة (نشط / غير نشط / الكل)
+    if (statusFilter === 'active') {
+        filtered = filtered.filter(m => m.isActive === true);
+    } else if (statusFilter === 'inactive') {
+        filtered = filtered.filter(m => m.isActive !== true);
+    }
     
     filtered.sort((a, b) => {
         const orderA = rankOrder[a.rank] || 999;
@@ -5539,15 +5541,7 @@ function renderMembersTable() {
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>الكود</th>
-                        <th>الاسم</th>
-                        <th>الرتبة</th>
-                        <th>اسم المستخدم</th>
-                        <th>الهاتف</th>
-                        <th>الطليعة</th>
-                        <th>النقاط</th>
-                        <th>الحالة</th>
-                        <th>الإجراءات</th>
+                        <th>الكود</th><th>الاسم</th><th>الرتبة</th><th>اسم المستخدم</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الحالة</th><th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -5560,24 +5554,16 @@ function renderMembersTable() {
                             <td>${m.phone || '-'}</td>
                             <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
                             <td>${m.points}</td>
-                            <td><span class="badge" style="background: #2ecc71;">✅ نشط</span></td>
+                            <td><span class="badge" style="background: ${m.isActive ? '#2ecc71' : '#e74c3c'};">${m.isActive ? '✅ نشط' : '⛔ غير نشط'}</span></td>
                             <td>
-                                <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})" title="عرض التفاصيل">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})" title="تعديل">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})" title="تعديل النقاط">
-                                    <i class="fas fa-plus-circle"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteMember(${m.id})" title="حذف">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
+                                <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteMember(${m.id})"><i class="fas fa-trash"></i></button>
                             </td>
                         </tr>
                     `).join('')}
-                    ${filtered.length === 0 ? '<tr><td colspan="9" style="text-align:center;">لا توجد بيانات (الأعضاء غير النشطين لا يظهرون)</td></tr>' : ''}
+                    ${filtered.length === 0 ? '<tr><td colspan="9" style="text-align:center;">لا توجد بيانات</td></tr>' : ''}
                 </tbody>
             </table>
         </div>
@@ -7843,118 +7829,64 @@ function renderLeaderboardWithFilters() {
     const container = document.getElementById('leaderboardTableContainer');
     if (!container) return;
     
-    // جلب البيانات بناءً على الفلاتر
-    let filteredMembers = [...appData.members];
+    let filteredMembers = [...appData.members]; // <-- إزالة فلتر isActive
     
-    // ❗ فقط الأعضاء النشطين (الذين أكملوا بياناتهم)
-    filteredMembers = filteredMembers.filter(m => m.isActive === true);
-    
-    // فلتر المجموعة
     if (currentBranchFilterLeaderboard !== 'all') {
         const branchId = parseInt(currentBranchFilterLeaderboard);
         filteredMembers = filteredMembers.filter(m => m.branchId === branchId);
     }
     
-    // فلتر الهيئة
     if (currentSubBranchFilterLeaderboard !== 'all') {
         const subBranchId = parseInt(currentSubBranchFilterLeaderboard);
         filteredMembers = filteredMembers.filter(m => m.subBranchId === subBranchId);
     }
     
-    // فلتر المرحلة
     if (currentTypeFilterLeaderboard !== 'all') {
         let squadIdsOfType = [];
-        
         if (currentBranchFilterLeaderboard !== 'all') {
             const branchId = parseInt(currentBranchFilterLeaderboard);
-            squadIdsOfType = appData.squads
-                .filter(s => s.type === currentTypeFilterLeaderboard && s.branchId === branchId)
-                .map(s => s.id);
+            squadIdsOfType = appData.squads.filter(s => s.type === currentTypeFilterLeaderboard && s.branchId === branchId).map(s => s.id);
         } else {
-            squadIdsOfType = appData.squads
-                .filter(s => s.type === currentTypeFilterLeaderboard)
-                .map(s => s.id);
+            squadIdsOfType = appData.squads.filter(s => s.type === currentTypeFilterLeaderboard).map(s => s.id);
         }
-        
         filteredMembers = filteredMembers.filter(m => squadIdsOfType.includes(m.squadId));
     }
     
-    // ترتيب حسب النقاط (تنازلي)
     filteredMembers.sort((a, b) => b.points - a.points);
     
-    // بناء HTML الجدول
     if (filteredMembers.length === 0) {
-        container.innerHTML = '<div class="no-data"><i class="fas fa-info-circle"></i> لا توجد بيانات لعرضها (الأعضاء غير النشطين لا يظهرون)</div>';
+        container.innerHTML = '<div class="no-data"><i class="fas fa-info-circle"></i> لا توجد بيانات لعرضها</div>';
         return;
     }
     
     let tableHtml = `
         <div class="leaderboard-table-wrapper">
             <table class="leaderboard-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>الاسم</th>
-                        <th>المجموعة / الهيئة</th>
-                        <th>الرتبة</th>
-                        <th><i class="fas fa-star"></i> النقاط</th>
-                    </tr>
-                </thead>
+                <thead><tr><th>#</th><th>الاسم</th><th>المجموعة / الهيئة</th><th>الرتبة</th><th><i class="fas fa-star"></i> النقاط</th></tr></thead>
                 <tbody>
     `;
     
     filteredMembers.forEach((member, index) => {
         const rank = index + 1;
-        let rankClass = '';
-        let rankDisplay = '';
-        
-        if (rank === 1) {
-            rankClass = 'rank-1';
-            rankDisplay = '🥇';
-        } else if (rank === 2) {
-            rankClass = 'rank-2';
-            rankDisplay = '🥈';
-        } else if (rank === 3) {
-            rankClass = 'rank-3';
-            rankDisplay = '🥉';
-        } else {
-            rankClass = 'rank-other';
-            rankDisplay = rank;
-        }
+        let rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
+        let rankDisplay = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
         
         const branch = appData.branches.find(b => b.id === member.branchId);
         const subBranch = appData.subBranches.find(sb => sb.id === member.subBranchId);
-        
-        let locationText = '';
-        if (branch && subBranch) {
-            locationText = `${branch.name} - ${subBranch.name}`;
-        } else if (branch) {
-            locationText = branch.name;
-        } else if (subBranch) {
-            locationText = subBranch.name;
-        } else {
-            locationText = '-';
-        }
+        let locationText = (branch && subBranch) ? `${branch.name} - ${subBranch.name}` : (branch?.name || subBranch?.name || '-');
         
         tableHtml += `
             <tr>
-                <td class="rank-cell">
-                    <span class="rank-medal ${rankClass}">${rankDisplay}</span>
-                </td>
+                <td class="rank-cell"><span class="rank-medal ${rankClass}">${rankDisplay}</span></td>
                 <td><strong>${escapeHtml(member.name)}</strong></td>
                 <td>${escapeHtml(locationText)}</td>
-                <td><span class="badge" style="background: #d4a01720; color: #1a472a; padding: 4px 10px;">${member.rank || 'عضو'}</span></td>
+                <td><span class="badge" style="background: #d4a01720; color: #1a472a;">${member.rank || 'عضو'}</span></td>
                 <td><strong style="color: #d4a017; font-size: 18px;">${member.points}</strong></td>
             </tr>
         `;
     });
     
-    tableHtml += `
-                </tbody>
-            </table>
-        </div>
-    `;
-    
+    tableHtml += `</tbody></table></div>`;
     container.innerHTML = tableHtml;
 }
 // دالة عرض تفاصيل القائد
@@ -9294,6 +9226,7 @@ function renderAdminApp(container) {
                 <li data-page="tasks"><a onclick="changeAdminPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
                 <li data-page="forms"><a onclick="changeAdminPage('forms')"><i class="fas fa-file-alt"></i> الفورم</a></li>
                 <li data-page="evaluationForms"><a onclick="changeAdminPage('evaluationForms')"><i class="fas fa-star"></i> فورمات التقييم</a></li>
+                 <li data-page="pointsEvaluation"><a onclick="changeAdminPage('pointsEvaluation')"><i class="fas fa-star"></i> النقاط والتقييم</a></li>
                 <li data-page="settings"><a onclick="changeAdminPage('settings')"><i class="fas fa-cog"></i> الإعدادات</a></li>
                 <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
                     <a onclick="logout()" style="color: #e74c3c;">
@@ -9346,6 +9279,7 @@ setTimeout(() => {
     else if (page === 'settings') renderAdminSettings();
     else if (page === 'forms') renderFormsPage();
     else if (page === 'evaluationForms') renderEvaluationFormsPage();  // <-- أضف هذا السطر
+    else if (page === 'pointsEvaluation') renderPointsEvaluationPage();
     closeSidebar();
 }
 
@@ -9684,10 +9618,14 @@ function renderAdminMembers() {
                 <input type="text" id="memberSearch" placeholder="بحث بالاسم أو الكود..." oninput="filterMembersTable()">
                 <select id="branchFilter" onchange="filterMembersTable()"><option value="">جميع المجموعات</option>${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}</select>
                 <select id="squadFilter" onchange="filterMembersTable()"><option value="">جميع الطلايع</option>${appData.squads.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}</select>
+                <!-- الفلتر الجديد للحالة -->
+                <select id="statusFilter" onchange="filterMembersTable()">
+                    <option value="all">✅ جميع الأعضاء</option>
+                    <option value="active">✅ نشط فقط</option>
+                    <option value="inactive">⛔ غير نشط فقط</option>
+                </select>
                 <button class="btn btn-primary" onclick="showAddMemberModal()"><i class="fas fa-plus"></i> إضافة عضو</button>
-                <button class="btn btn-info" onclick="exportMembersToPDF()" style="background: #e74c3c;">
-                    <i class="fas fa-file-pdf"></i> تصدير PDF
-                </button>
+                <button class="btn btn-info" onclick="exportMembersToPDF()" style="background: #e74c3c;"><i class="fas fa-file-pdf"></i> تصدير PDF</button>
                 <button class="btn btn-success" onclick="showJoinRequestsList()" style="position: relative;">
                     <i class="fas fa-users"></i> طلبات الانضمام
                     <span id="pendingRequestsBadge" style="position: absolute; top: -8px; right: -8px; background: #e74c3c; color: white; border-radius: 50%; padding: 2px 8px; font-size: 12px; display: ${pendingCount > 0 ? 'inline-block' : 'none'};">${pendingCount}</span>
@@ -10217,6 +10155,8 @@ function renderLeaderApp(container) {
                 <li data-page="tasks"><a onclick="changeLeaderPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
                 <li data-page="forms"><a onclick="changeLeaderPage('forms')"><i class="fas fa-file-alt"></i> الفورم</a></li>
                 <li data-page="evaluationForms"><a onclick="changeLeaderPage('evaluationForms')"><i class="fas fa-star"></i> فورمات التقييم</a></li>
+                 <li data-page="pointsEvaluation"><a onclick="changeLeaderPage('pointsEvaluation')"><i class="fas fa-star"></i> النقاط والتقييم</a></li>
+
                 <li data-page="community"><a onclick="changeLeaderPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
                 <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
                     <a onclick="logout()" style="color: #e74c3c;">
@@ -10386,36 +10326,409 @@ function renderLeaderMembers() {
                     <option value="all">🏆 جميع الطلائع</option>
                     ${mySquads.map(s => `<option value="${s.id}">🏴 ${s.name}</option>`).join('')}
                 </select>
+                <!-- فلتر الحالة الجديد للقائد -->
+                <select id="leaderStatusFilter" onchange="filterLeaderMembers()">
+                    <option value="all">✅ جميع الأعضاء</option>
+                    <option value="active">✅ نشط فقط</option>
+                    <option value="inactive">⛔ غير نشط فقط</option>
+                </select>
                 <button class="btn btn-primary" onclick="showAddMemberModalForLeader()"><i class="fas fa-plus"></i> إضافة عضو</button>
-                <button class="btn btn-info" onclick="exportLeaderMembersToPDF()" style="background: #e74c3c;">
-                    <i class="fas fa-file-pdf"></i> تصدير PDF
-                </button>
+                <button class="btn btn-info" onclick="exportLeaderMembersToPDF()" style="background: #e74c3c;"><i class="fas fa-file-pdf"></i> تصدير PDF</button>
             </div>
             <div id="leaderMembersTable"></div>
         </div>
     `;
     filterLeaderMembers();
 }
+// ==================== PAGE: POINTS & EVALUATION (النقاط والتقييم) ====================
+
+function renderPointsEvaluationPage() {
+    const container = document.getElementById(isAdmin ? 'adminPageContent' : 'leaderPageContent');
+    if (!container) return;
+    
+    // تحديد نوع المستخدم لعرض البيانات الصحيحة
+    let availableSubBranches = [];
+    let availableSquads = [];
+    
+    if (isAdmin) {
+        availableSubBranches = [...appData.subBranches];
+        availableSquads = [...appData.squads];
+    } else if (isLeader) {
+        const mySubBranchIds = currentUser.subBranchIds || [];
+        availableSubBranches = appData.subBranches.filter(sb => mySubBranchIds.includes(sb.id));
+        const myBranchIds = [...new Set(availableSubBranches.map(sb => sb.branchId))];
+        availableSquads = appData.squads.filter(s => myBranchIds.includes(s.branchId));
+    }
+    
+    // جمع المراحل (أنواع الطلايع) الفريدة
+    const squadTypes = [...new Set(appData.squads.map(s => s.type).filter(t => t))];
+    const squadTypeNames = {
+        'الكشافة': '⚜️ الكشافة',
+        'المرشدات': '🌸 المرشدات',
+        'أشبال وزهرات': '🦁🌸 أشبال وزهرات',
+        'البراعم': '🌱 البراعم'
+    };
+    
+    // بناء خيارات الهيئات
+    let subBranchesHtml = '<option value="all">🌍 جميع الهيئات</option>';
+    availableSubBranches.forEach(sb => {
+        subBranchesHtml += `<option value="${sb.id}">📍 ${sb.name}</option>`;
+    });
+    
+    // بناء خيارات الطلايع
+    let squadsHtml = '<option value="all">🏴 جميع الطلايع</option>';
+    availableSquads.forEach(s => {
+        squadsHtml += `<option value="${s.id}">🏴 ${s.name} (${s.type || 'كشافة'})</option>`;
+    });
+    
+    // بناء خيارات المراحل
+    let typesHtml = '<option value="all">🎯 جميع المراحل</option>';
+    squadTypes.forEach(type => {
+        typesHtml += `<option value="${type}">${squadTypeNames[type] || type}</option>`;
+    });
+    
+    container.innerHTML = `
+        <div class="card">
+            <h3><i class="fas fa-star"></i> النقاط والتقييم</h3>
+            <div class="squad-filter">
+                <select id="pointsSubBranchFilter" onchange="filterPointsEvaluationTable()">
+                    ${subBranchesHtml}
+                </select>
+                <select id="pointsSquadFilter" onchange="filterPointsEvaluationTable()">
+                    ${squadsHtml}
+                </select>
+                <select id="pointsTypeFilter" onchange="filterPointsEvaluationTable()">
+                    ${typesHtml}
+                </select>
+                <button class="btn btn-info" onclick="exportPointsEvaluationToPDF()" style="background: #e74c3c;">
+                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                </button>
+            </div>
+            <div id="pointsEvaluationTableContainer"></div>
+        </div>
+    `;
+    
+    // عرض الجدول
+    filterPointsEvaluationTable();
+}
+
+function filterPointsEvaluationTable() {
+    const subBranchFilter = document.getElementById('pointsSubBranchFilter')?.value || 'all';
+    const squadFilter = document.getElementById('pointsSquadFilter')?.value || 'all';
+    const typeFilter = document.getElementById('pointsTypeFilter')?.value || 'all';
+    
+    let filteredMembers = [];
+    
+    if (isAdmin) {
+        filteredMembers = [...appData.members];
+    } else if (isLeader) {
+        const mySubBranchIds = currentUser.subBranchIds || [];
+        const mySquads = appData.squads.filter(s => mySubBranchIds.includes(s.subBranchId));
+        const mySquadIds = mySquads.map(s => s.id);
+        filteredMembers = appData.members.filter(m => mySquadIds.includes(m.squadId));
+    }
+    
+    // فلتر الهيئة
+    if (subBranchFilter !== 'all') {
+        filteredMembers = filteredMembers.filter(m => m.subBranchId == subBranchFilter);
+    }
+    
+    // فلتر الطليعة
+    if (squadFilter !== 'all') {
+        filteredMembers = filteredMembers.filter(m => m.squadId == squadFilter);
+    }
+    
+    // فلتر المرحلة
+    if (typeFilter !== 'all') {
+        const squadIdsOfType = appData.squads.filter(s => s.type === typeFilter).map(s => s.id);
+        filteredMembers = filteredMembers.filter(m => squadIdsOfType.includes(m.squadId));
+    }
+    
+    // ترتيب حسب النقاط
+    filteredMembers.sort((a, b) => b.points - a.points);
+    
+    const container = document.getElementById('pointsEvaluationTableContainer');
+    if (!container) return;
+    
+    if (filteredMembers.length === 0) {
+        container.innerHTML = '<div class="no-data"><i class="fas fa-info-circle"></i> لا توجد بيانات لعرضها</div>';
+        return;
+    }
+    
+    let tableHtml = `
+        <div style="overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>#</th><th>الاسم</th><th>المجموعة / الهيئة</th><th>الطليعة</th><th>المرحلة</th><th>الرتبة</th><th>النقاط</th><th>الحالة</th><th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+    
+    filteredMembers.forEach((member, index) => {
+        const branch = appData.branches.find(b => b.id === member.branchId);
+        const subBranch = appData.subBranches.find(sb => sb.id === member.subBranchId);
+        const squad = appData.squads.find(s => s.id === member.squadId);
+        
+        tableHtml += `
+            <tr>
+                <td>${index + 1}</td>
+                <td><strong>${escapeHtml(member.name)}</strong></td>
+                <td>${branch?.name || '-'} / ${subBranch?.name || '-'}</td>
+                <td>${squad?.name || '-'}</td>
+                <td>${squad?.type || member.squadType || '-'}</td>
+                <td><span class="badge" style="background:#d4a01720; color:#1a472a;">${member.rank || 'عضو'}</span></td>
+                <td><strong style="color:#d4a017; font-size:18px;">${member.points}</strong></td>
+                <td><span class="badge" style="background: ${member.isActive ? '#2ecc71' : '#e74c3c'};">${member.isActive ? 'نشط' : 'غير نشط'}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-success" onclick="showPointsModal(${member.id})">
+                        <i class="fas fa-coins"></i> تعديل النقاط
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+    
+    tableHtml += `
+                </tbody>
+            </table>
+        </div>
+    `;
+    
+    container.innerHTML = tableHtml;
+}
+
+// نافذة تعديل النقاط
+function showPointsModal(memberId) {
+    const member = appData.members.find(m => m.id === memberId);
+    if (!member) return;
+    
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width:450px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-coins"></i> تعديل نقاط العضو: ${escapeHtml(member.name)}</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="font-size:48px; font-weight:bold; color:#d4a017;">${member.points}</div>
+                <div>النقاط الحالية</div>
+            </div>
+            <form id="pointsModalForm">
+                <div class="input-group">
+                    <label><i class="fas fa-plus-circle"></i> إضافة نقاط (+)</label>
+                    <input type="number" id="addPointsValue" value="0" min="0" step="5">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-minus-circle"></i> خصم نقاط (-)</label>
+                    <input type="number" id="subtractPointsValue" value="0" min="0" step="5">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-comment"></i> سبب التعديل (اختياري)</label>
+                    <input type="text" id="pointsReason" placeholder="مثال: إنجاز مهمة، مخالفة...">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px;">
+                    <i class="fas fa-save"></i> تطبيق التعديل
+                </button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('pointsModalForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const addPoints = parseInt(document.getElementById('addPointsValue').value) || 0;
+        const subtractPoints = parseInt(document.getElementById('subtractPointsValue').value) || 0;
+        const reason = document.getElementById('pointsReason').value;
+        
+        if (addPoints === 0 && subtractPoints === 0) {
+            showToast('الرجاء إدخال قيمة للتعديل', 'error');
+            return;
+        }
+        
+        let newPoints = member.points + addPoints - subtractPoints;
+        if (newPoints < 0) newPoints = 0;
+        
+        const oldPoints = member.points;
+        member.points = newPoints;
+        
+        // تحديث الرتبة تلقائياً
+        if (member.points >= 200) member.rank = "قائد متميز";
+        else if (member.points >= 100) member.rank = "قائد";
+        else if (member.points >= 50) member.rank = "نائب قائد";
+        else member.rank = "عضو";
+        
+        await saveAllDataToFirebase();
+        
+        // إشعار للعضو
+        if (member.id !== currentUser?.id) {
+            await addNotification(
+                member.id,
+                NOTIFICATION_TYPES.POINTS_CHANGED,
+                addPoints > subtractPoints ? '🎉 زيادة في النقاط!' : '⚠️ خصم نقاط',
+                `${addPoints > subtractPoints ? `تمت إضافة ${addPoints - subtractPoints} نقطة` : `تم خصم ${subtractPoints - addPoints} نقطة`} ${reason ? `السبب: ${reason}` : ''}`,
+                null,
+                { oldPoints: oldPoints, newPoints: newPoints }
+            );
+        }
+        
+        showToast(`✅ تم تحديث نقاط ${member.name} إلى ${newPoints} نقطة`);
+        modal.remove();
+        filterPointsEvaluationTable();
+        
+        // تحديث الجداول الأخرى إذا كانت مفتوحة
+        if (document.getElementById('membersTable')) renderMembersTable();
+        if (document.getElementById('leaderMembersTable')) filterLeaderMembers();
+        if (document.getElementById('leaderRankingList')) updateLeaderRankingList();
+        if (document.getElementById('squadRankingList')) displayRankingList(localStorage.getItem('selectedSquad') || 'all');
+    });
+}
+
+// دالة تصدير صفحة النقاط والتقييم إلى PDF
+function exportPointsEvaluationToPDF() {
+    const subBranchFilter = document.getElementById('pointsSubBranchFilter')?.value || 'all';
+    const squadFilter = document.getElementById('pointsSquadFilter')?.value || 'all';
+    const typeFilter = document.getElementById('pointsTypeFilter')?.value || 'all';
+    
+    let filteredMembers = [];
+    
+    if (isAdmin) {
+        filteredMembers = [...appData.members];
+    } else if (isLeader) {
+        const mySubBranchIds = currentUser.subBranchIds || [];
+        const mySquads = appData.squads.filter(s => mySubBranchIds.includes(s.subBranchId));
+        const mySquadIds = mySquads.map(s => s.id);
+        filteredMembers = appData.members.filter(m => mySquadIds.includes(m.squadId));
+    }
+    
+    if (subBranchFilter !== 'all') filteredMembers = filteredMembers.filter(m => m.subBranchId == subBranchFilter);
+    if (squadFilter !== 'all') filteredMembers = filteredMembers.filter(m => m.squadId == squadFilter);
+    if (typeFilter !== 'all') {
+        const squadIdsOfType = appData.squads.filter(s => s.type === typeFilter).map(s => s.id);
+        filteredMembers = filteredMembers.filter(m => squadIdsOfType.includes(m.squadId));
+    }
+    
+    filteredMembers.sort((a, b) => b.points - a.points);
+    
+    if (filteredMembers.length === 0) {
+        showToast('لا توجد بيانات لتصديرها', 'error');
+        return;
+    }
+    
+    openPointsEvaluationPrintPreview(filteredMembers);
+}
+
+function openPointsEvaluationPrintPreview(membersData) {
+    const printWindow = window.open('', '_blank', 'width=1200,height=800,toolbar=yes,scrollbars=yes,resizable=yes');
+    if (!printWindow) {
+        showToast('الرجاء السماح للنوافذ المنبثقة في المتصفح', 'error');
+        return;
+    }
+    
+    let tableRows = '';
+    membersData.forEach((member, index) => {
+        const branch = appData.branches.find(b => b.id === member.branchId);
+        const subBranch = appData.subBranches.find(sb => sb.id === member.subBranchId);
+        const squad = appData.squads.find(s => s.id === member.squadId);
+        
+        tableRows += `
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${index + 1}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${escapeHtml(member.name)}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${branch?.name || '-'} / ${subBranch?.name || '-'}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${squad?.name || '-'}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${squad?.type || member.squadType || '-'}</td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${member.rank || 'عضو'}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #d4a017;">${member.points}</td>
+                <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">${member.isActive ? 'نشط' : 'غير نشط'}</td>
+            </tr>
+        `;
+    });
+    
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html dir="rtl" lang="ar">
+        <head>
+            <meta charset="UTF-8">
+            <title>تقرير النقاط والتقييم - مجموعة كيان</title>
+            <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+            <style>
+                * { margin: 0; padding: 0; box-sizing: border-box; }
+                body { font-family: 'Cairo', sans-serif; background: #f5f5f5; padding: 30px; direction: rtl; }
+                .report-container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 20px; padding: 25px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); }
+                .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #d4a017; }
+                .header img { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; }
+                .header h1 { color: #1a472a; font-size: 24px; margin-bottom: 5px; }
+                .header p { color: #666; font-size: 14px; }
+                .info-bar { display: flex; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f0f5f0; border-radius: 12px; }
+                .info-bar span { font-weight: bold; color: #1a472a; }
+                table { width: 100%; border-collapse: collapse; font-size: 13px; }
+                th { background: #1a472a; color: white; padding: 12px 8px; text-align: center; }
+                td { padding: 8px; border-bottom: 1px solid #eee; }
+                .footer { margin-top: 30px; text-align: center; padding-top: 20px; border-top: 1px solid #ddd; color: #999; font-size: 11px; }
+                .buttons-bar { text-align: center; margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 12px; display: flex; gap: 15px; justify-content: center; }
+                .btn-print, .btn-close { padding: 10px 25px; border: none; border-radius: 30px; font-weight: 600; cursor: pointer; }
+                .btn-print { background: #3498db; color: white; }
+                .btn-close { background: #95a5a6; color: white; }
+                @media print { .buttons-bar { display: none; } body { padding: 10px; background: white; } }
+            </style>
+        </head>
+        <body>
+            <div class="report-container">
+                <div class="header">
+                    <img src="https://i.ibb.co/VfWPtdk/5794143090170859641.jpg" alt="شعار المجموعة">
+                    <h1>🏆 تقرير النقاط والتقييم 🏆</h1>
+                    <p>مجموعة كيان الكشفية البحرية</p>
+                </div>
+                <div class="info-bar">
+                    <span>📅 تاريخ التقرير: ${new Date().toLocaleDateString('ar-EG')}</span>
+                    <span>👥 عدد الأعضاء: ${membersData.length}</span>
+                </div>
+                <div class="buttons-bar">
+                    <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> طباعة / حفظ PDF</button>
+                    <button class="btn-close" onclick="window.close()">إغلاق</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>#</th><th>الاسم</th><th>المجموعة / الهيئة</th><th>الطليعة</th><th>المرحلة</th><th>الرتبة</th><th>النقاط</th><th>الحالة</th></tr></thead>
+                        <tbody>${tableRows}</tbody>
+                    </table>
+                </div>
+                <div class="footer"><p>© 2025 مجموعة كيان الكشفية البحرية | تم إنشاء هذا التقرير بواسطة Scout DoJo</p></div>
+            </div>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
 
 function filterLeaderMembers() {
     const leader = currentUser;
     const searchTerm = document.getElementById('leaderMemberSearch')?.value?.toLowerCase() || '';
     const squadFilter = document.getElementById('leaderSquadFilter')?.value || 'all';
+    const statusFilter = document.getElementById('leaderStatusFilter')?.value || 'all'; // <-- فلتر الحالة الجديد للقائد
     const mySubBranchIds = leader.subBranchIds || [];
     const mySquads = appData.squads.filter(s => mySubBranchIds.includes(s.subBranchId));
     const mySquadIds = mySquads.map(s => s.id);
     
-    // ❗ فقط الأعضاء النشطين
-    let myMembers = appData.members.filter(m => 
-        m.isActive === true &&   // <-- السطر الجديد
-        mySquadIds.includes(m.squadId)
-    );
+    let myMembers = appData.members.filter(m => mySquadIds.includes(m.squadId));
     
     if (squadFilter !== 'all') {
         myMembers = myMembers.filter(m => m.squadId == squadFilter);
     }
     if (searchTerm) {
         myMembers = myMembers.filter(m => m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm));
+    }
+    
+    // تطبيق فلتر الحالة
+    if (statusFilter === 'active') {
+        myMembers = myMembers.filter(m => m.isActive === true);
+    } else if (statusFilter === 'inactive') {
+        myMembers = myMembers.filter(m => m.isActive !== true);
     }
     
     const rankOrder = { 'عريف اول': 1, 'عريف': 2, 'سكرتير': 3, 'امين صندوق': 4, 'مساعد عريف اول': 5, 'مساعد عريف': 6 };
@@ -10433,17 +10746,16 @@ function filterLeaderMembers() {
                 <td>${m.phone}</td>
                 <td>${squad?.name || '-'}</td>
                 <td>${m.points}</td>
-                <td><span class="badge" style="background: #2ecc71;">✅ نشط</span></td>
+                <td><span class="badge" style="background: ${m.isActive ? '#2ecc71' : '#e74c3c'};">${m.isActive ? 'نشط' : 'غير نشط'}</span></td>
                 <td>
                     <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
                     <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
-                  </button>
                 </td>
-            `;
+            </tr>`;
         }).join('')}
-        ${myMembers.length === 0 ? '<tr><td colspan="9" style="text-align:center;">⚠️ لا يوجد أعضاء نشطين في الهيئات المسؤول عنها</td>' : ''}
-        </tbody>}~table</div>
+        ${myMembers.length === 0 ? '<tr><td colspan="9" style="text-align:center;">⚠️ لا يوجد أعضاء</td></tr>' : ''}
+        </tbody></table></div>
     `;
     const tableContainer = document.getElementById('leaderMembersTable');
     if (tableContainer) tableContainer.innerHTML = tableHtml;
