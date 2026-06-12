@@ -5508,7 +5508,6 @@ function renderMembersTable() {
     const branchFilter = document.getElementById('branchFilter')?.value || '';
     const squadFilter = document.getElementById('squadFilter')?.value || '';
     
-    // ترتيب الرتب حسب الأهمية
     const rankOrder = {
         'عريف اول': 1,
         'عريف': 2,
@@ -5518,13 +5517,14 @@ function renderMembersTable() {
         'مساعد عريف': 6
     };
     
+    // ❗ فقط الأعضاء النشطين
     let filtered = appData.members.filter(m => 
+        m.isActive === true &&   // <-- السطر الجديد
         (m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm) || m.username.toLowerCase().includes(searchTerm)) &&
         (branchFilter === '' || m.branchId == branchFilter) &&
         (squadFilter === '' || m.squadId == squadFilter)
     );
     
-    // ترتيب الأعضاء حسب الرتبة (الأعلى أولاً)
     filtered.sort((a, b) => {
         const orderA = rankOrder[a.rank] || 999;
         const orderB = rankOrder[b.rank] || 999;
@@ -5546,6 +5546,7 @@ function renderMembersTable() {
                         <th>الهاتف</th>
                         <th>الطليعة</th>
                         <th>النقاط</th>
+                        <th>الحالة</th>
                         <th>الإجراءات</th>
                     </tr>
                 </thead>
@@ -5559,6 +5560,7 @@ function renderMembersTable() {
                             <td>${m.phone || '-'}</td>
                             <td>${appData.squads.find(s => s.id === m.squadId)?.name || '-'}</td>
                             <td>${m.points}</td>
+                            <td><span class="badge" style="background: #2ecc71;">✅ نشط</span></td>
                             <td>
                                 <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})" title="عرض التفاصيل">
                                     <i class="fas fa-eye"></i>
@@ -5575,7 +5577,7 @@ function renderMembersTable() {
                             </td>
                         </tr>
                     `).join('')}
-                    ${filtered.length === 0 ? '<tr><td colspan="8" style="text-align:center;">لا توجد بيانات</td></tr>' : ''}
+                    ${filtered.length === 0 ? '<tr><td colspan="9" style="text-align:center;">لا توجد بيانات (الأعضاء غير النشطين لا يظهرون)</td></tr>' : ''}
                 </tbody>
             </table>
         </div>
@@ -7844,6 +7846,9 @@ function renderLeaderboardWithFilters() {
     // جلب البيانات بناءً على الفلاتر
     let filteredMembers = [...appData.members];
     
+    // ❗ فقط الأعضاء النشطين (الذين أكملوا بياناتهم)
+    filteredMembers = filteredMembers.filter(m => m.isActive === true);
+    
     // فلتر المجموعة
     if (currentBranchFilterLeaderboard !== 'all') {
         const branchId = parseInt(currentBranchFilterLeaderboard);
@@ -7858,7 +7863,6 @@ function renderLeaderboardWithFilters() {
     
     // فلتر المرحلة
     if (currentTypeFilterLeaderboard !== 'all') {
-        // جلب IDs الطلايع التي تطابق المرحلة المختارة
         let squadIdsOfType = [];
         
         if (currentBranchFilterLeaderboard !== 'all') {
@@ -7880,7 +7884,7 @@ function renderLeaderboardWithFilters() {
     
     // بناء HTML الجدول
     if (filteredMembers.length === 0) {
-        container.innerHTML = '<div class="no-data"><i class="fas fa-info-circle"></i> لا توجد بيانات لعرضها</div>';
+        container.innerHTML = '<div class="no-data"><i class="fas fa-info-circle"></i> لا توجد بيانات لعرضها (الأعضاء غير النشطين لا يظهرون)</div>';
         return;
     }
     
@@ -7918,11 +7922,9 @@ function renderLeaderboardWithFilters() {
             rankDisplay = rank;
         }
         
-        // جلب معلومات المجموعة والهيئة
         const branch = appData.branches.find(b => b.id === member.branchId);
         const subBranch = appData.subBranches.find(sb => sb.id === member.subBranchId);
         
-        // عرض المجموعة والهيئة
         let locationText = '';
         if (branch && subBranch) {
             locationText = `${branch.name} - ${subBranch.name}`;
@@ -7943,7 +7945,7 @@ function renderLeaderboardWithFilters() {
                 <td>${escapeHtml(locationText)}</td>
                 <td><span class="badge" style="background: #d4a01720; color: #1a472a; padding: 4px 10px;">${member.rank || 'عضو'}</span></td>
                 <td><strong style="color: #d4a017; font-size: 18px;">${member.points}</strong></td>
-            </td>
+            </tr>
         `;
     });
     
@@ -8643,8 +8645,7 @@ function showJoinRequestModal() {
             </div>
             <form id="joinRequestForm">
                 <div class="input-group"><label>الاسم الكامل</label><input type="text" id="reqName" required></div>
-                <div class="input-group"><label>السن</label><input type="number" id="reqAge" min="6" max="30" required></div>
-                <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="reqPhone" required></div>
+                <!-- تم إزالة حقلي السن ورقم الهاتف -->
                 <div class="input-group"><label>المجموعة</label>
                     <select id="reqBranch" required>
                         <option value="">-- اختر المجموعة --</option>
@@ -8656,7 +8657,6 @@ function showJoinRequestModal() {
                         <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
-                <!-- قسم عرض القادة المسؤولين (جديد) -->
                 <div class="input-group" id="leadersDisplayContainer" style="display: none; background: #e8f5e9; padding: 12px; border-radius: 12px;">
                     <label><i class="fas fa-user-tie"></i> القادة المسؤولون عن هذه الهيئة</label>
                     <div id="leadersListDisplay" style="color: #1a472a; font-weight: bold; margin-top: 8px;"></div>
@@ -8685,7 +8685,6 @@ function showJoinRequestModal() {
     const leadersContainer = document.getElementById('leadersDisplayContainer');
     const leadersListDisplay = document.getElementById('leadersListDisplay');
     
-    // تحديث الفروع وعرض القادة عند اختيار الهيئة
     branchSelect.addEventListener('change', function() {
         const branchId = parseInt(this.value);
         if (branchId) {
@@ -8700,17 +8699,12 @@ function showJoinRequestModal() {
         }
     });
     
-    // عند اختيار الهيئة، جلب وعرض القادة المسؤولين
     subBranchSelect.addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
         const subBranchId = parseInt(this.value);
-        
         if (subBranchId) {
-            // جلب القادة المسؤولين عن هذه الهيئة
             const responsibleLeaders = appData.leaders.filter(leader => 
                 leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
             );
-            
             if (responsibleLeaders.length > 0) {
                 const leadersNames = responsibleLeaders.map(leader => `<div style="padding: 5px 0;"><i class="fas fa-user-tie"></i> ${leader.name} (${leader.username})</div>`).join('');
                 leadersListDisplay.innerHTML = leadersNames;
@@ -8746,7 +8740,6 @@ function showJoinRequestModal() {
             return;
         }
         
-        // البحث عن أول طليعة مفتوحة من نفس النوع في نفس الهيئة
         const availableSquad = appData.squads.find(s => 
             s.branchId === subBranch.branchId && 
             s.type === squadType && 
@@ -8758,7 +8751,6 @@ function showJoinRequestModal() {
             return;
         }
         
-        // جلب أسماء القادة المسؤولين لعرضها في الطلب (للتوثيق)
         const responsibleLeaders = appData.leaders.filter(leader => 
             leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
         );
@@ -8767,8 +8759,8 @@ function showJoinRequestModal() {
         const newRequest = {
             id: Date.now(),
             name: document.getElementById('reqName').value,
-            age: parseInt(document.getElementById('reqAge').value),
-            phone: document.getElementById('reqPhone').value,
+            age: null,
+            phone: null,
             rank: "عضو",
             branchId: subBranch.branchId,
             subBranchId: subBranchId,
@@ -8779,7 +8771,7 @@ function showJoinRequestModal() {
             status: 'pending',
             requestedAt: new Date().toISOString(),
             code: `KS${String(appData.members.length + 1).padStart(3, '0')}`,
-            responsibleLeaders: leadersNames  // حفظ أسماء القادة مع الطلب
+            responsibleLeaders: leadersNames
         };
         
         appData.joinRequests.push(newRequest);
@@ -9833,7 +9825,6 @@ function showAddMemberModal() {
                         <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
-                <!-- قسم عرض القادة المسؤولين (جديد) -->
                 <div class="input-group" id="memberLeadersDisplayContainer" style="display: none; background: #e8f5e9; padding: 12px; border-radius: 12px;">
                     <label><i class="fas fa-user-tie"></i> القادة المسؤولون عن هذه الهيئة</label>
                     <div id="memberLeadersListDisplay" style="color: #1a472a; font-weight: bold; margin-top: 8px;"></div>
@@ -9859,14 +9850,11 @@ function showAddMemberModal() {
     const leadersContainer = document.getElementById('memberLeadersDisplayContainer');
     const leadersListDisplay = document.getElementById('memberLeadersListDisplay');
     
-    // تحديث عند اختيار المجموعة
     branchSelect.addEventListener('change', function() {
         const selectedBranchId = parseInt(this.value);
-        
         if (selectedBranchId) {
             stageSelect.disabled = false;
             const availableSubBranches = appData.subBranches.filter(sb => sb.branchId === selectedBranchId);
-            
             if (availableSubBranches.length > 0) {
                 subBranchSelect.disabled = false;
                 subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
@@ -9889,15 +9877,12 @@ function showAddMemberModal() {
         }
     });
     
-    // عند اختيار الهيئة، جلب وعرض القادة المسؤولين
     subBranchSelect.addEventListener('change', function() {
         const subBranchId = parseInt(this.value);
-        
         if (subBranchId) {
             const responsibleLeaders = appData.leaders.filter(leader => 
                 leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
             );
-            
             if (responsibleLeaders.length > 0) {
                 const leadersNames = responsibleLeaders.map(leader => `<div style="padding: 3px 0;"><i class="fas fa-user-tie"></i> ${leader.name} (${leader.username})</div>`).join('');
                 leadersListDisplay.innerHTML = leadersNames;
@@ -9924,7 +9909,6 @@ function showAddMemberModal() {
                 s.type === selectedStage &&
                 s.isOpen === true
             );
-            
             if (availableSquads.length > 0) {
                 squadSelect.disabled = false;
                 squadSelect.innerHTML = '<option value="">-- اختر الطليعة --</option>' + 
@@ -9932,9 +9916,6 @@ function showAddMemberModal() {
             } else {
                 squadSelect.disabled = true;
                 squadSelect.innerHTML = '<option value="">-- لا توجد طلايع متاحة --</option>';
-                if (selectedStage && selectedSubBranchId) {
-                    showToast('⚠️ لا توجد طلايع مفتوحة من هذه المرحلة في هذه الهيئة', 'error');
-                }
             }
         } else {
             squadSelect.disabled = true;
@@ -9948,7 +9929,6 @@ function showAddMemberModal() {
         e.preventDefault();
         
         const username = document.getElementById('memberUsername').value;
-        
         if (appData.members.some(m => m.username === username)) {
             showToast('اسم المستخدم موجود مسبقاً', 'error');
             return;
@@ -9979,12 +9959,13 @@ function showAddMemberModal() {
             squadType: selectedStage,
             points: 0,
             joinedAt: new Date().toISOString(),
-            isProfileCompleted: false  // <-- السطر الجديد
+            isProfileCompleted: false,
+            isActive: false      // <-- السطر الجديد: العضو غير مفعل
         };
         
         appData.members.push(newMember);
         await saveAllDataToFirebase();
-        showToast('تم إضافة العضو بنجاح');
+        showToast('تم إضافة العضو بنجاح (سيتم تفعيله بعد إكمال البيانات)');
         modal.remove();
         renderMembersTable();
         renderAdminDashboard();
@@ -10415,6 +10396,58 @@ function renderLeaderMembers() {
     `;
     filterLeaderMembers();
 }
+
+function filterLeaderMembers() {
+    const leader = currentUser;
+    const searchTerm = document.getElementById('leaderMemberSearch')?.value?.toLowerCase() || '';
+    const squadFilter = document.getElementById('leaderSquadFilter')?.value || 'all';
+    const mySubBranchIds = leader.subBranchIds || [];
+    const mySquads = appData.squads.filter(s => mySubBranchIds.includes(s.subBranchId));
+    const mySquadIds = mySquads.map(s => s.id);
+    
+    // ❗ فقط الأعضاء النشطين
+    let myMembers = appData.members.filter(m => 
+        m.isActive === true &&   // <-- السطر الجديد
+        mySquadIds.includes(m.squadId)
+    );
+    
+    if (squadFilter !== 'all') {
+        myMembers = myMembers.filter(m => m.squadId == squadFilter);
+    }
+    if (searchTerm) {
+        myMembers = myMembers.filter(m => m.name.toLowerCase().includes(searchTerm) || m.code.toLowerCase().includes(searchTerm));
+    }
+    
+    const rankOrder = { 'عريف اول': 1, 'عريف': 2, 'سكرتير': 3, 'امين صندوق': 4, 'مساعد عريف اول': 5, 'مساعد عريف': 6 };
+    myMembers.sort((a, b) => (rankOrder[a.rank] || 999) - (rankOrder[b.rank] || 999));
+    
+    const tableHtml = `
+        <div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>الكود</th><th>الاسم</th><th>الرتبة</th><th>اسم المستخدم</th><th>الهاتف</th><th>الطليعة</th><th>النقاط</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody>
+        ${myMembers.map(m => {
+            const squad = appData.squads.find(s => s.id === m.squadId);
+            return `<tr>
+                <td>${m.code}</td>
+                <td>${m.name}${m.id === leader?.id ? ' <span class="badge" style="background:#d4a017;">أنت</span>' : ''}</td>
+                <td><span class="badge" style="background:${m.rank === 'عريف اول' ? '#d4a017' : '#666'};">${m.rank || 'عضو'}</span></td>
+                <td>${m.username}</td>
+                <td>${m.phone}</td>
+                <td>${squad?.name || '-'}</td>
+                <td>${m.points}</td>
+                <td><span class="badge" style="background: #2ecc71;">✅ نشط</span></td>
+                <td>
+                    <button class="btn btn-sm btn-info" onclick="showMemberDetails(${m.id})"><i class="fas fa-eye"></i></button>
+                    <button class="btn btn-sm btn-warning" onclick="showEditMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-sm btn-success" onclick="showAdjustPointsModal(${m.id})"><i class="fas fa-plus-circle"></i></button>
+                  </button>
+                </td>
+            `;
+        }).join('')}
+        ${myMembers.length === 0 ? '<tr><td colspan="9" style="text-align:center;">⚠️ لا يوجد أعضاء نشطين في الهيئات المسؤول عنها</td>' : ''}
+        </tbody>}~table</div>
+    `;
+    const tableContainer = document.getElementById('leaderMembersTable');
+    if (tableContainer) tableContainer.innerHTML = tableHtml;
+}
 // دالة تصدير بيانات أعضاء القائد إلى PDF
 function exportLeaderMembersToPDF() {
     const leader = currentUser;
@@ -10658,32 +10691,31 @@ async function completeMemberRegistration(requestId, selectedRank, selectedSquad
     
     const squad = appData.squads.find(s => s.id === selectedSquadId);
     
-    // داخل دالة completeMemberRegistration
-const newMember = {
-    id: Date.now(),
-    code: request.code,
-    name: request.name,
-    age: request.age,
-    rank: selectedRank,
-    username: request.username,
-    password: request.password,
-    phone: request.phone,
-    branchId: request.branchId,
-    subBranchId: request.subBranchId,
-    squadId: selectedSquadId,
-    squadType: request.squadType,
-    points: 0,
-    joinedAt: new Date().toISOString(),
-    isProfileCompleted: false  // <-- السطر الجديد
-};
+    const newMember = {
+        id: Date.now(),
+        code: request.code,
+        name: request.name,
+        age: null,
+        rank: selectedRank,
+        username: request.username,
+        password: request.password,
+        phone: null,
+        branchId: request.branchId,
+        subBranchId: request.subBranchId,
+        squadId: selectedSquadId,
+        squadType: request.squadType,
+        points: 0,
+        joinedAt: new Date().toISOString(),
+        isProfileCompleted: false,
+        isActive: false      // <-- السطر الجديد: العضو غير مفعل حتى يكمل بياناته
+    };
     
     appData.members.push(newMember);
     appData.joinRequests = appData.joinRequests.filter(r => r.id !== requestId);
     
     await saveAllDataToFirebase();
-    showToast(`✅ تم قبول ${request.name} وإضافته إلى طليعة ${squad?.name || ''} برتبة ${selectedRank}`);
+    showToast(`✅ تم قبول ${request.name} وإضافته إلى طليعة ${squad?.name || ''} برتبة ${selectedRank} (سيتم تفعيله بعد إكمال بياناته)`);
     
-    // تحديث الواجهات
     if (isAdmin && document.getElementById('adminPageContent')) {
         renderMembersTable();
         renderAdminDashboard();
@@ -10693,7 +10725,6 @@ const newMember = {
         renderLeaderDashboard();
     }
     
-    // إغلاق أي نوافذ مفتوحة
     document.querySelectorAll('.modal').forEach(m => m.remove());
 }
 // إدارة التكاليف للقائد (تظهر فقط لأعضاء فروعه)
@@ -11870,21 +11901,18 @@ function showAddSquadModal() {
 
 // دالة إنشاء وإظهار نافذة إكمال البيانات بشكل إلزامي
 function showCompleteProfileModal() {
-    // التحقق إذا كان المستخدم قد أكمل بياناته بالفعل
     if (currentUser.isProfileCompleted) return;
-
-    // إزالة أي نافذة سابقة لتجنب التكرار
+    
     const existingModal = document.querySelector('.profile-complete-modal');
     if (existingModal) existingModal.remove();
-
+    
     const modal = document.createElement('div');
     modal.className = 'modal profile-complete-modal';
     modal.style.display = 'flex';
     modal.style.zIndex = '10000';
-    // منع إغلاق النافذة بالضغط على الخلفية أو زر الإغلاق
     modal.style.backdropFilter = 'blur(5px)';
     modal.style.backgroundColor = 'rgba(0,0,0,0.85)';
-
+    
     modal.innerHTML = `
         <div class="modal-content" style="max-width: 450px; text-align: center; animation: fadeInUp 0.4s ease;">
             <div class="modal-header" style="justify-content: center; border-bottom: none; padding-bottom: 0;">
@@ -11919,18 +11947,16 @@ function showCompleteProfileModal() {
             </div>
         </div>
     `;
-
+    
     document.body.appendChild(modal);
-
-    // التحقق من صحة الحقول وتفعيل/تعطيل زر الإرسال
+    
     const ageInput = document.getElementById('profileAge');
     const phoneInput = document.getElementById('profilePhone');
     const submitBtn = document.getElementById('submitProfileBtn');
-
+    
     function validateAndEnableButton() {
         const age = ageInput.value.trim();
         const phone = phoneInput.value.trim();
-        // التحقق من أن السن بين 6 و 30 وأن رقم الهاتف ليس فارغاً
         if (age && phone && parseInt(age) >= 6 && parseInt(age) <= 30) {
             submitBtn.disabled = false;
             submitBtn.style.opacity = '1';
@@ -11941,49 +11967,41 @@ function showCompleteProfileModal() {
             submitBtn.style.cursor = 'not-allowed';
         }
     }
-
+    
     ageInput.addEventListener('input', validateAndEnableButton);
     phoneInput.addEventListener('input', validateAndEnableButton);
-
-    // معالجة إرسال النموذج
+    
     document.getElementById('completeProfileForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const newAge = parseInt(document.getElementById('profileAge').value);
         const newPhone = document.getElementById('profilePhone').value;
-
+        
         if (!newAge || !newPhone || newAge < 6 || newAge > 30) {
             showToast('الرجاء إدخال عمر صحيح بين 6 و 30 سنة', 'error');
             return;
         }
-
-        // تعطيل الزر أثناء الحفظ
+        
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> جاري الحفظ...';
-
+        
         try {
-            // تحديث بيانات المستخدم الحالي
             currentUser.age = newAge;
             currentUser.phone = newPhone;
             currentUser.isProfileCompleted = true;
-
-            // البحث عن العضو في مصفوفة appData وتحديث بياناته
+            currentUser.isActive = true;      // <-- تفعيل العضو بعد إكمال البيانات
+            
             const memberIndex = appData.members.findIndex(m => m.id === currentUser.id);
             if (memberIndex !== -1) {
                 appData.members[memberIndex].age = newAge;
                 appData.members[memberIndex].phone = newPhone;
                 appData.members[memberIndex].isProfileCompleted = true;
+                appData.members[memberIndex].isActive = true;   // <-- تفعيل العضو في قاعدة البيانات
             }
-
-            // حفظ التغييرات في Firebase
+            
             await saveAllDataToFirebase();
-            
-            showToast('✅ تم حفظ بياناتك بنجاح!', 'success');
-            
-            // إغلاق النافذة
+            showToast('✅ تم حفظ بياناتك بنجاح وتم تفعيل حسابك!', 'success');
             modal.remove();
-            
-            // إعادة تحميل واجهة العضو لإظهار المحتوى الكامل
             renderMemberApp(document.getElementById('app'));
             
         } catch (error) {
@@ -11994,7 +12012,6 @@ function showCompleteProfileModal() {
         }
     });
 }
-
 // دالة للتحقق من حالة العضو بعد تسجيل الدخول وقبل عرض الواجهة
 async function checkAndHandleMemberProfile() {
     if (!currentUser || isAdmin || isLeader) return true; // لا شيء للقادة
