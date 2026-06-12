@@ -9935,7 +9935,7 @@ async function showAddLeaderModal() {
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
             if (branches.length === 0) {
-                container.innerHTML = '<div style="text-align:center; color:#999;">لا توجد فروع في هذه المجموعة</div>';
+                container.innerHTML = '<div style="text-align:center; color:#999;">لا توجد هيئات في هذه المجموعة</div>';
             } else {
                 container.innerHTML = branches.map(sb => `
                     <label style="display: flex; align-items: center; gap: 10px; padding: 8px; margin: 4px 0; background: white; border-radius: 8px; cursor: pointer;">
@@ -9954,7 +9954,6 @@ async function showAddLeaderModal() {
         
         const username = document.getElementById('leaderUsername').value;
         
-        // التحقق من عدم تكرار اسم المستخدم
         if (appData.leaders.some(l => l.username === username)) {
             showToast('اسم المستخدم موجود مسبقاً', 'error');
             return;
@@ -9964,7 +9963,6 @@ async function showAddLeaderModal() {
             return;
         }
         
-        // جمع الفروع المختارة
         const selectedSubBranches = [];
         document.querySelectorAll('.subBranchCheckbox:checked').forEach(cb => {
             selectedSubBranches.push({
@@ -9993,30 +9991,14 @@ async function showAddLeaderModal() {
         };
         
         appData.leaders.push(newLeader);
-        
-        // ========== التعديلات المهمة ==========
-        // 1. حفظ البيانات في Firebase
         await saveAllDataToFirebase();
         
-        // 2. إعادة تحميل البيانات من Firebase للتأكد من تحديثها
-        await loadAllDataFromFirebase();
-        
-        // 3. عرض رسالة نجاح
         showToast(`✅ تم إضافة القائد ${newLeader.name} بنجاح`);
-        
-        // 4. إغلاق النافذة
         modal.remove();
-        
-        // 5. تحديث واجهة القادة
         renderLeadersList();
-        
-        // 6. (اختياري) تحديث لوحة التحكم إذا كانت مفتوحة
-        if (typeof renderAdminDashboard === 'function') {
-            renderAdminDashboard();
-        }
+        renderAdminDashboard();
     });
 }
-
 // دالة عرض قائمة القادة
 // دالة عرض قائمة القادة (نسخة معدلة مع أزرار تفاصيل وتعديل)
 function renderLeadersList() {
@@ -10031,15 +10013,20 @@ function renderLeadersList() {
     container.innerHTML = appData.leaders.map(leader => {
         const branch = appData.branches.find(b => b.id === leader.branchId);
         const subBranchesNames = leader.subBranches.map(sb => sb.name).join(', ');
+        const relatedSquads = appData.squads.filter(s => s.leaderId === leader.id);
         
         return `
             <div style="background:#f8f9fa; padding:15px; border-radius:12px; margin-bottom:12px; border-right:4px solid #d4a017;">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
                     <div>
-                        <strong><i class="fas fa-user-tie"></i> ${leader.name}</strong><br>
-                        <small>📞 ${leader.phone} | ${leader.age} سنة</small><br>
-                        <small>🏢 ${branch?.name || '-'} | 📍 الهيئات: ${subBranchesNames}</small><br>
+                        <strong><i class="fas fa-user-tie"></i> ${leader.name}</strong>
+                        <br>
+                        <small>📞 ${leader.phone} | ${leader.age} سنة</small>
+                        <br>
+                        <small>🏢 ${branch?.name || '-'} | 📍 الهيئات: ${subBranchesNames}</small>
+                        <br>
                         <small>👤 اسم المستخدم: ${leader.username}</small>
+                        ${relatedSquads.length > 0 ? `<br><small><i class="fas fa-flag"></i> مسؤول عن ${relatedSquads.length} طليعة</small>` : ''}
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <button class="btn btn-sm btn-info" onclick="showLeaderDetails(${leader.id})">
@@ -10057,14 +10044,39 @@ function renderLeadersList() {
         `;
     }).join('');
 }
-
 // حذف قائد
 async function deleteLeader(leaderId) {
-    if (confirm('هل أنت متأكد من حذف هذا القائد؟')) {
+    const leader = appData.leaders.find(l => l.id === leaderId);
+    if (!leader) return;
+    
+    // التحقق من وجود طلايع مرتبطة بهذا القائد
+    const relatedSquads = appData.squads.filter(s => s.leadersIds && s.leadersIds.includes(leaderId));
+    
+    let confirmMessage = `هل أنت متأكد من حذف القائد "${leader.name}"؟`;
+    if (relatedSquads.length > 0) {
+        confirmMessage += `\n\n⚠️ تحذير: هذا القائد مسؤول عن ${relatedSquads.length} طليعة. سيتم إزالة اسمه من هذه الطلايع.`;
+    }
+    
+    if (confirm(confirmMessage)) {
+        // إزالة القائد من الطلايع المرتبطة به
+        for (const squad of relatedSquads) {
+            if (squad.leadersIds) {
+                squad.leadersIds = squad.leadersIds.filter(id => id !== leaderId);
+            }
+            if (squad.leadersNames) {
+                const leadersNamesList = squad.leadersNames.split('، ');
+                const updatedNames = leadersNamesList.filter(name => name !== leader.name);
+                squad.leadersNames = updatedNames.join('، ');
+            }
+        }
+        
+        // حذف القائد
         appData.leaders = appData.leaders.filter(l => l.id !== leaderId);
         await saveAllDataToFirebase();
+        
         renderLeadersList();
-        showToast('تم حذف القائد');
+        renderAdminSquads(); // تحديث قائمة الطلايع
+        showToast(`✅ تم حذف القائد ${leader.name}`);
     }
 }
 
@@ -11279,7 +11291,7 @@ function showAddSubBranchModal() {
         renderSquadsList();
     });
 }
-       function renderSquadsList() {
+function renderSquadsList() {
     const container = document.getElementById('squadsList');
     if (!container) return;
     
@@ -11372,6 +11384,16 @@ function showAddSubBranchModal() {
                         const typeIcon = squadTypeIcons[squad.type] || '🏴';
                         const typeName = squad.type ? ` (${typeIcon} ${squad.type})` : '';
                         
+                        // ✅ عرض أسماء القادة المسؤولين (تم التعديل هنا)
+                        let leadersDisplay = '';
+                        if (squad.leadersNames && squad.leadersNames !== '⚠️ لا يوجد قادة مسؤولون عن هذه الهيئة') {
+                            leadersDisplay = `<div style="margin-top: 5px;"><small style="color: #d4a017;"><i class="fas fa-user-tie"></i> القادة المسؤولون: <strong style="color: #2ecc71;">${squad.leadersNames}</strong></small></div>`;
+                        } else if (squad.leader && squad.leader !== 'لم يتم تعيين قائد') {
+                            leadersDisplay = `<div style="margin-top: 5px;"><small style="color: #d4a017;"><i class="fas fa-user-tie"></i> القائد المسؤول: <strong style="color: #2ecc71;">${squad.leader}</strong></small></div>`;
+                        } else {
+                            leadersDisplay = `<div style="margin-top: 5px;"><small style="color: #e74c3c;"><i class="fas fa-exclamation-triangle"></i> لا يوجد قادة مسؤولون</small></div>`;
+                        }
+                        
                         // بناء جدول الأعضاء بألوان واضحة
                         let membersHtml = '';
                         if (squadMembers.length === 0) {
@@ -11392,7 +11414,6 @@ function showAddSubBranchModal() {
                             `;
                             squadMembers.forEach((member, idx) => {
                                 const rankColor = rankColors[member.rank] || '#7f8c8d';
-                                // صفوف متناوبة بألوان مختلفة للوضوح
                                 const bgColor = idx % 2 === 0 ? '#ffffff' : '#f0f5f0';
                                 membersHtml += `
                                     <tr style="border-bottom: 1px solid #e0e0e0; background: ${bgColor};">
@@ -11428,11 +11449,8 @@ function showAddSubBranchModal() {
                                         <span style="font-size: 18px; font-weight: bold; color: #1a472a;">
                                             <i class="fas fa-flag" style="color: #d4a017;"></i> ${escapeHtml(squad.name)}${typeName}
                                         </span>
-                                        <br>
+                                        ${leadersDisplay}
                                         <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 5px;">
-                                            <small style="color: #555;">
-                                                <i class="fas fa-user-tie" style="color: #d4a017;"></i> القائد: <strong>${squad.leader}</strong>
-                                            </small>
                                             <small style="color: #555;">
                                                 <i class="fas fa-users" style="color: #d4a017;"></i> عدد الأعضاء: <strong>${squadMembers.length}</strong>
                                             </small>
@@ -11504,7 +11522,7 @@ function showAddSubBranchModal() {
             });
         }
 
-        function showAddSquadModal() {
+function showAddSquadModal() {
     const modal = document.createElement('div');
     modal.className = 'modal';
     modal.style.display = 'flex';
@@ -11512,115 +11530,164 @@ function showAddSubBranchModal() {
         <div class="modal-content">
             <div class="modal-header"><h3><i class="fas fa-flag"></i> إضافة طليعة جديدة</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
             <form id="addSquadForm">
-                <div class="input-group"><label>اختر المجموعة</label>
+                <div class="input-group">
+                    <label>اختر المجموعة</label>
                     <select id="squadBranch" required>
                         <option value="">-- اختر المجموعة --</option>
                         ${appData.branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
                     </select>
                 </div>
-                <div class="input-group"><label>اختر الهيئة</label>
+                
+                <div class="input-group">
+                    <label>اختر الهيئة</label>
                     <select id="squadSubBranch" required>
                         <option value="">-- اختر المجموعة أولاً --</option>
                     </select>
                 </div>
-                <div class="input-group"><label>اسم الطليعة</label><input type="text" id="squadName" required></div>
                 
-                <!-- ------------------- الخانة الجديدة (نوع الفريق) ------------------- -->
+                <div class="input-group">
+                    <label>اسم الطليعة</label>
+                    <input type="text" id="squadName" required>
+                </div>
+                
                 <div class="input-group">
                     <label><i class="fas fa-users"></i> نوع الفريق</label>
                     <select id="squadType" required>
-    <option value="">-- اختر المرحلة --</option>
-    <option value="الكشافة">⚜️ فريق الكشافة</option>
-    <option value="المرشدات">🌸 فريق المرشدات</option>
-    <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>  // معدل
-    <option value="البراعم">🌱 فريق البراعم</option>
-</select>
-
+                        <option value="">-- اختر المرحلة --</option>
+                        <option value="الكشافة">⚜️ فريق الكشافة</option>
+                        <option value="المرشدات">🌸 فريق المرشدات</option>
+                        <option value="أشبال وزهرات">🦁🌸 أشبال وزهرات</option>
+                        <option value="البراعم">🌱 فريق البراعم</option>
+                    </select>
                 </div>
-                <!-- ------------------------------------------------------------- -->
                 
-                <div class="input-group" id="autoLeaderContainer" style="background: #e8f5e9; padding: 10px; border-radius: 12px;">
-                    <label><i class="fas fa-user-tie"></i> القائد المسؤول (تلقائي)</label>
-                    <input type="text" id="autoLeaderName" readonly style="background: #f0f0f0; font-weight: bold; color: #1a472a;">
+                <div class="input-group" id="autoLeadersContainer" style="background: #e8f5e9; padding: 12px; border-radius: 12px;">
+                    <label><i class="fas fa-user-tie"></i> القادة المسؤولون (تم التوليد تلقائياً)</label>
+                    <input type="text" id="autoLeadersNames" readonly style="background: #f0f0f0; font-weight: bold; color: #1a472a; width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #d4a017;">
+                    <small style="color: #666; display: block; margin-top: 5px;"><i class="fas fa-info-circle"></i> يتم جلب أسماء جميع القادة المسؤولين عن هذه الهيئة تلقائياً</small>
                 </div>
+                
                 <button type="submit" class="btn btn-primary" style="width:100%;">إضافة الطليعة</button>
             </form>
         </div>
     `;
     document.body.appendChild(modal);
 
-    // حدث تغيير المنطقة
-    document.getElementById('squadBranch').addEventListener('change', function() {
+    const branchSelect = document.getElementById('squadBranch');
+    const subBranchSelect = document.getElementById('squadSubBranch');
+    const autoLeadersInput = document.getElementById('autoLeadersNames');
+
+    // تحديث قائمة الهيئات عند اختيار المجموعة
+    branchSelect.addEventListener('change', function() {
         const branchId = parseInt(this.value);
-        const subBranchSelect = document.getElementById('squadSubBranch');
         if (branchId) {
             const branches = appData.subBranches.filter(sb => sb.branchId === branchId);
             subBranchSelect.innerHTML = '<option value="">-- اختر الهيئة --</option>' + 
-                branches.map(sb => `<option value="${sb.id}" data-branch-id="${sb.branchId}">${sb.name}</option>`).join('');
+                branches.map(sb => `<option value="${sb.id}">${sb.name}</option>`).join('');
+            autoLeadersInput.value = '';
+            autoLeadersInput.placeholder = 'اختر الهيئة أولاً';
         } else {
             subBranchSelect.innerHTML = '<option value="">-- اختر المجموعة أولاً --</option>';
+            autoLeadersInput.value = '';
+            autoLeadersInput.placeholder = 'اختر المجموعة أولاً';
         }
-        document.getElementById('autoLeaderName').value = '';
     });
 
-    // حدث تغيير الفرع
-    document.getElementById('squadSubBranch').addEventListener('change', function() {
+    // عند اختيار الهيئة، يتم توليد أسماء القادة تلقائياً
+    subBranchSelect.addEventListener('change', function() {
         const subBranchId = parseInt(this.value);
-        const autoLeaderInput = document.getElementById('autoLeaderName');
         if (subBranchId) {
-            const responsibleLeader = appData.leaders.find(leader => 
+            // جلب جميع القادة المسؤولين عن هذه الهيئة
+            const responsibleLeaders = appData.leaders.filter(leader => 
                 leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
             );
-            if (responsibleLeader) {
-                autoLeaderInput.value = responsibleLeader.name + ' (تم تعيينه تلقائياً)';
-                autoLeaderInput.style.color = '#2ecc71';
+            
+            if (responsibleLeaders.length > 0) {
+                // تجميع أسماء القادة في نص واحد
+                const leadersNames = responsibleLeaders.map(leader => leader.name).join('، ');
+                autoLeadersInput.value = leadersNames;
+                autoLeadersInput.style.color = '#2ecc71';
+                autoLeadersInput.style.fontWeight = 'bold';
             } else {
-                autoLeaderInput.value = '⚠️ لا يوجد قائد مسؤول لهذا الهيئة';
-                autoLeaderInput.style.color = '#e74c3c';
+                autoLeadersInput.value = '⚠️ لا يوجد قادة مسؤولون عن هذه الهيئة';
+                autoLeadersInput.style.color = '#e74c3c';
+                autoLeadersInput.style.fontWeight = 'normal';
+                showToast('⚠️ لا يوجد قادة مسؤولون عن هذه الهيئة، قم بإضافة قائد أولاً', 'error');
             }
         } else {
-            autoLeaderInput.value = '';
+            autoLeadersInput.value = '';
+            autoLeadersInput.placeholder = 'اختر الهيئة أولاً';
         }
     });
 
-    // حدث الإرسال
     document.getElementById('addSquadForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const branchId = parseInt(document.getElementById('squadBranch').value);
-        const subBranchId = parseInt(document.getElementById('squadSubBranch').value);
+        
+        const branchId = parseInt(branchSelect.value);
+        const subBranchId = parseInt(subBranchSelect.value);
         const squadName = document.getElementById('squadName').value.trim();
-        const squadType = document.getElementById('squadType').value; // <-- القيمة الجديدة
+        const squadType = document.getElementById('squadType').value;
         
         if (!branchId || !subBranchId || !squadName || !squadType) {
-            showToast('الرجاء اختيار المجموعة الهيئة وإدخال اسم الطليعة ونوع الفريق', 'error');
+            showToast('الرجاء اختيار جميع البيانات', 'error');
             return;
         }
         
-        const responsibleLeader = appData.leaders.find(leader => 
+        // جلب أسماء القادة المسؤولين لعرضها في الطليعة (كنص فقط)
+        const responsibleLeaders = appData.leaders.filter(leader => 
             leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
         );
-        const leaderName = responsibleLeader ? responsibleLeader.name : 'لم يتم تعيين قائد بعد';
+        const leadersNames = responsibleLeaders.map(leader => leader.name).join('، ');
+        const leadersIds = responsibleLeaders.map(leader => leader.id);
         
         const newSquad = {
             id: Date.now(),
             branchId: branchId,
             subBranchId: subBranchId,
             name: squadName,
-            type: squadType,  // <-- حفظ النوع في قاعدة البيانات
-            leader: leaderName,
-            leaderId: responsibleLeader ? responsibleLeader.id : null,
+            type: squadType,
+            leadersNames: leadersNames,        // أسماء القادة كنص (للعرض)
+            leadersIds: leadersIds,            // IDs القادة (للاستخدام المستقبلي)
             isOpen: true,
             createdAt: new Date().toISOString()
         };
+        
         appData.squads.push(newSquad);
         await saveAllDataToFirebase();
-        showToast(`✅ تم إضافة الطليعة "${squadName}" (${getSquadTypeName(squadType)}) والقائد المسؤول: ${leaderName}`);
+        showToast(`✅ تم إضافة الطليعة "${squadName}" والقادة المسؤولون: ${leadersNames || 'لا يوجد'}`);
         modal.remove();
         renderAdminSquads();
         renderAdminDashboard();
     });
 }
+// دالة مساعدة لجلب قائمة القادة في هيئة معينة
+function getLeadersBySubBranch(subBranchId) {
+    return appData.leaders.filter(leader => 
+        leader.subBranchIds && leader.subBranchIds.includes(subBranchId)
+    );
+}
 
+// دالة تحديث قائمة القادة في أي select
+function updateLeadersSelect(selectElementId, subBranchId, defaultOptionText = "-- اختر القائد --") {
+    const select = document.getElementById(selectElementId);
+    if (!select) return;
+    
+    if (subBranchId) {
+        const availableLeaders = getLeadersBySubBranch(subBranchId);
+        
+        if (availableLeaders.length > 0) {
+            select.disabled = false;
+            select.innerHTML = `<option value="">${defaultOptionText}</option>` + 
+                availableLeaders.map(leader => `<option value="${leader.id}">${leader.name} (${leader.username})</option>`).join('');
+        } else {
+            select.disabled = true;
+            select.innerHTML = '<option value="">-- لا يوجد قادة في هذه الهيئة --</option>';
+        }
+    } else {
+        select.disabled = true;
+        select.innerHTML = '<option value="">-- اختر الهيئة أولاً --</option>';
+    }
+}
 // دالة مساعدة لتحويل الكود إلى اسم عربي (اختياري)
 function getSquadTypeName(type) {
     const types = {
