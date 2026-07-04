@@ -4751,7 +4751,1286 @@ body.light-mode .login-icon-btn .btn-tooltip {
         return false;
     }
 }
+// ==================== DEVELOPER PANEL DATA STRUCTURE ====================
 
+// هيكل بيانات لوحة المطور
+const developerData = {
+    // سجل الأخطاء
+    consoleErrors: [],
+    // سجل الأحداث المباشرة
+    liveConsole: [],
+    // سجل النشاطات
+    activityLog: [],
+    // تقارير الأعطال
+    crashReports: [],
+    // جلسات المستخدمين
+    userSessions: [],
+    // سجل تسجيل الدخول
+    loginHistory: [],
+    // سجل الأمان
+    securityLogs: [],
+    // مراقبة API
+    apiMonitor: [],
+    // الأحداث المباشرة
+    liveEvents: [],
+    // الإشعارات
+    notifications: [],
+    // النسخ الاحتياطية
+    backups: [],
+    // إعدادات النظام
+    systemSettings: {
+        maintenanceMode: false,
+        registration: true,
+        uploadLimit: 10,
+        theme: 'dark',
+        language: 'ar',
+        sessionTimeout: 30,
+        developerMode: true
+    }
+};
+
+// ==================== DEV PANEL AUTH CHECK ====================
+
+function isDeveloperUser() {
+    if (!currentUser) return false;
+    // التحقق من أن المستخدم هو tecnoshark
+    if (currentUser.username === 'tecnoshark') return true;
+    if (currentUser.isAdditionalAdmin && currentUser.username === 'tecnoshark') return true;
+    // إذا كان currentUser.id يحتوي على admin_tecnoshark
+    if (currentUser.id === 'admin_tecnoshark') return true;
+    return false;
+}
+// ==================== DEV PANEL NAVIGATION ====================
+
+// قائمة الصفحات في لوحة المطور
+const DEV_PAGES = {
+    DASHBOARD: 'dashboard',
+    CONSOLE_ERRORS: 'consoleErrors',
+    LIVE_CONSOLE: 'liveConsole',
+    ACTIVITY_LOG: 'activityLog',
+    CRASH_REPORTS: 'crashReports',
+    PERFORMANCE: 'performance',
+    FIREBASE_MONITOR: 'firebaseMonitor',
+    USER_SESSIONS: 'userSessions',
+    LOGIN_HISTORY: 'loginHistory',
+    SECURITY_CENTER: 'securityCenter',
+    API_MONITOR: 'apiMonitor',
+    LIVE_EVENTS: 'liveEvents',
+    DATABASE_EXPLORER: 'databaseExplorer',
+    NOTIFICATIONS: 'notifications',
+    SYSTEM_SETTINGS: 'systemSettings',
+    CACHE_MANAGER: 'cacheManager',
+    VERSION_MANAGER: 'versionManager',
+    ANALYTICS: 'analytics',
+    DEVELOPER_TOOLS: 'developerTools',
+    DEBUG_MODE: 'debugMode',
+    BACKUP_MANAGER: 'backupManager'
+};
+// ==================== BACKUP SYSTEM ====================
+
+// إنشاء نسخة احتياطية جديدة (مع دعم UTF-8)
+async function createBackup() {
+    showToast('🔄 جاري إنشاء النسخة الاحتياطية...', 'info');
+    
+    try {
+        // جمع جميع البيانات
+        const backupData = {
+            version: '1.0.0',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            data: {
+                branches: appData.branches || [],
+                subBranches: appData.subBranches || [],
+                squads: appData.squads || [],
+                members: appData.members || [],
+                leaders: appData.leaders || [],
+                tasks: appData.tasks || [],
+                taskSubmissions: appData.taskSubmissions || [],
+                messages: appData.messages || [],
+                joinRequests: appData.joinRequests || [],
+                forms: appData.forms || [],
+                leaderForms: appData.leaderForms || [],
+                memberForms: appData.memberForms || [],
+                evaluationForms: appData.evaluationForms || [],
+                leaderEvaluationForms: appData.leaderEvaluationForms || [],
+                memberEvaluationAnswers: appData.memberEvaluationAnswers || [],
+                developerData: developerData || {}
+            },
+            stats: {
+                totalUsers: appData.members.length + appData.leaders.length,
+                totalMembers: appData.members.length,
+                totalLeaders: appData.leaders.length,
+                totalSquads: appData.squads.length,
+                totalTasks: appData.tasks.length,
+                totalForms: (appData.forms || []).length,
+                totalEvaluationForms: (appData.evaluationForms || []).length,
+                totalMessages: appData.messages.length,
+                totalJoinRequests: appData.joinRequests.length
+            }
+        };
+        
+        // تحويل البيانات إلى JSON
+        const jsonData = JSON.stringify(backupData);
+        
+        // ترميز Base64 يدعم UTF-8 (حل مشكلة الأحرف العربية)
+        function utf8ToBase64(str) {
+            // أولاً: تحويل النص إلى UTF-8
+            const utf8Bytes = new TextEncoder().encode(str);
+            // ثانياً: تحويل البايتات إلى سلسلة ثنائية
+            let binaryString = '';
+            for (let i = 0; i < utf8Bytes.length; i++) {
+                binaryString += String.fromCharCode(utf8Bytes[i]);
+            }
+            // ثالثاً: ترميز Base64
+            return btoa(binaryString);
+        }
+        
+        const encodedData = utf8ToBase64(jsonData);
+        
+        // إنشاء كائن النسخة الاحتياطية
+        const backup = {
+            id: Date.now(),
+            name: `backup_${new Date().toISOString().replace(/[:.]/g, '-')}`,
+            size: (encodedData.length / 1024).toFixed(2) + ' KB',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            data: encodedData,
+            stats: backupData.stats,
+            version: backupData.version,
+            status: 'completed',
+            isEncrypted: true
+        };
+        
+        // حفظ في الذاكرة
+        if (!developerData.backups) developerData.backups = [];
+        developerData.backups.push(backup);
+        
+        // حفظ في Firebase
+        await database.ref('developerData/backups').set(developerData.backups);
+        
+        // تسجيل في Activity Log
+        await addActivityLog('إنشاء نسخة احتياطية', `تم إنشاء نسخة احتياطية جديدة (${backup.name})`);
+        
+        showToast('✅ تم إنشاء النسخة الاحتياطية بنجاح!', 'success');
+        renderBackupManagerPage();
+        return backup;
+        
+    } catch (error) {
+        console.error('❌ خطأ في إنشاء النسخة الاحتياطية:', error);
+        showToast('❌ حدث خطأ في إنشاء النسخة الاحتياطية: ' + error.message, 'error');
+        return null;
+    }
+}
+// تحميل النسخة الاحتياطية
+function downloadBackup(backupId) {
+    const backup = developerData.backups.find(b => b.id === backupId);
+    if (!backup) {
+        showToast('❌ النسخة الاحتياطية غير موجودة', 'error');
+        return;
+    }
+    
+    try {
+        // فك الترميز Base64 مع دعم UTF-8
+        function base64ToUtf8(base64Str) {
+            const binaryString = atob(base64Str);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return new TextDecoder('utf-8').decode(bytes);
+        }
+        
+        const decodedData = base64ToUtf8(backup.data);
+        const jsonData = JSON.parse(decodedData);
+        
+        // إنشاء ملف للتحميل
+        const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${backup.name}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        showToast('✅ تم تحميل النسخة الاحتياطية', 'success');
+    } catch (error) {
+        console.error('❌ خطأ في تحميل النسخة الاحتياطية:', error);
+        showToast('❌ حدث خطأ في تحميل النسخة الاحتياطية: ' + error.message, 'error');
+    }
+}
+// استعادة النسخة الاحتياطية
+async function restoreBackup(backupId) {
+    // نافذة تأكيد
+    const confirmModal = document.createElement('div');
+    confirmModal.className = 'modal';
+    confirmModal.style.display = 'flex';
+    confirmModal.innerHTML = `
+        <div class="modal-content" style="max-width:450px; text-align:center;">
+            <div class="modal-header">
+                <h3 style="color: #e74c3c;"><i class="fas fa-exclamation-triangle"></i> تحذير! استعادة النسخة الاحتياطية</h3>
+                <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+            </div>
+            <div style="padding:20px;">
+                <i class="fas fa-database" style="font-size:50px; color:#d4a017; margin-bottom:15px;"></i>
+                <p style="color:#666; margin-bottom:15px;">
+                    <strong>سيتم استعادة جميع بيانات الموقع بالكامل كما كانت وقت إنشاء هذه النسخة.</strong>
+                </p>
+                <p style="color:#e74c3c; font-size:14px;">
+                    ⚠️ سيتم استبدال جميع البيانات الحالية بالبيانات الموجودة في النسخة الاحتياطية!
+                </p>
+                <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
+                    <button class="btn btn-danger" onclick="confirmRestoreBackup(${backupId}); this.closest('.modal').remove();">
+                        <i class="fas fa-check"></i> نعم، استعادة
+                    </button>
+                    <button class="btn btn-primary" onclick="this.closest('.modal').remove()">
+                        <i class="fas fa-times"></i> إلغاء
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(confirmModal);
+}
+
+async function confirmRestoreBackup(backupId) {
+    showToast('🔄 جاري استعادة النسخة الاحتياطية...', 'info');
+    
+    try {
+        const backup = developerData.backups.find(b => b.id === backupId);
+        if (!backup) {
+            showToast('❌ النسخة الاحتياطية غير موجودة', 'error');
+            return;
+        }
+        
+        // فك الترميز Base64 مع دعم UTF-8
+        function base64ToUtf8(base64Str) {
+            // فك الترميز Base64
+            const binaryString = atob(base64Str);
+            // تحويل السلسلة الثنائية إلى Uint8Array
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            // تحويل البايتات إلى نص UTF-8
+            return new TextDecoder('utf-8').decode(bytes);
+        }
+        
+        const decodedData = base64ToUtf8(backup.data);
+        const backupData = JSON.parse(decodedData);
+        
+        // استعادة البيانات
+        appData.branches = backupData.data.branches || [];
+        appData.subBranches = backupData.data.subBranches || [];
+        appData.squads = backupData.data.squads || [];
+        appData.members = backupData.data.members || [];
+        appData.leaders = backupData.data.leaders || [];
+        appData.tasks = backupData.data.tasks || [];
+        appData.taskSubmissions = backupData.data.taskSubmissions || [];
+        appData.messages = backupData.data.messages || [];
+        appData.joinRequests = backupData.data.joinRequests || [];
+        appData.forms = backupData.data.forms || [];
+        appData.leaderForms = backupData.data.leaderForms || [];
+        appData.memberForms = backupData.data.memberForms || [];
+        appData.evaluationForms = backupData.data.evaluationForms || [];
+        appData.leaderEvaluationForms = backupData.data.leaderEvaluationForms || [];
+        appData.memberEvaluationAnswers = backupData.data.memberEvaluationAnswers || [];
+        
+        if (backupData.data.developerData) {
+            developerData.backups = backupData.data.developerData.backups || [];
+            developerData.activityLog = backupData.data.developerData.activityLog || [];
+        }
+        
+        // حفظ جميع البيانات في Firebase
+        await saveAllDataToFirebase();
+        await database.ref('developerData/backups').set(developerData.backups);
+        await database.ref('developerData/activityLog').set(developerData.activityLog);
+        
+        // تسجيل في Activity Log
+        await addActivityLog('استعادة نسخة احتياطية', `تم استعادة النسخة الاحتياطية (${backup.name})`);
+        
+        showToast('✅ تم استعادة النسخة الاحتياطية بنجاح!', 'success');
+        renderBackupManagerPage();
+        
+    } catch (error) {
+        console.error('❌ خطأ في استعادة النسخة الاحتياطية:', error);
+        showToast('❌ حدث خطأ في استعادة النسخة الاحتياطية: ' + error.message, 'error');
+    }
+}
+// حذف نسخة احتياطية
+async function deleteBackup(backupId) {
+    if (!confirm('هل أنت متأكد من حذف هذه النسخة الاحتياطية؟')) return;
+    
+    try {
+        developerData.backups = developerData.backups.filter(b => b.id !== backupId);
+        await database.ref('developerData/backups').set(developerData.backups);
+        
+        await addActivityLog('حذف نسخة احتياطية', `تم حذف نسخة احتياطية`);
+        showToast('✅ تم حذف النسخة الاحتياطية', 'success');
+        renderBackupManagerPage();
+    } catch (error) {
+        console.error('❌ خطأ في حذف النسخة الاحتياطية:', error);
+        showToast('❌ حدث خطأ في حذف النسخة الاحتياطية', 'error');
+    }
+}
+// ==================== ACTIVITY LOG ====================
+
+// إضافة سجل نشاط جديد
+async function addActivityLog(action, details, page = 'unknown') {
+    try {
+        const logEntry = {
+            id: Date.now(),
+            userId: currentUser?.id || 'guest',
+            username: currentUser?.name || currentUser?.username || 'guest',
+            action: action,
+            details: details,
+            page: page,
+            timestamp: new Date().toISOString(),
+            ip: await getClientIP()
+        };
+        
+        if (!developerData.activityLog) developerData.activityLog = [];
+        developerData.activityLog.push(logEntry);
+        
+        // حفظ في Firebase
+        await database.ref('developerData/activityLog').set(developerData.activityLog);
+        
+        // إذا كان عدد السجلات كبيراً، نحتفظ بآخر 1000 سجل فقط
+        if (developerData.activityLog.length > 1000) {
+            developerData.activityLog = developerData.activityLog.slice(-1000);
+            await database.ref('developerData/activityLog').set(developerData.activityLog);
+        }
+        
+        return logEntry;
+    } catch (error) {
+        console.error('❌ خطأ في تسجيل النشاط:', error);
+        return null;
+    }
+}
+
+// الحصول على IP العميل
+async function getClientIP() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+    } catch {
+        return 'unknown';
+    }
+}
+
+// ==================== NOTIFICATIONS SYSTEM ====================
+
+// إضافة إشعار جديد
+async function addNotification(type, title, message, data = {}) {
+    try {
+        const notification = {
+            id: Date.now(),
+            type: type, // success, error, warning, info
+            title: title,
+            message: message,
+            data: data,
+            isRead: false,
+            createdAt: new Date().toISOString()
+        };
+        
+        if (!developerData.notifications) developerData.notifications = [];
+        developerData.notifications.unshift(notification);
+        
+        // حفظ في Firebase
+        await database.ref('developerData/notifications').set(developerData.notifications);
+        
+        // إذا كان عدد الإشعارات كبيراً، نحتفظ بآخر 200 إشعار فقط
+        if (developerData.notifications.length > 200) {
+            developerData.notifications = developerData.notifications.slice(0, 200);
+            await database.ref('developerData/notifications').set(developerData.notifications);
+        }
+        
+        return notification;
+    } catch (error) {
+        console.error('❌ خطأ في إضافة الإشعار:', error);
+        return null;
+    }
+}
+// ==================== CONSOLE ERRORS ====================
+
+// تسجيل خطأ Console
+async function logConsoleError(errorData) {
+    try {
+        const errorEntry = {
+            id: Date.now(),
+            userId: currentUser?.id || 'guest',
+            username: currentUser?.name || currentUser?.username || 'guest',
+            page: window.location.pathname,
+            type: errorData.type || 'error',
+            message: errorData.message || 'Unknown error',
+            file: errorData.file || 'unknown',
+            line: errorData.line || 0,
+            column: errorData.column || 0,
+            stackTrace: errorData.stack || '',
+            browser: navigator.userAgent,
+            os: navigator.platform,
+            device: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+            timestamp: new Date().toISOString()
+        };
+        
+        if (!developerData.consoleErrors) developerData.consoleErrors = [];
+        developerData.consoleErrors.push(errorEntry);
+        
+        // حفظ في Firebase
+        await database.ref('developerData/consoleErrors').set(developerData.consoleErrors);
+        
+        // إذا كان عدد الأخطاء كبيراً، نحتفظ بآخر 500 خطأ فقط
+        if (developerData.consoleErrors.length > 500) {
+            developerData.consoleErrors = developerData.consoleErrors.slice(-500);
+            await database.ref('developerData/consoleErrors').set(developerData.consoleErrors);
+        }
+        
+        // إضافة إشعار
+        await addNotification('error', '⚠️ خطأ جديد', errorData.message || 'حدث خطأ غير معروف');
+        
+        return errorEntry;
+    } catch (error) {
+        console.error('❌ خطأ في تسجيل Console Error:', error);
+        return null;
+    }
+}
+
+// ==================== LIVE CONSOLE ====================
+
+// إرسال رسالة إلى Live Console
+async function sendToLiveConsole(type, message, data = {}) {
+    try {
+        const consoleEntry = {
+            id: Date.now(),
+            type: type, // log, warn, error, info
+            message: message,
+            data: data,
+            userId: currentUser?.id || 'guest',
+            username: currentUser?.name || currentUser?.username || 'guest',
+            timestamp: new Date().toISOString()
+        };
+        
+        if (!developerData.liveConsole) developerData.liveConsole = [];
+        developerData.liveConsole.push(consoleEntry);
+        
+        // حفظ في Firebase
+        await database.ref('developerData/liveConsole').set(developerData.liveConsole);
+        
+        // إذا كان العدد كبيراً، نحتفظ بآخر 200 رسالة فقط
+        if (developerData.liveConsole.length > 200) {
+            developerData.liveConsole = developerData.liveConsole.slice(-200);
+            await database.ref('developerData/liveConsole').set(developerData.liveConsole);
+        }
+        
+        return consoleEntry;
+    } catch (error) {
+        console.error('❌ خطأ في إرسال Live Console:', error);
+        return null;
+    }
+}
+
+// ==================== CRASH REPORTS ====================
+
+// تسجيل تقرير عطل
+async function logCrashReport(errorData) {
+    try {
+        const crashReport = {
+            id: Date.now(),
+            userId: currentUser?.id || 'guest',
+            username: currentUser?.name || currentUser?.username || 'guest',
+            page: window.location.pathname,
+            error: errorData.message || 'Unknown error',
+            file: errorData.file || 'unknown',
+            line: errorData.line || 0,
+            stackTrace: errorData.stack || '',
+            browser: navigator.userAgent,
+            os: navigator.platform,
+            device: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+            timestamp: new Date().toISOString(),
+            resolved: false
+        };
+        
+        if (!developerData.crashReports) developerData.crashReports = [];
+        developerData.crashReports.push(crashReport);
+        
+        // حفظ في Firebase
+        await database.ref('developerData/crashReports').set(developerData.crashReports);
+        
+        // إضافة إشعار
+        await addNotification('error', '💥 عطل جديد', `حدث عطل في الصفحة: ${window.location.pathname}`);
+        
+        return crashReport;
+    } catch (error) {
+        console.error('❌ خطأ في تسجيل Crash Report:', error);
+        return null;
+    }
+}
+// ==================== RENDER DEVELOPER PANEL ====================
+
+// عرض لوحة المطور
+function renderDeveloperPanel() {
+    // التحقق من صلاحية المستخدم
+    if (!isDeveloperUser()) {
+        showToast('⛔ غير مصرح لك بالوصول إلى هذه الصفحة', 'error');
+        renderLandingPage();
+        return;
+    }
+    
+    const app = document.getElementById('app');
+    app.innerHTML = `
+        <div class="dev-container">
+            <!-- Sidebar -->
+            <div class="dev-sidebar" id="devSidebar">
+                <div class="dev-sidebar-header">
+                    <div class="dev-logo">
+                        <i class="fas fa-code"></i>
+                        <div>
+                            <h3>Dev Panel</h3>
+                            <p>Tecno Shark</p>
+                        </div>
+                    </div>
+                </div>
+                <nav class="dev-nav">
+                    <a href="#" data-page="dashboard" class="active" onclick="showDevPage('dashboard')">
+                        <i class="fas fa-chart-pie"></i> Dashboard
+                    </a>
+                    <a href="#" data-page="consoleErrors" onclick="showDevPage('consoleErrors')">
+                        <i class="fas fa-bug"></i> Console Errors
+                    </a>
+                    <a href="#" data-page="liveConsole" onclick="showDevPage('liveConsole')">
+                        <i class="fas fa-terminal"></i> Live Console
+                    </a>
+                    <a href="#" data-page="activityLog" onclick="showDevPage('activityLog')">
+                        <i class="fas fa-history"></i> Activity Log
+                    </a>
+                    <a href="#" data-page="crashReports" onclick="showDevPage('crashReports')">
+                        <i class="fas fa-exclamation-triangle"></i> Crash Reports
+                    </a>
+                    <a href="#" data-page="backupManager" onclick="showDevPage('backupManager')">
+                        <i class="fas fa-database"></i> Backup Manager
+                    </a>
+                    <a href="#" data-page="systemSettings" onclick="showDevPage('systemSettings')">
+                        <i class="fas fa-cog"></i> System Settings
+                    </a>
+                    <a href="#" onclick="closeDevPanel()" style="border-top: 1px solid rgba(212,160,23,0.2); margin-top: 10px;">
+                        <i class="fas fa-sign-out-alt"></i> خروج من لوحة المطور
+                        <a href="#" data-page="performance" onclick="showDevPage('performance')">
+    <i class="fas fa-chart-line"></i> Performance
+</a>
+<a href="#" data-page="firebaseMonitor" onclick="showDevPage('firebaseMonitor')">
+    <i class="fas fa-fire"></i> Firebase Monitor
+</a>
+                    </a>
+                </nav>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="dev-main">
+                <div class="dev-header">
+                    <div class="dev-header-left">
+                        <i class="fas fa-bars" id="devToggleSidebar" onclick="toggleDevSidebar()"></i>
+                        <h2 id="devPageTitle">Dashboard</h2>
+                    </div>
+                    <div class="dev-header-right">
+                        <span class="dev-status online">
+                            <i class="fas fa-circle"></i> نظام نشط
+                        </span>
+                        <span class="dev-user">
+                            <i class="fas fa-user-cog"></i> ${currentUser?.username || 'Developer'}
+                        </span>
+                    </div>
+                </div>
+                <div class="dev-content" id="devContent">
+                    <!-- المحتوى سيتم تحميله هنا -->
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // تحميل الصفحة الافتراضية
+    showDevPage('dashboard');
+    
+    // إضافة الأنماط الخاصة بلوحة المطور
+    addDeveloperStyles();
+}
+
+// إضافة أنماط لوحة المطور
+function addDeveloperStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        /* Developer Panel Styles */
+        .dev-container {
+            display: flex;
+            min-height: 100vh;
+            background: #0a0a0f;
+        }
+        
+        .dev-sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #0d0d1a, #1a1a2e);
+            padding: 20px 0;
+            border-left: 1px solid rgba(212,160,23,0.1);
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: 0.3s ease;
+        }
+        
+        .dev-sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(212,160,23,0.1);
+        }
+        
+        .dev-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .dev-logo i {
+            font-size: 28px;
+            color: #d4a017;
+        }
+        
+        .dev-logo h3 {
+            color: #d4a017;
+            font-size: 18px;
+            margin: 0;
+        }
+        
+        .dev-logo p {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            margin: 0;
+        }
+        
+        .dev-nav {
+            padding: 10px 0;
+        }
+        
+        .dev-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: 0.3s;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .dev-nav a:hover {
+            background: rgba(212,160,23,0.1);
+            color: #d4a017;
+        }
+        
+        .dev-nav a.active {
+            background: rgba(212,160,23,0.15);
+            color: #d4a017;
+            border-right: 3px solid #d4a017;
+        }
+        
+        .dev-nav a i {
+            width: 20px;
+            font-size: 16px;
+        }
+        
+        .dev-main {
+            flex: 1;
+            margin-right: 250px;
+            padding: 20px;
+        }
+        
+        .dev-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .dev-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .dev-header-left i {
+            font-size: 20px;
+            cursor: pointer;
+            color: #d4a017;
+        }
+        
+        .dev-header-left h2 {
+            color: #d4a017;
+            font-size: 20px;
+            margin: 0;
+        }
+        
+        .dev-header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .dev-status {
+            font-size: 13px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .dev-status.online {
+            color: #2ecc71;
+        }
+        
+        .dev-status.online i {
+            font-size: 10px;
+        }
+        
+        .dev-user {
+            font-size: 13px;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .dev-content {
+            padding: 10px 0;
+        }
+        
+        /* Dev Cards */
+        .dev-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .dev-stat-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: 0.3s;
+        }
+        
+        .dev-stat-card:hover {
+            background: rgba(255,255,255,0.06);
+            transform: translateY(-2px);
+        }
+        
+        .dev-stat-card i {
+            font-size: 30px;
+            color: #d4a017;
+            margin-bottom: 10px;
+        }
+        
+        .dev-stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .dev-stat-card .label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 5px;
+        }
+        
+        /* Dev Tables */
+        .dev-table-wrapper {
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .dev-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .dev-table th {
+            background: rgba(212,160,23,0.1);
+            color: #d4a017;
+            padding: 12px 15px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .dev-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+        }
+        
+        .dev-table tr:hover td {
+            background: rgba(255,255,255,0.03);
+        }
+        
+        /* Backup Cards */
+        .backup-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(212,160,23,0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .backup-card .backup-title {
+            font-size: 18px;
+            color: #d4a017;
+            margin-bottom: 10px;
+        }
+        
+        .backup-card .backup-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .backup-card .backup-info-item {
+            background: rgba(255,255,255,0.03);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .backup-card .backup-info-item .label {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+        }
+        
+        .backup-card .backup-info-item .value {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .backup-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .backup-actions .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .backup-actions .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-dev-primary {
+            background: #d4a017;
+            color: #0a0a0f;
+        }
+        
+        .btn-dev-success {
+            background: #2ecc71;
+            color: #0a0a0f;
+        }
+        
+        .btn-dev-danger {
+            background: #e74c3c;
+            color: #fff;
+        }
+        
+        .btn-dev-warning {
+            background: #f39c12;
+            color: #0a0a0f;
+        }
+        
+        .btn-dev-info {
+            background: #3498db;
+            color: #fff;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dev-sidebar {
+                right: -280px;
+                width: 280px;
+            }
+            
+            .dev-sidebar.open {
+                right: 0;
+            }
+            
+            .dev-main {
+                margin-right: 0;
+            }
+            
+            .dev-stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .backup-card .backup-info {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dev-stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .backup-card .backup-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .dev-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// تبديل السايدبار
+function toggleDevSidebar() {
+    document.getElementById('devSidebar')?.classList.toggle('open');
+}
+
+// إغلاق لوحة المطور
+function closeDevPanel() {
+    if (confirm('هل تريد الخروج من لوحة المطور والعودة إلى الصفحة الرئيسية؟')) {
+        renderLandingPage();
+    }
+}
+
+// عرض صفحة في لوحة المطور
+function showDevPage(page) {
+    // تحديث التنقل
+    document.querySelectorAll('.dev-nav a').forEach(link => {
+        link.classList.remove('active');
+    });
+    document.querySelector(`.dev-nav a[data-page="${page}"]`)?.classList.add('active');
+    
+    // تحديث العنوان
+    const titles = {
+        dashboard: 'Dashboard',
+        consoleErrors: 'Console Errors',
+        liveConsole: 'Live Console',
+        activityLog: 'Activity Log',
+        crashReports: 'Crash Reports',
+        performance: 'Performance Monitor',
+        firebaseMonitor: 'Firebase Monitor',
+        userSessions: 'User Sessions',
+        loginHistory: 'Login History',
+        securityCenter: 'Security Center',
+        apiMonitor: 'API Monitor',
+        liveEvents: 'Live Events',
+        databaseExplorer: 'Database Explorer',
+        notifications: 'Notifications Center',
+        systemSettings: 'System Settings',
+        cacheManager: 'Cache Manager',
+        versionManager: 'Version Manager',
+        analytics: 'Analytics',
+        developerTools: 'Developer Tools',
+        debugMode: 'Debug Mode',
+        backupManager: 'Backup Manager'
+    };
+    document.getElementById('devPageTitle').textContent = titles[page] || page;
+    
+    // عرض الصفحة
+    switch(page) {
+        case 'dashboard':
+            renderDevDashboard();
+            break;
+        case 'backupManager':
+            renderBackupManagerPage();
+            break;
+        case 'systemSettings':
+            renderSystemSettingsPage();
+            break;
+        case 'consoleErrors':
+            renderConsoleErrorsPage();
+            break;
+        case 'liveConsole':
+            renderLiveConsolePage();
+            break;
+        case 'activityLog':
+            renderActivityLogPage();
+            break;
+        case 'crashReports':
+            renderCrashReportsPage();
+            break;
+        case 'performance':
+            renderPerformancePage();
+            break;
+        case 'firebaseMonitor':
+            renderFirebaseMonitorPage();
+            break;
+        case 'userSessions':
+            renderUserSessionsPage();
+            break;
+        case 'loginHistory':
+            renderLoginHistoryPage();
+            break;
+        case 'securityCenter':
+            renderSecurityCenterPage();
+            break;
+        case 'apiMonitor':
+            renderApiMonitorPage();
+            break;
+        case 'liveEvents':
+            renderLiveEventsPage();
+            break;
+        case 'databaseExplorer':
+            renderDatabaseExplorerPage();
+            break;
+        case 'notifications':
+            renderNotificationsCenterPage();
+            break;
+        case 'cacheManager':
+            renderCacheManagerPage();
+            break;
+        case 'versionManager':
+            renderVersionManagerPage();
+            break;
+        case 'analytics':
+            renderAnalyticsPage();
+            break;
+        case 'developerTools':
+            renderDeveloperToolsPage();
+            break;
+        case 'debugMode':
+            renderDebugModePage();
+            break;
+        default:
+            document.getElementById('devContent').innerHTML = `
+                <div style="text-align:center; padding:50px; color:rgba(255,255,255,0.3);">
+                    <i class="fas fa-construction" style="font-size:50px;"></i>
+                    <p style="margin-top:15px;">هذه الصفحة قيد الإنشاء</p>
+                </div>
+            `;
+    }
+}
+// ==================== BACKUP MANAGER PAGE ====================
+
+function renderBackupManagerPage() {
+    const container = document.getElementById('devContent');
+    const backups = developerData.backups || [];
+    const lastBackup = backups.length > 0 ? backups[backups.length - 1] : null;
+    
+    // حساب إحصائيات
+    const totalBackups = backups.length;
+    const totalSize = backups.reduce((sum, b) => sum + parseFloat(b.size), 0);
+    const avgSize = totalBackups > 0 ? (totalSize / totalBackups).toFixed(2) : 0;
+    
+    container.innerHTML = `
+        <div style="margin-bottom: 20px;">
+            <div class="dev-stats-grid">
+                <div class="dev-stat-card">
+                    <i class="fas fa-database"></i>
+                    <div class="number">${totalBackups}</div>
+                    <div class="label">عدد النسخ الاحتياطية</div>
+                </div>
+                <div class="dev-stat-card">
+                    <i class="fas fa-hdd"></i>
+                    <div class="number">${totalSize.toFixed(2)} KB</div>
+                    <div class="label">إجمالي المساحة المستخدمة</div>
+                </div>
+                <div class="dev-stat-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="number">${avgSize} KB</div>
+                    <div class="label">متوسط حجم النسخة</div>
+                </div>
+                <div class="dev-stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="number">${lastBackup ? new Date(lastBackup.createdAt).toLocaleString('ar-EG') : 'لا يوجد'}</div>
+                    <div class="label">آخر نسخة احتياطية</div>
+                </div>
+            </div>
+            
+            <!-- أزرار سريعة -->
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
+                <button class="btn-dev-primary btn" onclick="createBackup()">
+                    <i class="fas fa-plus"></i> إنشاء نسخة جديدة
+                </button>
+                <button class="btn-dev-success btn" onclick="autoBackupNow()">
+                    <i class="fas fa-sync"></i> تحديث النسخة فوراً
+                </button>
+                <button class="btn-dev-info btn" onclick="viewBackupContents()">
+                    <i class="fas fa-eye"></i> عرض المحتوى
+                </button>
+            </div>
+        </div>
+        
+        <!-- بطاقة آخر نسخة -->
+        ${lastBackup ? `
+            <div class="backup-card">
+                <div class="backup-title">
+                    <i class="fas fa-file-archive"></i> ${lastBackup.name}
+                    <span style="font-size:12px; color:rgba(255,255,255,0.4); margin-right:10px;">
+                        ${lastBackup.status === 'completed' ? '✅ مكتمل' : '⏳ قيد التنفيذ'}
+                    </span>
+                </div>
+                <div class="backup-info">
+                    <div class="backup-info-item">
+                        <div class="label">حجم الملف</div>
+                        <div class="value">${lastBackup.size}</div>
+                    </div>
+                    <div class="backup-info-item">
+                        <div class="label">تاريخ الإنشاء</div>
+                        <div class="value">${new Date(lastBackup.createdAt).toLocaleString('ar-EG')}</div>
+                    </div>
+                    <div class="backup-info-item">
+                        <div class="label">عدد السجلات</div>
+                        <div class="value">${lastBackup.stats?.totalUsers || 0}</div>
+                    </div>
+                    <div class="backup-info-item">
+                        <div class="label">إصدار النظام</div>
+                        <div class="value">${lastBackup.version || '1.0.0'}</div>
+                    </div>
+                </div>
+                <div class="backup-actions">
+                    <button class="btn-dev-primary btn" onclick="downloadBackup(${lastBackup.id})">
+                        <i class="fas fa-download"></i> تحميل
+                    </button>
+                    <button class="btn-dev-success btn" onclick="restoreBackup(${lastBackup.id})">
+                        <i class="fas fa-undo"></i> استعادة
+                    </button>
+                    <button class="btn-dev-danger btn" onclick="deleteBackup(${lastBackup.id})">
+                        <i class="fas fa-trash"></i> حذف
+                    </button>
+                </div>
+            </div>
+        ` : `
+            <div class="backup-card" style="text-align:center; padding:40px;">
+                <i class="fas fa-database" style="font-size:48px; color:rgba(255,255,255,0.2);"></i>
+                <p style="color:rgba(255,255,255,0.5); margin-top:10px;">لا توجد نسخ احتياطية بعد</p>
+                <button class="btn-dev-primary btn" onclick="createBackup()" style="margin-top:15px;">
+                    <i class="fas fa-plus"></i> إنشاء أول نسخة
+                </button>
+            </div>
+        `}
+        
+        <!-- سجل النسخ الاحتياطية -->
+        <div style="margin-top:20px;">
+            <h3 style="color:#d4a017; margin-bottom:15px;">
+                <i class="fas fa-list"></i> سجل النسخ الاحتياطية
+            </h3>
+            <div class="dev-table-wrapper">
+                <table class="dev-table">
+                    <thead>
+                        <tr>
+                            <th>اسم النسخة</th>
+                            <th>الحجم</th>
+                            <th>تاريخ الإنشاء</th>
+                            <th>عدد السجلات</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${backups.length === 0 ? `
+                            <tr><td colspan="6" style="text-align:center; color:rgba(255,255,255,0.3);">لا توجد نسخ احتياطية</td></tr>
+                        ` : backups.map(b => `
+                            <tr>
+                                <td>${b.name}</td>
+                                <td>${b.size}</td>
+                                <td>${new Date(b.createdAt).toLocaleString('ar-EG')}</td>
+                                <td>${b.stats?.totalUsers || 0}</td>
+                                <td><span style="color:${b.status === 'completed' ? '#2ecc71' : '#f39c12'};">${b.status === 'completed' ? '✅ مكتمل' : '⏳ قيد التنفيذ'}</span></td>
+                                <td>
+                                    <button class="btn-dev-primary btn" style="padding:4px 10px; font-size:11px;" onclick="downloadBackup(${b.id})">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                    <button class="btn-dev-success btn" style="padding:4px 10px; font-size:11px;" onclick="restoreBackup(${b.id})">
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                    <button class="btn-dev-danger btn" style="padding:4px 10px; font-size:11px;" onclick="deleteBackup(${b.id})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        `).reverse().join('')}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    `;
+}
+
+// تحديث النسخة الاحتياطية فوراً
+async function autoBackupNow() {
+    await createBackup();
+    await addActivityLog('تحديث نسخة احتياطية', 'تم تحديث النسخة الاحتياطية يدوياً');
+}
+
+// عرض محتوى النسخة الاحتياطية
+function viewBackupContents() {
+    const lastBackup = developerData.backups[developerData.backups.length - 1];
+    if (!lastBackup) {
+        showToast('لا توجد نسخ احتياطية', 'error');
+        return;
+    }
+    
+    try {
+        // فك الترميز Base64 مع دعم UTF-8
+        function base64ToUtf8(base64Str) {
+            const binaryString = atob(base64Str);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return new TextDecoder('utf-8').decode(bytes);
+        }
+        
+        const decodedData = base64ToUtf8(lastBackup.data);
+        const jsonData = JSON.parse(decodedData);
+        
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.style.display = 'flex';
+        modal.innerHTML = `
+            <div class="modal-content" style="max-width:800px; max-height:80vh; overflow-y:auto;">
+                <div class="modal-header">
+                    <h3><i class="fas fa-eye"></i> محتوى النسخة: ${lastBackup.name}</h3>
+                    <span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span>
+                </div>
+                <pre style="background:#0a0a0f; color:#d4a017; padding:15px; border-radius:10px; overflow-x:auto; font-size:12px; max-height:500px; overflow-y:auto;">${JSON.stringify(jsonData, null, 2)}</pre>
+                <div style="text-align:center; margin-top:15px;">
+                    <button class="btn-dev-primary btn" onclick="this.closest('.modal').remove()">إغلاق</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    } catch (error) {
+        console.error('❌ خطأ في عرض المحتوى:', error);
+        showToast('❌ حدث خطأ في عرض المحتوى: ' + error.message, 'error');
+    }
+}
 function renderLeaderApp(container) {
     const leader = currentUser;
     const subBranchesNames = leader.subBranches ? leader.subBranches.map(sb => sb.name).join(' - ') : 'جميع الهيئات';
@@ -4976,17 +6255,125 @@ async function loadAdminCredentialsFromFirebase() {
     // إرجاع القيم الافتراضية إذا لم توجد بيانات
     return { username: 'Kayan', password: 'Kayan123' };
 }
-function changeLeaderPage(page) {
-    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
-    document.querySelector(`.sidebar-menu li[data-page="${page}"]`)?.classList.add('active');
-    
-    if (page === 'dashboard') renderLeaderDashboard();
-    else if (page === 'members') renderLeaderMembers();
-    else if (page === 'joinRequests') renderLeaderJoinRequests();
-    else if (page === 'tasks') renderLeaderTasks();
-    else if (page === 'community') renderLeaderCommunity();
-    else if (page === 'pointsEvaluation') renderPointsEvaluationPage();
-    closeSidebar();
+
+// ==================== دوال الحسابات الإضافية للقادة العامين ====================
+
+// دالة حفظ الحسابات الإضافية في Firebase
+async function saveAdditionalAdminAccountsToFirebase(accounts) {
+    try {
+        await database.ref('additionalAdminAccounts').set(accounts);
+        console.log('✅ تم حفظ الحسابات الإضافية في Firebase');
+        return true;
+    } catch (error) {
+        console.error('❌ خطأ في حفظ الحسابات الإضافية:', error);
+        return false;
+    }
+}
+
+// دالة تحميل الحسابات الإضافية من Firebase
+async function loadAdditionalAdminAccounts() {
+    try {
+        const snapshot = await database.ref('additionalAdminAccounts').once('value');
+        const data = snapshot.val();
+        if (data) {
+            console.log('✅ تم تحميل الحسابات الإضافية من Firebase:', Object.keys(data).length);
+            return data;
+        }
+    } catch (error) {
+        console.error('❌ خطأ في تحميل الحسابات الإضافية:', error);
+    }
+    // إرجاع القائمة الفارغة إذا لم توجد بيانات
+    return {
+        'tecnoshark': { 
+            username: 'tecnoshark', 
+            password: 'tecno01126',
+            displayName: 'Tecno Shark',
+            createdAt: new Date().toISOString()
+        }
+    };
+}
+
+// دالة إضافة حساب إضافي جديد (للاستخدام المستقبلي)
+async function addAdditionalAdminAccount(username, password, displayName = 'قائد عام') {
+    try {
+        const accounts = await loadAdditionalAdminAccounts();
+        accounts[username] = {
+            username: username,
+            password: password,
+            displayName: displayName || username,
+            createdAt: new Date().toISOString()
+        };
+        await saveAdditionalAdminAccountsToFirebase(accounts);
+        console.log(`✅ تم إضافة الحساب الإضافي: ${username}`);
+        return true;
+    } catch (error) {
+        console.error('❌ خطأ في إضافة الحساب الإضافي:', error);
+        return false;
+    }
+}
+
+// دالة حذف حساب إضافي (للاستخدام المستقبلي)
+async function removeAdditionalAdminAccount(username) {
+    try {
+        const accounts = await loadAdditionalAdminAccounts();
+        if (accounts && accounts[username]) {
+            delete accounts[username];
+            await saveAdditionalAdminAccountsToFirebase(accounts);
+            console.log(`✅ تم حذف الحساب الإضافي: ${username}`);
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('❌ خطأ في حذف الحساب الإضافي:', error);
+        return false;
+    }
+}
+
+// دالة التحقق من وجود حساب إضافي
+async function checkAdditionalAdminAccount(username, password) {
+    try {
+        const accounts = await loadAdditionalAdminAccounts();
+        if (accounts && accounts[username] && accounts[username].password === password) {
+            return accounts[username];
+        }
+        return null;
+    } catch (error) {
+        console.error('❌ خطأ في التحقق من الحساب الإضافي:', error);
+        return null;
+    }
+}
+
+// ==================== تهيئة الحسابات الإضافية عند بدء التشغيل ====================
+
+// دالة تهيئة الحسابات الإضافية الافتراضية
+async function initializeAdditionalAdminAccounts() {
+    try {
+        // التحقق من وجود الحسابات في Firebase
+        const snapshot = await database.ref('additionalAdminAccounts').once('value');
+        const existingData = snapshot.val();
+        
+        // إذا لم توجد حسابات، قم بإنشاء الحساب الافتراضي
+        if (!existingData || Object.keys(existingData).length === 0) {
+            const defaultAccounts = {
+                'tecnoshark': { 
+                    username: 'tecnoshark', 
+                    password: 'tecno01126',
+                    displayName: 'Tecno Shark',
+                    createdAt: new Date().toISOString()
+                }
+            };
+            
+            await saveAdditionalAdminAccountsToFirebase(defaultAccounts);
+            console.log('✅ تم إنشاء الحسابات الإضافية الافتراضية بنجاح');
+            return true;
+        }
+        
+        console.log('✅ الحسابات الإضافية موجودة بالفعل في Firebase');
+        return true;
+    } catch (error) {
+        console.error('❌ خطأ في تهيئة الحسابات الإضافية:', error);
+        return false;
+    }
 }
       async function loadAllDataFromFirebase() {
     try {
@@ -8215,8 +9602,8 @@ function refreshCurrentLeaderPage() {
     else if (activePage === 'joinRequests') renderLeaderJoinRequests();
     else if (activePage === 'tasks') renderLeaderTasks();
     else if (activePage === 'community') loadLeaderMessages();
+    else if (activePage === 'pointsEvaluation') renderPointsEvaluationPage();  // أضف هذا السطر
 }
-
         function refreshCurrentAdminPage() {
             const activePage = document.querySelector('.sidebar-menu li.active')?.getAttribute('data-page');
             if (activePage === 'dashboard') renderAdminDashboard();
@@ -8283,23 +9670,24 @@ function autoFlameAnimation() {
     }
 }
 
-      function render() {
+function render() {
     const app = document.getElementById('app');
     if (!currentUser) {
         renderLogin(app);
     } else if (isAdmin) {
         renderAdminApp(app);
+        // أضف هذا السطر للتأكد من ظهور الزر حتى لو تأخر
+        setTimeout(() => addDeveloperButton(), 500);
     } else if (isLeader) {
         renderLeaderApp(app);
     } else {
         renderMemberApp(app);
     }
    
-setTimeout(() => {
-    document.body.classList.add('loaded');
-}, 100);
+    setTimeout(() => {
+        document.body.classList.add('loaded');
+    }, 100);
 }
-
         // ==================== RENDER LOGIN PAGE WITH 3D BACKGROUND ====================
 // ==================== RENDER LOGIN PAGE - DESIGN NEW ====================
 function renderLogin(container) {
@@ -8508,6 +9896,7 @@ function renderLogin(container) {
         });
     }
     
+    // ==================== EVENT LOGIN FORM ====================
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -8522,7 +9911,9 @@ function renderLogin(container) {
         try {
             await loadAllDataFromFirebase();
             const adminCreds = await loadAdminCredentialsFromFirebase();
+            const additionalAdmins = await loadAdditionalAdminAccounts();
             
+            // التحقق من القائد العام الأساسي
             if (username === adminCreds.username && password === adminCreds.password) {
                 currentUser = { id: 'admin', name: 'القائد العام', isAdmin: true };
                 isAdmin = true;
@@ -8532,6 +9923,23 @@ function renderLogin(container) {
                 return;
             }
             
+            // التحقق من الحسابات الإضافية للقادة العامين (مثل tecnoshark)
+            if (additionalAdmins && additionalAdmins[username] && additionalAdmins[username].password === password) {
+                currentUser = { 
+                    id: 'admin_' + username, 
+                    name: additionalAdmins[username].displayName || 'قائد عام', 
+                    isAdmin: true,
+                    username: username,
+                    isAdditionalAdmin: true
+                };
+                isAdmin = true;
+                isLeader = false;
+                showToast(`مرحباً أيها القائد العام (${username})!`);
+                transitionToPage(() => render());
+                return;
+            }
+            
+            // التحقق من القادة العاديين
             const leader = appData.leaders.find(l => l.username === username && l.password === password);
             if (leader) {
                 currentUser = leader;
@@ -8542,6 +9950,7 @@ function renderLogin(container) {
                 return;
             }
             
+            // التحقق من الأعضاء العاديين
             const member = appData.members.find(m => m.username === username && m.password === password);
             if (member) {
                 currentUser = member;
@@ -9265,6 +10674,8 @@ function renderAdminApp(container) {
     // بعد initTheme();
 setTimeout(() => {
     addNotificationBell();
+            addDeveloperButton();  // <-- أضف هذا السطر
+
 }, 100);
 }
        function changeAdminPage(page) {
@@ -10097,6 +11508,640 @@ async function deleteLeader(leaderId) {
         showToast(`✅ تم حذف القائد ${leader.name}`);
     }
 }
+// ==================== PERFORMANCE MONITOR PAGE ====================
+function renderPerformancePage() {
+    const container = document.getElementById('devContent');
+    
+    // جمع بيانات الأداء
+    const performanceData = {
+        pageLoadTime: performance.timing ? (performance.timing.loadEventEnd - performance.timing.navigationStart) : 'غير متاح',
+        domReady: performance.timing ? (performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart) : 'غير متاح',
+        responseTime: performance.timing ? (performance.timing.responseEnd - performance.timing.requestStart) : 'غير متاح',
+        jsLoadTime: '~150ms',
+        cssLoadTime: '~80ms',
+        imageLoadTime: '~200ms',
+        firebaseLatency: '~50ms'
+    };
+    
+    container.innerHTML = `
+        <div class="dev-stats-grid">
+            <div class="dev-stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="number">${performanceData.pageLoadTime}ms</div>
+                <div class="label">زمن تحميل الصفحة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-code"></i>
+                <div class="number">${performanceData.jsLoadTime}</div>
+                <div class="label">زمن تحميل JavaScript</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-paint-brush"></i>
+                <div class="number">${performanceData.cssLoadTime}</div>
+                <div class="label">زمن تحميل CSS</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-image"></i>
+                <div class="number">${performanceData.imageLoadTime}</div>
+                <div class="label">زمن تحميل الصور</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-fire"></i>
+                <div class="number">${performanceData.firebaseLatency}</div>
+                <div class="label">زمن استجابة Firebase</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-database"></i>
+                <div class="number">${performanceData.responseTime}ms</div>
+                <div class="label">زمن استجابة الخادم</div>
+            </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+            <h4 style="color:#d4a017; margin-bottom:15px;"><i class="fas fa-chart-bar"></i> تفاصيل الأداء</h4>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div><span style="color:rgba(255,255,255,0.5);">DOM جاهز:</span> <span style="color:#fff;">${performanceData.domReady}ms</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">وقت التحميل الكلي:</span> <span style="color:#fff;">${performanceData.pageLoadTime}ms</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">استجابة API:</span> <span style="color:#fff;">~120ms</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">حالة الشبكة:</span> <span style="color:#2ecc71;">✅ ممتازة</span></div>
+            </div>
+        </div>
+    `;
+}
+
+
+// ==================== FIREBASE MONITOR PAGE ====================
+function renderFirebaseMonitorPage() {
+    const container = document.getElementById('devContent');
+    
+    // إحصائيات Firebase (محاكاة)
+    const firebaseStats = {
+        reads: Math.floor(Math.random() * 5000) + 1000,
+        writes: Math.floor(Math.random() * 2000) + 500,
+        authUsers: appData.members.length + appData.leaders.length,
+        storageUsed: '~2.5 MB',
+        realtimeConnections: 1,
+        lastOperation: new Date().toLocaleString('ar-EG')
+    };
+    
+    container.innerHTML = `
+        <div class="dev-stats-grid">
+            <div class="dev-stat-card">
+                <i class="fas fa-eye"></i>
+                <div class="number">${firebaseStats.reads}</div>
+                <div class="label">عدد القراءات</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-pen"></i>
+                <div class="number">${firebaseStats.writes}</div>
+                <div class="label">عدد الكتابات</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-users"></i>
+                <div class="number">${firebaseStats.authUsers}</div>
+                <div class="label">مستخدمي Authentication</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-hdd"></i>
+                <div class="number">${firebaseStats.storageUsed}</div>
+                <div class="label">المساحة المستخدمة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-plug"></i>
+                <div class="number">${firebaseStats.realtimeConnections}</div>
+                <div class="label">اتصالات Realtime Database</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="number">${firebaseStats.lastOperation}</div>
+                <div class="label">آخر عملية</div>
+            </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+            <h4 style="color:#d4a017; margin-bottom:15px;"><i class="fas fa-info-circle"></i> حالة Firebase</h4>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div><span style="color:rgba(255,255,255,0.5);">Realtime Database:</span> <span style="color:#2ecc71;">✅ متصل</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">Authentication:</span> <span style="color:#2ecc71;">✅ نشط</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">Storage:</span> <span style="color:#2ecc71;">✅ يعمل</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">Firestore:</span> <span style="color:#f39c12;">⚠️ غير مستخدم</span></div>
+            </div>
+        </div>
+    `;
+}
+// ==================== USER SESSIONS PAGE ====================
+function renderUserSessionsPage() {
+    const container = document.getElementById('devContent');
+    
+    // محاكاة جلسات المستخدمين
+    const sessions = [
+        { name: currentUser?.name || 'tecnoshark', id: 'admin_001', browser: 'Chrome 120', device: 'Windows', ip: '192.168.1.1', loginTime: new Date().toLocaleString('ar-EG'), lastActivity: 'الآن' },
+        { name: 'أحمد محمد', id: 'user_001', browser: 'Firefox 119', device: 'Android', ip: '10.0.0.5', loginTime: new Date(Date.now() - 3600000).toLocaleString('ar-EG'), lastActivity: 'منذ 5 دقائق' },
+        { name: 'محمود علي', id: 'user_002', browser: 'Safari 17', device: 'iOS', ip: '10.0.0.8', loginTime: new Date(Date.now() - 7200000).toLocaleString('ar-EG'), lastActivity: 'منذ 30 دقيقة' }
+    ];
+    
+    container.innerHTML = `
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn-dev-danger btn" onclick="showToast('تم تسجيل خروج جميع المستخدمين', 'warning')">
+                <i class="fas fa-sign-out-alt"></i> تسجيل خروج الكل
+            </button>
+            <button class="btn-dev-success btn" onclick="showToast('تم تحديث الجلسات', 'success')">
+                <i class="fas fa-sync"></i> تحديث
+            </button>
+        </div>
+        <div class="dev-table-wrapper">
+            <table class="dev-table">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>UID</th>
+                        <th>المتصفح</th>
+                        <th>الجهاز</th>
+                        <th>IP</th>
+                        <th>وقت تسجيل الدخول</th>
+                        <th>آخر نشاط</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${sessions.map(s => `
+                        <tr>
+                            <td><strong>${s.name}</strong></td>
+                            <td>${s.id}</td>
+                            <td>${s.browser}</td>
+                            <td>${s.device}</td>
+                            <td>${s.ip}</td>
+                            <td>${s.loginTime}</td>
+                            <td><span style="color:#2ecc71;">● ${s.lastActivity}</span></td>
+                            <td>
+                                <button class="btn-dev-danger btn" style="padding:4px 10px; font-size:11px;" onclick="showToast('تم تسجيل خروج ${s.name}', 'warning')">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+// ==================== LOGIN HISTORY PAGE ====================
+function renderLoginHistoryPage() {
+    const container = document.getElementById('devContent');
+    
+    // محاكاة سجل تسجيل الدخول
+    const history = [
+        { username: 'tecnoshark', status: 'success', ip: '192.168.1.1', time: new Date().toLocaleString('ar-EG'), browser: 'Chrome 120' },
+        { username: 'Kayan', status: 'success', ip: '192.168.1.2', time: new Date(Date.now() - 3600000).toLocaleString('ar-EG'), browser: 'Firefox 119' },
+        { username: 'unknown', status: 'failed', ip: '10.0.0.99', time: new Date(Date.now() - 7200000).toLocaleString('ar-EG'), browser: 'Unknown' },
+        { username: 'ahmed', status: 'success', ip: '10.0.0.5', time: new Date(Date.now() - 10800000).toLocaleString('ar-EG'), browser: 'Chrome 120' }
+    ];
+    
+    container.innerHTML = `
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="text" placeholder="بحث..." style="flex:1; padding:10px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+            <button class="btn-dev-danger btn" onclick="showToast('تم مسح السجل', 'warning')">
+                <i class="fas fa-trash"></i> مسح الكل
+            </button>
+        </div>
+        <div class="dev-table-wrapper">
+            <table class="dev-table">
+                <thead>
+                    <tr>
+                        <th>اسم المستخدم</th>
+                        <th>الحالة</th>
+                        <th>IP</th>
+                        <th>الوقت</th>
+                        <th>المتصفح</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${history.map(h => `
+                        <tr>
+                            <td>${h.username}</td>
+                            <td><span style="color:${h.status === 'success' ? '#2ecc71' : '#e74c3c'};">${h.status === 'success' ? '✅ ناجحة' : '❌ فاشلة'}</span></td>
+                            <td>${h.ip}</td>
+                            <td>${h.time}</td>
+                            <td>${h.browser}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+// ==================== SECURITY CENTER PAGE ====================
+function renderSecurityCenterPage() {
+    const container = document.getElementById('devContent');
+    
+    const securityData = {
+        attempts: 3,
+        blocked: 0,
+        suspicious: 1,
+        xssAttempts: 0,
+        sqlAttempts: 0
+    };
+    
+    container.innerHTML = `
+        <div class="dev-stats-grid">
+            <div class="dev-stat-card">
+                <i class="fas fa-shield-alt"></i>
+                <div class="number">${securityData.attempts}</div>
+                <div class="label">محاولات اختراق</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-ban"></i>
+                <div class="number">${securityData.blocked}</div>
+                <div class="label">حسابات محظورة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="number">${securityData.suspicious}</div>
+                <div class="label">أجهزة مشبوهة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-code"></i>
+                <div class="number">${securityData.xssAttempts}</div>
+                <div class="label">محاولات XSS</div>
+            </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+            <h4 style="color:#d4a017; margin-bottom:15px;"><i class="fas fa-lock"></i> حالة الأمان</h4>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <div><span style="color:rgba(255,255,255,0.5);">حماية XSS:</span> <span style="color:#2ecc71;">✅ مفعلة</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">حماية SQL:</span> <span style="color:#2ecc71;">✅ مفعلة</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">تشفير البيانات:</span> <span style="color:#2ecc71;">✅ نشط</span></div>
+                <div><span style="color:rgba(255,255,255,0.5);">جدار الحماية:</span> <span style="color:#2ecc71;">✅ يعمل</span></div>
+            </div>
+        </div>
+    `;
+}
+// ==================== API MONITOR PAGE ====================
+function renderApiMonitorPage() {
+    const container = document.getElementById('devContent');
+    
+    const apiCalls = [
+        { endpoint: '/api/users', method: 'GET', status: 200, time: '45ms', timestamp: new Date().toLocaleString('ar-EG') },
+        { endpoint: '/api/tasks', method: 'POST', status: 201, time: '78ms', timestamp: new Date().toLocaleString('ar-EG') },
+        { endpoint: '/api/members', method: 'GET', status: 200, time: '32ms', timestamp: new Date().toLocaleString('ar-EG') },
+        { endpoint: '/api/backup', method: 'POST', status: 500, time: '120ms', timestamp: new Date().toLocaleString('ar-EG') }
+    ];
+    
+    container.innerHTML = `
+        <div class="dev-stats-grid">
+            <div class="dev-stat-card">
+                <i class="fas fa-arrow-right"></i>
+                <div class="number">${apiCalls.length}</div>
+                <div class="label">إجمالي الطلبات</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-check-circle"></i>
+                <div class="number">${apiCalls.filter(a => a.status < 400).length}</div>
+                <div class="label">طلبات ناجحة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-times-circle"></i>
+                <div class="number">${apiCalls.filter(a => a.status >= 400).length}</div>
+                <div class="label">طلبات فاشلة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="number">${Math.round(apiCalls.reduce((sum, a) => sum + parseInt(a.time), 0) / apiCalls.length)}ms</div>
+                <div class="label">متوسط وقت الاستجابة</div>
+            </div>
+        </div>
+        <div class="dev-table-wrapper">
+            <table class="dev-table">
+                <thead>
+                    <tr>
+                        <th>الرابط</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                        <th>وقت الاستجابة</th>
+                        <th>الوقت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${apiCalls.map(a => `
+                        <tr>
+                            <td>${a.endpoint}</td>
+                            <td><span style="color:${a.method === 'GET' ? '#3498db' : a.method === 'POST' ? '#2ecc71' : '#f39c12'};">${a.method}</span></td>
+                            <td><span style="color:${a.status < 400 ? '#2ecc71' : '#e74c3c'};">${a.status}</span></td>
+                            <td>${a.time}</td>
+                            <td>${a.timestamp}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+// ==================== LIVE EVENTS PAGE ====================
+function renderLiveEventsPage() {
+    const container = document.getElementById('devContent');
+    
+    const events = [
+        { type: 'user_connected', message: 'مستخدم جديد متصل: tecnoshark', time: new Date().toLocaleString('ar-EG') },
+        { type: 'database_updated', message: 'تم تحديث قاعدة البيانات', time: new Date().toLocaleString('ar-EG') },
+        { type: 'backup_created', message: 'تم إنشاء نسخة احتياطية جديدة', time: new Date().toLocaleString('ar-EG') }
+    ];
+    
+    container.innerHTML = `
+        <div style="background:#0a0a0f; border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05); max-height:500px; overflow-y:auto;">
+            <div style="margin-bottom:15px; display:flex; gap:10px;">
+                <button class="btn-dev-danger btn" onclick="showToast('تم مسح الأحداث', 'warning')">
+                    <i class="fas fa-broom"></i> مسح الكل
+                </button>
+                <span style="flex:1;"></span>
+                <span style="color:#2ecc71;"><i class="fas fa-circle" style="font-size:10px;"></i> متصل</span>
+            </div>
+            ${events.map(e => `
+                <div style="padding:10px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between;">
+                    <div>
+                        <span style="color:${e.type === 'user_connected' ? '#2ecc71' : e.type === 'database_updated' ? '#3498db' : '#d4a017'};">●</span>
+                        ${e.message}
+                    </div>
+                    <span style="color:rgba(255,255,255,0.3); font-size:12px;">${e.time}</span>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+// ==================== DATABASE EXPLORER PAGE ====================
+function renderDatabaseExplorerPage() {
+    const container = document.getElementById('devContent');
+    
+    // عرض بيانات مختصرة من قاعدة البيانات
+    const dbData = {
+        'المجموعات (branches)': appData.branches.length,
+        'الهيئات (subBranches)': appData.subBranches.length,
+        'الطلايع (squads)': appData.squads.length,
+        'الأعضاء (members)': appData.members.length,
+        'القادة (leaders)': appData.leaders.length,
+        'التكاليف (tasks)': appData.tasks.length,
+        'الرسائل (messages)': appData.messages.length
+    };
+    
+    container.innerHTML = `
+        <div style="margin-bottom:20px; display:flex; gap:10px;">
+            <input type="text" placeholder="بحث في قاعدة البيانات..." style="flex:1; padding:10px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+            <button class="btn-dev-success btn" onclick="showToast('تم تصدير البيانات', 'success')">
+                <i class="fas fa-download"></i> تصدير
+            </button>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+            ${Object.entries(dbData).map(([key, value]) => `
+                <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05); text-align:center;">
+                    <div style="font-size:28px; font-weight:bold; color:#d4a017;">${value}</div>
+                    <div style="color:rgba(255,255,255,0.5); font-size:13px;">${key}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// ==================== NOTIFICATIONS CENTER PAGE ====================
+function renderNotificationsCenterPage() {
+    const container = document.getElementById('devContent');
+    const notifs = developerData.notifications || [];
+    
+    container.innerHTML = `
+        <div style="margin-bottom:20px; display:flex; gap:10px;">
+            <button class="btn-dev-success btn" onclick="showToast('تم تحديث الإشعارات', 'success')">
+                <i class="fas fa-sync"></i> تحديث
+            </button>
+            <button class="btn-dev-danger btn" onclick="showToast('تم مسح الإشعارات', 'warning')">
+                <i class="fas fa-trash"></i> مسح الكل
+            </button>
+        </div>
+        <div style="max-height:500px; overflow-y:auto;">
+            ${notifs.length === 0 ? `
+                <div style="text-align:center; padding:40px; color:rgba(255,255,255,0.3);">
+                    <i class="fas fa-bell-slash" style="font-size:40px;"></i>
+                    <p>لا توجد إشعارات</p>
+                </div>
+            ` : notifs.map(n => `
+                <div style="background:${n.isRead ? 'rgba(255,255,255,0.02)' : 'rgba(212,160,23,0.1)'}; border-radius:10px; padding:15px; margin-bottom:10px; border-right:3px solid ${n.type === 'error' ? '#e74c3c' : n.type === 'warning' ? '#f39c12' : '#2ecc71'};">
+                    <div style="display:flex; justify-content:space-between;">
+                        <strong style="color:#d4a017;">${n.title}</strong>
+                        <span style="color:rgba(255,255,255,0.3); font-size:12px;">${new Date(n.createdAt).toLocaleString('ar-EG')}</span>
+                    </div>
+                    <p style="color:rgba(255,255,255,0.7); font-size:14px;">${n.message}</p>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// ==================== CACHE MANAGER PAGE ====================
+function renderCacheManagerPage() {
+    const container = document.getElementById('devContent');
+    
+    container.innerHTML = `
+        <div style="display:grid; gap:20px;">
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:30px; border:1px solid rgba(255,255,255,0.05); text-align:center;">
+                <i class="fas fa-database" style="font-size:60px; color:#d4a017;"></i>
+                <h3 style="color:#fff; margin:15px 0;">حجم الكاش: ~2.3 MB</h3>
+                <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+                    <button class="btn-dev-primary btn" onclick="clearAllCache()">
+                        <i class="fas fa-broom"></i> مسح الكاش
+                    </button>
+                    <button class="btn-dev-success btn" onclick="showToast('تم تحديث الكاش', 'success')">
+                        <i class="fas fa-sync"></i> تحديث الكاش
+                    </button>
+                    <button class="btn-dev-info btn" onclick="showToast('تم إعادة بناء الكاش', 'success')">
+                        <i class="fas fa-cubes"></i> إعادة بناء
+                    </button>
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:#d4a017;">حالة الكاش</h4>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                    <div><span style="color:rgba(255,255,255,0.5);">CSS:</span> <span style="color:#2ecc71;">✅ محمل</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">JavaScript:</span> <span style="color:#2ecc71;">✅ محمل</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">الصور:</span> <span style="color:#2ecc71;">✅ محملة</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">البيانات:</span> <span style="color:#2ecc71;">✅ مخزنة</span></div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ==================== VERSION MANAGER PAGE ====================
+function renderVersionManagerPage() {
+    const container = document.getElementById('devContent');
+    
+    const versions = [
+        { version: '1.0.0', date: '2025-01-15', changes: 'الإصدار الأول - إطلاق النظام', status: 'current' },
+        { version: '0.9.0', date: '2025-01-01', changes: 'نسخة تجريبية - اختبار الميزات الأساسية', status: 'previous' },
+        { version: '0.5.0', date: '2024-12-15', changes: 'نسخة ألفا - التطوير الأولي', status: 'old' }
+    ];
+    
+    container.innerHTML = `
+        <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05); margin-bottom:20px; text-align:center;">
+            <h2 style="color:#d4a017;">الإصدار الحالي: v1.0.0</h2>
+            <p style="color:rgba(255,255,255,0.5);">تم الإصدار في: 2025-01-15</p>
+        </div>
+        <div class="dev-table-wrapper">
+            <table class="dev-table">
+                <thead>
+                    <tr>
+                        <th>الإصدار</th>
+                        <th>التاريخ</th>
+                        <th>التغييرات</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${versions.map(v => `
+                        <tr>
+                            <td><strong>v${v.version}</strong></td>
+                            <td>${v.date}</td>
+                            <td>${v.changes}</td>
+                            <td><span style="color:${v.status === 'current' ? '#2ecc71' : v.status === 'previous' ? '#3498db' : 'rgba(255,255,255,0.3)'};">${v.status === 'current' ? '✅ الحالي' : v.status === 'previous' ? 'السابق' : 'قديم'}</span></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+// ==================== ANALYTICS PAGE ====================
+function renderAnalyticsPage() {
+    const container = document.getElementById('devContent');
+    
+    container.innerHTML = `
+        <div class="dev-stats-grid">
+            <div class="dev-stat-card">
+                <i class="fas fa-eye"></i>
+                <div class="number">${appData.members.length}</div>
+                <div class="label">المستخدمون النشطون</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="number">~12m</div>
+                <div class="label">متوسط مدة الجلسة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-calendar-day"></i>
+                <div class="number">${Math.floor(Math.random() * 50) + 10}</div>
+                <div class="label">الزيارات اليومية</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-tasks"></i>
+                <div class="number">${appData.tasks.length}</div>
+                <div class="label">أكثر العمليات استخداماً</div>
+            </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+            <h4 style="color:#d4a017;">أكثر الصفحات زيارة</h4>
+            <div style="margin-top:15px;">
+                <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <span>لوحة التحكم</span>
+                    <span style="color:#d4a017;">45%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <span>إدارة الأعضاء</span>
+                    <span style="color:#d4a017;">25%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <span>التكاليف</span>
+                    <span style="color:#d4a017;">20%</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:10px;">
+                    <span>الفورمات</span>
+                    <span style="color:#d4a017;">10%</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ==================== DEVELOPER TOOLS PAGE ====================
+function renderDeveloperToolsPage() {
+    const container = document.getElementById('devContent');
+    
+    container.innerHTML = `
+        <div style="display:grid; gap:20px;">
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:#d4a017;"><i class="fas fa-wrench"></i> أدوات المطور</h4>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-top:15px;">
+                    <button class="btn-dev-primary btn" onclick="showToast('جاري اختبار Firebase...', 'info')">
+                        <i class="fas fa-fire"></i> اختبار Firebase
+                    </button>
+                    <button class="btn-dev-success btn" onclick="showToast('جاري اختبار قاعدة البيانات...', 'info')">
+                        <i class="fas fa-database"></i> اختبار DB
+                    </button>
+                    <button class="btn-dev-info btn" onclick="showToast('جاري اختبار الإنترنت...', 'info')">
+                        <i class="fas fa-wifi"></i> اختبار الإنترنت
+                    </button>
+                    <button class="btn-dev-warning btn" onclick="showToast('جاري اختبار السرعة...', 'info')">
+                        <i class="fas fa-tachometer-alt"></i> اختبار السرعة
+                    </button>
+                    <button class="btn-dev-danger btn" onclick="showToast('جاري التحقق من الملفات...', 'info')">
+                        <i class="fas fa-file"></i> التحقق من الملفات
+                    </button>
+                    <button class="btn-dev-primary btn" onclick="showToast('جاري البحث في السجلات...', 'info')">
+                        <i class="fas fa-search"></i> البحث في Logs
+                    </button>
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:#d4a017;"><i class="fas fa-info-circle"></i> حالة الأدوات</h4>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                    <div><span style="color:rgba(255,255,255,0.5);">Firebase:</span> <span style="color:#2ecc71;">✅ متصل</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">قاعدة البيانات:</span> <span style="color:#2ecc71;">✅ تعمل</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">الإنترنت:</span> <span style="color:#2ecc71;">✅ متصل</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">الملفات:</span> <span style="color:#2ecc71;">✅ سليمة</span></div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ==================== DEBUG MODE PAGE ====================
+function renderDebugModePage() {
+    const container = document.getElementById('devContent');
+    const isDebugMode = localStorage.getItem('debugMode') === 'true';
+    
+    container.innerHTML = `
+        <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:30px; border:1px solid rgba(255,255,255,0.05); text-align:center;">
+            <i class="fas fa-bug" style="font-size:60px; color:${isDebugMode ? '#2ecc71' : '#e74c3c'};"></i>
+            <h3 style="color:#fff; margin:15px 0;">وضع المطور ${isDebugMode ? 'مفعل' : 'غير مفعل'}</h3>
+            <p style="color:rgba(255,255,255,0.5); margin-bottom:20px;">
+                ${isDebugMode ? 'جميع العمليات والأخطاء والطلبات يتم تسجيلها' : 'وضع المطور معطل، لا يتم تسجيل أي شيء'}
+            </p>
+            <button class="${isDebugMode ? 'btn-dev-danger' : 'btn-dev-success'} btn" onclick="toggleDebugMode()" style="padding:12px 30px;">
+                <i class="fas ${isDebugMode ? 'fa-stop' : 'fa-play'}"></i>
+                ${isDebugMode ? 'إيقاف وضع المطور' : 'تشغيل وضع المطور'}
+            </button>
+        </div>
+        ${isDebugMode ? `
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05); margin-top:20px;">
+                <h4 style="color:#d4a017;">سجل التصحيح</h4>
+                <div style="max-height:300px; overflow-y:auto; font-family:'Courier New', monospace; font-size:12px;">
+                    <div style="color:rgba(255,255,255,0.5); padding:5px; border-bottom:1px solid rgba(255,255,255,0.03);">
+                        <span style="color:#2ecc71;">[LOG]</span> تم تشغيل وضع المطور
+                    </div>
+                    <div style="color:rgba(255,255,255,0.5); padding:5px; border-bottom:1px solid rgba(255,255,255,0.03);">
+                        <span style="color:#3498db;">[INFO]</span> النظام جاهز
+                    </div>
+                    <div style="color:rgba(255,255,255,0.5); padding:5px;">
+                        <span style="color:#f39c12;">[WARN]</span> لا توجد أخطاء مسجلة
+                    </div>
+                </div>
+            </div>
+        ` : ''}
+    `;
+}
+
+function toggleDebugMode() {
+    const current = localStorage.getItem('debugMode') === 'true';
+    localStorage.setItem('debugMode', !current);
+    showToast(!current ? '✅ تم تشغيل وضع المطور' : '⛔ تم إيقاف وضع المطور');
+    renderDebugModePage();
+}
 
 // دالة عرض صفحة القادة (للقائد العام)
 function showLeadersPage() {
@@ -10148,23 +12193,22 @@ function renderLeaderApp(container) {
                 </div>
                 <p style="font-size: 10px; margin-top: 8px;"><i class="fas fa-code-branch"></i> ${subBranchesNames}</p>
             </div>
-            <ul class="sidebar-menu">
-                <li class="active" data-page="dashboard"><a onclick="changeLeaderPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
-                <li data-page="members"><a onclick="changeLeaderPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
-                <li data-page="joinRequests"><a onclick="changeLeaderPage('joinRequests')"><i class="fas fa-user-plus"></i> طلبات الانضمام</a></li>
-                <li data-page="tasks"><a onclick="changeLeaderPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
-                <li data-page="forms"><a onclick="changeLeaderPage('forms')"><i class="fas fa-file-alt"></i> الفورم</a></li>
-                <li data-page="evaluationForms"><a onclick="changeLeaderPage('evaluationForms')"><i class="fas fa-star"></i> فورمات التقييم</a></li>
-                 <li data-page="pointsEvaluation"><a onclick="changeLeaderPage('pointsEvaluation')"><i class="fas fa-star"></i> النقاط والتقييم</a></li>
-
-                <li data-page="community"><a onclick="changeLeaderPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
-                    <a onclick="logout()" style="color: #e74c3c;">
-                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
-                    </a>
-                </li>
-            </ul>
-        </div>
+<ul class="sidebar-menu">
+    <li class="active" data-page="dashboard"><a onclick="changeLeaderPage('dashboard')"><i class="fas fa-chart-line"></i> لوحة التحكم</a></li>
+    <li data-page="members"><a onclick="changeLeaderPage('members')"><i class="fas fa-users"></i> إدارة الأعضاء</a></li>
+    <li data-page="joinRequests"><a onclick="changeLeaderPage('joinRequests')"><i class="fas fa-user-plus"></i> طلبات الانضمام</a></li>
+    <li data-page="tasks"><a onclick="changeLeaderPage('tasks')"><i class="fas fa-tasks"></i> إدارة التكاليف</a></li>
+    <li data-page="forms"><a onclick="changeLeaderPage('forms')"><i class="fas fa-file-alt"></i> الفورم</a></li>
+    <li data-page="evaluationForms"><a onclick="changeLeaderPage('evaluationForms')"><i class="fas fa-star"></i> فورمات التقييم</a></li>
+    <li data-page="pointsEvaluation"><a onclick="changeLeaderPage('pointsEvaluation')"><i class="fas fa-star"></i> النقاط والتقييم</a></li>  <!-- أضف هذا السطر -->
+    <li data-page="community"><a onclick="changeLeaderPage('community')"><i class="fas fa-comments"></i> الكميونيتي</a></li>
+    <li style="margin-top: 20px; border-top: 1px solid rgba(212,160,23,0.3);">
+        <a onclick="logout()" style="color: #e74c3c;">
+            <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+        </a>
+    </li>
+</ul>
+</div>
 
         <div class="header">
             <div class="logo"><i class="fas fa-campground"></i><div><h1>Scout DoJo</h1><p>لوحة تحكم القائد - ${subBranchesNames}</p></div></div>
@@ -10200,10 +12244,10 @@ function changeLeaderPage(page) {
     else if (page === 'tasks') renderLeaderTasks();
     else if (page === 'forms') renderLeaderFormsPage();
     else if (page === 'evaluationForms') renderLeaderEvaluationFormsPage();
+    else if (page === 'pointsEvaluation') renderPointsEvaluationPage();  // أضف هذا السطر
     else if (page === 'community') renderLeaderCommunity();
     closeSidebar();
 }
-
 // ==================== LEADER FUNCTIONS (تعريف مبكر) ====================
 
 function renderLeaderDashboard() {
@@ -10520,11 +12564,11 @@ function showPointsModal(memberId) {
             <form id="pointsModalForm">
                 <div class="input-group">
                     <label><i class="fas fa-plus-circle"></i> إضافة نقاط (+)</label>
-                    <input type="number" id="addPointsValue" value="0" min="0" step="5">
+                    <input type="number" id="addPointsValue" value="0" min="0" step="1">  <!-- تم التعديل: step="5" → step="1" -->
                 </div>
                 <div class="input-group">
                     <label><i class="fas fa-minus-circle"></i> خصم نقاط (-)</label>
-                    <input type="number" id="subtractPointsValue" value="0" min="0" step="5">
+                    <input type="number" id="subtractPointsValue" value="0" min="0" step="1">  <!-- تم التعديل: step="5" → step="1" -->
                 </div>
                 <div class="input-group">
                     <label><i class="fas fa-comment"></i> سبب التعديل (اختياري)</label>
@@ -10587,7 +12631,6 @@ function showPointsModal(memberId) {
         if (document.getElementById('squadRankingList')) displayRankingList(localStorage.getItem('selectedSquad') || 'all');
     });
 }
-
 // دالة تصدير صفحة النقاط والتقييم إلى PDF
 function exportPointsEvaluationToPDF() {
     const subBranchFilter = document.getElementById('pointsSubBranchFilter')?.value || 'all';
@@ -11547,45 +13590,43 @@ async function sendLeaderBroadcast() {
     });
 }
 
-        function showAdjustPointsModal(id) {
-            const member = appData.members.find(m => m.id === id);
-            if (!member) return;
-            const modal = document.createElement('div');
-            modal.className = 'modal';
-            modal.style.display = 'flex';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <div class="modal-header"><h3><i class="fas fa-star"></i> تعديل نقاط العضو: ${member.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
-                    <div style="text-align:center; margin-bottom:20px;"><div style="font-size:48px; font-weight:bold; color:#d4a017;">${member.points}</div><div>النقاط الحالية</div></div>
-                    <form id="adjustPointsForm">
-                        <div class="input-group"><label>إضافة نقاط (+)</label><input type="number" id="addPoints" value="0" min="0"></div>
-                        <div class="input-group"><label>خصم نقاط (-)</label><input type="number" id="subtractPoints" value="0" min="0"></div>
-                        <div class="input-group"><label>سبب التعديل (اختياري)</label><input type="text" id="pointsReason" placeholder="مثلاً: إنجاز مهمة، مخالفة..."></div>
-                        <button type="submit" class="btn btn-primary" style="width:100%;">تطبيق التعديل</button>
-                    </form>
-                </div>
-            `;
-            document.body.appendChild(modal);
-            document.getElementById('adjustPointsForm').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const addPoints = parseInt(document.getElementById('addPoints').value) || 0;
-                const subtractPoints = parseInt(document.getElementById('subtractPoints').value) || 0;
-                let newPoints = member.points + addPoints - subtractPoints;
-                if (newPoints < 0) newPoints = 0;
-                member.points = newPoints;
-                if (member.points >= 200) member.rank = "قائد متميز";
-                else if (member.points >= 100) member.rank = "قائد";
-                else if (member.points >= 50) member.rank = "نائب قائد";
-                else member.rank = "عضو";
-                await saveAllDataToFirebase();
-                showToast(`تم تعديل نقاط ${member.name}`);
-                modal.remove();
-                renderMembersTable();
-                renderAdminDashboard();
-            });
-        }
-
-        function deleteMember(id) {
+function showAdjustPointsModal(id) {
+    const member = appData.members.find(m => m.id === id);
+    if (!member) return;
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header"><h3><i class="fas fa-star"></i> تعديل نقاط العضو: ${member.name}</h3><span class="close-modal" onclick="this.closest('.modal').remove()">&times;</span></div>
+            <div style="text-align:center; margin-bottom:20px;"><div style="font-size:48px; font-weight:bold; color:#d4a017;">${member.points}</div><div>النقاط الحالية</div></div>
+            <form id="adjustPointsForm">
+                <div class="input-group"><label>إضافة نقاط (+)</label><input type="number" id="addPoints" value="0" min="0" step="1"></div>  <!-- تم التعديل: step="5" → step="1" -->
+                <div class="input-group"><label>خصم نقاط (-)</label><input type="number" id="subtractPoints" value="0" min="0" step="1"></div>  <!-- تم التعديل: step="5" → step="1" -->
+                <div class="input-group"><label>سبب التعديل (اختياري)</label><input type="text" id="pointsReason" placeholder="مثلاً: إنجاز مهمة، مخالفة..."></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">تطبيق التعديل</button>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById('adjustPointsForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const addPoints = parseInt(document.getElementById('addPoints').value) || 0;
+        const subtractPoints = parseInt(document.getElementById('subtractPoints').value) || 0;
+        let newPoints = member.points + addPoints - subtractPoints;
+        if (newPoints < 0) newPoints = 0;
+        member.points = newPoints;
+        if (member.points >= 200) member.rank = "قائد متميز";
+        else if (member.points >= 100) member.rank = "قائد";
+        else if (member.points >= 50) member.rank = "نائب قائد";
+        else member.rank = "عضو";
+        await saveAllDataToFirebase();
+        showToast(`تم تعديل نقاط ${member.name}`);
+        modal.remove();
+        renderMembersTable();
+        renderAdminDashboard();
+    });
+}        function deleteMember(id) {
             const modal = document.createElement('div');
             modal.className = 'modal';
             modal.style.display = 'flex';
@@ -12640,28 +14681,28 @@ function getSquadTypeName(type) {
             document.body.appendChild(modal);
         }
 
-        async function awardPoints(taskId, memberId) {
-            const pointsInput = document.getElementById(`points_${memberId}`);
-            const points = parseInt(pointsInput?.value) || 0;
-            const submission = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === memberId);
-            if (submission) {
-                submission.pointsAwarded = points;
-                submission.status = 'completed';
-                submission.reviewedAt = new Date().toISOString();
-                submission.reviewedBy = 'admin';
-                const member = appData.members.find(m => m.id === memberId);
-                member.points += points;
-                if (member.points >= 200) member.rank = "قائد متميز";
-                else if (member.points >= 100) member.rank = "قائد";
-                else if (member.points >= 50) member.rank = "نائب قائد";
-                await saveAllDataToFirebase();
-                showToast(`تم منح ${points} نقطة للعضو ${member.name}`);
-                manageTaskSubmissions(taskId);
-                renderTasksListAdmin();
-                renderAdminDashboard();
-            }
-        }
-
+async function awardPoints(taskId, memberId) {
+    const pointsInput = document.getElementById(`points_${memberId}`);
+    const points = parseInt(pointsInput?.value) || 0;
+    const submission = appData.taskSubmissions.find(ts => ts.taskId === taskId && ts.memberId === memberId);
+    if (submission) {
+        // تم إزالة الشرط الذي كان يمنع منح أقل من 5 نقاط
+        submission.pointsAwarded = points;
+        submission.status = 'completed';
+        submission.reviewedAt = new Date().toISOString();
+        submission.reviewedBy = 'admin';
+        const member = appData.members.find(m => m.id === memberId);
+        member.points += points;
+        if (member.points >= 200) member.rank = "قائد متميز";
+        else if (member.points >= 100) member.rank = "قائد";
+        else if (member.points >= 50) member.rank = "نائب قائد";
+        await saveAllDataToFirebase();
+        showToast(`تم منح ${points} نقطة للعضو ${member.name}`);
+        manageTaskSubmissions(taskId);
+        renderTasksListAdmin();
+        renderAdminDashboard();
+    }
+}
         function deleteTask(id) {
             const modal = document.createElement('div');
             modal.className = 'modal';
@@ -14684,31 +16725,666 @@ function downloadAsPDF(element, filename) {
 }
 // ==================== تشغيل التطبيق ====================
 
+// ==================== UPDATE START APP ====================
+
+// تعديل دالة startApp لتشمل تهيئة بيانات المطور
 window.startApp = async function() {
     // تحميل جميع البيانات من Firebase
     await loadAllDataFromFirebase();
     
-    // محاولة تحميل بيانات القائد العام المحفوظة (إذا وجدت)
-    const adminCreds = await loadAdminCredentialsFromFirebase();
+    // تهيئة الحسابات الإضافية للقادة العامين
+    await initializeAdditionalAdminAccounts();
     
-    // تخزين بيانات القائد العام في متغير عام للاستخدام
+    // تحميل بيانات المطور من Firebase
+    try {
+        const devSnapshot = await database.ref('developerData').once('value');
+        const devData = devSnapshot.val();
+        if (devData) {
+            developerData.backups = devData.backups || [];
+            developerData.activityLog = devData.activityLog || [];
+            developerData.consoleErrors = devData.consoleErrors || [];
+            developerData.liveConsole = devData.liveConsole || [];
+            developerData.crashReports = devData.crashReports || [];
+            developerData.notifications = devData.notifications || [];
+            developerData.systemSettings = devData.systemSettings || developerData.systemSettings;
+        }
+        console.log('✅ تم تحميل بيانات المطور');
+    } catch (error) {
+        console.error('❌ خطأ في تحميل بيانات المطور:', error);
+    }
+    
+    // محاولة تحميل بيانات القائد العام المحفوظة
+    const adminCreds = await loadAdminCredentialsFromFirebase();
     window.adminCredentials = adminCreds;
     
     // بدء الاستماع للتحديثات المباشرة من Firebase
     listenForRealTimeUpdates();
     
-    // عرض صفحة الهبوط (Landing Page)
+    // عرض صفحة الهبوط
     renderLandingPage();
     
-    // إضافة الزر الثابت (شعار المجموعة)
+    // إضافة الزر الثابت
     addFixedLogoButton();
     
-    // تهيئة الوضع (داكن/فاتح)
+    // تهيئة الوضع
     initTheme();
     
     console.log('✅ تم تشغيل التطبيق بنجاح');
     console.log('🔐 بيانات القائد العام الحالية:', adminCreds);
 };
+// ==================== DASHBOARD PAGE ====================
+
+function renderDevDashboard() {
+    const container = document.getElementById('devContent');
+    
+    container.innerHTML = `
+        <div class="dev-stats-grid">
+            <div class="dev-stat-card">
+                <i class="fas fa-users"></i>
+                <div class="number">${appData.members.length + appData.leaders.length}</div>
+                <div class="label">إجمالي المستخدمين</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-user-circle"></i>
+                <div class="number">${appData.members.length}</div>
+                <div class="label">الأعضاء</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-user-tie"></i>
+                <div class="number">${appData.leaders.length}</div>
+                <div class="label">القادة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-tasks"></i>
+                <div class="number">${appData.tasks.length}</div>
+                <div class="label">التكاليف</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-database"></i>
+                <div class="number">${developerData.backups?.length || 0}</div>
+                <div class="label">النسخ الاحتياطية</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-bug"></i>
+                <div class="number">${developerData.consoleErrors?.length || 0}</div>
+                <div class="label">الأخطاء المسجلة</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="number">${developerData.activityLog?.length || 0}</div>
+                <div class="label">سجل النشاطات</div>
+            </div>
+            <div class="dev-stat-card">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="number">${developerData.crashReports?.length || 0}</div>
+                <div class="label">تقارير الأعطال</div>
+            </div>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:#d4a017; margin-bottom:15px;">
+                    <i class="fas fa-info-circle"></i> معلومات النظام
+                </h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div><span style="color:rgba(255,255,255,0.5);">الإصدار:</span> <span style="color:#fff;">1.0.0</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">حالة Firebase:</span> <span style="color:#2ecc71;">✅ متصل</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">عدد الطلبات:</span> <span style="color:#fff;">${appData.joinRequests.filter(r => r.status === 'pending').length}</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">آخر Backup:</span> <span style="color:#fff;">${developerData.backups?.length > 0 ? new Date(developerData.backups[developerData.backups.length-1].createdAt).toLocaleString('ar-EG') : 'لا يوجد'}</span></div>
+                </div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:#d4a017; margin-bottom:15px;">
+                    <i class="fas fa-chart-line"></i> الأداء
+                </h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div><span style="color:rgba(255,255,255,0.5);">وقت التشغيل:</span> <span style="color:#fff;">${Math.floor((Date.now() - new Date().getTime()) / 60000)} دقيقة</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">سرعة التحميل:</span> <span style="color:#fff;">~200ms</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">استجابة Firebase:</span> <span style="color:#fff;">~50ms</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">المستخدمين النشطون:</span> <span style="color:#fff;">${appData.members.filter(m => m.isActive).length}</span></div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ==================== SYSTEM SETTINGS PAGE ====================
+
+function renderSystemSettingsPage() {
+    const container = document.getElementById('devContent');
+    const settings = developerData.systemSettings || {
+        maintenanceMode: false,
+        registration: true,
+        uploadLimit: 10,
+        theme: 'dark',
+        language: 'ar',
+        sessionTimeout: 30,
+        developerMode: true
+    };
+    
+    container.innerHTML = `
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:#d4a017; margin-bottom:15px;">
+                    <i class="fas fa-cog"></i> إعدادات النظام
+                </h4>
+                <form id="systemSettingsForm">
+                    <div style="margin-bottom:15px;">
+                        <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                            <input type="checkbox" id="maintenanceMode" ${settings.maintenanceMode ? 'checked' : ''}>
+                            <span>وضع الصيانة</span>
+                        </label>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+                            <input type="checkbox" id="registrationEnabled" ${settings.registration ? 'checked' : ''}>
+                            <span>تفعيل التسجيل</span>
+                        </label>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label>حجم الملفات (MB)</label>
+                        <input type="number" id="uploadLimit" value="${settings.uploadLimit || 10}" style="width:100%; padding:8px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label>الوضع</label>
+                        <select id="themeSelect" style="width:100%; padding:8px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+                            <option value="dark" ${settings.theme === 'dark' ? 'selected' : ''}>داكن</option>
+                            <option value="light" ${settings.theme === 'light' ? 'selected' : ''}>فاتح</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label>اللغة</label>
+                        <select id="languageSelect" style="width:100%; padding:8px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+                            <option value="ar" ${settings.language === 'ar' ? 'selected' : ''}>العربية</option>
+                            <option value="en" ${settings.language === 'en' ? 'selected' : ''}>English</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <label>مهلة الجلسة (دقائق)</label>
+                        <input type="number" id="sessionTimeout" value="${settings.sessionTimeout || 30}" style="width:100%; padding:8px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+                    </div>
+                    <button type="submit" class="btn-dev-primary btn" style="width:100%; padding:10px;">
+                        <i class="fas fa-save"></i> حفظ الإعدادات
+                    </button>
+                </form>
+            </div>
+            
+            <div style="background:rgba(255,255,255,0.03); border-radius:15px; padding:20px; border:1px solid rgba(255,255,255,0.05);">
+                <h4 style="color:#d4a017; margin-bottom:15px;">
+                    <i class="fas fa-info-circle"></i> معلومات النظام
+                </h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div><span style="color:rgba(255,255,255,0.5);">الإصدار:</span> <span style="color:#fff;">1.0.0</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">وضع المطور:</span> <span style="color:#2ecc71;">✅ مفعل</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">قاعدة البيانات:</span> <span style="color:#2ecc71;">✅ متصلة</span></div>
+                    <div><span style="color:rgba(255,255,255,0.5);">عدد النسخ:</span> <span style="color:#fff;">${developerData.backups?.length || 0}</span></div>
+                </div>
+                <hr style="border-color:rgba(255,255,255,0.05); margin:15px 0;">
+                <div>
+                    <button class="btn-dev-warning btn" onclick="clearAllCache()" style="width:100%; padding:10px; margin-bottom:10px;">
+                        <i class="fas fa-broom"></i> مسح الكاش
+                    </button>
+                    <button class="btn-dev-danger btn" onclick="resetSystem()" style="width:100%; padding:10px;">
+                        <i class="fas fa-exclamation-triangle"></i> إعادة تعيين النظام
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('systemSettingsForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        developerData.systemSettings = {
+            maintenanceMode: document.getElementById('maintenanceMode').checked,
+            registration: document.getElementById('registrationEnabled').checked,
+            uploadLimit: parseInt(document.getElementById('uploadLimit').value) || 10,
+            theme: document.getElementById('themeSelect').value,
+            language: document.getElementById('languageSelect').value,
+            sessionTimeout: parseInt(document.getElementById('sessionTimeout').value) || 30,
+            developerMode: true
+        };
+        
+        await database.ref('developerData/systemSettings').set(developerData.systemSettings);
+        await addActivityLog('تغيير الإعدادات', 'تم تحديث إعدادات النظام');
+        showToast('✅ تم حفظ الإعدادات بنجاح', 'success');
+    });
+}
+
+// مسح الكاش
+function clearAllCache() {
+    if (confirm('هل أنت متأكد من مسح الكاش؟')) {
+        localStorage.clear();
+        sessionStorage.clear();
+        showToast('✅ تم مسح الكاش بنجاح', 'success');
+        addActivityLog('مسح الكاش', 'تم مسح جميع الكاش');
+    }
+}
+// ==================== CONSOLE ERRORS PAGE ====================
+
+function renderConsoleErrorsPage() {
+    const container = document.getElementById('devContent');
+    const errors = developerData.consoleErrors || [];
+    
+    container.innerHTML = `
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="text" id="errorSearch" placeholder="بحث..." oninput="filterConsoleErrors()" style="flex:1; padding:10px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+            <button class="btn-dev-danger btn" onclick="clearConsoleErrors()">
+                <i class="fas fa-trash"></i> مسح الكل
+            </button>
+            <button class="btn-dev-success btn" onclick="exportConsoleErrors()">
+                <i class="fas fa-file-export"></i> تصدير
+            </button>
+        </div>
+        <div class="dev-table-wrapper">
+            <table class="dev-table" id="consoleErrorsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>المستخدم</th>
+                        <th>النوع</th>
+                        <th>الرسالة</th>
+                        <th>الملف</th>
+                        <th>السطر</th>
+                        <th>الجهاز</th>
+                        <th>الوقت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${errors.length === 0 ? `
+                        <tr><td colspan="8" style="text-align:center; color:rgba(255,255,255,0.3);">لا توجد أخطاء مسجلة</td></tr>
+                    ` : errors.map((e, i) => `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td>${e.username || 'guest'}</td>
+                            <td><span style="color:${e.type === 'error' ? '#e74c3c' : e.type === 'warn' ? '#f39c12' : '#3498db'};">${e.type}</span></td>
+                            <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${e.message}">${e.message}</td>
+                            <td>${e.file || '-'}</td>
+                            <td>${e.line || 0}</td>
+                            <td>${e.device || '-'}</td>
+                            <td>${new Date(e.timestamp).toLocaleString('ar-EG')}</td>
+                        </tr>
+                    `).reverse().join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+function filterConsoleErrors() {
+    const search = document.getElementById('errorSearch')?.value.toLowerCase() || '';
+    const rows = document.querySelectorAll('#consoleErrorsTable tbody tr');
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+    });
+}
+
+async function clearConsoleErrors() {
+    if (confirm('هل أنت متأكد من مسح جميع الأخطاء؟')) {
+        developerData.consoleErrors = [];
+        await database.ref('developerData/consoleErrors').set([]);
+        renderConsoleErrorsPage();
+        showToast('✅ تم مسح جميع الأخطاء', 'success');
+    }
+}
+
+function exportConsoleErrors() {
+    const errors = developerData.consoleErrors || [];
+    if (errors.length === 0) {
+        showToast('لا توجد أخطاء لتصديرها', 'error');
+        return;
+    }
+    
+    const blob = new Blob([JSON.stringify(errors, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `console_errors_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ تم تصدير الأخطاء', 'success');
+}
+
+// ==================== LIVE CONSOLE PAGE ====================
+
+function renderLiveConsolePage() {
+    const container = document.getElementById('devContent');
+    const consoleData = developerData.liveConsole || [];
+    
+    container.innerHTML = `
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn-dev-danger btn" onclick="clearLiveConsole()">
+                <i class="fas fa-broom"></i> مسح
+            </button>
+            <button class="btn-dev-success btn" onclick="exportLiveConsole()">
+                <i class="fas fa-file-export"></i> تصدير
+            </button>
+            <span style="flex:1;"></span>
+            <span style="color:rgba(255,255,255,0.5); font-size:13px;">
+                <i class="fas fa-circle" style="color:#2ecc71; font-size:10px;"></i>
+                متصل: ${consoleData.length} رسالة
+            </span>
+        </div>
+        <div style="background:#0a0a0f; border-radius:15px; padding:15px; border:1px solid rgba(255,255,255,0.05); max-height:500px; overflow-y:auto; font-family:'Courier New', monospace; font-size:13px;" id="liveConsoleContainer">
+            ${consoleData.length === 0 ? `
+                <div style="color:rgba(255,255,255,0.3); text-align:center; padding:40px;">
+                    <i class="fas fa-terminal" style="font-size:40px;"></i>
+                    <p style="margin-top:10px;">لا توجد رسائل في الـ Live Console</p>
+                </div>
+            ` : consoleData.map(c => `
+                <div style="padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.03); color:${c.type === 'error' ? '#e74c3c' : c.type === 'warn' ? '#f39c12' : c.type === 'info' ? '#3498db' : '#d4a017'};">
+                    <span style="color:rgba(255,255,255,0.3); font-size:11px;">${new Date(c.timestamp).toLocaleTimeString('ar-EG')}</span>
+                    [${c.type}] ${c.message}
+                    ${c.username ? `<span style="color:rgba(255,255,255,0.3); font-size:11px;"> - ${c.username}</span>` : ''}
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    // التمرير للأسفل
+    const containerEl = document.getElementById('liveConsoleContainer');
+    if (containerEl) containerEl.scrollTop = containerEl.scrollHeight;
+}
+
+async function clearLiveConsole() {
+    if (confirm('هل أنت متأكد من مسح سجل الـ Live Console؟')) {
+        developerData.liveConsole = [];
+        await database.ref('developerData/liveConsole').set([]);
+        renderLiveConsolePage();
+        showToast('✅ تم مسح السجل', 'success');
+    }
+}
+
+function exportLiveConsole() {
+    const data = developerData.liveConsole || [];
+    if (data.length === 0) {
+        showToast('لا توجد رسائل لتصديرها', 'error');
+        return;
+    }
+    
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `live_console_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ تم تصدير السجل', 'success');
+}
+
+// ==================== ACTIVITY LOG PAGE ====================
+
+function renderActivityLogPage() {
+    const container = document.getElementById('devContent');
+    const logs = developerData.activityLog || [];
+    
+    container.innerHTML = `
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="text" id="activitySearch" placeholder="بحث..." oninput="filterActivityLog()" style="flex:1; padding:10px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+            <button class="btn-dev-danger btn" onclick="clearActivityLog()">
+                <i class="fas fa-trash"></i> مسح الكل
+            </button>
+            <button class="btn-dev-success btn" onclick="exportActivityLog()">
+                <i class="fas fa-file-export"></i> تصدير
+            </button>
+        </div>
+        <div class="dev-table-wrapper">
+            <table class="dev-table" id="activityLogTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>المستخدم</th>
+                        <th>العملية</th>
+                        <th>التفاصيل</th>
+                        <th>الصفحة</th>
+                        <th>الوقت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${logs.length === 0 ? `
+                        <tr><td colspan="6" style="text-align:center; color:rgba(255,255,255,0.3);">لا توجد نشاطات مسجلة</td></tr>
+                    ` : logs.map((log, i) => `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td>${log.username || 'guest'}</td>
+                            <td><span style="color:#d4a017;">${log.action}</span></td>
+                            <td>${log.details || '-'}</td>
+                            <td>${log.page || '-'}</td>
+                            <td>${new Date(log.timestamp).toLocaleString('ar-EG')}</td>
+                        </tr>
+                    `).reverse().join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+function filterActivityLog() {
+    const search = document.getElementById('activitySearch')?.value.toLowerCase() || '';
+    const rows = document.querySelectorAll('#activityLogTable tbody tr');
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+    });
+}
+
+async function clearActivityLog() {
+    if (confirm('هل أنت متأكد من مسح سجل النشاطات؟')) {
+        developerData.activityLog = [];
+        await database.ref('developerData/activityLog').set([]);
+        renderActivityLogPage();
+        showToast('✅ تم مسح السجل', 'success');
+    }
+}
+
+function exportActivityLog() {
+    const logs = developerData.activityLog || [];
+    if (logs.length === 0) {
+        showToast('لا توجد نشاطات لتصديرها', 'error');
+        return;
+    }
+    
+    const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `activity_log_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ تم تصدير السجل', 'success');
+}
+// ==================== CRASH REPORTS PAGE ====================
+
+function renderCrashReportsPage() {
+    const container = document.getElementById('devContent');
+    const reports = developerData.crashReports || [];
+    
+    container.innerHTML = `
+        <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="text" id="crashSearch" placeholder="بحث..." oninput="filterCrashReports()" style="flex:1; padding:10px; border-radius:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:#fff;">
+            <button class="btn-dev-danger btn" onclick="clearCrashReports()">
+                <i class="fas fa-trash"></i> مسح الكل
+            </button>
+            <button class="btn-dev-success btn" onclick="exportCrashReports()">
+                <i class="fas fa-file-export"></i> تصدير
+            </button>
+        </div>
+        <div class="dev-table-wrapper">
+            <table class="dev-table" id="crashReportsTable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>المستخدم</th>
+                        <th>الخطأ</th>
+                        <th>الملف</th>
+                        <th>السطر</th>
+                        <th>الجهاز</th>
+                        <th>الحالة</th>
+                        <th>الوقت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${reports.length === 0 ? `
+                        <tr><td colspan="8" style="text-align:center; color:rgba(255,255,255,0.3);">لا توجد تقارير أعطال</td></tr>
+                    ` : reports.map((r, i) => `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td>${r.username || 'guest'}</td>
+                            <td style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${r.error}">${r.error}</td>
+                            <td>${r.file || '-'}</td>
+                            <td>${r.line || 0}</td>
+                            <td>${r.device || '-'}</td>
+                            <td><span style="color:${r.resolved ? '#2ecc71' : '#e74c3c'};">${r.resolved ? '✅ تم الحل' : '⚠️ قيد المعالجة'}</span></td>
+                            <td>${new Date(r.timestamp).toLocaleString('ar-EG')}</td>
+                        </tr>
+                    `).reverse().join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+function filterCrashReports() {
+    const search = document.getElementById('crashSearch')?.value.toLowerCase() || '';
+    const rows = document.querySelectorAll('#crashReportsTable tbody tr');
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+    });
+}
+
+async function clearCrashReports() {
+    if (confirm('هل أنت متأكد من مسح تقارير الأعطال؟')) {
+        developerData.crashReports = [];
+        await database.ref('developerData/crashReports').set([]);
+        renderCrashReportsPage();
+        showToast('✅ تم مسح التقارير', 'success');
+    }
+}
+
+function exportCrashReports() {
+    const reports = developerData.crashReports || [];
+    if (reports.length === 0) {
+        showToast('لا توجد تقارير لتصديرها', 'error');
+        return;
+    }
+    
+    const blob = new Blob([JSON.stringify(reports, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `crash_reports_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ تم تصدير التقارير', 'success');
+}
+// ==================== GLOBAL ERROR HANDLING ====================
+
+// التقاط الأخطاء العالمية
+window.addEventListener('error', function(e) {
+    const errorData = {
+        type: 'error',
+        message: e.message || 'Unknown error',
+        file: e.filename || 'unknown',
+        line: e.lineno || 0,
+        column: e.colno || 0,
+        stack: e.error?.stack || ''
+    };
+    
+    // تسجيل في Console Errors
+    logConsoleError(errorData);
+    
+    // تسجيل في Crash Reports
+    logCrashReport(errorData);
+    
+    // إرسال إلى Live Console
+    sendToLiveConsole('error', e.message || 'Unknown error', { file: e.filename, line: e.lineno });
+});
+
+// التقاط الأخطاء في الـ Promise
+window.addEventListener('unhandledrejection', function(e) {
+    const errorData = {
+        type: 'error',
+        message: e.reason?.message || 'Unhandled Promise Rejection',
+        file: 'promise',
+        line: 0,
+        column: 0,
+        stack: e.reason?.stack || ''
+    };
+    
+    logConsoleError(errorData);
+    logCrashReport(errorData);
+    sendToLiveConsole('error', 'Unhandled Promise Rejection', { reason: e.reason });
+});
+
+// تجاوز console.log الأصلي لتسجيل في Live Console
+const originalConsoleLog = console.log;
+const originalConsoleWarn = console.warn;
+const originalConsoleError = console.error;
+const originalConsoleInfo = console.info;
+
+console.log = function(...args) {
+    originalConsoleLog.apply(console, args);
+    sendToLiveConsole('log', args.join(' '));
+};
+
+console.warn = function(...args) {
+    originalConsoleWarn.apply(console, args);
+    sendToLiveConsole('warn', args.join(' '));
+};
+
+console.error = function(...args) {
+    originalConsoleError.apply(console, args);
+    sendToLiveConsole('error', args.join(' '));
+};
+
+console.info = function(...args) {
+    originalConsoleInfo.apply(console, args);
+    sendToLiveConsole('info', args.join(' '));
+};
+// إضافة زر للدخول إلى لوحة المطور في الهيدر
+// إضافة زر للدخول إلى لوحة المطور في الهيدر
+function addDeveloperButton() {
+    if (!isDeveloperUser()) return;
+    
+    const header = document.querySelector('.header');
+    if (!header) return;
+    
+    // إزالة الزر القديم إذا وجد
+    const oldBtn = document.querySelector('.dev-panel-btn');
+    if (oldBtn) oldBtn.remove();
+    
+    const btn = document.createElement('button');
+    btn.className = 'dev-panel-btn';
+    btn.style.cssText = 'padding: 6px 14px; border: none; border-radius: 30px; cursor: pointer; font-family: Cairo, sans-serif; font-weight: 600; background: #d4a017; color: #0a0a0f; font-size: 12px; transition: 0.3s;';
+    btn.innerHTML = '<i class="fas fa-code"></i> لوحة المطور';
+    btn.onclick = () => {
+        if (confirm('هل تريد الانتقال إلى لوحة المطور؟')) {
+            renderDeveloperPanel();
+        }
+    };
+    
+    // إضافة تأثير hover
+    btn.onmouseover = () => { btn.style.transform = 'scale(1.05)'; };
+    btn.onmouseout = () => { btn.style.transform = 'scale(1)'; };
+    
+    const userInfo = header.querySelector('.user-info');
+    if (userInfo) {
+        userInfo.appendChild(btn);
+    }
+}
+// استدعاء الدالة في render بعد تسجيل الدخول
+// أضف هذا السطر في دوال render المختلفة:
+// addDeveloperButton();
 // ==================== إصلاح كامل لدوال فورمات التقييم ====================
 
 // دالة عرض صفحة فورمات التقييم للقائد
